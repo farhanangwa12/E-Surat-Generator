@@ -263,7 +263,7 @@
                 {{-- Tanggal Pengerjaan Surat Kontrak --}}
                 <div class="card">
                     <div class="card-header">
-                        Informasi Pengerjaan Kelengkapan Surat Kontrak
+                        Informasi Pengerjaan  Surat Kontrak Pengadaan
 
 
                     </div>
@@ -348,7 +348,45 @@
                 </div>
 
 
-                {{-- BOQ --}}
+                {{-- Data Barang dan Jasa --}}
+                <div class="card">
+                    <div class="card-header">
+                        Data Barang dan Jasa Pengadaan
+                    </div>
+                    <div class="card-body">
+                        <style>
+                            td,
+                            th {
+
+                                vertical-align: middle;
+                            }
+                        </style>
+                        <table class="table table-stripped ">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Barang dan Jasa</th>
+                                    <th scope="col">Aksi</th>
+
+                                </tr>
+                            </thead>
+                            @php
+                                $no = 1;
+                            @endphp
+                            @foreach ($jenis_kontrak as $j)
+                                <tbody>
+                                    <tr>
+                                        <td>{{$no++}}</td>
+                                        <td>{{$j->nama_jenis}}</td>
+                                        <td><a href="{{route('subkontrak.show', ['id' => $id,'id_jenis' => $j->id])}}" class="btn btn-primary">Aksi</a></td>
+                                    </tr>
+
+                                </tbody>
+                            @endforeach
+
+                        </table>
+                    </div>
+                </div>
 
                 <div class="card">
                     <div class="card-header">
