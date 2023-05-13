@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('uraian');
             $table->decimal('volume', 10, 2);
             $table->string('satuan');
-            $table->decimal('harga_satuan', 10, 2);
-            $table->decimal('jumlah', 10, 2);
+            // $table->decimal('harga_satuan', 10, 2);
+            // $table->decimal('jumlah', 10, 2);
             $table->timestamps();
         
             $table->foreign('id_jenis_kontrak')->references('id')->on('jenis_kontrak');

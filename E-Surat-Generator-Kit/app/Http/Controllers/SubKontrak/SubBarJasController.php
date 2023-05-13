@@ -34,12 +34,12 @@ class SubBarJasController extends Controller
             'uraian' => 'required',
             'volume' => 'required|numeric',
             'satuan' => 'required',
-            'harga_satuan' => 'required|numeric',
+            // 'harga_satuan' => 'required|numeric',
         ]);
         if (!preg_match('/^-\s+/', $validatedData['uraian'])) {
            $validatedData['uraian'] = '- ' . $validatedData['uraian'];
         }
-        $validatedData['jumlah'] = $validatedData['volume'] * $validatedData['harga_satuan'];
+        // $validatedData['jumlah'] = $validatedData['volume'] * $validatedData['harga_satuan'];
 
         SubBarJas::create($validatedData);
 
@@ -59,7 +59,7 @@ class SubBarJasController extends Controller
             'uraian' => 'required',
             'volume' => 'required|numeric',
             'satuan' => 'required',
-            'harga_satuan' => 'required|numeric',
+            // 'harga_satuan' => 'required|numeric',
         ]);
 
         $subBarJas = SubBarJas::findOrFail($id);

@@ -14,8 +14,7 @@ class BarJas extends Model
         'uraian',
         'volume',
         'satuan',
-        'harga_satuan',
-        'jumlah',
+   
     ];
 
 

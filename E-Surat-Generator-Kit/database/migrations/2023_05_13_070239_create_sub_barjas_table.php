@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('uraian');
             $table->float('volume', 10, 2);
             $table->string('satuan');
-            $table->float('harga_satuan', 10, 2);
-            $table->float('jumlah', 10, 2);
+            // $table->float('harga_satuan', 10, 2);
+            // $table->float('jumlah', 10, 2);
             $table->timestamps();
         });
     }
