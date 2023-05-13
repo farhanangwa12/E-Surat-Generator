@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\SubKontrak\JenisKontrak;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,5 +33,12 @@ class KontrakKerja extends Model
     public function tandatangan()
     {
         return $this->hasOne(TandaTangan::class, 'id_kontrakkerja', 'id_kontrakkerja');
+    }
+
+
+    // Relasi dengan jenis_kontrak
+    public function jenis_kontrak()
+    {
+        return $this->hasMany(JenisKontrak::class, 'id_kontrak');
     }
 }
