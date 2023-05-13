@@ -14,6 +14,9 @@ use App\Http\Controllers\pengadaantahap2\LampNegoController;
 use App\Http\Controllers\pengadaantahap2\LspkController;
 use App\Http\Controllers\pengadaantahap2\SampulController;
 use App\Http\Controllers\pengadaantahap2\SPKBJController;
+use App\Http\Controllers\SubKontrak\BarJasController;
+use App\Http\Controllers\SubKontrak\SubBarJasController;
+use App\Http\Controllers\SubKontrak\SubKontrakController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\VendorKelengkapanDokumenController;
@@ -276,6 +279,45 @@ Route::prefix('pengadaan')->middleware('auth', 'role:pengadaan')->group(function
 
         Route::get('{id}/downloadall', [KontrakKerjaController::class, 'DownloadVendorDoc'])->name('pengajuankontrak.downloadvendor');
     });
+    Route::prefix('/subkontrak')->group(function () {
+        Route::get('show/{id}/{id_jenis}', [SubKontrakController::class, 'show'])->name('subkontrak.show');
+
+        Route::prefix('barjas')->group(function () {
+            // Rute untuk menampilkan form create
+            Route::get('/create/{id_jenis_kontrak}', [BarJasController::class, 'create'])->name('barjas.create');
+
+            // Rute untuk menyimpan data dari form create
+            Route::post('/', [BarjasController::class, 'store'])->name('barjas.store');
+
+            // Rute untuk menampilkan data berdasarkan id
+            Route::get('/{id}', [BarjasController::class, 'show'])->name('barjas.show');
+
+            // Rute untuk menampilkan form edit
+            Route::get('/{id}/edit', [BarjasController::class, 'edit'])->name('barjas.edit');
+
+            // Rute untuk mengupdate data dari form edit
+            Route::put('/{id}', [BarjasController::class, 'update'])->name('barjas.update');
+
+            // Rute untuk menghapus data
+            Route::delete('/{id}', [BarjasController::class, 'destroy'])->name('barjas.destroy');
+        });
+        Route::prefix('subbarjas')->group(function () {
+            // Rute untuk menampilkan halaman tambah data
+            Route::get('/create/{id_barjas}', [SubBarJasController::class, 'create'])->name('subbarjas.create');
+        
+            // Rute untuk menampilkan halaman edit data
+            Route::get('/{id}/edit', [SubBarJasController::class, 'edit'])->name('subbarjas.edit');
+        
+            // Rute untuk menyimpan data
+            Route::post('/', [SubBarJasController::class, 'store'])->name('subbarjas.store');
+        
+            // Rute untuk mengupdate data
+            Route::put('/{id}', [SubBarJasController::class, 'update'])->name('subbarjas.update');
+        
+            // Rute untuk menghapus data
+            Route::delete('/{id}', [SubBarJasController::class, 'destroy'])->name('subbarjas.destroy');
+        });
+    });
 
     Route::prefix('kontrakthp2')->group(function () {
         Route::get('/negoharga', [KontrakKerjaController::class, 'negoharga'])->name('negoharga');
@@ -317,7 +359,7 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
 
 
 
-   
+
 
     Route::prefix('dokumen')->group(function () {
         // Route untuk menampilkan daftar produk

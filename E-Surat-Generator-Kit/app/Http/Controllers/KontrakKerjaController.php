@@ -6,6 +6,7 @@ use App\Http\Controllers\pengadaantahap1\BOQController;
 use App\Models\KontrakKerja;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\Penyelenggara;
+use App\Models\SubKontrak\JenisKontrak;
 use App\Models\SumberAnggaran;
 use App\Models\TandaTangan;
 use App\Models\Vendor;
@@ -795,7 +796,9 @@ class KontrakKerjaController extends Controller
         ];
         $kontrak = json_decode(json_encode($kontrak1));
 
-        return  view('plnpengadaan.kontraktahap1.detail', compact('kontrakkerja', 'kontrak'));
+        $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->get();
+
+        return  view('plnpengadaan.kontraktahap1.detail', compact('kontrakkerja', 'kontrak', 'jenis_kontrak', 'id'));
     }
     // DownloadDokumenVendor
     public function DownloadVendorDoc($id)
