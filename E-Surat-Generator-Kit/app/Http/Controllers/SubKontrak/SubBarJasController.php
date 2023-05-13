@@ -61,6 +61,9 @@ class SubBarJasController extends Controller
             'satuan' => 'required',
             // 'harga_satuan' => 'required|numeric',
         ]);
+        if (!preg_match('/^-\s+/', $validatedData['uraian'])) {
+            $validatedData['uraian'] = '- ' . $validatedData['uraian'];
+         }
 
         $subBarJas = SubBarJas::findOrFail($id);
         $subBarJas->update($validatedData);
