@@ -1,0 +1,460 @@
+@extends('template.app')
+
+@section('title', 'Edit Kontrak')
+
+@section('content')
+    <div class="container-fluid p-0">
+
+        <h1 class="h3 mb-3">Edit Kontrak</h1>
+
+        <div class="row">
+            <div class="col-12">
+                <form method="POST" action="{{ route('pengajuankontrak.update', ['id' => $kontrak['id_kontrakkerja']]) }}">
+                    @csrf
+                    {{-- Detail Kontrak --}}
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <div class="card">
+                        <div class="card-header">
+                            Detail Kontrak
+                        </div>
+
+
+                        <div class="card-body">
+                            <div class="row align-item-start mb-3">
+
+                                <div class="form-group col">
+                                    <label for="nama_kontrak">Nama Kontrak</label>
+                                    <textarea cols="15" rows="10" name="nama_kontrak" class="form-control" id="nama_kontrak"
+                                        placeholder="Masukkan nama kontrak">{{ $kontrak['nama_kontrak'] }}</textarea>
+
+                                </div>
+
+
+                            </div>
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="no_urut">No Urut</label>
+                                    <input type="text" name="no_urut" class="form-control" id="no_urut"
+                                        placeholder="Masukkan no urut" value="{{ $kontrak['no_urut'] }}">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="tahun">Tahun</label>
+                                    <input type="text" name="tahun" class="form-control" id="tahun"
+                                        value="{{ $kontrak['tahun'] }}" placeholder="Masukkan nama tahun">
+                                </div>
+
+                            </div>
+
+
+                            <div class="row align-item-start justify-content-end mb-3">
+                                <div class="form-group col">
+                                    <label for="lama_pekerjaan">Lama Pekerjaan</label>
+                                    <input type="number" name="lama_pekerjaan" class="form-control" id="lama_pekerjaan"
+                                        value="{{ $kontrak['lama_pekerjaan'] }}"
+                                        placeholder="Masukkan berapa hari pekerjaan">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="kode_masalah">Kode Masalah</label>
+                                    <input type="text" name="kode_masalah" class="form-control" id="kode_masalah"
+                                        value="{{ $kontrak['kode_masalah'] }}" placeholder="Masukkan kode masalah">
+                                </div>
+
+                            </div>
+                            <div class="row align-item-start justify-content-end mb-3">
+                                <div class="form-group col">
+                                    <label for="nama_lokasi">Lokasi Pekerjaan</label>
+                                    <input type="text" name="nama_lokasi" class="form-control" id="nama_lokasi"
+                                        value="{{ $kontrak['nama_lokasi'] }}" placeholder="Masukkan nama lokasi">
+                                </div>
+
+
+                            </div>
+
+                            {{-- <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="tanggal_pekerjaan">Tanggal Awal</label>
+                                    <input type="date" name="tanggal_pekerjaan" class="form-control"
+                                        id="tanggal_pekerjaan" placeholder="Masukkan tanggal awal">
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="tanggal_akhir_pekerjaan">Tanggal Akhir</label>
+                                    <input type="date" name="tanggal_akhir_pekerjaan" class="form-control"
+                                        id="tanggal_akhir_pekerjaan" placeholder="Masukkan tanggal akhir">
+                                </div>
+
+
+
+                            </div> --}}
+
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="tanggal_spmk">Tanggal SPMK</label>
+                                    <input type="date" name="tanggal_spmk" class="form-control" id="tanggal_spmk"
+                                        value="{{ $kontrak['tanggal_spmk'] }}" placeholder="Masukkan tanggal awal">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="nomor_spmk">No SPMK</label>
+                                    <input type="text" name="nomor_spmk" class="form-control" id="nomor_spmk"
+                                        value="{{ $kontrak['nomor_spmk'] }}" placeholder="Masukkan nomor kontrak">
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    {{-- Sumber Anggaran --}}
+                    <div class="card">
+                        <div class="card-header">
+                            Sumber Anggaran
+                        </div>
+
+
+                        <div class="card-body">
+                            <div class="row align-item-start mb-3">
+
+                                <div class="form-group col">
+                                    <label for="skk-ao">SKK-AO</label>
+                                    <input type="text" name="skk-ao" class="form-control" id="skk-ao"
+                                        value="{{ $kontrak['skk-ao'] }}" placeholder="Masukkan SKK-AO">
+                                </div>
+
+                            </div>
+                            <div class="row align-item-start mb-3">
+
+                                <div class="form-group col">
+                                    <label for="tanggal_anggaran">Tanggal Anggaran</label>
+                                    <input type="date" name="tanggal_anggaran" class="form-control" id="tanggal_anggaran"
+                                        value="{{ $kontrak['tanggal_anggaran'] }}" placeholder="Masukkan Tanggal Anggaran">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Vendor --}}
+                    <div class="card">
+                        <div class="card-header">
+                            Detail Vendor
+                        </div>
+
+
+                        <div class="card-body">
+                            <div class="row align-item-start mb-3">
+
+                                <div class="form-group col">
+                                    <label for="penyedia">Penyedia Barang / Jasa</label>
+                                    <input type="text" name="penyedia" class="form-control" id="penyedia"
+                                        value="{{ $kontrak['penyedia'] }}" placeholder="Masukkan data vendor">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="direktur">Direktur</label>
+                                    <input type="text" name="direktur" class="form-control" id="direktur"
+                                        value="{{ $kontrak['direktur'] }}" placeholder="Masukkan Nama Direktur">
+                                </div>
+
+                            </div>
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="alamat_penyedia">Alamat </label>
+                                    <input type="text" name="alamat_penyedia" class="form-control"
+                                        value="{{ $kontrak['alamat_penyedia'] }}" id="alamat_penyedia"
+                                        placeholder="Masukkan alamat penyedia">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="nama_bank">BANK</label>
+                                    <input type="text" name="nama_bank" class="form-control" id="nama_bank"
+                                        value="{{ $kontrak['nama_bank'] }}" placeholder="Masukkan Nama Bank">
+                                </div>
+
+
+
+                            </div>
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="nomor_rekening">Nomor Rekening</label>
+                                    <input type="nomor" name="nomor_rekening" class="form-control" id="nomor_rekening"
+                                        value="{{ $kontrak['nomor_rekening'] }}" placeholder="Masukkan Nomor Rekening">
+                                </div>
+                                <span class="col"></span>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {{-- Detail Penyelenggaran --}}
+                    <div class="card">
+                        <div class="card-header">
+                            Detail Penyelenggara
+                        </div>
+
+
+                        <div class="card-body">
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="manager">Manager</label>
+                                    <input type="text" name="manager" class="form-control" id="manager"
+                                        value="{{ $kontrak['manager'] }}" placeholder="Masukkan nama manager">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="pengawas_lapangan">Pengawas Lapangan</label>
+                                    <input type="text" name="pengawas_lapangan" class="form-control"
+                                        value="{{ $kontrak['pengawas_lapangan'] }}" id="pengawas_lapangan"
+                                        placeholder="Masukkan nama pengawas lapangan">
+                                </div>
+
+                            </div>
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="pejabat_pelaksana_pengadaan">Pejabat Pelaksana Pengadaan</label>
+                                    <input type="text" name="pejabat_pelaksana_pengadaan" class="form-control"
+                                        value="{{ $kontrak['pejabat_pelaksana_pengadaan'] }}"
+                                        id="pejabat_pelaksana_pengadaan"
+                                        placeholder="Masukkan Pejabat Pelaksana Pengadaan">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="pengawas_k3">Pengawas K3</label>
+                                    <input type="text" name="pengawas_k3" class="form-control" id="pengawas_k3"
+                                        value="{{ $kontrak['pengawas_k3'] }}" placeholder="Masukkan pengawas k3">
+                                </div>
+
+                            </div>
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="direksi">Direksi</label>
+                                    <input type="text" name="direksi" class="form-control" id="direksi"
+                                        value="{{ $kontrak['direksi'] }}" placeholder="Masukkan nama direksi">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="pengawas_pekerjaan">Pengawas Pekerjaan</label>
+                                    <input type="text" name="pengawas_pekerjaan" class="form-control"
+                                        value="{{ $kontrak['pengawas_pekerjaan'] }}" id="pengawas_pekerjaan"
+                                        placeholder="Masukkan nomor kontrak">
+                                </div>
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+                    </div>
+
+
+
+                    {{-- Detail Surat Pendukung --}}
+                    <div class="card">
+                        <div class="card-header">
+                            Tanggal Pengurusan Dokumen Pengadaan
+                        </div>
+
+
+                        {{-- <div class="card-body">
+
+
+
+
+
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group">
+                                    <label for="rks">Tanggal Speck/RKS</label>
+                                    <input type="date" name="rks" class="form-control" id="rks"
+                                        placeholder="Masukkan nama direksi">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="hps">Tanggal HPS</label>
+                                    <input type="date" name="hps" class="form-control" id="hps"
+                                        placeholder="Masukkan hps">
+                                </div>
+
+                            </div>
+
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="pakta_pejabat">Tanggal PAKTA PEJABAT</label>
+                                    <input type="date" name="pakta_pejabat" class="form-control" id="pakta_pejabat"
+                                        placeholder="Masukkan pakta pejabat">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="undangan">Tanggal Undangan</label>
+                                    <input type="date" name="undangan" class="form-control" id="undangan"
+                                        placeholder="Masukkan undangan">
+                                </div>
+
+                            </div>
+
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="pakta_pejabat">Tanggal PAKTA PENGGUNA</label>
+                                    <input type="date" name="pakta_pejabat" class="form-control" id="pakta_pejabat"
+                                        placeholder="Masukkan pakta pejabat">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="ba_buka">tanggal BA Buka</label>
+                                    <input type="date" name="ba_buka" class="form-control" id="ba_buka"
+                                        placeholder="Masukkan ba buka">
+                                </div>
+
+                            </div>
+
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="ba_negosiasi">Tanggal BA Negosiasi</label>
+                                    <input type="date" name="ba_negosiasi" class="form-control" id="ba_negosiasi"
+                                        placeholder="Masukkan ba negosiasi">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="ba_evaluasi">Tanggal BA Evaluasi</label>
+                                    <input type="date" name="ba_evaluasi" class="form-control" id="ba_evaluasi"
+                                        placeholder="Masukkan BA Evaluasi">
+                                </div>
+
+                            </div>
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="spl">Tanggal SPL</label>
+                                    <input type="text" name="spl" class="form-control" id="spl"
+                                        placeholder="Masukkan SPL">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="ba_hasil_pl">Tanggal BA Hasil PL</label>
+                                    <input type="text" name="ba_hasil_pl" class="form-control" id="ba_hasil_pl"
+                                        placeholder="Masukkan BA hasil pl">
+                                </div>
+
+                            </div>
+                            <div class="row align-item-start mb-3">
+                                <div class="form-group col">
+                                    <label for="spk">SPK
+                                    </label>
+                                    <input type="date" name="spk" class="form-control" id="spk"
+                                        placeholder="Masukkan tanggal SPK">
+                                </div>
+                                <span class="col"></span>
+
+                            </div>
+
+                            <button type="submit" class="btn btn-primary col">Submit</button>
+
+
+
+                        </div> --}}
+                        <div class="card-body">
+
+                            <div class="form-group mb-3">
+                                <label for="rks">Tanggal Speck/RKS</label>
+
+                                <input type="date" name="rks" class="form-control" id="rks"
+                                    value="{{ $kontrak['rks'] }}" placeholder="Masukkan nama direksi">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="hps">Tanggal HPS</label>
+                                <input type="date" name="hps" class="form-control" id="hps"
+                                    value="{{ date('Y-m-d', strtotime($kontrak['hps'])) }}" placeholder="Masukkan hps">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="pakta_pejabat">Tanggal PAKTA PEJABAT</label>
+                                <input type="date" name="pakta_pejabat" class="form-control" id="pakta_pejabat"
+                                    value="{{ date('Y-m-d', strtotime($kontrak['pakta_pejabat'])) }}"
+                                    placeholder="Masukkan pakta pejabat">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="undangan">Tanggal Undangan</label>
+                                <input type="date" name="undangan" class="form-control" id="undangan"
+                                    value="{{ date('Y-m-d', strtotime($kontrak['undangan'])) }}"
+                                    placeholder="Masukkan undangan">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="pakta_pengguna">Tanggal PAKTA PENGGUNA</label>
+                                <input type="date" name="pakta_pengguna" class="form-control" id="pakta_pejabat"
+                                    value="{{ date('Y-m-d', strtotime($kontrak['pakta_pengguna'])) }}"
+                                    placeholder="Masukkan pakta pejabat">
+                            </div>
+
+
+                            <br>
+                            <div class="form-group mb-3">
+                                <label for="ba_buka">tanggal BA Buka</label>
+                         
+                                <input type="date" name="ba_buka" class="form-control" id="ba_buka"
+                                    value="{{ date('Y-m-d', strtotime($kontrak['ba_buka'])) }}"
+                                    placeholder="Masukkan ba buka">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="ba_evaluasi">Tanggal BA Evaluasi</label>
+                       
+                                <input type="date" name="ba_evaluasi" class="form-control" id="ba_evaluasi"
+                                    value="{{ date('Y-m-d', strtotime($kontrak['ba_evaluasi'])) }}"
+                                    placeholder="Masukkan BA Evaluasi">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="ba_negosiasi">Tanggal BA Negosiasi</label>
+                           
+                                <input type="date" name="ba_negosiasi" class="form-control" id="ba_negosiasi"
+                                    value="{{ date('Y-m-d', strtotime($kontrak['ba_negosiasi'])) }}"
+                                    placeholder="Masukkan ba negosiasi">
+                            </div>
+
+
+                            <div class="form-group mb-3">
+                                <label for="ba_hasil_pl">Tanggal BA Hasil PL</label>
+                   
+                                <input type="date" name="ba_hasil_pl" class="form-control" id="ba_hasil_pl"
+                                    value="{{ date('Y-m-d', strtotime($kontrak['ba_hasil_pl'])) }}"
+                                    placeholder="Masukkan BA hasil pl">
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="spk">SPK
+                                </label>
+                   
+                   
+                              
+                                    
+                                <input type="date" name="spk" class="form-control" id="spk"
+                                value="{{date('Y-m-d', strtotime($kontrak['spk']))}}"
+                                placeholder="Masukkan SPK">
+                              
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary mb-3">Submit</button>
+
+
+
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+@endsection
+<script>
+    $(document).ready(function() {
+        $('#rks').on('input', function() {
+            var input1Value = $(this).val();
+            $('#hps').val(input1Value);
+            $('#pakta_pejabat').val(input1Value);
+            $('#pakta_pengguna').val(input1Value);
+            $('#undangan').val(input1Value);
+        });
+    });
+</script>

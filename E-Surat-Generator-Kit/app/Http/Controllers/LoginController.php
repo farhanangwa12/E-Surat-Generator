@@ -1,0 +1,136 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+class LoginController extends Controller
+{
+    public function showLoginForm()
+    {
+        return view('login.login');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $user = Auth::user();
+
+            if ($user->role == 'pengadaan') {
+                return redirect()->route('dashboard.pengadaan');
+            }
+            if ($user->role == 'manager') {
+                return redirect()->route('dashboard.manager');
+            }
+            if ($user->role == 'vendor') {
+
+                return redirect()->route('dashboard.vendor');
+            }
+        }
+
+        return back()->withErrors([
+            'email' => 'Email yang anda masukkan salah',
+            'password' => 'Password yang anda masukkan salah.'
+        ]);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
+    }
+
+    public function dashboardpln()
+    {
+        return view('plninternal.dashboard');
+    }
+    public function dashboardvendor()
+    {
+        return view('vendor.dashboard');
+    }
+    public function usersetting()
+    {
+        $user = Auth::user();
+        $user_profile = User::find($user->id);
+        return view('template.usersetting', ['data' => $user_profile]);
+    }
+    public function gantipass(Request $request)
+    {
+        // Memvalidasi data yang terkirim
+        $request->validate([
+            'password_lama' => ['required', function ($attribute, $value, $fail) use ($request) {
+                if (!Hash::check($value, $request->user()->password)) {
+                    return $fail(__('Password lama tidak cocok'));
+                }
+            }],
+            'password_baru' => ['required', 'confirmed', 'different:password_lama'],
+            'password_baru_confirmation' => ['required'],
+        ]);
+        // Mengambil data dari session lalu mencari di database
+        $user = Auth::user();
+        $user_profile = User::find($user->id);
+        $user_profile->password = bcrypt($request->input('password_baru'));
+        $user_profile->save();
+        return redirect()->back();
+    }
+    public function ubahuser(Request $request)
+    {
+        // Memvalidasi data yang terkirim
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required:email',
+            'picture_profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        // Mengambil data dari session lalu mencari di database
+        $user = Auth::user();
+        $user_profile = User::find($user->id);
+
+
+        if (!$user_profile->picture_profile == 'default.jpg') {
+            unlink(public_path('photoprofile/' . $user_profile->picture_profile));
+
+            $imageName = time() . '.' . $request->picture_profile->extension();
+
+            // $request->picture_profile->storeAs('/public/photoprofile/', $imageName);
+
+
+            try {
+                $file = $request->file('picture_profile');
+                $path = public_path('photoprofile');
+                $file->move($path, $imageName);
+
+                echo "File $imageName berhasil diupload.";
+            } catch (\Exception $e) {
+                throw new \Exception('Gagal saat menyimpan file: ' . $e->getMessage());
+            }
+            $user_profile->picture_profile = $imageName;
+        } else {
+
+            $imageName = time() . '.' . $request->picture_profile->extension();
+            try {
+                $file = $request->file('picture_profile');
+                $path = public_path('photoprofile');
+                $file->move($path, $imageName);
+
+                echo "File $imageName berhasil diupload.";
+            } catch (\Exception $e) {
+                throw new \Exception('Gagal saat menyimpan file: ' . $e->getMessage());
+            }
+            $user_profile->picture_profile = $imageName;
+        }
+
+        $user_profile->name = $request->input('name');
+        $user_profile->email = $request->input('email');
+        $user_profile->save();
+        return redirect()->back();
+    }
+}
