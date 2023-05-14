@@ -21,7 +21,7 @@ return new class extends Migration
             // $table->decimal('jumlah', 10, 2);
             $table->timestamps();
         
-            $table->foreign('id_jenis_kontrak')->references('id')->on('jenis_kontrak');
+            $table->foreign('id_jenis_kontrak')->references('id')->on('jenis_kontrak')->onDelete('cascade');
         });
     }
 

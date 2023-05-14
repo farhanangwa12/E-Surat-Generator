@@ -6,7 +6,9 @@ use App\Http\Controllers\pengadaantahap1\BOQController;
 use App\Models\KontrakKerja;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\Penyelenggara;
+use App\Models\SubKontrak\BarJas;
 use App\Models\SubKontrak\JenisKontrak;
+use App\Models\SubKontrak\SubBarjas;
 use App\Models\SumberAnggaran;
 use App\Models\TandaTangan;
 use App\Models\Vendor;
@@ -18,7 +20,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
-use ZipArchive;
+
 
 class KontrakKerjaController extends Controller
 {
@@ -48,7 +50,7 @@ class KontrakKerjaController extends Controller
     }
     private function dateConverter($date)
     {
-        return str_replace("/", "-", $date);;
+        return str_replace("/", "-", $date);
     }
     public function changeStatus($id, $status, $routeName)
     {
@@ -72,7 +74,232 @@ class KontrakKerjaController extends Controller
 
         return view('plnpengadaan.kontraktahap1.create', compact('vendor'));
     }
+    // Download File di tambah kontrak
+    public function downloadTemplate()
+    {
+        $filePath = 'public/templateformat/isi2tahap2.xlsx';
+        $storagePath = storage_path('app/' . $filePath);
 
+        if (!Storage::exists($filePath)) {
+            abort(404, 'File not found.');
+        }
+
+        return response()->download($storagePath, 'isi2tahap.xlsx');
+    }
+    // Upload file excel di tambah kontrak dan edit kontrak
+    public function uploadFileExcel(Request $request)
+    {
+        // Ambil file dari request
+        $file = $request->file('input_file');
+       
+
+        // Validasi apakah file sudah di-upload
+        if (!empty($file)) {
+            // Validasi apakah file adalah tipe file yang diizinkan
+            $allowedTypes = ['xls', 'xlsx'];
+            if (in_array($file->getClientOriginalExtension(), $allowedTypes)) {
+                // Simpan file ke storage
+                $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('public/latihan', $fileName);
+
+                $spreadsheet = IOFactory::load(storage_path('app/' . $path));
+
+                
+                $worksheet = $spreadsheet->getSheetByName('BOQ');
+                // $cellValue = $worksheet->getCell('C14')->getCalculatedValue();
+
+
+                // Get highest column and row
+                $highestColumn = $worksheet->getHighestColumn();
+                $highestRow = $worksheet->getHighestDataRow();
+                $barisTerakhir = '';
+                // Loop through each row
+                for ($row = 1; $row <= $highestRow; $row++) {
+                    // Loop through each column
+                    for ($col = 'A'; $col <= $highestColumn; $col++) {
+                        // Get cell coordinate
+                        $cellCoordinate = $col . $row;
+
+                        // Get cell value
+                        $cellValue = $worksheet->getCell($cellCoordinate)->getValue();
+
+                        // Check if cell value is "JUMLAH HARGA"
+                        if ($cellValue == "JUMLAH HARGA") {
+
+                            $barisTerakhir = preg_replace("/[^0-9]/", "", $cellCoordinate) - 1;
+
+                            break 2;
+                        }
+                    }
+                }
+
+                // // Menghapus baris
+                // $worksheet->removeRow(18,$barisTerakhir-18);
+
+                // Mendapatkan koordinat cell terakhir
+                $highestColumn = $worksheet->getHighestColumn();
+                $highestRow = $worksheet->getHighestRow();
+                // Tempat menyimpan data dari excel
+                $data = [];
+                // Mengulangi setiap baris dari baris 18 hingga baris 39
+
+                for ($row = 18; $row <= $barisTerakhir; $row++) {
+
+                    $column = [];
+                    // Mengulangi setiap kolom dari kolom B hingga K
+                    for ($col = 'B'; $col <= "K"; $col++) {
+
+                        // Mengambil nilai cell pada kolom dan baris tertentu
+                        $cellValue = $worksheet->getCell(strval($col . $row))->getCalculatedValue();
+                        // Lakukan sesuatu dengan nilai cell yang diambil
+                        // echo "Nilai cell " . $col . $row . " adalah: " . $cellValue . "\n";
+                        $column[] = $cellValue;
+                    }
+                    $data[] = $column;
+                }
+
+
+
+
+
+                // Pembersihan Data Array yang kosong
+                $datanonnull = array_filter($data, function ($value) {
+
+                    $count = 0;
+                    foreach ($value as $fr) {
+                        if (empty($fr)) {
+
+                            $count++;
+                        }
+                    }
+
+
+                    // print_r($count);
+                    if ($count < 9) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                // Menentukan tipenya berdasarkan jenis
+                $dataurutan = array_values($datanonnull);
+
+
+
+                $nojenis = 0;
+                $nobarjas = 0;
+                $nosubbarjas = 0;
+
+                $datahasil = [];
+                // $jenis = [];
+                // $barjas = [];
+                // $subbarjas = [];
+                foreach ($dataurutan as $data) {
+
+                    // check apakah romawi diikuti titik ex : I.
+                    if (preg_match("/^(M{0,3})(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})\.$/", $data[0])) {
+                        $nojenis++;
+
+                        $datahasil[$nojenis] =  [
+                            'id_jenis' => $data[0],
+                            'nama_jenis' => $data[2],
+
+                            'data' => null
+
+                        ];
+                    }
+                    // Uraian
+                    if (preg_match("/\d/", $data[0])) {
+                        $nobarjas++;
+
+
+
+                        $datahasil[$nojenis]['data'][$nobarjas] =  [
+                            'id_barjas' => $data[0],
+                            'nama' => $data[2],
+                            'vol' => $data[6],
+                            'sat' => $data[7],
+                            'sub_data' => null
+
+                        ];
+                    }
+                    if (preg_match("/^[-].*$/", $data[2])) {
+                        $nosubbarjas++;
+
+
+                        $datahasil[$nojenis]['data'][$nobarjas]['sub_data'][$nosubbarjas] =  [
+                            'id_subbarjas' => $data[0],
+                            'nama' => $data[2],
+                            'vol' => $data[6],
+                            'sat' => $data[7]
+                        ];
+                    }
+                }
+
+
+
+                // Mengurutkan index key
+                // $dataolahurutindex = [];
+                // foreach ($datahasil as $data) {
+                //     $data.
+                // }
+
+                // print_r($data);
+                // Masukkan ke database
+                $hasildataolehurut = [];
+                foreach ($datahasil as $jenis) {
+                    $jenis_kontrak = new JenisKontrak;
+                    $jenis_kontrak->id_kontrak = 2;
+                    $jenis_kontrak->nama_jenis = $jenis['nama_jenis'];
+                    $jenis_kontrak->save();
+                    if ($jenis['data'] != null) {
+                        foreach ($jenis['data'] as $data) {
+                            $bar_jas = new BarJas;
+                            $bar_jas->id_jenis_kontrak = $jenis_kontrak->id;
+                            $bar_jas->uraian = $data['nama'];
+                            $bar_jas->volume = $data['vol'];
+                            $bar_jas->satuan = $data['sat'];
+                            // $bar_jas->harga_satuan = 5000;
+                            // $bar_jas->jumlah = $data['vol'] * 5000;
+                            $bar_jas->save();
+                            if ($data['sub_data'] != null) {
+                                foreach ($data['sub_data'] as $subdata) {
+                                    $sub_barjas = new SubBarjas;
+                                    $sub_barjas->id_barjas = $bar_jas->id;
+                                    $sub_barjas->uraian = $subdata['nama'];
+                                    $sub_barjas->volume = $subdata['vol'];
+                                    $sub_barjas->satuan = $subdata['sat'];
+                                    // $sub_barjas->harga_satuan = 5000;
+                                    // $sub_barjas->jumlah = $subdata['vol'] * 5000;
+                                    $sub_barjas->save();
+                                }
+                            }
+                        }
+                    }
+                }
+                return response()->json($datahasil);
+
+                // $writter = IOFactory::createWriter($spreadsheet, 'Xlsx');
+                // $writter->save(storage_path('app/public/template/mantap.xlsx'));
+
+
+
+
+
+
+
+
+                // // Redirect ke halaman success
+                // return redirect()->route('success_upload');
+            } else {
+                // Jika tipe file tidak diizinkan, kirim pesan error
+                return back()->with('error', 'Tipe file tidak diizinkan. Hanya file Xlsx yang diizinkan.');
+            }
+        } else {
+            // Jika file tidak ada, kirim pesan error
+            return back()->with('error', 'File belum di-upload.');
+        }
+    }
     public function store(Request $request)
     {
 
@@ -185,18 +412,6 @@ class KontrakKerjaController extends Controller
         $worksheet->setCellValue('F42', $request->input('pengawas_k3'));
         $worksheet->setCellValue('F43', $request->input('pengawas_lapangan'));
 
-
-
-
-
-
-
-
-
-
-
-
-
         // Simpan ke database 
         $kontrakkerja = new KontrakKerja();
         $kontrakkerja->nama_kontrak = $worksheet->getCell('C12')->getCalculatedValue();
@@ -207,7 +422,7 @@ class KontrakKerjaController extends Controller
         $kontrakkerja->lokasi_pekerjaan = $worksheet->getCell('C22')->getValue();
         $kontrakkerja->no_urut = $worksheet->getCell('K5')->getValue();
         $kontrakkerja->tahun = $worksheet->getCell('K6')->getValue();
-        $kontrakkerja->kode_masalah = $worksheet->getCell('K5')->getValue();
+        $kontrakkerja->kode_masalah = $worksheet->getCell('K7')->getValue();
         $kontrakkerja->filemaster = $newFileName;
 
         $kontrakkerja->save();
@@ -345,6 +560,43 @@ class KontrakKerjaController extends Controller
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save(storage_path('app/public/dokumenpenawaran/' . $newFileName));
 
+        // Mengatur Jenis Data
+
+        $datajenis = [];
+        if ($kontrakkerja->kode_masalah == 'DAN.01.01') {
+            $datajenis = [
+                [
+                    'id_kontrak' => $id,
+                    'nama_jenis' => 'Pengadaan Barang'
+                ]
+
+            ];
+        }
+        if ($kontrakkerja->kode_masalah == 'DAN.01.02') {
+            $datajenis = [
+                [
+                    'id_kontrak' => $id,
+                    'nama_jenis' => 'Pengadaan Jasa'
+                ]
+
+
+            ];
+        }
+        if ($kontrakkerja->kode_masalah == 'DAN.01.03') {
+            $datajenis[0] = [
+                'id_kontrak' => $id,
+                'nama_jenis' => 'Pengadaan Barang'
+
+            ];
+            $datajenis[1] = [
+                'id_kontrak' => $id,
+                'nama_jenis' => 'Pengadaan Jasa'
+
+            ];
+        }
+        foreach ($datajenis as $jenis) {
+            JenisKontrak::create($jenis);
+        }
 
 
 
@@ -719,7 +971,7 @@ class KontrakKerjaController extends Controller
     {
         $kontrakkerja = KontrakKerja::find($id);
         // Meload Path lokasi file disimpan
-        
+
         $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
 
         // Menghapus dokumen dari database 
@@ -727,6 +979,8 @@ class KontrakKerjaController extends Controller
         $kontrakkerja->penyelenggara()->delete();
         $kontrakkerja->sumberanggaran()->delete();
         $kontrakkerja->tandatangan()->delete();
+
+
         $kontrakkerja->delete();
 
         // Menghapus File jika berhasil redirect
@@ -913,20 +1167,19 @@ class KontrakKerjaController extends Controller
         $fileName = time() . '_' . $file->getClientOriginalName();
 
         $file->move(storage_path('app/public/tandatangan'), $fileName);
-      
+
         $path = storage_path('app/public/dokumenpenawaran/' . $kontrak->filemaster);
         $tandatangan = TandaTangan::where('id_kontrakkerja', $id)->get();
-  
+
         if (!count($tandatangan) > 0) {
             $data = [
                 'id_kontrakkerja' => $id,
                 'tandatangan_pengadaan' => $fileName,
-                'tanggal_tandatangan_pengadaan' =>Carbon::now(),
+                'tanggal_tandatangan_pengadaan' => Carbon::now(),
 
             ];
             $ttd = TandaTangan::create($data);
-        }
-        else {
+        } else {
             $ttd = TandaTangan::find($tandatangan->id);
             $ttd->id_kontrakkerja = $id;
             $ttd->tandatangan_pengadaan = $fileName;

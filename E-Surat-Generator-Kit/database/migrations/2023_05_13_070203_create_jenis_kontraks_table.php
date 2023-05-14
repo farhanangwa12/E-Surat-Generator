@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_kontrak');
             $table->string('nama_jenis');
-            $table->foreign('id_kontrak')->references('id_kontrakkerja')->on('kontrak_kerjas');
+            $table->foreign('id_kontrak')->references('id_kontrakkerja')->on('kontrak_kerjas')->onDelete('cascade');
             $table->timestamps();
         });
     }

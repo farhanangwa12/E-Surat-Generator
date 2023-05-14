@@ -262,6 +262,11 @@ Route::prefix('pengadaan')->middleware('auth', 'role:pengadaan')->group(function
 
     Route::prefix('kontrakthp1')->group(function () {
         Route::get('/pengajuankontrak', [KontrakKerjaController::class, 'index'])->name('pengajuankontrak.index');
+        // Route untuk upload file excel memudahkan pengguna
+        Route::post('/kontrak/upload', [KontrakKerjaController::class, 'uploadFileExcel'])->name('kontrak.upload');
+        // Route untuk download file template
+        Route::get('kontrak/download-template', [KontrakKerjaController::class, 'downloadTemplate'])->name('kontrak.downloadTemplate');
+        
         // Route untuk halaman create user
         Route::get('/create', [KontrakKerjaController::class, 'create'])->name('pengajuankontrak.create');
         // Route untuk menyimpan data user baru dari halaman create user
@@ -304,16 +309,16 @@ Route::prefix('pengadaan')->middleware('auth', 'role:pengadaan')->group(function
         Route::prefix('subbarjas')->group(function () {
             // Rute untuk menampilkan halaman tambah data
             Route::get('/create/{id_barjas}', [SubBarJasController::class, 'create'])->name('subbarjas.create');
-        
+
             // Rute untuk menampilkan halaman edit data
             Route::get('/{id}/edit', [SubBarJasController::class, 'edit'])->name('subbarjas.edit');
-        
+
             // Rute untuk menyimpan data
             Route::post('/', [SubBarJasController::class, 'store'])->name('subbarjas.store');
-        
+
             // Rute untuk mengupdate data
             Route::put('/{id}', [SubBarJasController::class, 'update'])->name('subbarjas.update');
-        
+
             // Rute untuk menghapus data
             Route::delete('/{id}', [SubBarJasController::class, 'destroy'])->name('subbarjas.destroy');
         });

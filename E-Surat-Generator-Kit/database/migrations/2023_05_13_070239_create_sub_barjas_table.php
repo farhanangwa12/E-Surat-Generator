@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sub_barjas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_barjas')->constrained('bar_jas');
+            $table->foreignId('id_barjas')->constrained('bar_jas')->onDelete('cascade');;
             $table->string('uraian');
             $table->float('volume', 10, 2);
             $table->string('satuan');
