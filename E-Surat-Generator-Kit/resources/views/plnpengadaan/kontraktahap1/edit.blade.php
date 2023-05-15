@@ -314,7 +314,7 @@
                                      
                                     <div class="col"> <input type="date" name="tanggal_rks" class="form-control"
                                             id="tanggal_rks" placeholder="Masukkan nama rks" value="{{$pembuatansurat->nomor_rks->tanggal_surat}}"></div>
-
+                                           
                                 </div>
 
                             </div>
@@ -452,7 +452,7 @@
     <script>
         // Ambil elemen input dengan id "penyedia" dan "direktur"
         const venSelect = document.getElementById("ven");
-        fetch("http://127.0.0.1:8000/api/vendor/" + venSelect.value)
+        fetch('/api/showbyid/' + venSelect.value)
                     .then(response => response.json())
                     .then(data => {
 
@@ -492,7 +492,7 @@
 
 
             } else {
-                fetch("http://127.0.0.1:8000/api/vendor/" + venSelect.value)
+                fetch('/api/showbyid/' + venSelect.value)
                     .then(response => response.json())
                     .then(data => {
 

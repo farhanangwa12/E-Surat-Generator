@@ -30,7 +30,7 @@
                             </div>
                         @endif
                         <form id="upload-form" class="mb-3" action="{{ route('kontrak.upload') }}" method="POST"
-                            enctype="multipart/form-data" >
+                            enctype="multipart/form-data">
                             @csrf
                             <input type="file" id="file-input" class="form-control" name="input_file"
                                 accept=".xls, .xlsx">
@@ -98,7 +98,7 @@
 
                                     <select class="form-select" aria-label="Kode Masalah " name="kode_masalah"
                                         id="kode_masalah">
-                                        <option selected>=== PILIH SALAH SATU ==</option>
+                                        <option selected disabled>=== PILIH SALAH SATU ==</option>
                                         <option value="DAN.01.01">Pengadaan Barang</option>
                                         <option value="DAN.01.02">Pengadaan Jasa</option>
                                         <option value="DAN.01.03">Pengadaan Barang & Jasa</option>
@@ -194,7 +194,7 @@
                                     <label for="ven">Vendor</label>
 
                                     <select class="form-select" aria-label="ven" name="ven" id="ven">
-                                        <option value="" selected>=== PILIH SALAH SATU ==</option>
+                                        <option value="" selected disabled>=== PILIH SALAH SATU ==</option>
                                         @foreach ($vendor as $item)
                                             <option value="{{ $item->id_vendor }}">{{ $item->penyedia }}</option>
                                         @endforeach
@@ -519,7 +519,8 @@
 
 
             } else {
-                fetch("http://127.0.0.1:8000/api/vendor/" + venSelect.value)
+             
+                fetch('/api/showbyid/' + venSelect.value)
                     .then(response => response.json())
                     .then(data => {
 

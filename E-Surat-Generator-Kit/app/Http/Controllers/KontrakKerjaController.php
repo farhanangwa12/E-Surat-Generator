@@ -19,8 +19,10 @@ use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Settings;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
-
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class KontrakKerjaController extends Controller
 {
@@ -91,7 +93,7 @@ class KontrakKerjaController extends Controller
     {
         // Ambil file dari request
         $file = $request->file('input_file');
-       
+
 
         // Validasi apakah file sudah di-upload
         if (!empty($file)) {
@@ -103,8 +105,247 @@ class KontrakKerjaController extends Controller
                 $path = $file->storeAs('public/latihan', $fileName);
 
                 $spreadsheet = IOFactory::load(storage_path('app/' . $path));
+                $worksheetMaster = $spreadsheet->setActiveSheetIndexByName('MASTER');
+                /* 
+                       Memindahkan file upload ke template
+                */
 
+                // Mendapatkan path file template
+                $templatePath = storage_path('app/public/templateformat/template.xlsx');
+
+                // Memuat file template XLSX menggunakan PhpSpreadsheet lalu set ke Worksheet MASTER
+                $templateSpreadsheet = IOFactory::load($templatePath);
+                $templateWorksheet = $templateSpreadsheet->setActiveSheetIndexByName('MASTER');
+                // Menyalin file uploadan worksheet master ke template
+                $templateWorksheet->setCellValue('C6', $worksheetMaster->getCell('C6')->getCalculatedValue());
+                $templateWorksheet->setCellValue('C12', strtoupper($worksheetMaster->getCell('C12')->getCalculatedValue()));
+                $templateWorksheet->setCellValue('K5', $worksheetMaster->getCell('K5')->getCalculatedValue());
+                $templateWorksheet->setCellValue('K6', $worksheetMaster->getCell('K6')->getCalculatedValue());
+                $templateWorksheet->setCellValue('K7', $worksheetMaster->getCell('K7')->getCalculatedValue());
+                $templateWorksheet->setCellValue('C22', $worksheetMaster->getCell('C22')->getCalculatedValue());
+
+                // SPMK
+                $templateWorksheet->setCellValue('C8', $worksheetMaster->getCell('C8')->getCalculatedValue());
+                $templateWorksheet->setCellValue('C9', $worksheetMaster->getCell('C9')->getCalculatedValue());
+
+                // Tanggal Pengerjaan Dokumen
+                $L10master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L10')->getCalculatedValue());
+                $L11master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L11')->getCalculatedValue());
+                $L12master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L12')->getCalculatedValue());
+                $L13master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L13')->getCalculatedValue());
+                $L14master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L14')->getCalculatedValue());
+                $L18master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L18')->getCalculatedValue());
+                $L19master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L19')->getCalculatedValue());
+                $L20master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L20')->getCalculatedValue());
+                $L21master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L21')->getCalculatedValue());
+                $L22master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L22')->getCalculatedValue());
                 
+                $templateWorksheet->setCellValue('L10', $L10master->format('d/m/Y'));
+                $templateWorksheet->setCellValue('L11', $L11master->format('d/m/Y'));
+                $templateWorksheet->setCellValue('L12',$L12master->format('d/m/Y'));
+                $templateWorksheet->setCellValue('L13',$L13master->format('d/m/Y'));
+                $templateWorksheet->setCellValue('L14', $L14master->format('d/m/Y'));
+
+
+                $templateWorksheet->setCellValue('L18', $L18master->format('d/m/Y'));
+                $templateWorksheet->setCellValue('L19', $L19master->format('d/m/Y'));
+                $templateWorksheet->setCellValue('L20', $L20master->format('d/m/Y'));
+                $templateWorksheet->setCellValue('L21', $L21master->format('d/m/Y'));
+                $templateWorksheet->setCellValue('L22', $L22master->format('d/m/Y'));
+
+
+                $C26template =  Date::excelToDateTimeObject($worksheetMaster->getCell('C27')->getCalculatedValue());
+                // Anggaran
+                $templateWorksheet->setCellValue('C26', $worksheetMaster->getCell('C26')->getCalculatedValue());
+                $templateWorksheet->setCellValue('C27',  $C26template->format('d/m/Y'));
+
+                // Vendor
+                $templateWorksheet->setCellValue('F29', $worksheetMaster->getCell('F29')->getCalculatedValue());
+                $templateWorksheet->setCellValue('F30', $worksheetMaster->getCell('F30')->getCalculatedValue());
+                $templateWorksheet->setCellValue('F31', $worksheetMaster->getCell('F31')->getCalculatedValue());
+                $templateWorksheet->setCellValue('F32', $worksheetMaster->getCell('F32')->getCalculatedValue());
+                $templateWorksheet->setCellValue('F34', $worksheetMaster->getCell('F34')->getCalculatedValue());
+                $templateWorksheet->setCellValue('F35', $worksheetMaster->getCell('F35')->getCalculatedValue());
+
+
+                // Penyelenggara
+                $templateWorksheet->setCellValue('F37', $worksheetMaster->getCell('F37')->getCalculatedValue());
+                $templateWorksheet->setCellValue('F38', $worksheetMaster->getCell('F38')->getCalculatedValue());
+                $templateWorksheet->setCellValue('F40', $worksheetMaster->getCell('F40')->getCalculatedValue());
+                $templateWorksheet->setCellValue('F41', $worksheetMaster->getCell('F41')->getCalculatedValue());
+                $templateWorksheet->setCellValue('F42', $worksheetMaster->getCell('F42')->getCalculatedValue());
+                $templateWorksheet->setCellValue('F43', $worksheetMaster->getCell('F43')->getCalculatedValue());
+
+
+                // Menyimpan ke kontrak
+                // $newFileName = 'dokumenmeong_' . uniqid() . '.xlsx';
+                $newFileName = 'dokumen_' . uniqid() . '.xlsx';
+                // Simpan ke database 
+                $kontrakkerja = new KontrakKerja();
+                $kontrakkerja->nama_kontrak = $templateWorksheet->getCell('C12')->getCalculatedValue();
+                $kontrakkerja->tanggal_pekerjaan = date('Y-m-d', strtotime($this->dateConverter($templateWorksheet->getCell('C10')->getCalculatedValue())));
+
+                $kontrakkerja->tanggal_akhir_pekerjaan = date('Y-m-d', strtotime($this->dateConverter($templateWorksheet->getCell('C10')->getCalculatedValue()) . ' + ' . $this->dateConverter($templateWorksheet->getCell('C6')->getCalculatedValue()) . ' days '));
+                $kontrakkerja->id_vendor = 1;
+                $kontrakkerja->lokasi_pekerjaan = $templateWorksheet->getCell('C22')->getValue();
+                $kontrakkerja->no_urut = $templateWorksheet->getCell('K5')->getValue();
+                $kontrakkerja->tahun = $templateWorksheet->getCell('K6')->getValue();
+                $kontrakkerja->kode_masalah = $templateWorksheet->getCell('K7')->getValue();
+                $kontrakkerja->filemaster = $newFileName;
+
+                $kontrakkerja->save();
+                $id = $kontrakkerja->id_kontrakkerja;
+
+                // SumberAnggaran
+                $anggaran = new SumberAnggaran();
+                $anggaran->id_kontrakkerja = $id;
+                $anggaran->skk_ao = $templateWorksheet->getCell('C66')->getCalculatedValue();
+
+                $anggaran->tanggal_anggaran = $templateWorksheet->getCell('C67')->getCalculatedValue();
+
+                $anggaran->save();
+
+
+                //Penyelenggara
+                $penyelenggaraArr =  [
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_jabatan' => 'manager',
+                        'nama_pengguna' => $templateWorksheet->getCell('F37')->getCalculatedValue()
+                    ],
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_jabatan' => 'pejabat_pelaksana_pengadaan',
+                        'nama_pengguna' => $templateWorksheet->getCell('F38')->getCalculatedValue()
+                    ],
+
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_jabatan' => 'direksi',
+                        'nama_pengguna' => $templateWorksheet->getCell('F40')->getCalculatedValue()
+
+
+                    ],
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_jabatan' => 'pengawas_pekerjaan',
+                        'nama_pengguna' => $templateWorksheet->getCell('F41')->getCalculatedValue()
+                    ],
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_jabatan' => 'pengawas_k3',
+                        'nama_pengguna' => $templateWorksheet->getCell('F42')->getCalculatedValue()
+                    ],
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_jabatan' => 'pengawas_lapangan',
+                        'nama_pengguna' => $templateWorksheet->getCell('F43')->getCalculatedValue()
+                    ],
+
+
+
+
+                ];
+                foreach ($penyelenggaraArr as $key) {
+                    Penyelenggara::create($key);
+                }
+
+
+                //PembuatansuratKontrak
+                $pembuatansuratkontrak =  [
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_rks',
+                        'no_surat' => $worksheetMaster->getCell('K10')->getCalculatedValue(),
+                        'tanggal_pembuatan' =>  date('Y-m-d', strtotime($this->dateConverter($worksheetMaster->getCell('L10')->getCalculatedValue())))
+                    ],
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_hps',
+                        'no_surat' => $worksheetMaster->getCell('K11')->getCalculatedValue(),
+                        'tanggal_pembuatan' => date('Y-m-d', strtotime($this->dateConverter($worksheetMaster->getCell('L11')->getCalculatedValue())))
+                    ],
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_pakta_pejabat',
+                        'no_surat' => $worksheetMaster->getCell('K12')->getCalculatedValue(),
+                        'tanggal_pembuatan' =>  date('Y-m-d', strtotime($this->dateConverter($worksheetMaster->getCell('L12')->getCalculatedValue())))
+                    ],
+
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_undangan',
+                        'no_surat' => $worksheetMaster->getCell('K13')->getCalculatedValue(),
+                        'tanggal_pembuatan' =>  date('Y-m-d', strtotime($this->dateConverter($worksheetMaster->getCell('L13')->getCalculatedValue())))
+                    ],
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_pakta_pengguna',
+                        'no_surat' => $worksheetMaster->getCell('K14')->getCalculatedValue(),
+                        'tanggal_pembuatan' =>  date('Y-m-d', strtotime($this->dateConverter($worksheetMaster->getCell('L14')->getCalculatedValue())))
+                    ],
+
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_ba_buka',
+                        'no_surat' => $worksheetMaster->getCell('K18')->getCalculatedValue(),
+                        'tanggal_pembuatan' =>  date('Y-m-d', strtotime($this->dateConverter($worksheetMaster->getCell('L18')->getCalculatedValue())))
+                    ],
+
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_ba_evaluasi',
+                        'no_surat' => $worksheetMaster->getCell('K19')->getCalculatedValue(),
+                        'tanggal_pembuatan' =>  date('Y-m-d', strtotime($this->dateConverter($worksheetMaster->getCell('L19')->getCalculatedValue())))
+                    ],
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_ba_negosiasi',
+                        'no_surat' => $worksheetMaster->getCell('K20')->getCalculatedValue(),
+                        'tanggal_pembuatan' =>  date('Y-m-d', strtotime($this->dateConverter($worksheetMaster->getCell('L20')->getCalculatedValue())))
+                    ],
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_ba_hasil_pl',
+                        'no_surat' => $worksheetMaster->getCell('K21')->getCalculatedValue(),
+                        'tanggal_pembuatan' =>  date('Y-m-d', strtotime($this->dateConverter($worksheetMaster->getCell('L21')->getCalculatedValue())))
+                    ],
+
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_spk',
+                        'no_surat' => $worksheetMaster->getCell('K22')->getCalculatedValue(),
+                        'tanggal_pembuatan' =>  date('Y-m-d', strtotime($this->dateConverter($worksheetMaster->getCell('L22')->getCalculatedValue())))
+                    ],
+
+
+
+
+
+                ];
+                foreach ($pembuatansuratkontrak as $key) {
+                    PembuatanSuratKontrak::create($key);
+                }
+
+
+
+                // Menulis perubahan ke file template.xlsx
+                $writer = new Xlsx($templateSpreadsheet);
+                // Generate Random Filename
+
+                $writer->save(storage_path('app/public/dokumenpenawaran/' . $newFileName));
+
+
+
+
+
+
+
+
+
+
+
+
                 $worksheet = $spreadsheet->getSheetByName('BOQ');
                 // $cellValue = $worksheet->getCell('C14')->getCalculatedValue();
 
@@ -249,7 +490,7 @@ class KontrakKerjaController extends Controller
                 $hasildataolehurut = [];
                 foreach ($datahasil as $jenis) {
                     $jenis_kontrak = new JenisKontrak;
-                    $jenis_kontrak->id_kontrak = 2;
+                    $jenis_kontrak->id_kontrak = $id;
                     $jenis_kontrak->nama_jenis = $jenis['nama_jenis'];
                     $jenis_kontrak->save();
                     if ($jenis['data'] != null) {
@@ -277,7 +518,8 @@ class KontrakKerjaController extends Controller
                         }
                     }
                 }
-                return response()->json($datahasil);
+                // return response()->json($datahasil);
+                return redirect()->route('pengajuankontrak.index');
 
                 // $writter = IOFactory::createWriter($spreadsheet, 'Xlsx');
                 // $writter->save(storage_path('app/public/template/mantap.xlsx'));
@@ -1002,7 +1244,9 @@ class KontrakKerjaController extends Controller
 
         $spreadsheet = IOFactory::load($path);
         $worksheet = $spreadsheet->getActiveSheet();
+        // dd();
         // Edit Detail Kontrak
+       
         $kontrak1 = [
             'nama_kontrak' => $worksheet->getCell('C12')->getValue(),
             'lama_pekerjaan' => $worksheet->getCell('C6')->getValue(),
@@ -1012,25 +1256,25 @@ class KontrakKerjaController extends Controller
             'lokasi_pekerjaan' => $worksheet->getCell('C22')->getValue(),
 
             // SPMK
-            'tanggal_spmk' => $worksheet->getCell('C8')->getValue(),
-            'nomor_spmk' => $worksheet->getCell('C9')->getValue(),
+            'tanggal_spmk' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('C8')->getValue()))),
+            'nomor_spmk' => $worksheet->getCell('C9')->getValue() ,
 
             // Tanggal Pengerjaan Dokumen
-            'tanggal_rks' => date("Y-m-d", strtotime($worksheet->getCell('L10')->getValue())),
-            'tanggal_hps' => date("Y-m-d", strtotime($worksheet->getCell('L11')->getValue())),
-            'tanggal_pakta_pejabat' => date("Y-m-d", strtotime($worksheet->getCell('L12')->getValue())),
-            'tanggal_undangan' => date("Y-m-d", strtotime($worksheet->getCell('L13')->getValue())),
-            'tanggal_pakta_pengguna' => date("Y-m-d", strtotime($worksheet->getCell('L14')->getValue())),
+            'tanggal_rks' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L10')->getCalculatedValue()))),
+            'tanggal_hps' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L11')->getCalculatedValue()))),
+            'tanggal_pakta_pejabat' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L12')->getCalculatedValue()))),
+            'tanggal_undangan' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L13')->getCalculatedValue()))),
+            'tanggal_pakta_pengguna' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L14')->getCalculatedValue()))),
 
-            'tanggal_ba_buka' => date("Y-m-d", strtotime($worksheet->getCell('L18')->getValue())),
-            'tanggal_ba_evaluasi' => date("Y-m-d", strtotime($worksheet->getCell('L19')->getValue())),
-            'tanggal_ba_negosiasi' => date("Y-m-d", strtotime($worksheet->getCell('L20')->getValue())),
-            'tanggal_ba_hasil_pl' => date("Y-m-d", strtotime($worksheet->getCell('L21')->getValue())),
-            'tanggal_spk' => date("Y-m-d", strtotime($worksheet->getCell('L22')->getValue())),
+            'tanggal_ba_buka' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L18')->getValue()))),
+            'tanggal_ba_evaluasi' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L19')->getValue()))),
+            'tanggal_ba_negosiasi' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L20')->getValue()))),
+            'tanggal_ba_hasil_pl' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L21')->getValue()))),
+            'tanggal_spk' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L22')->getValue()))),
 
             // Anggaran
             'skk_ao' => $worksheet->getCell('C26')->getValue(),
-            'tanggal_anggaran' => $worksheet->getCell('C27')->getValue(),
+            'tanggal_anggaran' =>  date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('C27')->getValue()))),
 
             // Vendor
             'penyedia' => $worksheet->getCell('F29')->getValue(),

@@ -122,7 +122,7 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Anggaran</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_anggaran)) }}</td>
+                                    <td>{{ $kontrak->tanggal_anggaran != null ? date('l, j F Y', strtotime($kontrak->tanggal_anggaran)) : '' }} </td>
                                 </tr>
 
 

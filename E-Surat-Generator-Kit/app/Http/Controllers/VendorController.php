@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Validator;
 
 class VendorController extends Controller
 {
+    public function showbyid($id)
+    {
+        $vendor = Vendor::find($id);
+
+        if (!$vendor) {
+            return response()->json(['error' => 'Vendor not found'], 404);
+        }
+
+        return response()->json($vendor);
+    }
     public function show()
     {
         $vendor = Vendor::all();
@@ -66,7 +76,7 @@ class VendorController extends Controller
 
 
         $validatedData = $request->validate([
-  
+
             'penyedia' => 'required|max:255',
             'direktur' => 'required|max:255',
             'alamat' => 'required|max:255',
@@ -77,7 +87,7 @@ class VendorController extends Controller
 
 
         $vendor = Vendor::find($id);
-    
+
         $vendor->penyedia = $validatedData['penyedia'];
         $vendor->direktur = $validatedData['direktur'];
         $vendor->alamat = $validatedData['alamat'];

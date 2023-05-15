@@ -201,6 +201,7 @@ Route::prefix('users')->group(function () {
 Route::prefix('vendor')->group(function () {
     Route::get('/', [VendorController::class, 'show'])->name('vendor');
     // Route untuk halaman create user
+
     Route::get('/create', [VendorController::class, 'create'])->name('vendor.create');
     // Route untuk menyimpan data user baru dari halaman create user
     Route::post('/store', [VendorController::class, 'store'])->name('vendor.store');
