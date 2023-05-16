@@ -11,13 +11,25 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h1>Upload File Excel</h1>
-                        <p class="text-muted">Silahkan upload file excel master untuk melewati pengisian jika tidak maka
+                        <h1>Upload File Excel</h3>
+                        <p class="text-muted">Silahkan upload file excel master untuk melewati pengisian, jika tidak maka
                             tidak perlu mengupload file excel apapun. untuk contoh template kami lampirkan di bawah sebagai
                             berikut :</p>
-                        <a href="{{ route('kontrak.downloadTemplate') }}" class="btn btn-primary">Download Template</a>
-
-
+                        <a href="{{ route('kontrak.downloadTemplate') }}" class="btn btn-primary mb-3">Download Template</a>
+                        <div>
+                            <h4>Syarat Upload File Excel</h4>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">- Pastikan ada worksheet bernama BOQ</li>
+                                <li class="list-group-item">- Format Jenis Pekerjaan Barang / Jasa Nomornya harus romawi
+                                    disertai titik contoh : I.</li>
+                                <li class="list-group-item">- Format Data Pekerjaan Nomor harus angka tanpa titik : Contoh
+                                    1, 2,
+                                    3</li>
+                                <li class="list-group-item">- Format Sub Data bagian nomor harus dikosongi namun pada uraian
+                                    diberikan tanda "-" dengan 1 kali spasi setelahnya pada awal contoh : - Cable LAN and
+                                    connector</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="card-body">
                         @if ($errors->any())
@@ -519,7 +531,7 @@
 
 
             } else {
-             
+
                 fetch('/api/showbyid/' + venSelect.value)
                     .then(response => response.json())
                     .then(data => {

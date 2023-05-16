@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\pengadaantahap1\BOQController;
 use App\Http\Controllers\pengadaantahap1\FormpenawaranController;
+use App\Http\Controllers\pengadaantahap1\HPSController;
 use App\Http\Controllers\pengadaantahap1\RKSController;
 use App\Http\Controllers\pengadaantahap1\UndanganController;
 use App\Http\Controllers\pengadaantahap2\BANegoController;
@@ -65,6 +66,15 @@ Route::prefix('boq')->group(function () {
     Route::get('{id}/boq', [BOQController::class, 'index'])->name('pengajuankontrak.boq');
     Route::post('{id}/boq/create', [BOQController::class, 'store'])->name('pengajuankontrak.boq.create');
 });
+
+Route::prefix('hps')->group(function () {
+    Route::get('{id}/{isDownload}/detail', [HPSController::class, 'detail'])->name('pengajuankontrak.hps.detail');
+    Route::get('{id}/isi', [HPSController::class, 'isi'])->name('pengajuankontrak.hps.isi');
+    Route::put('update/{id}', [HPSController::class, 'update'])->name('pengajuankontrak.hps.update');
+    Route::get('{id}/hps', [HPSController::class, 'index'])->name('pengajuankontrak.hps');
+    Route::post('{id}/hps/create', [HPSController::class, 'store'])->name('pengajuankontrak.hps.create');
+});
+
 
 Route::prefix('formpenawaran')->group(function () {
     Route::get('/', [FormpenawaranController::class, 'index'])->name('formpenawaran.index');

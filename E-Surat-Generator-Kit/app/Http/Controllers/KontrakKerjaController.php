@@ -139,11 +139,11 @@ class KontrakKerjaController extends Controller
                 $L20master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L20')->getCalculatedValue());
                 $L21master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L21')->getCalculatedValue());
                 $L22master =  Date::excelToDateTimeObject($worksheetMaster->getCell('L22')->getCalculatedValue());
-                
+
                 $templateWorksheet->setCellValue('L10', $L10master->format('d/m/Y'));
                 $templateWorksheet->setCellValue('L11', $L11master->format('d/m/Y'));
-                $templateWorksheet->setCellValue('L12',$L12master->format('d/m/Y'));
-                $templateWorksheet->setCellValue('L13',$L13master->format('d/m/Y'));
+                $templateWorksheet->setCellValue('L12', $L12master->format('d/m/Y'));
+                $templateWorksheet->setCellValue('L13', $L13master->format('d/m/Y'));
                 $templateWorksheet->setCellValue('L14', $L14master->format('d/m/Y'));
 
 
@@ -518,7 +518,19 @@ class KontrakKerjaController extends Controller
                         }
                     }
                 }
-                // return response()->json($datahasil);
+
+
+                if (file_exists(storage_path('app/' . $path)) ) {
+                    // dd(file_exists(storage_path('app/' . $path)));
+                    // File ada di penyimpanan
+                    unlink(storage_path('app/' . $path));
+                    // echo 'File ditemukan.';
+                } 
+                // else {
+                //     // File tidak ada di penyimpanan
+                //     // echo 'File tidak ditemukan.';
+                // }
+
                 return redirect()->route('pengajuankontrak.index');
 
                 // $writter = IOFactory::createWriter($spreadsheet, 'Xlsx');
@@ -1246,7 +1258,7 @@ class KontrakKerjaController extends Controller
         $worksheet = $spreadsheet->getActiveSheet();
         // dd();
         // Edit Detail Kontrak
-       
+
         $kontrak1 = [
             'nama_kontrak' => $worksheet->getCell('C12')->getValue(),
             'lama_pekerjaan' => $worksheet->getCell('C6')->getValue(),
@@ -1257,7 +1269,7 @@ class KontrakKerjaController extends Controller
 
             // SPMK
             'tanggal_spmk' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('C8')->getValue()))),
-            'nomor_spmk' => $worksheet->getCell('C9')->getValue() ,
+            'nomor_spmk' => $worksheet->getCell('C9')->getValue(),
 
             // Tanggal Pengerjaan Dokumen
             'tanggal_rks' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L10')->getCalculatedValue()))),
