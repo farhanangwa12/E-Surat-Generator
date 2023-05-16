@@ -424,7 +424,7 @@
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>HPS</td>
                                         <td>
-                                            <a href="{{ route('pengajuankontrak.hps', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
+                                            <a href="{{ route('pengajuankontrak.hps.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
                                                 class="btn btn-primary">Edit</a>
 
                                             <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"

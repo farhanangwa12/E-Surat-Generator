@@ -69,10 +69,9 @@ Route::prefix('boq')->group(function () {
 
 Route::prefix('hps')->group(function () {
     Route::get('{id}/{isDownload}/detail', [HPSController::class, 'detail'])->name('pengajuankontrak.hps.detail');
-    Route::get('{id}/isi', [HPSController::class, 'isi'])->name('pengajuankontrak.hps.isi');
+    Route::get('isi/{id}', [HPSController::class, 'isi'])->name('pengajuankontrak.hps.isi');
     Route::put('update/{id}', [HPSController::class, 'update'])->name('pengajuankontrak.hps.update');
-    Route::get('{id}/hps', [HPSController::class, 'index'])->name('pengajuankontrak.hps');
-    Route::post('{id}/hps/create', [HPSController::class, 'store'])->name('pengajuankontrak.hps.create');
+    
 });
 
 
