@@ -23,7 +23,18 @@ return new class extends Migration
             $table->string('kode_masalah');
 
 
-            $table->enum('status', ['Input pengadaan Fase 1', 'Validasi Tanda Tangan Pengadaan', 'Input Kontrak Vendor', 'Input Pengadaan Fase 2', 'Tanda Tangan Vendor', 'Tanda Tangan Manager']);
+            // $table->enum('status', ['Input pengadaan Fase 1', 'Validasi Tanda Tangan Pengadaan', 'Input Kontrak Vendor', 'Input Pengadaan Fase 2', 'Tanda Tangan Vendor', 'Tanda Tangan Manager']);
+            $table->enum('status', [
+                'Dokumen Input Pengadaan Tahap 1',
+                'Validasi Dokumen Pengadaan Tahap 1',
+                'Dokumen Input Vendor',
+                'Dokumen Input Pengadaan Tahap 2',
+                'Tanda Tangan Vendor',
+                'Kontrak dibatalkan',
+                'Kontrak disetujui',
+                'Tanda Tangan Manager',
+                'Kontrak Kerja Berjalan'
+            ]);
             $table->string('filemaster')->nullable();
             $table->timestamps();
         });

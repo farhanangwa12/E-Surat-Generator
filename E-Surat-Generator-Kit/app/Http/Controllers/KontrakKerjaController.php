@@ -28,28 +28,7 @@ class KontrakKerjaController extends Controller
 {
 
 
-    public function  terbilang($nilai)
-    {
-        $huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
-        if ($nilai < 12)
-            return $huruf[$nilai];
-        elseif ($nilai < 20)
-            return $huruf[$nilai - 10] . " belas";
-        elseif ($nilai < 100)
-            return $huruf[$nilai / 10] . " puluh " . $huruf[$nilai % 10];
-        elseif ($nilai < 200)
-            return "seratus " . $this->terbilang($nilai - 100);
-        elseif ($nilai < 1000)
-            return $huruf[$nilai / 100] . " ratus " . $this->terbilang($nilai % 100);
-        elseif ($nilai < 2000)
-            return "seribu " . $this->terbilang($nilai - 1000);
-        elseif ($nilai < 1000000)
-            return $this->terbilang($nilai / 1000) . " ribu " . $this->terbilang($nilai % 1000);
-        elseif ($nilai < 1000000000)
-            return $this->terbilang($nilai / 1000000) . " juta " . $this->terbilang($nilai % 1000000);
-        else
-            return "nilai terlalu besar";
-    }
+
     private function dateConverter($date)
     {
         return str_replace("/", "-", $date);
@@ -64,7 +43,12 @@ class KontrakKerjaController extends Controller
 
     public function index()
     {
-        $kontrak = KontrakKerja::with('vendor')->where('status', 'Input pengadaan Fase 1')->get();
+        $status = [
+            'Dokumen Input Pengadaan Tahap 1',
+            'Kontrak dibatalkan vendor',
+            'Kontrak Kerja Berjalan'
+        ];
+        $kontrak = KontrakKerja::with('vendor')->whereIn('status', $status)->get();
 
 
         // print_r($kontrak[0]['vendor']['penyedia']);
@@ -188,6 +172,7 @@ class KontrakKerjaController extends Controller
                 $kontrakkerja->tanggal_akhir_pekerjaan = date('Y-m-d', strtotime($this->dateConverter($templateWorksheet->getCell('C10')->getCalculatedValue()) . ' + ' . $this->dateConverter($templateWorksheet->getCell('C6')->getCalculatedValue()) . ' days '));
                 $kontrakkerja->id_vendor = 1;
                 $kontrakkerja->lokasi_pekerjaan = $templateWorksheet->getCell('C22')->getValue();
+                $kontrakkerja->status = "Dokumen Input Pengadaan Tahap 1";
                 $kontrakkerja->no_urut = $templateWorksheet->getCell('K5')->getValue();
                 $kontrakkerja->tahun = $templateWorksheet->getCell('K6')->getValue();
                 $kontrakkerja->kode_masalah = $templateWorksheet->getCell('K7')->getValue();
@@ -520,12 +505,12 @@ class KontrakKerjaController extends Controller
                 }
 
 
-                if (file_exists(storage_path('app/' . $path)) ) {
+                if (file_exists(storage_path('app/' . $path))) {
                     // dd(file_exists(storage_path('app/' . $path)));
                     // File ada di penyimpanan
                     unlink(storage_path('app/' . $path));
                     // echo 'File ditemukan.';
-                } 
+                }
                 // else {
                 //     // File tidak ada di penyimpanan
                 //     // echo 'File tidak ditemukan.';
@@ -678,7 +663,7 @@ class KontrakKerjaController extends Controller
         $kontrakkerja->tahun = $worksheet->getCell('K6')->getValue();
         $kontrakkerja->kode_masalah = $worksheet->getCell('K7')->getValue();
         $kontrakkerja->filemaster = $newFileName;
-
+        $kontrakkerja->status = "Dokumen Input Pengadaan Tahap 1";
         $kontrakkerja->save();
         $id = $kontrakkerja->id_kontrakkerja;
 
@@ -1338,7 +1323,10 @@ class KontrakKerjaController extends Controller
     // Nego Harga
     public function negoharga()
     {
-        $kontrak = KontrakKerja::with('vendor')->where('status', 'Input Pengadaan Fase 2')->get();
+        $status = [
+           'Dokumen Input Pengadaan Tahap 2'
+        ];
+        $kontrak = KontrakKerja::with('vendor')->whereIn('status', $status)->get();
         return view('plnpengadaan.kontraktahap2.negoharga', compact('kontrak'));
     }
     // Halaman Detail
@@ -1408,7 +1396,10 @@ class KontrakKerjaController extends Controller
 
     public function tandatanganpengadaan()
     {
-        $kontrak = KontrakKerja::with('vendor')->where('status', 'Validasi Tanda Tangan Pengadaan')->get();
+        $status = [
+            'Validasi Dokumen Pengadaan Tahap 1',
+        ];
+        $kontrak = KontrakKerja::with('vendor')->whereIn('status', $status)->get();
         return view('plnpengadaan.tandatanganpengadaan.tandatangan', compact('kontrak'));
     }
     public function simpanttd(Request $request)

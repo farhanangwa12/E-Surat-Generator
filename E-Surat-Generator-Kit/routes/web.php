@@ -46,6 +46,12 @@ Route::get('/', function () {
 });
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/authenticate', [LoginController::class, 'login'])->name('authenticate');
+// Vendor Registrasi
+Route::get('/registrasi-vendor', [LoginController::class, 'registrasiVendor'])->name('registrasi.vendor');
+Route::post('/simpan-vendor', [LoginController::class, 'simpanVendor'])->name('simpan.vendor');
+
+
+
 Route::post('/{id}/{status}/{routeName}/changeStatus', [KontrakKerjaController::class, 'changeStatus'])->name('changestatus');
 Route::get('/usersetting', [LoginController::class, 'usersetting'])->middleware('auth')->name('usrsetting');
 Route::post('/gantipassword', [LoginController::class, 'gantipass'])->name('gantipass');
@@ -387,8 +393,8 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
         Route::get('kontrakkerjadetail/{id}', [VendorKontrakKerjaController::class, 'detail'])->name('vendor.kontrakkerja.detail');
 
 
-        // // Route untuk menampilkan form tambah produk
-        // Route::get('/pengisiankontrakkerja', [VendorKontrakKerjaController::class, 'index'])->name('isikontrak');
+        // Route untuk menampilkan form tambah produk
+        Route::get('/pengisiankontrakkerja', [VendorKontrakKerjaController::class, 'index'])->name('isikontrak');
 
         // Route untuk menampilkan form tambah produk
         Route::get('/tandatangan', [VendorTandaTangan::class, 'index'])->name('tandatangan');

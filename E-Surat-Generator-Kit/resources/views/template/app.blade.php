@@ -182,7 +182,7 @@
                         </li>
 
                         <li class="sidebar-item {{ Request::is('vendor/vendor/kontrakkerja') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('vendor.kontrakkerja') }}">
+                            <a class="sidebar-link" href="{{ route('isikontrak') }}">
                                 <i class="align-middle" data-feather="log-in"></i> <span
                                     class="align-middle">Pengisian
                                     Kontrak
@@ -197,7 +197,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item {{ Request::is('pengadaan/dashboard') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="#">
+                            <a class="sidebar-link" href="{{route('vendor.kontrakkerja')}}">
                                 <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">
                                     Kontrak Kerja</span>
                             </a>
@@ -432,7 +432,7 @@
 
 
     @yield('javascript')
-    <script src="{{ asset('adminkit/js/app.js') }}"></script>
+   <script src="{{ asset('adminkit/js/app.js') }}"></script> 
     <script src="{{ asset('tampilan/dist/js/bootstrap.bundle.min.js') }}"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
     </script>

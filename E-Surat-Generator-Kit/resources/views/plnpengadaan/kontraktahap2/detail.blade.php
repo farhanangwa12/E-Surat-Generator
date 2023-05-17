@@ -17,6 +17,8 @@
 
                     </div>
                     <div class="card-body">
+
+
                         <style>
                             td,
                             th {
@@ -38,9 +40,9 @@
                                     $no = 1;
                                 @endphp
                                 <tr>
-                                    <th scope="col">{{ $no++ }}</th>
-                                    <td>Nama Kontrak</td>
-                                    <td>{{ $kontrak->nama_kontrak }}</td>
+                                    <th scope="col" style="width: 10%;">{{ $no++ }}</th>
+                                    <td style="width: 45%;">Nama Kontrak</td>
+                                    <td style="width: 45%;">{{ $kontrak->nama_kontrak }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -102,9 +104,9 @@
                         <table class="table table-stripped ">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nama informasi</th>
-                                    <th scope="col">Isi</th>
+                                    <th scope="col" style="width: 10%;">#</th>
+                                    <th scope="col" style="width: 45%;">Nama informasi</th>
+                                    <th scope="col" style="width: 45%;">Isi</th>
 
                                 </tr>
                             </thead>
@@ -120,7 +122,8 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Anggaran</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_anggaran)) }}</td>
+                                    <td>{{ $kontrak->tanggal_anggaran != null ? date('l, j F Y', strtotime($kontrak->tanggal_anggaran)) : '' }}
+                                    </td>
                                 </tr>
 
 
@@ -149,9 +152,9 @@
                         <table class="table table-stripped ">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nama informasi</th>
-                                    <th scope="col">Isi</th>
+                                    <th scope="col" style="width: 10%;">#</th>
+                                    <th scope="col" style="width: 45%;">Nama informasi</th>
+                                    <th scope="col" style="width: 45%;">Isi</th>
 
                                 </tr>
                             </thead>
@@ -211,9 +214,9 @@
                         <table class="table table-stripped ">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nama informasi</th>
-                                    <th scope="col">Isi</th>
+                                    <th scope="col" style="width: 10%;">#</th>
+                                    <th scope="col" style="width: 45%;">Nama informasi</th>
+                                    <th scope="col" style="width: 45%;">Isi</th>
 
                                 </tr>
                             </thead>
@@ -261,7 +264,7 @@
                 {{-- Tanggal Pengerjaan Surat Kontrak --}}
                 <div class="card">
                     <div class="card-header">
-                        Informasi Pengerjaan Kelengkapan Surat Kontrak
+                        Informasi Pengerjaan Surat Kontrak Pengadaan
 
 
                     </div>
@@ -276,9 +279,9 @@
                         <table class="table table-stripped ">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nama informasi</th>
-                                    <th scope="col">Tanggal</th>
+                                    <th scope="col" style="width: 10%;">#</th>
+                                    <th scope="col" style="width: 45%;">Nama informasi</th>
+                                    <th scope="col" style="width: 45%;">Tanggal</th>
 
                                 </tr>
                             </thead>
@@ -372,9 +375,9 @@
                         <table class="table table-stripped ">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nama Dokumen</th>
-                                    <th scope="col">Aksi</th>
+                                    <th scope="col" style="width: 10%;">#</th>
+                                    <th scope="col" style="width: 45%;">Nama Dokumen</th>
+                                    <th scope="col" style="width: 45%;">Aksi</th>
 
                                 </tr>
                             </thead>
@@ -383,6 +386,19 @@
                                     $no = 1;
                                 @endphp
 
+                                <tr>
+                                    <th scope="col">{{ $no++ }}</th>
+                                    <td>HPS</td>
+                                    <td>
+                                       
+                                        <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                            class="btn btn-primary">Detail</a>
+
+
+                                        <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                            class="btn btn-primary">Download</a>
+                                    </td>
+                                </tr>
                                 <tr style="background: #743461;color: #ffffff;">
                                     <td colspan="3" style="text-align: center;">Pengadaan tahap 1</td>
                                 </tr>
@@ -424,7 +440,7 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>BA Nego</td>
-                                    <td><a href="{{ route('banego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload'=> 1]) }}"
+                                    <td><a href="{{ route('banego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>
 
 
@@ -446,11 +462,11 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Cover</td>
-                                    <td><a href="{{ route('cover.show',  ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                    <td><a href="{{ route('cover.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>
 
 
-                                        <a href="{{ route('cover.show',  ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                        <a href="{{ route('cover.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
                                             class="btn btn-primary">Download</a>
                                     </td>
                                 </tr>
@@ -497,7 +513,7 @@
                     </div>
                 </div>
                 <a href="" class="btn btn-primary">Kembali</a>
-                <a href="" class="btn btn-info">Kirim</a>
+                <a href="" class="btn btn-info">Kirim (Belum Bisa)</a>
 
 
 

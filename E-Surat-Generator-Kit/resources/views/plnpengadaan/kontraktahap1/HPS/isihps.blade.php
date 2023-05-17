@@ -137,7 +137,7 @@
                                         <td colspan="5" style="text-align: right;"><strong>Total Jumlah:</strong>
                                         </td>
                                         <td><input type="number" class="form-control total_harga" name="total_jumlah"
-                                                id="total_jumlah" readonly value="{{ $hps->dibulatkan == null ? 0 : $hps->dibulatkan }}"></td>
+                                                id="total_jumlah" readonly value="{{ $hps->total_jumlah == null ? 0 : $hps->total_jumlah }}"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Dibulatkan </strong></td>

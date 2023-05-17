@@ -12,6 +12,7 @@ use App\Models\Penyelenggara;
 use App\Models\SubKontrak\BarJas;
 use App\Models\SubKontrak\JenisKontrak;
 use App\Models\SubKontrak\SubBarjas;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -252,7 +253,7 @@ class HPSController extends Controller
             // 'tandatangan' =>   DNS2D::getBarcodePNG('4', 'QRCODE'),
             // 'surat' => $surat
             'nomor' => $nomor,
-            'tanggal_pekerjaan' => $tanggal,
+            'tanggal_pekerjaan' => Carbon::createFromFormat('Y-m-d', $tanggal)->locale('id')->isoFormat('dddd, D MMMM YYYY'),
             'nama_pekerjaan' => $nama_pekerjaan,
             'nama_manager' => $nama_manager,
             'pengadaan' => $nama_pengadaan,
@@ -276,6 +277,7 @@ class HPSController extends Controller
 
 
         ];
+
 
 
         $pdf = PDF::loadView('plnpengadaan.kontraktahap1.HPS.hps', compact('data2', 'kontrakbaru'));
@@ -444,6 +446,7 @@ class HPSController extends Controller
 
             $hps = HPS::find($hps->id);
             $hps->id_kontrakkerja = $id;
+            $hps->total_jumlah = $request->input('total_jumlah');
             $hps->dibulatkan = $request->input('dibulatkan');
             $hps->rok10 = $request->input('rok10');
             $hps->ppn11 = $request->input('ppn11');
@@ -458,6 +461,7 @@ class HPSController extends Controller
             // Buat instance HPS model untuk menyimpan data
             $hps = new HPS();
             $hps->id_kontrakkerja = $id;
+            $hps->total_jumlah = $request->input('total_jumlah');
             $hps->dibulatkan = $request->input('dibulatkan');
             $hps->rok10 = $request->input('rok10');
             $hps->ppn11 = $request->input('ppn11');

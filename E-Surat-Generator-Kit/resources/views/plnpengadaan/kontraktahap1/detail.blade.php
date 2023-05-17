@@ -490,7 +490,7 @@
                             <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
                                 <a href="{{ route('pengajuankontrak.index') }}" class="btn btn-info">Kembali</a>
                                 <form
-                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Validasi Tanda Tangan Pengadaan', 'routeName' => 'pengajuankontrak.index']) }}"
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' =>  'Validasi Dokumen Pengadaan Tahap 1', 'routeName' => 'pengajuankontrak.index']) }}"
                                     method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-primary">Kirim</button>

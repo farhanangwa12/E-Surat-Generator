@@ -20,8 +20,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
-        'role'
+        'role',
+        'picture_profile',
     ];
 
     /**
@@ -46,11 +48,9 @@ class User extends Authenticatable
     public function pegawai()
     {
         return $this->hasOne(Pegawai::class);
-
     }
     public function vendor()
     {
         return $this->hasOne(Vendor::class);
-
     }
 }
