@@ -39,6 +39,12 @@
                             <div class="card-body">
                                 <div class="m-sm-4">
 
+                                    @if (session('success'))
+                                    <div class="alert alert-success mt-3">
+                                        {{session('success')}}
+                                    </div>
+                                        
+                                    @endif
                                     <form action="{{ route('authenticate') }}" method="POST">
                                         @csrf
                                         <div class="mb-3">
@@ -78,7 +84,8 @@
                                         </div>
                                         <div class="text-center">
                                             <small>
-                                                <a href="index.html">Registrasi sebagai vendor ?</a>
+                                                <a href="{{ route('registrasi.vendor') }}">Registrasi Vendor</a>
+
                                             </small>
                                         </div>
 
