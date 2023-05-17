@@ -14,8 +14,7 @@ class SubBarjas extends Model
         'uraian',
         'volume',
         'satuan',
-        'harga_satuan',
-        'jumlah'
+     
     ];
 
     public function Barjas()

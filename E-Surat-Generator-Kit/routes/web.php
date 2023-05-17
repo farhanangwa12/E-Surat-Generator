@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\pengadaantahap1\BOQController;
 use App\Http\Controllers\pengadaantahap1\FormpenawaranController;
+use App\Http\Controllers\pengadaantahap1\HPSController;
 use App\Http\Controllers\pengadaantahap1\RKSController;
 use App\Http\Controllers\pengadaantahap1\UndanganController;
 use App\Http\Controllers\pengadaantahap2\BANegoController;
@@ -65,6 +66,14 @@ Route::prefix('boq')->group(function () {
     Route::get('{id}/boq', [BOQController::class, 'index'])->name('pengajuankontrak.boq');
     Route::post('{id}/boq/create', [BOQController::class, 'store'])->name('pengajuankontrak.boq.create');
 });
+
+Route::prefix('hps')->group(function () {
+    Route::get('{id}/{isDownload}/detail', [HPSController::class, 'detail'])->name('pengajuankontrak.hps.detail');
+    Route::get('isi/{id}', [HPSController::class, 'isi'])->name('pengajuankontrak.hps.isi');
+    Route::put('update/{id}', [HPSController::class, 'update'])->name('pengajuankontrak.hps.update');
+    
+});
+
 
 Route::prefix('formpenawaran')->group(function () {
     Route::get('/', [FormpenawaranController::class, 'index'])->name('formpenawaran.index');
@@ -201,6 +210,7 @@ Route::prefix('users')->group(function () {
 Route::prefix('vendor')->group(function () {
     Route::get('/', [VendorController::class, 'show'])->name('vendor');
     // Route untuk halaman create user
+
     Route::get('/create', [VendorController::class, 'create'])->name('vendor.create');
     // Route untuk menyimpan data user baru dari halaman create user
     Route::post('/store', [VendorController::class, 'store'])->name('vendor.store');
@@ -262,6 +272,11 @@ Route::prefix('pengadaan')->middleware('auth', 'role:pengadaan')->group(function
 
     Route::prefix('kontrakthp1')->group(function () {
         Route::get('/pengajuankontrak', [KontrakKerjaController::class, 'index'])->name('pengajuankontrak.index');
+        // Route untuk upload file excel memudahkan pengguna
+        Route::post('/kontrak/upload', [KontrakKerjaController::class, 'uploadFileExcel'])->name('kontrak.upload');
+        // Route untuk download file template
+        Route::get('kontrak/download-template', [KontrakKerjaController::class, 'downloadTemplate'])->name('kontrak.downloadTemplate');
+        
         // Route untuk halaman create user
         Route::get('/create', [KontrakKerjaController::class, 'create'])->name('pengajuankontrak.create');
         // Route untuk menyimpan data user baru dari halaman create user
@@ -304,16 +319,16 @@ Route::prefix('pengadaan')->middleware('auth', 'role:pengadaan')->group(function
         Route::prefix('subbarjas')->group(function () {
             // Rute untuk menampilkan halaman tambah data
             Route::get('/create/{id_barjas}', [SubBarJasController::class, 'create'])->name('subbarjas.create');
-        
+
             // Rute untuk menampilkan halaman edit data
             Route::get('/{id}/edit', [SubBarJasController::class, 'edit'])->name('subbarjas.edit');
-        
+
             // Rute untuk menyimpan data
             Route::post('/', [SubBarJasController::class, 'store'])->name('subbarjas.store');
-        
+
             // Rute untuk mengupdate data
             Route::put('/{id}', [SubBarJasController::class, 'update'])->name('subbarjas.update');
-        
+
             // Rute untuk menghapus data
             Route::delete('/{id}', [SubBarJasController::class, 'destroy'])->name('subbarjas.destroy');
         });

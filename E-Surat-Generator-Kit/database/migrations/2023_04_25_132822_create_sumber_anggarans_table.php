@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_kontrakkerja');
             $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas');
-            $table->string('skk_ao');
-            $table->date('tanggal_anggaran');
+            $table->string('skk_ao')->nullable();
+            $table->date('tanggal_anggaran')->nullable();
             $table->timestamps();
         });
     }

@@ -6,7 +6,7 @@
 
     <div class="container-fluid p-0">
 
-        <h1 class="h3 mb-3">Barang dan Jasa</h1>
+        <h1 class="h3 mb-3">{{$jenis->nama_jenis}}</h1>
 
         <div class="row">
             <div class="col-12">
@@ -28,8 +28,8 @@
                                     <th scope="col">Uraian</th>
                                     <th scope="col">Volume</th>
                                     <th scope="col">Satuan</th>
-                                    <th scope="col">Harga Satuan</th>
-                                    <th scope="col">Jumlah</th>
+                                    {{-- <th scope="col">Harga Satuan</th>
+                                    <th scope="col">Jumlah</th> --}}
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
@@ -40,8 +40,8 @@
                                         <td>{{ $barjas['uraian'] }}</td>
                                         <td>{{ $barjas['volume'] }}</td>
                                         <td>{{ $barjas['satuan'] }}</td>
-                                        <td>{{ $barjas['harga_satuan'] }}</td>
-                                        <td>{{ $barjas['jumlah'] }}</td>
+                                        {{-- <td>{{ $barjas['harga_satuan'] }}</td>
+                                        <td>{{ $barjas['jumlah'] }}</td> --}}
                                         <td>
                                             <a href="{{ route('subbarjas.create', ['id_barjas' => $barjas['id_barjas']]) }}"
                                                 class="btn btn-success">Tambah Sub Data</a>
@@ -62,8 +62,8 @@
                                             <td>{{ $subbarjas['uraian'] }}</td>
                                             <td>{{ $subbarjas['volume'] }}</td>
                                             <td>{{ $subbarjas['satuan'] }}</td>
-                                            <td>{{ $subbarjas['harga_satuan'] }}</td>
-                                            <td>{{ $subbarjas['jumlah'] }}</td>
+                                            {{-- <td>{{ $subbarjas['harga_satuan'] }}</td>
+                                            <td>{{ $subbarjas['jumlah'] }}</td> --}}
                                             <td>
                                                 
                                                 <a href="{{ route('subbarjas.edit', ['id' => $subbarjas['id_subbarjas']]) }}"

@@ -53,7 +53,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="harga_satuan">Harga Satuan</label>
                                 <input type="number" step="0.01"
                                     class="form-control @error('harga_satuan') is-invalid @enderror" name="harga_satuan"
@@ -61,7 +61,7 @@
                                 @error('harga_satuan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>

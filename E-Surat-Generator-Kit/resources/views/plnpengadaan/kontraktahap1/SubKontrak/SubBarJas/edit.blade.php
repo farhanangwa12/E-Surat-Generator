@@ -33,14 +33,14 @@
                               <label for="satuan" class="form-label">Satuan</label>
                               <input type="text" class="form-control" id="satuan" name="satuan" value="{{ $subbarjas->satuan }}" required>
                             </div>
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                               <label for="harga_satuan" class="form-label">Harga Satuan</label>
                               <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" value="{{ $subbarjas->harga_satuan }}" required>
                             </div>
                             <div class="mb-3">
                               <label for="jumlah" class="form-label">Jumlah</label>
                               <input type="number" class="form-control" id="jumlah" name="jumlah" value="{{ $subbarjas->jumlah }}" required>
-                            </div>
+                            </div> --}}
                         
                             <button type="submit" class="btn btn-primary">Update</button>
                           </form>

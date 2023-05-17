@@ -4,11 +4,52 @@
 
 @section('content')
     <div class="container-fluid p-0">
-      
+
         <h1 class="h3 mb-3">Tambah Kontrak</h1>
 
         <div class="row">
             <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h1>Upload File Excel</h3>
+                        <p class="text-muted">Silahkan upload file excel master untuk melewati pengisian, jika tidak maka
+                            tidak perlu mengupload file excel apapun. untuk contoh template kami lampirkan di bawah sebagai
+                            berikut :</p>
+                        <a href="{{ route('kontrak.downloadTemplate') }}" class="btn btn-primary mb-3">Download Template</a>
+                        <div>
+                            <h4>Syarat Upload File Excel</h4>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">- Pastikan ada worksheet bernama BOQ</li>
+                                <li class="list-group-item">- Format Jenis Pekerjaan Barang / Jasa Nomornya harus romawi
+                                    disertai titik contoh : I.</li>
+                                <li class="list-group-item">- Format Data Pekerjaan Nomor harus angka tanpa titik : Contoh
+                                    1, 2,
+                                    3</li>
+                                <li class="list-group-item">- Format Sub Data bagian nomor harus dikosongi namun pada uraian
+                                    diberikan tanda "-" dengan 1 kali spasi setelahnya pada awal contoh : - Cable LAN and
+                                    connector</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <form id="upload-form" class="mb-3" action="{{ route('kontrak.upload') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" id="file-input" class="form-control" name="input_file"
+                                accept=".xls, .xlsx">
+                        </form>
+
+                    </div>
+                </div>
                 <form method="POST" action="{{ route('pengajuankontrak.store') }}">
                     @csrf
                     {{-- Detail Kontrak --}}
@@ -21,13 +62,17 @@
                             </ul>
                         </div>
                     @endif
+
                     <div class="card">
                         <div class="card-header">
                             Detail Kontrak
+
+
                         </div>
 
 
                         <div class="card-body">
+
                             <div class="row align-item-start mb-3">
 
                                 <div class="form-group col">
@@ -63,8 +108,9 @@
                                 <div class="form-group col">
                                     <label for="kode_masalah">Kode Masalah</label>
 
-                                    <select class="form-select" aria-label="Kode Masalah " name="kode_masalah" id="kode_masalah">
-                                        <option selected>=== PILIH SALAH SATU ==</option>
+                                    <select class="form-select" aria-label="Kode Masalah " name="kode_masalah"
+                                        id="kode_masalah">
+                                        <option selected disabled>=== PILIH SALAH SATU ==</option>
                                         <option value="DAN.01.01">Pengadaan Barang</option>
                                         <option value="DAN.01.02">Pengadaan Jasa</option>
                                         <option value="DAN.01.03">Pengadaan Barang & Jasa</option>
@@ -139,8 +185,8 @@
 
                                 <div class="form-group col">
                                     <label for="tanggal_anggaran">Tanggal Anggaran</label>
-                                    <input type="date" name="tanggal_anggaran" class="form-control" id="tanggal_anggaran"
-                                        placeholder="Masukkan Tanggal Anggaran">
+                                    <input type="date" name="tanggal_anggaran" class="form-control"
+                                        id="tanggal_anggaran" placeholder="Masukkan Tanggal Anggaran">
                                 </div>
 
                             </div>
@@ -160,7 +206,7 @@
                                     <label for="ven">Vendor</label>
 
                                     <select class="form-select" aria-label="ven" name="ven" id="ven">
-                                        <option value="" selected>=== PILIH SALAH SATU ==</option>
+                                        <option value="" selected disabled>=== PILIH SALAH SATU ==</option>
                                         @foreach ($vendor as $item)
                                             <option value="{{ $item->id_vendor }}">{{ $item->penyedia }}</option>
                                         @endforeach
@@ -300,96 +346,6 @@
                         </div>
 
 
-                        {{-- <div class="card-body">
-
-
-
-
-
-                            <div class="row align-item-start mb-3">
-                                <div class="form-group">
-                                    <label for="rks">Tanggal Speck/RKS</label>
-                                    <input type="date" name="rks" class="form-control" id="rks"
-                                        placeholder="Masukkan nama direksi">
-                                </div>
-                                <div class="form-group col">
-                                    <label for="hps">Tanggal HPS</label>
-                                    <input type="date" name="hps" class="form-control" id="hps"
-                                        placeholder="Masukkan hps">
-                                </div>
-
-                            </div>
-
-                            <div class="row align-item-start mb-3">
-                                <div class="form-group col">
-                                    <label for="pakta_pejabat">Tanggal PAKTA PEJABAT</label>
-                                    <input type="date" name="pakta_pejabat" class="form-control" id="pakta_pejabat"
-                                        placeholder="Masukkan pakta pejabat">
-                                </div>
-                                <div class="form-group col">
-                                    <label for="undangan">Tanggal Undangan</label>
-                                    <input type="date" name="undangan" class="form-control" id="undangan"
-                                        placeholder="Masukkan undangan">
-                                </div>
-
-                            </div>
-
-                            <div class="row align-item-start mb-3">
-                                <div class="form-group col">
-                                    <label for="pakta_pejabat">Tanggal PAKTA PENGGUNA</label>
-                                    <input type="date" name="pakta_pejabat" class="form-control" id="pakta_pejabat"
-                                        placeholder="Masukkan pakta pejabat">
-                                </div>
-                                <div class="form-group col">
-                                    <label for="ba_buka">tanggal BA Buka</label>
-                                    <input type="date" name="ba_buka" class="form-control" id="ba_buka"
-                                        placeholder="Masukkan ba buka">
-                                </div>
-
-                            </div>
-
-                            <div class="row align-item-start mb-3">
-                                <div class="form-group col">
-                                    <label for="ba_negosiasi">Tanggal BA Negosiasi</label>
-                                    <input type="date" name="ba_negosiasi" class="form-control" id="ba_negosiasi"
-                                        placeholder="Masukkan ba negosiasi">
-                                </div>
-                                <div class="form-group col">
-                                    <label for="ba_evaluasi">Tanggal BA Evaluasi</label>
-                                    <input type="date" name="ba_evaluasi" class="form-control" id="ba_evaluasi"
-                                        placeholder="Masukkan BA Evaluasi">
-                                </div>
-
-                            </div>
-                            <div class="row align-item-start mb-3">
-                                <div class="form-group col">
-                                    <label for="spl">Tanggal SPL</label>
-                                    <input type="text" name="spl" class="form-control" id="spl"
-                                        placeholder="Masukkan SPL">
-                                </div>
-                                <div class="form-group col">
-                                    <label for="ba_hasil_pl">Tanggal BA Hasil PL</label>
-                                    <input type="text" name="ba_hasil_pl" class="form-control" id="ba_hasil_pl"
-                                        placeholder="Masukkan BA hasil pl">
-                                </div>
-
-                            </div>
-                            <div class="row align-item-start mb-3">
-                                <div class="form-group col">
-                                    <label for="spk">SPK
-                                    </label>
-                                    <input type="date" name="spk" class="form-control" id="spk"
-                                        placeholder="Masukkan tanggal SPK">
-                                </div>
-                                <span class="col"></span>
-
-                            </div>
-
-                            <button type="submit" class="btn btn-primary col">Submit</button>
-
-
-
-                        </div> --}}
                         <div class="card-body">
 
                             <div class="form-group mb-3">
@@ -535,6 +491,25 @@
 @endsection
 @section('javascript')
     <script>
+        const fileInput = document.getElementById('file-input');
+
+        // Tambahkan event listener pada peristiwa change pada input file
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files.length > 0) {
+                // Tampilkan dialog konfirmasi
+                const isConfirmed = confirm('Apakah Anda yakin ingin mengunggah file?');
+
+                if (isConfirmed) {
+                    // Submit form secara otomatis
+                    document.getElementById('upload-form').submit();
+                } else {
+                    // Reset input file
+                    fileInput.value = '';
+                }
+            }
+        });
+    </script>
+    <script>
         // Ambil elemen input dengan id "penyedia" dan "direktur"
         const venSelect = document.getElementById("ven");
 
@@ -556,7 +531,8 @@
 
 
             } else {
-                fetch("http://127.0.0.1:8000/api/vendor/" + venSelect.value)
+
+                fetch('/api/showbyid/' + venSelect.value)
                     .then(response => response.json())
                     .then(data => {
 
@@ -585,7 +561,7 @@
     </script>
     <script>
         const kodeMasalah = document.getElementById('kode_masalah');
-        console.log('kodemasalah:',kodeMasalah);
+        console.log('kodemasalah:', kodeMasalah);
         const NoUrut = document.getElementById('no_urut');
         console.log(NoUrut);
 
@@ -595,50 +571,80 @@
 
         kodeMasalah.addEventListener("change", function() {
 
-            document.getElementById('nomor_rks').value = NoUrut.value + ".RKS/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_hps').value = NoUrut.value + ".HPS/" + kodeMasalah.value + "/UPKTIMOR/" + tahun.value;
-            document.getElementById('nomor_pakta_pejabat').value = NoUrut.value + ".PI//" + kodeMasalah.value + "/UPKTIMOR/" + tahun.value;
-            document.getElementById('nomor_undangan').value = NoUrut.value + ".UND/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_pakta_pengguna').value = NoUrut.value + ".PI/" + kodeMasalah.value + "/M-UPKTIMOR/" + tahun.value;
-            document.getElementById('nomor_ba_buka').value = NoUrut.value + ".BA_PEMB/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_ba_evaluasi').value = NoUrut.value + ".BA-EVA/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_ba_negosiasi').value = NoUrut.value + ".BA-NEG/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_ba_hasil_pl').value = NoUrut.value + ".BA-HPL/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_spk').value = NoUrut.value + ".SPK/" + kodeMasalah.value + "/200900/" + tahun.value;
-            
-       
+            document.getElementById('nomor_rks').value = NoUrut.value + ".RKS/" + kodeMasalah.value + "/200900/" +
+                tahun.value;
+            document.getElementById('nomor_hps').value = NoUrut.value + ".HPS/" + kodeMasalah.value + "/UPKTIMOR/" +
+                tahun.value;
+            document.getElementById('nomor_pakta_pejabat').value = NoUrut.value + ".PI//" + kodeMasalah.value +
+                "/UPKTIMOR/" + tahun.value;
+            document.getElementById('nomor_undangan').value = NoUrut.value + ".UND/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_pakta_pengguna').value = NoUrut.value + ".PI/" + kodeMasalah.value +
+                "/M-UPKTIMOR/" + tahun.value;
+            document.getElementById('nomor_ba_buka').value = NoUrut.value + ".BA_PEMB/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_ba_evaluasi').value = NoUrut.value + ".BA-EVA/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_ba_negosiasi').value = NoUrut.value + ".BA-NEG/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_ba_hasil_pl').value = NoUrut.value + ".BA-HPL/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_spk').value = NoUrut.value + ".SPK/" + kodeMasalah.value + "/200900/" +
+                tahun.value;
+
+
         });
 
         NoUrut.addEventListener("blur", function() {
-          
-            document.getElementById('nomor_rks').value = NoUrut.value + ".RKS/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_hps').value = NoUrut.value + ".HPS/" + kodeMasalah.value + "/UPKTIMOR/" + tahun.value;
-            document.getElementById('nomor_pakta_pejabat').value = NoUrut.value + ".PI//" + kodeMasalah.value + "/UPKTIMOR/" + tahun.value;
-            document.getElementById('nomor_undangan').value = NoUrut.value + ".UND/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_pakta_pengguna').value = NoUrut.value + ".PI/" + kodeMasalah.value + "/M-UPKTIMOR/" + tahun.value;
-            document.getElementById('nomor_ba_buka').value = NoUrut.value + ".BA_PEMB/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_ba_evaluasi').value = NoUrut.value + ".BA-EVA/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_ba_negosiasi').value = NoUrut.value + ".BA-NEG/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_ba_hasil_pl').value = NoUrut.value + ".BA-HPL/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_spk').value = NoUrut.value + ".SPK/" + kodeMasalah.value + "/200900/" + tahun.value;
-            
-       
+
+            document.getElementById('nomor_rks').value = NoUrut.value + ".RKS/" + kodeMasalah.value + "/200900/" +
+                tahun.value;
+            document.getElementById('nomor_hps').value = NoUrut.value + ".HPS/" + kodeMasalah.value + "/UPKTIMOR/" +
+                tahun.value;
+            document.getElementById('nomor_pakta_pejabat').value = NoUrut.value + ".PI//" + kodeMasalah.value +
+                "/UPKTIMOR/" + tahun.value;
+            document.getElementById('nomor_undangan').value = NoUrut.value + ".UND/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_pakta_pengguna').value = NoUrut.value + ".PI/" + kodeMasalah.value +
+                "/M-UPKTIMOR/" + tahun.value;
+            document.getElementById('nomor_ba_buka').value = NoUrut.value + ".BA_PEMB/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_ba_evaluasi').value = NoUrut.value + ".BA-EVA/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_ba_negosiasi').value = NoUrut.value + ".BA-NEG/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_ba_hasil_pl').value = NoUrut.value + ".BA-HPL/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_spk').value = NoUrut.value + ".SPK/" + kodeMasalah.value + "/200900/" +
+                tahun.value;
+
+
         });
 
         tahun.addEventListener("blur", function(event) {
-           
-            document.getElementById('nomor_rks').value = NoUrut.value + ".RKS/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_hps').value = NoUrut.value + ".HPS/" + kodeMasalah.value + "/UPKTIMOR/" + tahun.value;
-            document.getElementById('nomor_pakta_pejabat').value = NoUrut.value + ".PI//" + kodeMasalah.value + "/UPKTIMOR/" + tahun.value;
-            document.getElementById('nomor_undangan').value = NoUrut.value + ".UND/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_pakta_pengguna').value = NoUrut.value + ".PI/" + kodeMasalah.value + "/M-UPKTIMOR/" + tahun.value;
-            document.getElementById('nomor_ba_buka').value = NoUrut.value + ".BA_PEMB/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_ba_evaluasi').value = NoUrut.value + ".BA-EVA/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_ba_negosiasi').value = NoUrut.value + ".BA-NEG/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_ba_hasil_pl').value = NoUrut.value + ".BA-HPL/" + kodeMasalah.value + "/200900/" + tahun.value;
-            document.getElementById('nomor_spk').value = NoUrut.value + ".SPK/" + kodeMasalah.value + "/200900/" + tahun.value;
-            
-       
+
+            document.getElementById('nomor_rks').value = NoUrut.value + ".RKS/" + kodeMasalah.value + "/200900/" +
+                tahun.value;
+            document.getElementById('nomor_hps').value = NoUrut.value + ".HPS/" + kodeMasalah.value + "/UPKTIMOR/" +
+                tahun.value;
+            document.getElementById('nomor_pakta_pejabat').value = NoUrut.value + ".PI//" + kodeMasalah.value +
+                "/UPKTIMOR/" + tahun.value;
+            document.getElementById('nomor_undangan').value = NoUrut.value + ".UND/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_pakta_pengguna').value = NoUrut.value + ".PI/" + kodeMasalah.value +
+                "/M-UPKTIMOR/" + tahun.value;
+            document.getElementById('nomor_ba_buka').value = NoUrut.value + ".BA_PEMB/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_ba_evaluasi').value = NoUrut.value + ".BA-EVA/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_ba_negosiasi').value = NoUrut.value + ".BA-NEG/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_ba_hasil_pl').value = NoUrut.value + ".BA-HPL/" + kodeMasalah.value +
+                "/200900/" + tahun.value;
+            document.getElementById('nomor_spk').value = NoUrut.value + ".SPK/" + kodeMasalah.value + "/200900/" +
+                tahun.value;
+
+
         });
     </script>
 @endsection

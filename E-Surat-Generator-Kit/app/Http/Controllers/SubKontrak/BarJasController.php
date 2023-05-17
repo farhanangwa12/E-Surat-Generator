@@ -13,7 +13,6 @@ class BarJasController extends Controller
     {
         // Menampilkan form create
         return view('plnpengadaan.kontraktahap1.SubKontrak.BarJas.create', compact('id_jenis_kontrak'));
-        
     }
 
     public function store(Request $request)
@@ -24,10 +23,10 @@ class BarJasController extends Controller
             'uraian' => 'required',
             'volume' => 'required|numeric',
             'satuan' => 'required',
-            'harga_satuan' => 'required|numeric',
-            
+            // 'harga_satuan' => 'required|numeric',
+
         ]);
-        $validatedData['jumlah'] = $validatedData['volume'] * $validatedData['harga_satuan'];
+        // $validatedData['jumlah'] = $validatedData['volume'] * $validatedData['harga_satuan'];
 
         // Simpan data ke database
         $barJas = BarJas::create($validatedData);
@@ -37,7 +36,7 @@ class BarJasController extends Controller
             ->with('success', 'Data berhasil disimpan.');
     }
 
-  
+
     public function edit($id)
     {
         // Mengambil data berdasarkan id
@@ -45,7 +44,6 @@ class BarJasController extends Controller
 
         // Tampilkan form edit
         return view('plnpengadaan.kontraktahap1.SubKontrak.BarJas.edit', compact('barjas'));
-
     }
 
     public function update(Request $request, $id)
@@ -56,10 +54,10 @@ class BarJasController extends Controller
             'uraian' => 'required',
             'volume' => 'required|numeric',
             'satuan' => 'required',
-            'harga_satuan' => 'required|numeric',
-            
+            // 'harga_satuan' => 'required|numeric',
+
         ]);
-        $validatedData['jumlah'] = $validatedData['volume'] * $validatedData['harga_satuan'];
+        // $validatedData['jumlah'] = $validatedData['volume'] * $validatedData['harga_satuan'];
         // Update data ke database
         BarJas::where('id', $id)->update($validatedData);
 
