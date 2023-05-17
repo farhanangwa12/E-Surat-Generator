@@ -41,4 +41,10 @@ class KontrakKerja extends Model
     {
         return $this->hasMany(JenisKontrak::class, 'id_kontrak');
     }
+
+
+    public function hps()
+    {
+        return $this->hasMany(HPS::class, 'id_kontrakkerja', 'id_kontrakkerja');
+    }
 }

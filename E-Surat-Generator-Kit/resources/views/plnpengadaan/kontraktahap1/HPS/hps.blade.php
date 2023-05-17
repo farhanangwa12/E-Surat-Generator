@@ -218,8 +218,8 @@
                             <td style="text-align: left">{{ $data['uraian'] }} </td>
                             <td>{{ $data['vol'] }}</td>
                             <td>{{ $data['sat'] }}</td>
-                            <td>Statuan </td>
-                            <td>Jumlah</td>
+                            <td>{{ $data['harga_satuan'] }} </td>
+                            <td>{{ $data['jumlah'] }}</td>
                             {{-- <td>{{ $data['harga_satuan'] }}</td>
                             <td>{{ $data['jumlah'] }}</td> --}}
                         </tr>
@@ -233,8 +233,8 @@
                                 <td style="text-align:left;">{{ $subdata['uraian'] }} </td>
                                 <td>{{ $subdata['volume'] }}</td>
                                 <td>{{ $subdata['satuan'] }}</td>
-                                <td>Statuan </td>
-                                <td>Jumlah</td>
+                                <td></td>
+                                <td></td>
                                 {{-- <td>{{ $subdata['harga_satuan'] }}</td>
                                 <td>{{ $subdata['jumlah'] }}</td> --}}
                             </tr>
@@ -246,7 +246,9 @@
             <tfoot>
                 <tr style="border-top: 4px solid black;">
                     <td colspan="5" class="footer">Jumlah Harga:</td>
-                    <td>{{$data2['jumlah_harga']}} </td>
+                    <td>{{$data2['jumlah_harga']}}</td>
+                   
+                    {{-- Buggg --}}
                 </tr>
                 <tr>
                     <td colspan="5" class="footer">DIBULATKAN</td>
