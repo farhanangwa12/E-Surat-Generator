@@ -271,8 +271,9 @@
         </table>
          {{-- <p style="text-align: left;margin-top:20px; margin-bottom:20px;">Terbilang:
             <i>{{$data2['harga_total']}}</i></p> --}}
+         
         <p style="text-align: left;margin-top:20px; margin-bottom:20px;">Terbilang:
-            <i>{{ $data2['harga_total'] > 0 ? ucwords(terbilang($data2['harga_total'])) : 'Kosong' }}</i></p>
+            <i>{{ ucwords(@Terbilang::make($data2['harga_total'])) }}</i></p>
     </main>
     <table style="width: 100%; text-align:center;">
         <tr>
@@ -295,8 +296,15 @@
             </td>
         </tr>
         <tr>
-            <td style="height:40px;"></td>
-            <td style="height:40px;"></td>
+            <td style="height:40px;">@if ($data2['tandatangan_pengadaan'] != 0)
+                <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG( $data2['tandatangan_pengadaan'], 'QRCODE')}}" alt="Barcode">
+            @endif
+            </td>
+            <td style="height:40px;">
+           
+                @if ($data2['tandatangan_manager'] != 0)
+                <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG( $data2['tandatangan_manager'], 'QRCODE')}}" alt="Barcode">
+            @endif</td>
         </tr>
         <tr>
             <td style="width: 50%;"><b> {{ $data2['nama_manager'] }} </b></td>

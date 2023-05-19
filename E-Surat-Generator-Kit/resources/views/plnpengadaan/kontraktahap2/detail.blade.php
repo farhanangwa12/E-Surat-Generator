@@ -390,7 +390,9 @@
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>HPS</td>
                                     <td>
-                                       
+                                        <a href="{{ route('pengajuankontrak.hps.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
+                                            class="btn btn-primary">Edit</a>
+
                                         <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>
 
@@ -400,7 +402,7 @@
                                     </td>
                                 </tr>
                                 <tr style="background: #743461;color: #ffffff;">
-                                    <td colspan="3" style="text-align: center;">Pengadaan tahap 1</td>
+                                    <td colspan="3" style="text-align: center;">Surat Vendor</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -414,23 +416,21 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>RKS</td>
-                                    <td><a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 'I']) }}"
+                                    <td><a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Preview</a>
-                                        <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 'D']) }}"
+                                        <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
                                             class="btn btn-primary">Download</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>BOQ</td>
-                                    <td><a href="{{ route('pengajuankontrak.boq', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                            class="btn btn-primary">Edit</a>
-
-                                        <a href="{{ route('pengajuankontrak.boq.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 'I']) }}"
+                                    <td>
+                                        <a href="{{ route('pengajuankontrak.boq.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>
 
 
-                                        <a href="{{ route('pengajuankontrak.boq.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 'D']) }}"
+                                        <a href="{{ route('pengajuankontrak.boq.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
                                             class="btn btn-primary">Download</a>
                                     </td>
                                 </tr>
@@ -512,9 +512,26 @@
 
                     </div>
                 </div>
-                <a href="" class="btn btn-primary">Kembali</a>
-                <a href="" class="btn btn-info">Kirim (Belum Bisa)</a>
 
+
+                <div class="card">
+                    <div class="card-header">
+                        Dengan ini, dokumen akan dikirim ke vendor setelah mendapatkan tanda tangan dan verifikasi dari
+                        pengadaan.
+                    </div>
+                    <div class="card-body">
+                        <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
+                            <a href="{{ route('negoharga') }}" class="btn btn-info">Kembali</a>
+                            <form
+                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Tanda Tangan Vendor', 'routeName' => 'negoharga']) }}"
+                                method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">Kirim</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
 
 
 

@@ -34,6 +34,7 @@
         table tr.orange {
             background-color: #ffffcc;
         }
+
         table tr.abuabu {
             background-color: #cccccc;
         }
@@ -85,13 +86,13 @@
 <body>
     <main>
         <header>
-            <h1>BILL OF QUANTITY (BOQ)								
+            <h1>BILL OF QUANTITY (BOQ)
             </h1>
-            <p>111.RKS/DAN.01.03/200900/2022								
+            <p>{{$data2['nomor']}}
             </p>
-            <p>Tanggal : 26 Desember 2022								
+            <p>Tanggal : {{$data2['tanggal_pekerjaan']}}
             </p>
-            <p>PEKERJAAN PENGADAAN DAN JASA INSTALASI KWH METER ENGINE PLTU JEMBER PT PLN (PERSERO) UNIT INDUK WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR </p>
+            <p>{{ $data2['nama_pekerjaan']}} </p>
         </header>
         <table>
             <thead>
@@ -101,7 +102,7 @@
                     <th rowspan="2">Vol</th>
                     <th rowspan="2">Sat</th>
                     <th colspan="2">HPS (Rp.)</th>
-                    
+
                 </tr>
                 <tr class="orange">
                     <th>Harga Satuan</th>
@@ -113,82 +114,123 @@
                     <th>3.00</th>
                     <th>4</th>
                     <th>5</th>
-                   
+
                     <th>6</th>
-                  </tr>
+                </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Pemasangan AC Split 1 PK</td>
-                    <td>1</td>
-                    <td>Buah</td>
-                    <td>Rp 3.000.000</td>
-                    <td>Rp 3.000.000</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Pipa AC 1/2 inch</td>
-                    <td>5</td>
-                    <td>Meter</td>
-                    <td>Rp 50.000</td>
-                    <td>Rp 250.000</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Kabel Listrik 3x2.5mm</td>
-                    <td>10</td>
-                    <td>Meter</td>
-                    <td>Rp 15.000</td>
-                    <td>Rp 150.000</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Freon AC R32 1 kg</td>
-                    <td>2</td>
-                    <td>Kg</td>
-                    <td>Rp 300.000</td>
-                    <td>Rp 600.000</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Biaya Jasa Pemasangan</td>
-                    <td>1</td>
-                    <td>Unit</td>
-                    <td>Rp 500.000</td>
-                    <td>Rp 500.000</td>
-                </tr>
+                @php
+                    
+                    function int_to_roman($num)
+                    {
+                        // array untuk angka romawi
+                        $roman = [
+                            'M' => 1000,
+                            'CM' => 900,
+                            'D' => 500,
+                            'CD' => 400,
+                            'C' => 100,
+                            'XC' => 90,
+                            'L' => 50,
+                            'XL' => 40,
+                            'X' => 10,
+                            'IX' => 9,
+                            'V' => 5,
+                            'IV' => 4,
+                            'I' => 1,
+                        ];
+                        $result = '';
+                        // loop melalui array angka romawi
+                        foreach ($roman as $key => $value) {
+                            // dapatkan banyaknya simbol romawi yang dibutuhkan
+                            $numerals = intval($num / $value);
+                            // tambahkan simbol romawi ke string hasil
+                            $result .= str_repeat($key, $numerals);
+                            // kurangi angka asal dengan angka romawi yang telah dihasilkan
+                            $num = $num % $value;
+                        }
+                        return $result;
+                    }
+                    $jenis = 1;
+                @endphp
+
+                @foreach ($kontrakbaru as $jenis_kontrak)
+                    <tr style="text-align:left;">
+                        <td>{{ int_to_roman($jenis++) . '.' }}</td>
+                        <td><b>{{ $jenis_kontrak['jenis_kontrak'] }}</b> </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    @php
+                        $no_data = 1;
+                    @endphp
+                    @foreach ($jenis_kontrak['data'] as $data)
+                        <tr style="text-align:left;">
+                            <td>{{ $no_data++ . '.' }}</td>
+                            <td style="text-align: left">{{ $data['uraian'] }} </td>
+                            <td>{{ $data['vol'] }}</td>
+                            <td>{{ $data['sat'] }}</td>
+                            <td>{{ $data['harga_satuan'] }} </td>
+                            <td>{{ $data['jumlah'] }}</td>
+                            {{-- <td>{{ $data['harga_satuan'] }}</td>
+                            <td>{{ $data['jumlah'] }}</td> --}}
+                        </tr>
+                        @php
+                            $no_subdata = 1;
+                            
+                        @endphp
+                        @foreach ($data['sub_data'] as $subdata)
+                            <tr>
+                                <td></td>
+                                <td style="text-align:left;">{{ $subdata['uraian'] }} </td>
+                                <td>{{ $subdata['volume'] }}</td>
+                                <td>{{ $subdata['satuan'] }}</td>
+                                <td></td>
+                                <td></td>
+                                {{-- <td>{{ $subdata['harga_satuan'] }}</td>
+                                <td>{{ $subdata['jumlah'] }}</td> --}}
+                            </tr>
+                        @endforeach
+                    @endforeach
+                @endforeach
+
             </tbody>
             <tfoot>
                 <tr style="border-top: 4px solid black;">
-                    <td colspan="5"  class="footer">Jumlah Harga:</td>
-                    <td>Rp 4.500.000</td>
+                    <td colspan="5" class="footer">Jumlah Harga:</td>
+                    <td>{{ $data2['jumlah_harga'] }}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="footer">PPN 11%:</td>
-                    <td>Rp 495.000</td>
+                    <td>{{ $data2['ppn_11'] }}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="footer">Total Harga:</td>
-                    <td>Rp 4.995.000</td>
+                    <td>{{ $data2['harga_total'] }}</td>
                 </tr>
             </tfoot>
         </table>
-        <p>Terbilang: Empat Juta Sembilan Ratus Sembilan Puluh Lima Ribu Rupiah</p>
+     
+
+        <p>Terbilang:  <i>{{ ucwords(@Terbilang::make($data2['harga_total'])) }}</i></p>
     </main>
     <table class="tandatangan" style="width: 100%;">
         <tr>
             <td style="width:80%;"></td>
             <td style="text-align: center;">
-                <p>Madiun, 20 Agustus 2023</p>
-                <p>PT Argomoro</p>
+                <p>?? {{$data2['tanggal_pekerjaan']}}</p>
+                <p>{{$data2['penyedia']}}</p>
             </td>
         </tr>
         <tr>
             <td></td>
+         
             <td style="text-align: center;">
-                <div class="square"></div>
-                <p class="bold">DIREKTUR</p>
+                <div></div>
+                {{-- <div class="square"></div> --}}
+                <p class="bold">{{ $data2['nama_direktur'] }}</p>
             </td>
         </tr>
     </table>

@@ -59,7 +59,13 @@ Route::post('/ubahuser', [LoginController::class, 'ubahuser'])->name('ubahuser')
 
 
 // Dokumen Vendor dan Pengadaan 
-Route::get('{id}/{isDownload}/und', [UndanganController::class, 'Undangan'])->name('pengajuankontrak.undangan');
+
+Route::prefix('und')->group(function () {
+    Route::get('undangan/{id}/{isDownload}', [UndanganController::class, 'Undangan'])->name('pengajuankontrak.undangan');
+    Route::get('tandatanganpengadaanund/{id_kontrakkerja}', [UndanganController::class, 'tandatanganpengadaan'])->name('undangan.tandatangan');
+    
+    Route::post('simpantandatangan', [UndanganController::class, 'simpantandatangan'])->name('undangan.simpantandatangan');
+});
 Route::prefix('rks')->group(function () {
     Route::get('show/{id}/{isDownload}', [RKSController::class, 'showrks'])->name('pengajuankontrak.rks');
     Route::get('isi/{id}', [RKSController::class, 'isirks'])->name('rks.isi');
@@ -69,15 +75,20 @@ Route::prefix('boq')->group(function () {
     Route::get('{id}/{isDownload}/detail', [BOQController::class, 'detail'])->name('pengajuankontrak.boq.detail');
     Route::get('{id}/isi', [BOQController::class, 'isi'])->name('pengajuankontrak.boq.isi');
     Route::put('update/{id}', [BOQController::class, 'update'])->name('pengajuankontrak.boq.update');
-    Route::get('{id}/boq', [BOQController::class, 'index'])->name('pengajuankontrak.boq');
-    Route::post('{id}/boq/create', [BOQController::class, 'store'])->name('pengajuankontrak.boq.create');
+    Route::get('/tandatanganvendor/{id}', [BOQController::class, 'tandatanganvendor'])->name('boqtandatanganvendor');
+    Route::post('/simpantandatangan', [BOQController::class, 'simpantandatangan'])->name('simpantandatanganboq');
+
+    // Route::get('{id}/boq', [BOQController::class, 'index'])->name('pengajuankontrak.boq');
+    // Route::post('{id}/boq/create', [BOQController::class, 'store'])->name('pengajuankontrak.boq.create');
 });
 
 Route::prefix('hps')->group(function () {
     Route::get('{id}/{isDownload}/detail', [HPSController::class, 'detail'])->name('pengajuankontrak.hps.detail');
     Route::get('isi/{id}', [HPSController::class, 'isi'])->name('pengajuankontrak.hps.isi');
     Route::put('update/{id}', [HPSController::class, 'update'])->name('pengajuankontrak.hps.update');
-    
+    Route::get('/hpstandatangan/{id}', [HPSController::class, 'tandatangan'])->name('hpstandatangan');
+    Route::get('/hpstandatanganmanager/{id}', [HPSController::class, 'tandatanganmanager'])->name('hpstandatanganmanager');
+    Route::post('/simpantandatangan', [HPSController::class, 'simpantandatangan'])->name('simpantandatanganhps');
 });
 
 
@@ -282,7 +293,7 @@ Route::prefix('pengadaan')->middleware('auth', 'role:pengadaan')->group(function
         Route::post('/kontrak/upload', [KontrakKerjaController::class, 'uploadFileExcel'])->name('kontrak.upload');
         // Route untuk download file template
         Route::get('kontrak/download-template', [KontrakKerjaController::class, 'downloadTemplate'])->name('kontrak.downloadTemplate');
-        
+
         // Route untuk halaman create user
         Route::get('/create', [KontrakKerjaController::class, 'create'])->name('pengajuankontrak.create');
         // Route untuk menyimpan data user baru dari halaman create user
@@ -359,6 +370,8 @@ Route::prefix('manager')->middleware('auth', 'role:manager')->group(function () 
     Route::get('/dashboard', [LoginController::class, 'dashboardpln'])->name('dashboard.manager');
 
     Route::get('/tandatangan', [KontrakKerjaController::class, 'tandatanganmanager'])->name('tandatangan.manager');
+    Route::get('{id}/detail', [KontrakKerjaController::class, 'detailkontrakmanager'])->name('tandatangan.manager.detail');
+
 
 
     Route::prefix('kelengkapandokumen')->group(function () {
@@ -394,7 +407,7 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
 
 
         // Route untuk menampilkan form tambah produk
-        Route::get('/pengisiankontrakkerja', [VendorKontrakKerjaController::class, 'index'])->name('isikontrak');
+        Route::get('/pengisiankontrakkerja', [VendorKontrakKerjaController::class, 'pengisiankontrakkerja'])->name('isikontrak');
 
         // Route untuk menampilkan form tambah produk
         Route::get('/tandatangan', [VendorTandaTangan::class, 'index'])->name('tandatangan');

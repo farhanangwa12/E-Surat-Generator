@@ -60,7 +60,7 @@
                         <li class="sidebar-item {{ Request::is('pengadaan/tandatangan/tandatangan') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{route('tandatangan.pengadaan')}}">
                                 <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">
-                                    Tanda Tangan Pengadaan</span>
+                                    Validasi Pengadaan</span>
                             </a>
                         </li>
 

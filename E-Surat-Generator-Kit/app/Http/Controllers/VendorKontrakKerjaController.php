@@ -42,8 +42,8 @@ class VendorKontrakKerjaController extends Controller
             'Dokumen Input Vendor',
         ];
         $kontrak = KontrakKerja::whereIn('status', $status)->get();
-        dd($kontrak);
-        // return view('vendor.kontrakkerja', compact('kontrak'));
+      
+        return view('vendor.kontrakkerja', compact('kontrak'));
        
     }
 }

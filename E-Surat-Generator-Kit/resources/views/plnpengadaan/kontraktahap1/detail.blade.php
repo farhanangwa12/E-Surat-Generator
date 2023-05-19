@@ -424,8 +424,8 @@
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>HPS</td>
                                         <td>
-                                            <a href="{{ route('pengajuankontrak.hps.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                                class="btn btn-primary">Edit</a>
+                                            <a href="{{ route('hpstandatangan', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
+                                                class="btn btn-primary">Tanda Tangan HPS</a>
 
                                             <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Detail</a>
@@ -459,9 +459,7 @@
                                     <tr>
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>BOQ</td>
-                                        <td><a href="{{ route('pengajuankontrak.boq', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                                class="btn btn-primary">Edit</a>
-
+                                        <td>
                                             <a href="{{ route('pengajuankontrak.boq.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Detail</a>
 
@@ -478,19 +476,17 @@
 
                         </div>
                     </div>
-
                     <div class="card">
                         <div class="card-header">
-                            Dengan ini surat memerlukan tanda tangan dan verifikasi dari pengadaan sebelum dikirim ke
-                            vendor.
-                            Apakah anda yakin ingin mengirimkan dokumen ?
+
+                            Dengan mengklik tombol "Kirim", Anda akan menandatangani kontrak dan kontrak kerja akan dimulai.
+                            Terima kasih atas perhatiannya.
                         </div>
                         <div class="card-body">
-
                             <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
                                 <a href="{{ route('pengajuankontrak.index') }}" class="btn btn-info">Kembali</a>
                                 <form
-                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' =>  'Validasi Dokumen Pengadaan Tahap 1', 'routeName' => 'pengajuankontrak.index']) }}"
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Kontrak Kerja Berjalan', 'routeName' => 'pengajuankontrak.index']) }}"
                                     method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-primary">Kirim</button>
@@ -498,6 +494,7 @@
                             </div>
                         </div>
                     </div>
+
 
 
 

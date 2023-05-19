@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models\SubKontrak;
-
+use App\Models\Dokumen\BarJasBOQ;
 use App\Models\BarJasHPS;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,9 +28,16 @@ class BarJas extends Model
         return $this->hasMany(SubBarjas::class, 'id_barjas');
     }
 
+    // Dokumen
 
     public function barjasHPS()
     {
         return $this->hasMany(BarJasHPS::class, 'id_barjas', 'id');
     }
+    public function barJasBOQs()
+    {
+        return $this->hasMany(BarJasBOQ::class, 'id_barjas');
+    }
+
+
 }

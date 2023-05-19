@@ -1,6 +1,6 @@
 @extends('template.app')
 
-@section('title', 'User Setting')
+@section('title', 'Tanda Tangan')
 
 
 @section('content')
