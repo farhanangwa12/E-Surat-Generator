@@ -134,12 +134,13 @@
     <main>
         <h1>LAMPIRAN REKAP HARGA PERKIRAAN SENDIRI (HPS)
         </h1>
-        <p>{{$data2['nomor']}}
+        <p>{{ $data2['nomor'] }}
         </p>
-        <p>{{$data2['tanggal_pekerjaan']}}
+       
+        <p>{{ $data2['tanggal_pekerjaan'] }}
 
         </p>
-        <p><b>{{$data2['nama_pekerjaan']}} </b></p>
+        <p><b>{{ $data2['nama_pekerjaan'] }} </b></p>
         <table>
             <thead>
                 <tr class="blue">
@@ -246,30 +247,33 @@
             <tfoot>
                 <tr style="border-top: 4px solid black;">
                     <td colspan="5" class="footer">Jumlah Harga:</td>
-                    <td>{{$data2['jumlah_harga']}}</td>
-                   
+                    <td>{{ $data2['jumlah_harga'] }}</td>
+
                     {{-- Buggg --}}
                 </tr>
                 <tr>
                     <td colspan="5" class="footer">DIBULATKAN</td>
-                    <td>{{$data2['dibulatkan']}}</td>
+                    <td>{{ $data2['dibulatkan'] }}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="footer">ROK 10%:</td>
-                    <td>{{$data2['rok_10']}}</td>
+                    <td>{{ $data2['rok_10'] }}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="footer">PPN 11%:</td>
-                    <td>{{$data2['ppn_11']}}</td>
+                    <td>{{ $data2['ppn_11'] }}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="footer">Total Harga:</td>
-                    <td>{{$data2['harga_total']}}</td>
+                    <td>{{ $data2['harga_total'] }}</td>
                 </tr>
             </tfoot>
         </table>
-        <p style="text-align: left;margin-top:40px; margin-bottom:40px;">Terbilang: <i>Empat Juta Sembilan Ratus
-                Sembilan Puluh Lima Ribu Rupiah</i></p>
+         {{-- <p style="text-align: left;margin-top:20px; margin-bottom:20px;">Terbilang:
+            <i>{{$data2['harga_total']}}</i></p> --}}
+         
+        <p style="text-align: left;margin-top:20px; margin-bottom:20px;">Terbilang:
+            <i>{{ ucwords(@Terbilang::make($data2['harga_total'])) }}</i></p>
     </main>
     <table style="width: 100%; text-align:center;">
         <tr>
@@ -292,12 +296,19 @@
             </td>
         </tr>
         <tr>
-            <td style="height:40px;"></td>
-            <td style="height:40px;"></td>
+            <td style="height:40px;">@if ($data2['tandatangan_pengadaan'] != 0)
+                <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG( $data2['tandatangan_pengadaan'], 'QRCODE')}}" alt="Barcode">
+            @endif
+            </td>
+            <td style="height:40px;">
+           
+                @if ($data2['tandatangan_manager'] != 0)
+                <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG( $data2['tandatangan_manager'], 'QRCODE')}}" alt="Barcode">
+            @endif</td>
         </tr>
         <tr>
-            <td style="width: 50%;"><b> {{$data2['nama_manager']}} </b></td>
-            <td style="width: 50%;"><b>{{$data2['pengadaan']}}</b></td>
+            <td style="width: 50%;"><b> {{ $data2['nama_manager'] }} </b></td>
+            <td style="width: 50%;"><b>{{ $data2['pengadaan'] }}</b></td>
         </tr>
     </table>
 

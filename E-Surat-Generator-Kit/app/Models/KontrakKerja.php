@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Dokumen\BOQ;
+use App\Models\Dokumen\UND;
 use App\Models\SubKontrak\JenisKontrak;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -43,8 +45,17 @@ class KontrakKerja extends Model
     }
 
 
+    // Dokumen
     public function hps()
     {
         return $this->hasMany(HPS::class, 'id_kontrakkerja', 'id_kontrakkerja');
+    }
+    public function und()
+    {
+        return $this->hasMany(UND::class, 'id_kontrakkerja');
+    }
+    public function boqs()
+    {
+        return $this->hasMany(BOQ::class, 'id_kontrakkerja');
     }
 }

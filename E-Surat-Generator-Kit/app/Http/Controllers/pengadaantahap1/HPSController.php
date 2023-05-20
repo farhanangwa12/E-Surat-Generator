@@ -12,9 +12,11 @@ use App\Models\Penyelenggara;
 use App\Models\SubKontrak\BarJas;
 use App\Models\SubKontrak\JenisKontrak;
 use App\Models\SubKontrak\SubBarjas;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use DNS2D;
 
 class HPSController extends Controller
 {
@@ -42,8 +44,8 @@ class HPSController extends Controller
             $hps->rok10 = 0;
             $hps->ppn11 = 0;
             $hps->total_harga = 0;
-            $hps->tandatangan_pengadaan = 0;
-            $hps->tandatangan_manager = 0;
+            $hps->tandatangan_pengadaan = null;
+            $hps->tandatangan_manager = null;
 
             // Simpan data HPS
             $hps->save();
@@ -245,14 +247,23 @@ class HPSController extends Controller
         }
         // $perhitungancontroller = app(PerhitunganController::class);
         // $barisTerakhir =  $perhitungancontroller->mencariTotalHarga($spreadsheet, "HPS") + 0;
+        // Generate barcode 2D (QR code)
 
+
+
+        $tandatangan_pengadaan = HPS::where('id_kontrakkerja', $id)->first()->tandatangan_pengadaan;
+        $tandatangan_manager = HPS::where('id_kontrakkerja', $id)->first()->tandatangan_manager;
+
+
+
+    
         $data2 = [
             'logokiri' => public_path('undangan/kiri.jpg'),
             'logo' => public_path('undangan/logo.png'), // path ke file header gambar
             // 'tandatangan' =>   DNS2D::getBarcodePNG('4', 'QRCODE'),
             // 'surat' => $surat
             'nomor' => $nomor,
-            'tanggal_pekerjaan' => $tanggal,
+            'tanggal_pekerjaan' => Carbon::createFromFormat('Y-m-d', $tanggal)->locale('id')->isoFormat('dddd, D MMMM YYYY'),
             'nama_pekerjaan' => $nama_pekerjaan,
             'nama_manager' => $nama_manager,
             'pengadaan' => $nama_pengadaan,
@@ -261,8 +272,8 @@ class HPSController extends Controller
             'rok_10' => HPS::where('id_kontrakkerja', $id)->first()->rok10,
             'ppn_11' => HPS::where('id_kontrakkerja', $id)->first()->ppn11,
             'harga_total' => HPS::where('id_kontrakkerja', $id)->first()->total_harga,
-
-
+            'tandatangan_pengadaan' => HPS::where('id_kontrakkerja', $id)->first()->tandatangan_pengadaan == null ?  '0' : preg_replace("/[^0-9]/", "", $tandatangan_pengadaan),
+            'tandatangan_manager' =>HPS::where('id_kontrakkerja', $id)->first()-> tandatangan_manager == null ?  '0' : preg_replace("/[^0-9]/", "", $tandatangan_manager)
 
             // 'jumlah_harga' => $worksheet->getCell('K' . $barisTerakhir)->getFormattedValue(),
             // 'dibulatkan' => $worksheet->getCell('K' . ($barisTerakhir + 1))->getFormattedValue(),
@@ -276,6 +287,7 @@ class HPSController extends Controller
 
 
         ];
+
 
 
         $pdf = PDF::loadView('plnpengadaan.kontraktahap1.HPS.hps', compact('data2', 'kontrakbaru'));
@@ -444,6 +456,7 @@ class HPSController extends Controller
 
             $hps = HPS::find($hps->id);
             $hps->id_kontrakkerja = $id;
+            $hps->total_jumlah = $request->input('total_jumlah');
             $hps->dibulatkan = $request->input('dibulatkan');
             $hps->rok10 = $request->input('rok10');
             $hps->ppn11 = $request->input('ppn11');
@@ -458,6 +471,7 @@ class HPSController extends Controller
             // Buat instance HPS model untuk menyimpan data
             $hps = new HPS();
             $hps->id_kontrakkerja = $id;
+            $hps->total_jumlah = $request->input('total_jumlah');
             $hps->dibulatkan = $request->input('dibulatkan');
             $hps->rok10 = $request->input('rok10');
             $hps->ppn11 = $request->input('ppn11');
@@ -505,5 +519,73 @@ class HPSController extends Controller
 
 
         return redirect()->route('pengajuankontrak.hps.isi', ['id' => $id])->with('success', 'Data berhasil disimpan.');
+    }
+    public function tandatangan($id)
+    {
+        // Logika atau proses yang ingin Anda lakukan dalam metode ini
+        return view('plnpengadaan.kontraktahap1.HPS.hpstandatangan', compact('id'));
+    }
+    public function tandatanganmanager($id)
+    {
+        $this->refresh($id);
+        // Logika atau proses yang ingin Anda lakukan dalam metode ini
+
+        return  view('plnpengadaan.kontraktahap1.HPS.hpstandatanganmanager', compact('id'));
+    }
+    public function simpantandatangan(Request $request)
+    {
+
+        $pengadaan = $request->file('pengadaan');
+        $manager = $request->file('manager');
+
+        $id = $request->input('id');
+
+
+        // $kontrak = KontrakKerja::find($id);
+
+
+        // $fileName = time() . '_' . $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension();
+
+        // $file->move(storage_path('app/public/tandatangan'), $fileName);
+
+        $tandatangan = HPS::where('id_kontrakkerja', $id)->first();
+        $this->refresh($tandatangan->id);
+
+        // ID Tandatangan HPS
+
+        if ($pengadaan) {
+
+            if ($request->hasFile('pengadaan')) {
+                $pengadaan = $request->file('pengadaan');
+                $fileName = time() . '_' . $pengadaan->getClientOriginalName();
+                $pengadaan->storeAs('public/tandatangan', $fileName);
+
+                // Simpan nama file ke kolom tandatangan_pengadaan dalam model HPS
+                $hps = HPS::find($tandatangan->id);
+                $hps->tandatangan_pengadaan = $fileName;
+                $hps->save();
+
+                return 'Tanda Tangan Pengadaan Berhasil.';
+            }
+
+            return 'Tanda Tangan Gagal karena tanda tangan tidak ada.';
+        }
+        if ($manager) {
+
+            if ($request->hasFile('manager')) {
+              
+                $fileName = time() . '_' . $manager->getClientOriginalName();
+                $manager->storeAs('public/tandatangan', $fileName);
+
+                // Simpan nama file ke kolom tandatangan_pengadaan dalam model HPS
+                $hps = HPS::find($tandatangan->id);
+                $hps->tandatangan_manager = $fileName;
+                $hps->save();
+
+                return 'Tanda Tangan Manager Berhasil.';
+            }
+
+            return 'Tanda Tangan Gagal karena tanda tangan tidak ada.';
+        }
     }
 }

@@ -10,9 +10,16 @@ class VendorKontrakKerjaController extends Controller
 {
     public function index()
     {
-        $kontrak = KontrakKerja::where('status','Input Kontrak Vendor')->get();
+        $status = [
+           
 
-        return view('vendor.kontrakkerja', compact('kontrak'));
+            'Kontrak dibatalkan',
+            'Kontrak disetujui',
+            'Tanda Tangan Vendor',
+            'Kontrak Kerja Berjalan'
+        ];
+        $kontrak = KontrakKerja::whereIn('status', $status)->get();
+        return view('vendor.pengisiankontrakkerja',compact('kontrak'));   
     }
     public function detail($id)
     {
@@ -30,6 +37,13 @@ class VendorKontrakKerjaController extends Controller
 
     public function pengisiankontrakkerja()
     {
-        return view('vendor.pengisiankontrakkerja');
+
+        $status = [
+            'Dokumen Input Vendor',
+        ];
+        $kontrak = KontrakKerja::whereIn('status', $status)->get();
+      
+        return view('vendor.kontrakkerja', compact('kontrak'));
+       
     }
 }

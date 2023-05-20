@@ -22,6 +22,10 @@ return new class extends Migration
             $table->string('alamat_provinsi');
             $table->string('bank');
             $table->string('nomor_rek');
+            $table->string('telepon')->nullable();
+            $table->string('website')->nullable();
+            $table->string('faksimili')->nullable();
+            $table->string('email_perusahaan')->nullable();
             $table->timestamps();
         });
         

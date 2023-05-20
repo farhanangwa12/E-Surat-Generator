@@ -23,8 +23,12 @@ class VendorSeeder extends Seeder
                 'alamat_provinsi' => 'Jawa Timur',
                 'bank' => 'BANK BNI',
                 'nomor_rek' => 908990,
+                'telepon' => "0918293003",
+                'website' => 'wwww.multiinarbangunan.com',
+                'faksimili' => '(023) 123414',
+                'email_perusahaan' => 'inarbangunan@office.com'
             ]
-           
+
         ];
 
         foreach ($vendors as $vendor) {

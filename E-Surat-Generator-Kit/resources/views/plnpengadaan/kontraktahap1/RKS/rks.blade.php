@@ -146,7 +146,7 @@
         </table>
     </header>
 
-    
+
 
 
 
@@ -422,32 +422,32 @@
                                     <tr>
                                         <td style="width: 20%;">Nama</td>
                                         <td style="width: 10%;">:</td>
-                                        <td style="width: 70%;">{{$surat->nama}}</td>
+                                        <td style="width: 70%;">{{ $surat->nama }}</td>
                                     </tr>
                                     <tr>
                                         <td style="width: 20%;">Alamat</td>
                                         <td style="width: 10%;">:</td>
-                                        <td style="width: 70%;">{{$surat->alamat}}</td>
+                                        <td style="width: 70%;">{{ $surat->alamat }}</td>
                                     </tr>
                                     <tr>
                                         <td style="width: 20%;">Telepon</td>
                                         <td style="width: 10%;">:</td>
-                                        <td style="width: 70%;">{{$surat->telepon}}</td>
+                                        <td style="width: 70%;">{{ $surat->telepon }}</td>
                                     </tr>
                                     <tr>
                                         <td style="width: 20%;">Website</td>
                                         <td style="width: 10%;">:</td>
-                                        <td style="width: 70%;">{{$surat->website}}</td>
+                                        <td style="width: 70%;">{{ $surat->website }}</td>
                                     </tr>
                                     <tr>
                                         <td style="width: 20%;">Faksimili</td>
                                         <td style="width: 10%;">:</td>
-                                        <td style="width: 70%;">{{$surat->faksimili}}></td>
+                                        <td style="width: 70%;">{{ $surat->faksimili }}></td>
                                     </tr>
                                     <tr>
                                         <td style="width: 20%;">e-mail</td>
                                         <td style="width: 10%;">:</td>
-                                        <td style="width: 70%;">{{$surat->email}}></td>
+                                        <td style="width: 70%;">{{ $surat->email }}></td>
                                     </tr>
                                 </table>
                             </li>
@@ -463,7 +463,7 @@
                         berikut : <br>
                         Untuk Pengguna Barang/Jasa <br>
 
-                         <table style="width: 100%;">
+                        <table style="width: 100%;">
                             <tr>
                                 <td style="width: 20%;">1. Direksi Pekerjaan</td>
                                 <td style="width: 10%;">:</td>
@@ -473,30 +473,30 @@
                                 <td style="width: 20%;">2. Pengawas Pekerjaan</td>
                                 <td style="width: 10%;">:</td>
                                 <td style="width: 70%;">{{ $surat->bab_2_5_pengawaspekerjaan }}</td>
-                            </tr> 
+                            </tr>
                             <tr>
                                 <td style="width: 20%;">3. Pengawas K3</td>
                                 <td style="width: 10%;">:</td>
                                 <td style="width: 70%;">{{ $surat->bab_2_5_pengawask3 }}</td>
                             </tr>
-                          
+
                         </table>
                         Untuk Penyedia Barang/Jasa <br>
                         <table style="width: 100%;">
-                          
+
                             <tr>
                                 <td style="width: 20%;">1. Pengawas Pekerjaan</td>
                                 <td style="width: 10%;">:</td>
-                                <td style="width: 70%;">{{$surat->pengawasPekerjaan}}</td>
-                            </tr> 
+                                <td style="width: 70%;">{{ $surat->pengawasPekerjaan }}</td>
+                            </tr>
                             <tr>
                                 <td style="width: 20%;">2. Pengawas K3</td>
                                 <td style="width: 10%;">:</td>
-                                <td style="width: 70%;">{{$surat->pengawasPekerjaan}}</td>
+                                <td style="width: 70%;">{{ $surat->pengawasPekerjaan }}</td>
                             </tr>
-                          
+
                         </table>
-                       
+
                     </td>
 
                 </tr>
@@ -523,7 +523,7 @@
                         Sumber Pembiayaan <br>
                         {{ $surat->bab_2_8_kontrak }} <br>
                         {{ $surat->bab_2_8_nomor }} <br>
-                        {{ $surat->tanggal }}
+                        {{ $surat->bab_2_8_tanggal }}
 
                     </td>
 
@@ -863,10 +863,18 @@
                 </tr>
 
                 <tr>
-                    <td style="width:50%; text-align:center; height: 80px;"> Tanda Tangan Manager
-                        {{-- <img src="data:image/png;base64,{{$tandatangan}}" alt="barcode" width="100px" height="100px"  />  --}}
+                    <td style="width:50%; text-align:center; height: 80px;">
+                        @if ($surat->tandatangan_manager != 0)
+                            <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG($surat->tandatangan_manager, 'QRCODE') }}"
+                                alt="Barcode">
+                        @endif
+
                     </td>
-                    <td style="width:50%; text-align:center;  height: 80px;">Tanda Tangan Pengadaan
+                    <td style="width:50%; text-align:center;  height: 80px;">
+                        @if ($surat->tandatangan_pengadaan != 0)
+                            <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG($surat->tandatangan_pengadaan, 'QRCODE') }}"
+                                alt="Barcode">
+                        @endif
                     </td>
 
                 </tr>

@@ -3,53 +3,90 @@
 namespace App\Http\Controllers\pengadaantahap2;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dokumen\BANego;
 use App\Models\KontrakKerja;
+use App\Models\PembuatanSuratKontrak;
+use App\Models\Penyelenggara;
+use App\Models\Vendor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Terbilang;
 
 class BANegoController extends Controller
 {
-    // Menampilkan semua data
-    public function index()
-    {
-    }
 
-    // Menampilkan form untuk membuat data baru
-    public function create()
+    public function refresh($id)
     {
-    }
 
-    // Menyimpan data baru ke dalam database
-    public function store(Request $request)
-    {
-    }
+        // Mengecek apakah record banego ada
+        $banego = BANego::where('id_kontrakkerja', $id)->first();
 
+
+        if ($banego) {
+            // Jika record banego ada
+            // Lakukan operasi lain yang diinginkan
+
+            $banego = BANego::find($banego->id);
+            $banego->save();
+        } else {
+            // Jika record banego tidak ada
+
+            // Buat instance banego model untuk menyimpan data
+            $banego = new BANego();
+            $banego->id_kontrakkerja = $id;
+            $banego->tandatangan_pengadaan = null;
+            $banego->tanggal_tandatanganpengadaan =null;
+            
+            $banego->tandatangan_manager =null;
+            $banego->tanggal_tandatanganmanager = null;
+            
+            $banego->tandatangan_pengadaan = null;
+            $banego->tanggal_tandatanganpengadaan = null;
+            
+            $banego->tandatangan_direktur = null;
+            $banego->tanggal_tandatangan = null;
+            
+            $banego->save();
+
+        
+        }
+
+        return 'Data Telah Direfresh';
+    }
     // Menampilkan detail data
     public function show($id, $isDownload)
     {
+        $this->refresh($id);
         $kontrakkerja = KontrakKerja::find($id);
-        $spreadsheet = IOFactory::load(storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster));
-        $worksheet = $spreadsheet->setActiveSheetIndexByName('BA NEGO');
+
+        $banegotanggal = PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_ba_negosiasi')->first()->tanggal_pembuatan;
+        $vendor = Vendor::find($kontrakkerja->id_vendor);
         $surat = [
-            'nomor' => $worksheet->getCell('B8')->getCalculatedValue(),
-            'pekerjaan' => $worksheet->getCell('D11')->getCalculatedValue(),
+            'nomor' => "Nomor : " . PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_ba_negosiasi')->first()->no_surat,
+            'pekerjaan' => strtoupper($kontrakkerja->nama_kontrak) . " PT PLN (PERSERO) UNIT INDUK WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR",
 
             //    isi surat
 
-            'paragraf_1' => $worksheet->getCell('B16')->getCalculatedValue(),
-            
-            
-            'penawaran_semula' => $worksheet->getCell('G22')->getCalculatedValue(),
-            'penawaran_negosiasi' => $worksheet->getCell('G23')->getCalculatedValue(),
+            'paragraf_1' => "Pada  hari  ini,  " . Carbon::parse($banegotanggal)->locale('id')->format('l') . " tanggal " . Terbilang::make(Carbon::parse($banegotanggal)->format('d')) . " bulan " . Carbon::parse($banegotanggal)->format('F') . " tahun " . Terbilang::make($kontrakkerja->tahun) . " (" . Carbon::parse($banegotanggal)->format('d-m-Y') . "), yang bertanda tangan di bawah ini selaku Pejabat Pelaksana Pengadaan Barang/Jasa di Lingkungan PT PLN (Persero) Unit Induk Wilayah Nusa Tenggara Timur Unit Pelaksana Pembangkitan Timor telah menyelenggarakan Negosiasi untuk pekerjaan tersebut di atas dengan hasil sebagai berikut :",
+
+
+            'penawaran_semula' => "LAMP NEGO!J46",
+            'penawaran_negosiasi' => "LAMP NEGO!L46",
 
             // tanda Tangan
-            'namaperusahaan' => $worksheet->getCell('B31')->getCalculatedValue(),
-            
+            'namaperusahaan' => $vendor->penyedia,
+
             // Nama Terang
-            'vendor' => $worksheet->getCell('B31')->getCalculatedValue(),
-            'pengadaan' => $worksheet->getCell('G38')->getCalculatedValue(),
-            'manager' => $worksheet->getCell('A50')->getCalculatedValue()
+            'vendor' => $vendor->nama_vendor,
+            'tandatangan_vendor' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_direktur,
+
+            'pengadaan' =>  Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'pengadaan')->nama_pengguna,
+            'tandatangan_pengadaan' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_pengadaan,
+            'manager' => PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'pengadaan')->first()->nama_pengguna,
+            'tandatangan_manager' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_manager,
+
 
 
 

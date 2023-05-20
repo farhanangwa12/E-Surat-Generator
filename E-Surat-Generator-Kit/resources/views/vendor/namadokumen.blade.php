@@ -1,4 +1,4 @@
-@extends('template.app')
+{{-- @extends('template.app')
 
 @section('title', 'User Setting')
 
@@ -61,4 +61,4 @@
     </div>
 @endsection
 
-@section('javascript')
+@section('javascript') --}}

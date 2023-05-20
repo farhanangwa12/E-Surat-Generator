@@ -28,28 +28,7 @@ class KontrakKerjaController extends Controller
 {
 
 
-    public function  terbilang($nilai)
-    {
-        $huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
-        if ($nilai < 12)
-            return $huruf[$nilai];
-        elseif ($nilai < 20)
-            return $huruf[$nilai - 10] . " belas";
-        elseif ($nilai < 100)
-            return $huruf[$nilai / 10] . " puluh " . $huruf[$nilai % 10];
-        elseif ($nilai < 200)
-            return "seratus " . $this->terbilang($nilai - 100);
-        elseif ($nilai < 1000)
-            return $huruf[$nilai / 100] . " ratus " . $this->terbilang($nilai % 100);
-        elseif ($nilai < 2000)
-            return "seribu " . $this->terbilang($nilai - 1000);
-        elseif ($nilai < 1000000)
-            return $this->terbilang($nilai / 1000) . " ribu " . $this->terbilang($nilai % 1000);
-        elseif ($nilai < 1000000000)
-            return $this->terbilang($nilai / 1000000) . " juta " . $this->terbilang($nilai % 1000000);
-        else
-            return "nilai terlalu besar";
-    }
+
     private function dateConverter($date)
     {
         return str_replace("/", "-", $date);
@@ -64,7 +43,12 @@ class KontrakKerjaController extends Controller
 
     public function index()
     {
-        $kontrak = KontrakKerja::with('vendor')->where('status', 'Input pengadaan Fase 1')->get();
+        $status = [
+            'Dokumen Input Pengadaan Tahap 1',
+            'Kontrak dibatalkan vendor',
+            'Kontrak Kerja Berjalan'
+        ];
+        $kontrak = KontrakKerja::with('vendor')->whereIn('status', $status)->get();
 
 
         // print_r($kontrak[0]['vendor']['penyedia']);
@@ -188,6 +172,7 @@ class KontrakKerjaController extends Controller
                 $kontrakkerja->tanggal_akhir_pekerjaan = date('Y-m-d', strtotime($this->dateConverter($templateWorksheet->getCell('C10')->getCalculatedValue()) . ' + ' . $this->dateConverter($templateWorksheet->getCell('C6')->getCalculatedValue()) . ' days '));
                 $kontrakkerja->id_vendor = 1;
                 $kontrakkerja->lokasi_pekerjaan = $templateWorksheet->getCell('C22')->getValue();
+                $kontrakkerja->status = "Dokumen Input Pengadaan Tahap 1";
                 $kontrakkerja->no_urut = $templateWorksheet->getCell('K5')->getValue();
                 $kontrakkerja->tahun = $templateWorksheet->getCell('K6')->getValue();
                 $kontrakkerja->kode_masalah = $templateWorksheet->getCell('K7')->getValue();
@@ -520,12 +505,12 @@ class KontrakKerjaController extends Controller
                 }
 
 
-                if (file_exists(storage_path('app/' . $path)) ) {
+                if (file_exists(storage_path('app/' . $path))) {
                     // dd(file_exists(storage_path('app/' . $path)));
                     // File ada di penyimpanan
                     unlink(storage_path('app/' . $path));
                     // echo 'File ditemukan.';
-                } 
+                }
                 // else {
                 //     // File tidak ada di penyimpanan
                 //     // echo 'File tidak ditemukan.';
@@ -678,7 +663,7 @@ class KontrakKerjaController extends Controller
         $kontrakkerja->tahun = $worksheet->getCell('K6')->getValue();
         $kontrakkerja->kode_masalah = $worksheet->getCell('K7')->getValue();
         $kontrakkerja->filemaster = $newFileName;
-
+        $kontrakkerja->status = "Dokumen Input Pengadaan Tahap 1";
         $kontrakkerja->save();
         $id = $kontrakkerja->id_kontrakkerja;
 
@@ -1338,7 +1323,10 @@ class KontrakKerjaController extends Controller
     // Nego Harga
     public function negoharga()
     {
-        $kontrak = KontrakKerja::with('vendor')->where('status', 'Input Pengadaan Fase 2')->get();
+        $status = [
+            'Dokumen Input Pengadaan Tahap 2'
+        ];
+        $kontrak = KontrakKerja::with('vendor')->whereIn('status', $status)->get();
         return view('plnpengadaan.kontraktahap2.negoharga', compact('kontrak'));
     }
     // Halaman Detail
@@ -1351,7 +1339,7 @@ class KontrakKerjaController extends Controller
         $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
 
         $spreadsheet = IOFactory::load($path);
-        $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet = $spreadsheet->setActiveSheetIndexByName('MASTER');
         // Edit Detail Kontrak
         $kontrak1 = [
             'nama_kontrak' => $worksheet->getCell('C12')->getValue(),
@@ -1399,7 +1387,9 @@ class KontrakKerjaController extends Controller
             'pengawas_lapangan' => $worksheet->getCell('F43')->getValue()
         ];
         $kontrak = json_decode(json_encode($kontrak1));
-
+        // Tutup instance setelah digunakan
+        $spreadsheet->disconnectWorksheets();
+        unset($spreadsheet);
         return  view('plnpengadaan.kontraktahap2.detail', compact('kontrakkerja', 'kontrak'));
     }
 
@@ -1408,7 +1398,10 @@ class KontrakKerjaController extends Controller
 
     public function tandatanganpengadaan()
     {
-        $kontrak = KontrakKerja::with('vendor')->where('status', 'Validasi Tanda Tangan Pengadaan')->get();
+        $status = [
+            'Validasi Dokumen Pengadaan Tahap 1',
+        ];
+        $kontrak = KontrakKerja::with('vendor')->whereIn('status', $status)->get();
         return view('plnpengadaan.tandatanganpengadaan.tandatangan', compact('kontrak'));
     }
     public function simpanttd(Request $request)
@@ -1484,7 +1477,7 @@ class KontrakKerjaController extends Controller
         $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
 
         $spreadsheet = IOFactory::load($path);
-        $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet = $spreadsheet->setActiveSheetIndexByName('MASTER');
         // Edit Detail Kontrak
         $kontrak1 = [
             'nama_kontrak' => $worksheet->getCell('C12')->getValue(),
@@ -1540,6 +1533,80 @@ class KontrakKerjaController extends Controller
 
     public function tandatanganmanager()
     {
-        return view('plnmanager.tandatangan');
+        $status = [
+            'Kontrak disetujui',
+            'Tanda Tangan Manager',
+            'Kontrak Kerja Berjalan'
+        ];
+        $kontrak = KontrakKerja::with('vendor')->whereIn('status', $status)->get();
+
+
+        return view('plnmanager.tandatangan', compact('kontrak'));
+    }
+    public function detailkontrakmanager($id)
+    {
+        $kontrakkerja = KontrakKerja::find($id);
+
+        // Path File
+        $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
+
+        $spreadsheet = IOFactory::load($path);
+        $worksheet = $spreadsheet->setActiveSheetIndexByName('MASTER');
+        // dd();
+        // Edit Detail Kontrak
+
+        $kontrak1 = [
+            'nama_kontrak' => $worksheet->getCell('C12')->getValue(),
+            'lama_pekerjaan' => $worksheet->getCell('C6')->getValue(),
+            'no_urut' => $worksheet->getCell('K5')->getValue(),
+            'tahun' => $worksheet->getCell('K6')->getValue(),
+            'kode_masalah' => $worksheet->getCell('K7')->getValue(),
+            'lokasi_pekerjaan' => $worksheet->getCell('C22')->getValue(),
+
+            // SPMK
+            'tanggal_spmk' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('C8')->getValue()))),
+            'nomor_spmk' => $worksheet->getCell('C9')->getValue(),
+
+            // Tanggal Pengerjaan Dokumen
+            'tanggal_rks' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L10')->getCalculatedValue()))),
+            'tanggal_hps' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L11')->getCalculatedValue()))),
+            'tanggal_pakta_pejabat' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L12')->getCalculatedValue()))),
+            'tanggal_undangan' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L13')->getCalculatedValue()))),
+            'tanggal_pakta_pengguna' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L14')->getCalculatedValue()))),
+
+            'tanggal_ba_buka' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L18')->getValue()))),
+            'tanggal_ba_evaluasi' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L19')->getValue()))),
+            'tanggal_ba_negosiasi' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L20')->getValue()))),
+            'tanggal_ba_hasil_pl' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L21')->getValue()))),
+            'tanggal_spk' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L22')->getValue()))),
+
+            // Anggaran
+            'skk_ao' => $worksheet->getCell('C26')->getValue(),
+            'tanggal_anggaran' =>  date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('C27')->getValue()))),
+
+            // Vendor
+            'penyedia' => $worksheet->getCell('F29')->getValue(),
+            'direktur' => $worksheet->getCell('F30')->getValue(),
+            'alamat_jalan' => $worksheet->getCell('F31')->getValue(),
+            'alamat_kota' => $worksheet->getCell('F32')->getValue(),
+            'nama_bank' => $worksheet->getCell('F34')->getValue(),
+            'nomor_rekening' => $worksheet->getCell('F35')->getValue(),
+
+            // Penyelenggara
+            'manager' => $worksheet->getCell('F37')->getValue(),
+            'pejabat_pelaksana_pengadaan' => $worksheet->getCell('F38')->getValue(),
+            'direksi' => $worksheet->getCell('F40')->getValue(),
+            'pengawas_pekerjaan' => $worksheet->getCell('F41')->getValue(),
+            'pengawas_k3' => $worksheet->getCell('F42')->getValue(),
+            'pengawas_lapangan' => $worksheet->getCell('F43')->getValue()
+        ];
+        $kontrak = json_decode(json_encode($kontrak1));
+
+        $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->get();
+        // dd($kontrak->nama_kontrak);
+
+        unset($spreadsheet);
+
+        return view('plnmanager.detail', compact('kontrakkerja', 'kontrak', 'jenis_kontrak', 'id'));
     }
 }

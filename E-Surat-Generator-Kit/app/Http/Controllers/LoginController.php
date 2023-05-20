@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -132,5 +133,49 @@ class LoginController extends Controller
         $user_profile->email = $request->input('email');
         $user_profile->save();
         return redirect()->back();
+    }
+
+    public function registrasivendor()
+    {
+        return view('login.register');
+    }
+    public function simpanvendor(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        
+        ]);
+
+        $dataakun = [
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'role' => 'vendor',
+       
+        ];
+
+        if ($request->hasFile('picture_profile')) {
+            $file = $request->file('picture_profile');
+            $filename = $file->getClientOriginalName() . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('public/photoprofile', $filename);
+            $dataakun['picture_profile'] = $filename;
+        }
+      
+        $user = User::create($dataakun);
+        $datavendor = $request->validate([
+            'penyedia' => 'required',
+            'direktur' => 'required',
+            'alamat_jalan' => 'required',
+            'alamat_kota' => 'required',
+            'alamat_provinsi' => 'required',
+            'bank' => 'required',
+            'nomor_rek' => 'required',
+        ]);
+        $datavendor['id_akun'] = $user->id;
+
+        Vendor::create($datavendor);
+        return redirect()->route('login')->with('success', 'Registrasi vendor berhasil. Silakan login.');
     }
 }

@@ -123,12 +123,12 @@
     <main>
         <div class="judul">
             <h1>BERITA ACARA HASIL PELAKSANAAN NEGOSIASI</h1>
-            <p style="margin-right: 2px;"><b>{{$surat->nomor}}</b></p>
+            <p style="margin-right: 2px;"><b>{{ $surat->nomor }}</b></p>
             <div class="pekerjaan">
                 <table>
                     <tr>
                         <td>Pekerjaan:</td>
-                        <td style="text-align: justify;"><i><b>{{$surat->pekerjaan}}</b></i></td>
+                        <td style="text-align: justify;"><i><b>{{ $surat->pekerjaan }}</b></i></td>
                     </tr>
                 </table>
 
@@ -137,17 +137,17 @@
         </div>
 
         <div class="content">
-            <p>{{$surat->paragraf_1}} </p>
+            <p>{{ $surat->paragraf_1 }} </p>
 
             <table>
                 <tr>
                     <td>- Penawaran semula sebesar</td>
-                    <td>: {{$surat->penawaran_semula}}</td>
+                    <td>: {{ $surat->penawaran_semula }}</td>
                     <td>(Termasuk PPN 11%)</td>
                 </tr>
                 <tr>
                     <td>- Penawaran setelah negosiasi</td>
-                    <td>: {{$surat->penawaran_negosiasi}}</td>
+                    <td>: {{ $surat->penawaran_negosiasi }}</td>
                     <td>(Termasuk PPN 11%)</td>
                 </tr>
             </table>
@@ -157,7 +157,7 @@
                 <tr>
                     <td style="width: 50%;">SETUJU DAN SEPAKAT, <br>
                         PENYEDIA BARANG/JASA <br>
-                        {{$surat->namaperusahaan}} <br>
+                        {{ $surat->namaperusahaan }} <br>
                         DIREKTUR
                     </td>
                     <td style="width: 50%;">DINEGOSIASI OLEH, <br>
@@ -168,30 +168,45 @@
 
                 </tr>
                 <tr>
-                    <td style="height: 5%;">Tanda Tangan Direktur</td>
-                    <td>Tanda Tangan Pengadaan </td>
+                    <td style="height: 5%;">
+                        @if ($surat->tandatangan_vendor != 0)
+                            <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG($surat->tandatangan_vendor, 'QRCODE') }}"
+                                alt="Barcode">
+                        @endif
+                    </td>
+                    <td>
+                        @if ($surat->tandatangan_vendor != 0)
+                            <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG($surat->tandatangan_pengadaan, 'QRCODE') }}"
+                                alt="Barcode">
+                        @endif
+                    </td>
 
                 </tr>
                 <tr>
-                    <td><b>{{$surat->vendor}} </b></td>
-                    <td><b>{{$surat->pengadaan}} </b> </td>
+                    <td><b>{{ $surat->vendor }} </b></td>
+                    <td><b>{{ $surat->pengadaan }} </b> </td>
 
                 </tr>
                 <tr>
                     <td colspan="2">DISAHKAN OLEH, <br>
                         PENGGUNA BARANG/JASA <br>
                         PT PLN (PERSERO) UPK TIMOR <br>
-                        MANAGER <br> 
+                        MANAGER <br>
                     </td>
 
 
                 </tr>
-                <tr >
-                    <td colspan="2" style="height: 5%;">Tanda Tangan Manager</td>
-                
+                <tr>
+                    <td colspan="2" style="height: 5%;">
+                        @if ($surat->tandatangan_vendor != 0)
+                            <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG($surat->tandatangan_manager, 'QRCODE') }}"
+                                alt="Barcode">
+                        @endif
+                    </td>
+
                 </tr>
                 <tr>
-                    <td colspan="2"><b>{{$surat->manager}}
+                    <td colspan="2"><b>{{ $surat->manager }}
                         </b></td>
 
 
