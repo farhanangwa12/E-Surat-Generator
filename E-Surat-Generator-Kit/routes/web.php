@@ -63,13 +63,16 @@ Route::post('/ubahuser', [LoginController::class, 'ubahuser'])->name('ubahuser')
 Route::prefix('und')->group(function () {
     Route::get('undangan/{id}/{isDownload}', [UndanganController::class, 'Undangan'])->name('pengajuankontrak.undangan');
     Route::get('tandatanganpengadaanund/{id_kontrakkerja}', [UndanganController::class, 'tandatanganpengadaan'])->name('undangan.tandatangan');
-    
+
     Route::post('simpantandatangan', [UndanganController::class, 'simpantandatangan'])->name('undangan.simpantandatangan');
 });
 Route::prefix('rks')->group(function () {
     Route::get('show/{id}/{isDownload}', [RKSController::class, 'showrks'])->name('pengajuankontrak.rks');
     Route::get('isi/{id}', [RKSController::class, 'isirks'])->name('rks.isi');
     Route::put('update/{id}', [RKSController::class, 'updaterks'])->name('rks.update');
+    Route::get('tanda-tangan-pengadaan/{id}', [RKSController::class, 'tandaTanganPengadaan'])->name('rks.tanda-tangan.pengadaan');
+    Route::get('tanda-tangan-manager/{id}', [RKSController::class, 'tandaTanganManager'])->name('rks.tanda-tangan.manager');
+    Route::post('tanda-tangan-manager', [RKSController::class, 'simpanTandaTangan'])->name('rks.simpan-tanda-tangan');
 });
 Route::prefix('boq')->group(function () {
     Route::get('{id}/{isDownload}/detail', [BOQController::class, 'detail'])->name('pengajuankontrak.boq.detail');

@@ -251,4 +251,78 @@ class RKSController extends Controller
         $writer->save($path);
         return redirect()->back()->with('success', 'Berhasil mengupdate excel');
     }
+
+
+    public function tandaTanganPengadaan($id)
+    {
+        return view('plnpengadaan.kontraktahap1.RKS.rkstandatangan_pengadan', compact('id'));
+        
+    }
+    public function tandaTanganManager($id)
+    {
+
+        return view('plnpengadaan.kontraktahap1.RKS.rkstandatangan_manager', compact('id'));
+   
+    }
+
+
+    public function simpanTandaTangan(Request $request)
+    {
+      
+        $pengadaan = $request->file('pengadaan');
+        $manager = $request->file('manager');
+
+        $id = $request->input('id');
+
+
+        // $kontrak = KontrakKerja::find($id);
+
+
+        // $fileName = time() . '_' . $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension();
+
+        // $file->move(storage_path('app/public/tandatangan'), $fileName);
+
+        $tandatangan = RKS::where('id_kontrakkerja', $id)->first();
+        $this->refresh($id);
+
+        // ID Tandatangan rks
+
+        if ($pengadaan) {
+
+            if ($request->hasFile('pengadaan')) {
+                $pengadaan = $request->file('pengadaan');
+                $fileName = time() . '_' . $pengadaan->getClientOriginalName();
+                $pengadaan->storeAs('public/tandatangan', $fileName);
+
+                // Simpan nama file ke kolom tandatangan_pengadaan dalam model rks
+                $rks = RKS::find($tandatangan->id);
+                $rks->tandatangan_pengadaan = $fileName;
+                $rks->tanggal_tandatanganpengadaan = Carbon::now();
+                $rks->save();
+
+                return 'Tanda Tangan Pengadaan Berhasil.';
+            }
+
+            return 'Tanda Tangan Gagal karena tanda tangan tidak ada.';
+        }
+        if ($manager) {
+
+            if ($request->hasFile('manager')) {
+              
+                $fileName = time() . '_' . $manager->getClientOriginalName();
+                $manager->storeAs('public/tandatangan', $fileName);
+
+                // Simpan nama file ke kolom tandatangan_pengadaan dalam model rks
+                $rks = RKS::find($tandatangan->id);
+                $rks->tandatangan_manager = $fileName;
+                $rks->tanggal_tandatanganmanager = Carbon::now();
+                $rks->save();
+
+                return 'Tanda Tangan Manager Berhasil.';
+            }
+
+            return 'Tanda Tangan Gagal karena tanda tangan tidak ada.';
+        }
+
+    }
 }

@@ -404,7 +404,8 @@
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>Undangan</td>
                                         <td>
-                                            <a href="{{ route('undangan.tandatangan', ['id_kontrakkerja' => $kontrakkerja->id_kontrakkerja]) }}" class="btn btn-primary">Tanda Tangan</a>
+                                            <a href="{{ route('undangan.tandatangan', ['id_kontrakkerja' => $kontrakkerja->id_kontrakkerja]) }}"
+                                                class="btn btn-primary">Tanda Tangan</a>
                                             <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Preview</a>
                                             <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
@@ -414,7 +415,9 @@
                                     <tr>
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>RKS</td>
-                                        <td><a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                        <td>
+                                            <a href="{{ route('rks.tanda-tangan.pengadaan', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tanda Tangan</a>
+                                            <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Preview</a>
                                             <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
                                                 class="btn btn-primary">Download</a>
