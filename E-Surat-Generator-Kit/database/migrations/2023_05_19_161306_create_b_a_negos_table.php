@@ -13,7 +13,17 @@ return new class extends Migration
     {
         Schema::create('b_a_negos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_kontrakkerja');
+            $table->string('tandatangan_pengadaan')->nullable();
+            $table->date('tanggal_tandatanganpengadaan')->nullable();
+
+            $table->string('tandatangan_manager')->nullable();
+            $table->date('tanggal_tandatanganmanager')->nullable();
+
+            $table->string('tandatangan_direktur')->nullable();
+            $table->date('tanggal_tandatangan')->nullable();
             $table->timestamps();
+            $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas');
         });
     }
 

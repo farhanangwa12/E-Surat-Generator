@@ -416,7 +416,9 @@
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>RKS</td>
                                         <td>
-                                            <a href="{{ route('rks.tanda-tangan.pengadaan', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tanda Tangan</a>
+                                            <a
+                                                href="{{ route('rks.tanda-tangan.pengadaan', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tanda
+                                                Tangan</a>
                                             <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Preview</a>
                                             <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
@@ -433,6 +435,82 @@
 
 
                                             <a href="{{ route('pengajuankontrak.boq.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                class="btn btn-primary">Download</a>
+                                        </td>
+                                    </tr>
+
+
+
+                                    <tr style="background: #743461;color: #ffffff;">
+                                        <td colspan="3" style="text-align: center;">Pengadaan tahap 2</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">{{ $no++ }}</th>
+                                        <td>BA Nego</td>
+                                        <td>
+                                            <a
+                                                href="#">Tanda
+                                                Tangan</a>
+                                            <a href="{{ route('banego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                class="btn btn-primary">Detail</a>
+
+
+                                            <a href="{{ route('banego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                class="btn btn-primary">Download</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">{{ $no++ }}</th>
+                                        <td>Lamp Nego</td>
+                                        <td><a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                class="btn btn-primary">Detail</a>
+
+
+                                            <a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                class="btn btn-primary">Download</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">{{ $no++ }}</th>
+                                        <td>Cover</td>
+                                        <td><a href="{{ route('cover.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                class="btn btn-primary">Detail</a>
+
+
+                                            <a href="{{ route('cover.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                class="btn btn-primary">Download</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">{{ $no++ }}</th>
+                                        <td>Sampul</td>
+                                        <td><a href="{{ route('sampul.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                class="btn btn-primary">Detail</a>
+
+
+                                            <a href="{{ route('sampul.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                class="btn btn-primary">Download</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">{{ $no++ }}</th>
+                                        <td>SPKBJ</td>
+                                        <td><a href="{{ route('spkbj.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                class="btn btn-primary">Detail</a>
+
+
+                                            <a href="{{ route('spkbj.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                class="btn btn-primary">Download</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">{{ $no++ }}</th>
+                                        <td>L-SPK</td>
+                                        <td><a href="{{ route('lspk.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                class="btn btn-primary">Detail</a>
+
+
+                                            <a href="{{ route('lspk.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
                                                 class="btn btn-primary">Download</a>
                                         </td>
                                     </tr>
