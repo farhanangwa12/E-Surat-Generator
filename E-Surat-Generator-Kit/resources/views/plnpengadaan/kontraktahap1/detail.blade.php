@@ -440,6 +440,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr style="background: #743461;color: #ffffff;">
+                                        <td colspan="3" style="text-align: center;">Pengadaan Tahap 1</td>
+                                    </tr>
                                     @php
                                         $no = 1;
                                     @endphp
@@ -447,8 +450,8 @@
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>HPS</td>
                                         <td>
-                                            <a href="{{ route('hpstandatangan', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                                class="btn btn-primary">Tanda Tangan HPS</a>
+                                            <a href="{{ route('pengajuankontrak.hps.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
+                                                class="btn btn-primary">Isi HPS</a>
 
                                             <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Detail</a>
@@ -464,9 +467,9 @@
                                     <tr>
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>Undangan</td>
-                                        <td><a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 'I']) }}"
+                                        <td><a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Preview</a>
-                                            <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 'D']) }}"
+                                            <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
                                                 class="btn btn-primary">Download</a>
                                         </td>
                                     </tr>
@@ -509,7 +512,7 @@
                             <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
                                 <a href="{{ route('pengajuankontrak.index') }}" class="btn btn-info">Kembali</a>
                                 <form
-                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Kontrak Kerja Berjalan', 'routeName' => 'pengajuankontrak.index']) }}"
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Validasi Dokumen Pengadaan Tahap 1', 'routeName' => 'pengajuankontrak.index']) }}"
                                     method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-primary">Kirim</button>
