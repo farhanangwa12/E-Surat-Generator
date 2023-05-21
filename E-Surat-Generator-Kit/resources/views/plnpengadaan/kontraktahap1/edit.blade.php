@@ -128,12 +128,13 @@
 
 
                         <div class="card-body">
-                            @foreach ($sumberanggaran as $item)
+                          
                             <div class="row align-item-start mb-3">
 
                                 <div class="form-group col">
                                     <label for="skk-ao">SKK-AO</label>
-                                    <input type="text" name="skk-ao" class="form-control" id="skk-ao" value="{{ $item->skk_ao }}"
+                                 
+                                    <input type="text" name="skk-ao" class="form-control" id="skk-ao" value="{{ $sumberanggaran->skk_ao }}"
                                         placeholder="Masukkan SKK-AO">
                                 </div>
 
@@ -142,12 +143,12 @@
 
                                 <div class="form-group col">
                                     <label for="tanggal_anggaran">Tanggal Anggaran</label>
-                                    <input type="date" name="tanggal_anggaran" class="form-control" id="tanggal_anggaran" value="{{ $item->tanggal_anggaran }}"
+                                    <input type="date" name="tanggal_anggaran" class="form-control" id="tanggal_anggaran" value="{{ $sumberanggaran->tanggal_anggaran }}"
                                         placeholder="Masukkan Tanggal Anggaran">
                                 </div>
 
                             </div>
-                            @endforeach
+                          
                          
                         </div>
                     </div>

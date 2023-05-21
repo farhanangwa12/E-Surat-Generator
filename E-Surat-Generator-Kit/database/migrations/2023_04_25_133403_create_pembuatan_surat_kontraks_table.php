@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pembuatan_surat_kontraks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_kontrakkerja');
-            $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas');
+            $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas')->onDelete('cascade');
             $table->string('nama_surat');
             $table->string('no_surat');
             $table->date('tanggal_pembuatan');

@@ -295,7 +295,7 @@ Route::prefix('pengadaan')->middleware('auth', 'role:pengadaan')->group(function
         // Route untuk upload file excel memudahkan pengguna
         Route::post('/kontrak/upload', [KontrakKerjaController::class, 'uploadFileExcel'])->name('kontrak.upload');
         // Route untuk download file template
-        Route::get('kontrak/download-template', [KontrakKerjaController::class, 'downloadTemplate'])->name('kontrak.downloadTemplate');
+        Route::get('/kontrak/download-template', [KontrakKerjaController::class, 'downloadTemplate'])->name('kontrak.downloadTemplate');
 
         // Route untuk halaman create user
         Route::get('/create', [KontrakKerjaController::class, 'create'])->name('pengajuankontrak.create');
@@ -308,7 +308,7 @@ Route::prefix('pengadaan')->middleware('auth', 'role:pengadaan')->group(function
         // Route untuk menghapus data user berdasarkan ID
         Route::delete('/{id}/destroy', [KontrakKerjaController::class, 'destroy'])->name('pengajuankontrak.destroy');
 
-        Route::get('{id}/detail', [KontrakKerjaController::class, 'detailkontrak'])->name('pengajuankontrak.detail');
+        Route::get('/{id}/detail', [KontrakKerjaController::class, 'detailkontrak'])->name('pengajuankontrak.detail');
 
 
 

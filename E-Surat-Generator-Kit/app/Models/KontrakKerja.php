@@ -13,7 +13,20 @@ class KontrakKerja extends Model
     use HasFactory;
     protected $primaryKey = 'id_kontrakkerja';
     protected $fillable = [
-        'nama_kontrak', 'id_vendor', 'tanggal_pekerjaan', 'tanggal_akhir_pekerjaan','lokasi_pekerjaan','no_urut','tahun','kode_masalah', 'filemaster'
+        'id_kontrakkerja',
+        'nama_kontrak',
+        'id_vendor',
+        'tanggal_spmk',
+        'no_spmk',
+        'tanggal_kontrak',
+        'tanggal_pekerjaan',
+        'tanggal_akhir_pekerjaan',
+        'lokasi_pekerjaan',
+        'no_urut',
+        'tahun',
+        'kode_masalah',
+        'status',
+        'filemaster'
     ];
     public function vendor()
     {

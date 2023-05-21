@@ -12,24 +12,34 @@
                 <div class="card">
                     <div class="card-header">
                         <h1>Upload File Excel</h3>
-                        <p class="text-muted">Silahkan upload file excel master untuk melewati pengisian, jika tidak maka
-                            tidak perlu mengupload file excel apapun. untuk contoh template kami lampirkan di bawah sebagai
-                            berikut :</p>
-                        <a href="{{ route('kontrak.downloadTemplate') }}" class="btn btn-primary mb-3">Download Template</a>
-                        <div>
-                            <h4>Syarat Upload File Excel</h4>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">- Pastikan ada worksheet bernama BOQ</li>
-                                <li class="list-group-item">- Format Jenis Pekerjaan Barang / Jasa Nomornya harus romawi
-                                    disertai titik contoh : I.</li>
-                                <li class="list-group-item">- Format Data Pekerjaan Nomor harus angka tanpa titik : Contoh
-                                    1, 2,
-                                    3</li>
-                                <li class="list-group-item">- Format Sub Data bagian nomor harus dikosongi namun pada uraian
-                                    diberikan tanda "-" dengan 1 kali spasi setelahnya pada awal contoh : - Cable LAN and
-                                    connector</li>
-                            </ul>
-                        </div>
+                            <p class="text-muted">Silahkan upload file excel master untuk melewati pengisian, jika tidak maka
+                                tidak perlu mengupload file excel apapun. untuk contoh template kami lampirkan di bawah
+                                sebagai
+                                berikut :</p>
+                            <a href="{{ route('kontrak.downloadTemplate') }}" class="btn btn-primary mb-3">Download
+                                Template</a>
+                            <div>
+                                <h4>Syarat Upload File Excel</h4>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">- Pastikan ada worksheet bernama BOQ & Master</li>
+                                    <li class="list-group-item">- Data yang disimpan dari Excel Worksheet MASTER yaitu Data Kontrak, Data Surat dan nomor, Data Penyelenggara PLN</li>
+                                    <li class="list-group-item">- Data yang disimpan dari Excel Worksheet BOQ yaitu hanya Data dari Uraian, Volume, dan Satuan. pada Uraian terdapat 3 data yang disimpan yaitu Jenis Pekerjaan, Data Barang/jasa dan Sub Data</li>
+
+
+                                    <li class="list-group-item">- Format Jenis Pekerjaan Barang / Jasa Nomornya harus romawi
+                                        disertai titik contoh : I. </li>
+                                    <li class="list-group-item">- Format Data Barang/Jasa Nomor harus angka tanpa titik :
+                                        Contoh
+                                        1, 2,
+                                        3</li>
+                                    <li class="list-group-item">- Format Sub Data bagian nomor harus dikosongi namun pada
+                                        uraian
+                                        diberikan tanda "-" dengan 1 kali spasi setelahnya pada awal contoh : - Cable LAN
+                                        and
+                                        connector</li>
+                                </ul>
+                              
+                            </div>
                     </div>
                     <div class="card-body">
                         @if ($errors->any())
@@ -383,18 +393,6 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="undangan">Undangan</label>
-                                <div class="row">
-                                    <div class="col"><input type="text" name="nomor_undangan" class="form-control"
-                                            id="nomor_undangan" placeholder="Nomor HPS" readonly>
-                                    </div>
-                                    <div class="col"> <input type="date" name="tanggal_undangan"
-                                            class="form-control" id="tanggal_undangan"></div>
-                                </div>
-
-
-                            </div>
-                            <div class="form-group mb-3">
                                 <label for="pakta_pengguna">PAKTA PENGGUNA</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_pakta_pengguna"
@@ -406,6 +404,19 @@
 
                                 </div>
                             </div>
+                            <div class="form-group mb-3">
+                                <label for="undangan">Undangan</label>
+                                <div class="row">
+                                    <div class="col"><input type="text" name="nomor_undangan" class="form-control"
+                                            id="nomor_undangan" placeholder="Nomor HPS" readonly>
+                                    </div>
+                                    <div class="col"> <input type="date" name="tanggal_undangan"
+                                            class="form-control" id="tanggal_undangan"></div>
+                                </div>
+
+
+                            </div>
+
 
 
                             <br>
