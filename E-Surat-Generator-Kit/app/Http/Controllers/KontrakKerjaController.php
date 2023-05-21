@@ -111,17 +111,53 @@ class KontrakKerjaController extends Controller
 
                 $kontrakkerja->tanggal_akhir_pekerjaan =  $worksheetMaster->getCell('C11')->getFormattedValue() == '' ? '' : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('C11')->getCalculatedValue()))->toDateString();
                 $kontrakkerja->id_vendor = 1;
+                $vendor = Vendor::where('penyedia', $worksheetMaster->getCell('F29')->getFormattedValue())->first();
+
+                if (!$vendor) {
+
+                    $vendor1 = new Vendor();
+                    $vendor1->penyedia = $worksheetMaster->getCell('F29')->getFormattedValue();
+                    $vendor1->direktur = $worksheetMaster->getCell('F30')->getFormattedValue();
+
+
+                    $vendor1->alamat_jalan = $worksheetMaster->getCell('F31')->getFormattedValue();
+
+                    $vendor1->alamat_kota = explode(', ', $worksheetMaster->getCell('F32')->getFormattedValue())[0];
+                    $vendor1->alamat_provinsi =  explode(', ', $worksheetMaster->getCell('F32')->getFormattedValue())[1];
+                    $vendor1->direktur = $worksheetMaster->getCell('F30')->getFormattedValue();
+                    $vendor1->bank =  $worksheetMaster->getCell('F34')->getFormattedValue();
+                    $vendor1->nomor_rek =  $worksheetMaster->getCell('F35')->getFormattedValue();
+                    $vendor1->save();
+                } else {
+                    $vendor1 = Vendor::find($vendor->id_vendor);
+                    $vendor1->penyedia = $worksheetMaster->getCell('F29')->getFormattedValue();
+                    $vendor1->direktur = $worksheetMaster->getCell('F30')->getFormattedValue();
+
+
+                    $vendor1->alamat_jalan = $worksheetMaster->getCell('F31')->getFormattedValue();
+
+                    $vendor1->alamat_kota = explode(', ', $worksheetMaster->getCell('F32')->getFormattedValue())[0];
+                    $vendor1->alamat_provinsi =  explode(', ', $worksheetMaster->getCell('F32')->getFormattedValue())[1];
+                    $vendor1->direktur = $worksheetMaster->getCell('F30')->getFormattedValue();
+                    $vendor1->bank =  $worksheetMaster->getCell('F34')->getFormattedValue();
+                    $vendor1->nomor_rek =  $worksheetMaster->getCell('F35')->getFormattedValue();
+                    $vendor1->save();
+                }
+
+
+                $kontrakkerja->id_vendor = $vendor1->id_vendor;
+
                 $kontrakkerja->lokasi_pekerjaan = $worksheetMaster->getCell('C22')->getValue();
 
-                $kontrakkerja->tanggal_spmk  = $worksheetMaster->getCell('C8')->getFormattedValue() == '' ? null :Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('C8')->getFormattedValue()))->toDateString();
-               
+                $kontrakkerja->tanggal_spmk  = $worksheetMaster->getCell('C8')->getFormattedValue() == '' ? null : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('C8')->getFormattedValue()))->toDateString();
+
                 $kontrakkerja->no_spmk = $request->input('nomor_spmk'); // Nomor SPMK
                 $kontrakkerja->status = "Dokumen Input Pengadaan Tahap 1";
                 $kontrakkerja->no_urut = $worksheetMaster->getCell('K5')->getValue();
                 $kontrakkerja->tahun = $worksheetMaster->getCell('K6')->getValue();
-              
+
                 $kontrakkerja->kode_masalah = $worksheetMaster->getCell('K7')->getFormattedValue();
-           
+
                 $kontrakkerja->filemaster = $newFileName;
 
                 $kontrakkerja->save();
@@ -197,14 +233,14 @@ class KontrakKerjaController extends Controller
                         'nama_surat' => 'nomor_hps',
                         'no_surat' => $worksheetMaster->getCell('K11')->getCalculatedValue(),
                         'tanggal_pembuatan' => $worksheetMaster->getCell('L11')->getFormattedValue() == '' ? null :
-                        Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L11')->getCalculatedValue()))->toDateString()
+                            Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L11')->getCalculatedValue()))->toDateString()
                     ],
                     [
                         'id_kontrakkerja' => $id,
                         'nama_surat' => 'nomor_pakta_pejabat',
                         'no_surat' => $worksheetMaster->getCell('K12')->getCalculatedValue(),
                         'tanggal_pembuatan' => $worksheetMaster->getCell('L12')->getFormattedValue() == '' ? null :
-                        Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L12')->getCalculatedValue()))->toDateString()
+                            Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L12')->getCalculatedValue()))->toDateString()
                     ],
 
                     [
@@ -212,7 +248,7 @@ class KontrakKerjaController extends Controller
                         'nama_surat' => 'nomor_undangan',
                         'no_surat' => $worksheetMaster->getCell('K13')->getCalculatedValue(),
                         'tanggal_pembuatan' => $worksheetMaster->getCell('L13')->getFormattedValue() == '' ? null :
-                        Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L13')->getCalculatedValue()))->toDateString()
+                            Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L13')->getCalculatedValue()))->toDateString()
                     ],
                     [
                         'id_kontrakkerja' => $id,
@@ -226,7 +262,7 @@ class KontrakKerjaController extends Controller
                         'nama_surat' => 'nomor_ba_buka',
                         'no_surat' => $worksheetMaster->getCell('K18')->getCalculatedValue(),
                         'tanggal_pembuatan' =>  $worksheetMaster->getCell('L18')->getFormattedValue() == '' ? null :
-                        Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L18')->getCalculatedValue()))->toDateString()
+                            Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L18')->getCalculatedValue()))->toDateString()
                     ],
 
                     [
@@ -234,7 +270,7 @@ class KontrakKerjaController extends Controller
                         'nama_surat' => 'nomor_ba_evaluasi',
                         'no_surat' => $worksheetMaster->getCell('K19')->getCalculatedValue(),
                         'tanggal_pembuatan' => $worksheetMaster->getCell('L19')->getFormattedValue() == '' ? null :
-                        Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L19')->getCalculatedValue()))->toDateString()
+                            Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L19')->getCalculatedValue()))->toDateString()
 
                     ],
                     [
@@ -254,7 +290,7 @@ class KontrakKerjaController extends Controller
                         'id_kontrakkerja' => $id,
                         'nama_surat' => 'nomor_spk',
                         'no_surat' => $worksheetMaster->getCell('K22')->getCalculatedValue(),
-                        'tanggal_pembuatan' => $worksheetMaster->getCell('L22')->getFormattedValue() == '' ? null :Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L22')->getCalculatedValue()))->toDateString()
+                        'tanggal_pembuatan' => $worksheetMaster->getCell('L22')->getFormattedValue() == '' ? null : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L22')->getCalculatedValue()))->toDateString()
                     ],
 
 
@@ -1024,10 +1060,10 @@ class KontrakKerjaController extends Controller
         $kontrakkerja = KontrakKerja::find($id);
         $kontrakkerja->delete();
         return redirect()->route('pengajuankontrak.index')
-        ->with('success', 'Data kontrak kerja berhasil dihapus.');
+            ->with('success', 'Data kontrak kerja berhasil dihapus.');
         // //   Menghapus File jika berhasil redirect
         // if ($kontrakkerja->exist()) {
-          
+
         // } else {
         //     echo "Gagal Menghapus file";
         // }
@@ -1063,7 +1099,7 @@ class KontrakKerjaController extends Controller
     {
 
         $kontrakkerja = KontrakKerja::with('vendor')->find($id);
-    
+
         $sumberanggaran = SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first();
         $penyelenggaraData = Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->get()->toArray();
 
@@ -1081,12 +1117,13 @@ class KontrakKerjaController extends Controller
         $pembuatansurat = array();
         foreach ($pembuatansuratData as $key) {
             $pembuatansurat[$key['nama_surat']] = [
+                'nomor_surat' => $key['no_surat'],
                 'tanggal_surat' => $key['tanggal_pembuatan']
 
             ];
         }
         $pembuatansurat = json_decode(json_encode($pembuatansurat));
-     
+
         // Detail Kontrak
         $kontrak = [
             'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
@@ -1100,7 +1137,7 @@ class KontrakKerjaController extends Controller
             'nomor_spmk' => $kontrakkerja->no_spmk,
 
             'skk_ao' =>  $sumberanggaran->skk_ao,
-            'tanggal_anggaran' => $sumberanggaran->tanggal_anggaran == null ? '' : $this->dateConvertertoInd($sumberanggaran->tanggal_anggaran) ,
+            'tanggal_anggaran' => $sumberanggaran->tanggal_anggaran == null ? '' : $this->dateConvertertoInd($sumberanggaran->tanggal_anggaran),
 
             'penyedia' => $kontrakkerja->vendor->penyedia,
             'direktur' => $kontrakkerja->vendor->direktur,
@@ -1118,27 +1155,46 @@ class KontrakKerjaController extends Controller
             'pengawas_pekerjaan' => $penyelenggara->pengawas_pekerjaan->nama_pengguna,
 
             'tanggal_rks' => $pembuatansurat->nomor_rks->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_rks->tanggal_surat),
-            
-     
+
+            'nomor_rks' => $pembuatansurat->nomor_rks->nomor_surat,
+
             'tanggal_hps' => $pembuatansurat->nomor_hps->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_hps->tanggal_surat),
+            'nomor_hps' => $pembuatansurat->nomor_hps->nomor_surat,
+
             'tanggal_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pejabat->tanggal_surat),
+            'nomor_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->nomor_surat,
+
             'tanggal_undangan' => $pembuatansurat->nomor_undangan->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_undangan->tanggal_surat),
+            'nomor_undangan' => $pembuatansurat->nomor_undangan->nomor_surat,
+
+
             'tanggal_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pengguna->tanggal_surat),
+            'nomor_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->nomor_surat,
 
             'tanggal_ba_buka' => $pembuatansurat->nomor_ba_buka->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_buka->tanggal_surat),
+            'nomor_ba_buka' => $pembuatansurat->nomor_ba_buka->nomor_surat,
+
+
             'tanggal_ba_evaluasi' => $pembuatansurat->nomor_ba_evaluasi->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_evaluasi->tanggal_surat),
+            'nomor_ba_evaluasi' => $pembuatansurat->nomor_ba_evaluasi->nomor_surat,
+
+
+
             'tanggal_ba_negosiasi' => $pembuatansurat->nomor_ba_negosiasi->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_negosiasi->tanggal_surat),
-            
-      
+            'nomor_ba_negosiasi' => $pembuatansurat->nomor_ba_negosiasi->nomor_surat,
+
             'tanggal_ba_hasil_pl' => $pembuatansurat->nomor_ba_hasil_pl->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_hasil_pl->tanggal_surat),
-            'tanggal_spk' => $pembuatansurat->nomor_spk->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_spk->tanggal_surat)
-            
+            'nomor_ba_hasil_pl' => $pembuatansurat->nomor_ba_hasil_pl->nomor_surat,
+
+
+            'tanggal_spk' => $pembuatansurat->nomor_spk->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_spk->tanggal_surat),
+            'nomor_spk' => $pembuatansurat->nomor_spk->nomor_surat,
 
 
 
         ];
         $kontrak = json_decode(json_encode($kontrak));
-     
+
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->get();
 
         return  view('plnpengadaan.kontraktahap1.detail', compact('kontrakkerja', 'kontrak', 'jenis_kontrak', 'id'));
@@ -1181,63 +1237,103 @@ class KontrakKerjaController extends Controller
     public function detailnego($id)
     {
 
-        $kontrakkerja = KontrakKerja::find($id);
+        $kontrakkerja = KontrakKerja::with('vendor')->find($id);
 
-        // Path File
-        $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
+        $sumberanggaran = SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first();
+        $penyelenggaraData = Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->get()->toArray();
 
-        $spreadsheet = IOFactory::load($path);
-        $worksheet = $spreadsheet->setActiveSheetIndexByName('MASTER');
-        // Edit Detail Kontrak
-        $kontrak1 = [
-            'nama_kontrak' => $worksheet->getCell('C12')->getValue(),
-            'lama_pekerjaan' => $worksheet->getCell('C6')->getValue(),
-            'no_urut' => $worksheet->getCell('K5')->getValue(),
-            'tahun' => $worksheet->getCell('K6')->getValue(),
-            'kode_masalah' => $worksheet->getCell('K7')->getValue(),
-            'lokasi_pekerjaan' => $worksheet->getCell('C22')->getValue(),
+        // dd($penyelenggaraData);
+        $penyelenggara = array();
+        foreach ($penyelenggaraData as $key => $value) {
+            $penyelenggara[$value['nama_jabatan']] = [
+                'nama_pengguna' => $value['nama_pengguna']
 
-            // SPMK
-            'tanggal_spmk' => $worksheet->getCell('C8')->getValue(),
-            'nomor_spmk' => $worksheet->getCell('C9')->getValue(),
+            ];
+        }
+        $penyelenggara = json_decode(json_encode($penyelenggara));
 
-            // Tanggal Pengerjaan Dokumen
-            'tanggal_rks' => date("Y-m-d", strtotime($worksheet->getCell('L10')->getValue())),
-            'tanggal_hps' => date("Y-m-d", strtotime($worksheet->getCell('L11')->getValue())),
-            'tanggal_pakta_pejabat' => date("Y-m-d", strtotime($worksheet->getCell('L12')->getValue())),
-            'tanggal_undangan' => date("Y-m-d", strtotime($worksheet->getCell('L13')->getValue())),
-            'tanggal_pakta_pengguna' => date("Y-m-d", strtotime($worksheet->getCell('L14')->getValue())),
+        $pembuatansuratData = PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->get()->toArray();
+        $pembuatansurat = array();
+        foreach ($pembuatansuratData as $key) {
+            $pembuatansurat[$key['nama_surat']] = [
+                'nomor_surat' => $key['no_surat'],
+                'tanggal_surat' => $key['tanggal_pembuatan']
 
-            'tanggal_ba_buka' => date("Y-m-d", strtotime($worksheet->getCell('L18')->getValue())),
-            'tanggal_ba_evaluasi' => date("Y-m-d", strtotime($worksheet->getCell('L19')->getValue())),
-            'tanggal_ba_negosiasi' => date("Y-m-d", strtotime($worksheet->getCell('L20')->getValue())),
-            'tanggal_ba_hasil_pl' => date("Y-m-d", strtotime($worksheet->getCell('L21')->getValue())),
-            'tanggal_spk' => date("Y-m-d", strtotime($worksheet->getCell('L22')->getValue())),
+            ];
+        }
+        $pembuatansurat = json_decode(json_encode($pembuatansurat));
 
-            // Anggaran
-            'skk_ao' => $worksheet->getCell('C26')->getValue(),
-            'tanggal_anggaran' => $worksheet->getCell('C27')->getValue(),
+        // Detail Kontrak
+        $kontrak = [
+            'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
+            'nama_kontrak' => $kontrakkerja->nama_kontrak,
+            'no_urut' => $kontrakkerja->no_urut,
+            'tahun' => $kontrakkerja->tahun,
+            'lama_pekerjaan' => Carbon::parse($kontrakkerja->tanggal_pekerjaan)->diffInDays($kontrakkerja->tanggal_akhir_pekerjaan),
+            'kode_masalah' => $kontrakkerja->kode_masalah,
+            'lokasi_pekerjaan' => $kontrakkerja->lokasi_pekerjaan,
+            'tanggal_spmk' => $kontrakkerja->tanggal_spmk == null ? '' : $this->dateConvertertoInd($kontrakkerja->tanggal_spmk),
+            'nomor_spmk' => $kontrakkerja->no_spmk,
 
-            // Vendor
-            'penyedia' => $worksheet->getCell('F29')->getValue(),
-            'direktur' => $worksheet->getCell('F30')->getValue(),
-            'alamat_jalan' => $worksheet->getCell('F31')->getValue(),
-            'alamat_kota' => $worksheet->getCell('F32')->getValue(),
-            'nama_bank' => $worksheet->getCell('F34')->getValue(),
-            'nomor_rekening' => $worksheet->getCell('F35')->getValue(),
+            'skk_ao' =>  $sumberanggaran->skk_ao,
+            'tanggal_anggaran' => $sumberanggaran->tanggal_anggaran == null ? '' : $this->dateConvertertoInd($sumberanggaran->tanggal_anggaran),
 
-            // Penyelenggara
-            'manager' => $worksheet->getCell('F37')->getValue(),
-            'pejabat_pelaksana_pengadaan' => $worksheet->getCell('F38')->getValue(),
-            'direksi' => $worksheet->getCell('F40')->getValue(),
-            'pengawas_pekerjaan' => $worksheet->getCell('F41')->getValue(),
-            'pengawas_k3' => $worksheet->getCell('F42')->getValue(),
-            'pengawas_lapangan' => $worksheet->getCell('F43')->getValue()
+            'penyedia' => $kontrakkerja->vendor->penyedia,
+            'direktur' => $kontrakkerja->vendor->direktur,
+            'alamat_penyedia' => $kontrakkerja->vendor->alamat,
+            'nama_bank' => $kontrakkerja->vendor->bank,
+            'nomor_rekening' => $kontrakkerja->vendor->nomor_rek,
+            'alamat_jalan' => 'Alamat Jalan',
+            'alamat_kota' => 'Alamat Kota',
+
+            'manager' => $penyelenggara->manager->nama_pengguna,
+            'pengawas_lapangan' => $penyelenggara->pengawas_lapangan->nama_pengguna,
+            'pejabat_pelaksana_pengadaan' => $penyelenggara->pejabat_pelaksana_pengadaan->nama_pengguna,
+            'pengawas_k3' => $penyelenggara->pengawas_k3->nama_pengguna,
+            'direksi' => $penyelenggara->direksi->nama_pengguna,
+            'pengawas_pekerjaan' => $penyelenggara->pengawas_pekerjaan->nama_pengguna,
+
+            'tanggal_rks' => $pembuatansurat->nomor_rks->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_rks->tanggal_surat),
+
+            'nomor_rks' => $pembuatansurat->nomor_rks->nomor_surat,
+
+            'tanggal_hps' => $pembuatansurat->nomor_hps->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_hps->tanggal_surat),
+            'nomor_hps' => $pembuatansurat->nomor_hps->nomor_surat,
+
+            'tanggal_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pejabat->tanggal_surat),
+            'nomor_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->nomor_surat,
+
+            'tanggal_undangan' => $pembuatansurat->nomor_undangan->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_undangan->tanggal_surat),
+            'nomor_undangan' => $pembuatansurat->nomor_undangan->nomor_surat,
+
+
+            'tanggal_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pengguna->tanggal_surat),
+            'nomor_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->nomor_surat,
+
+            'tanggal_ba_buka' => $pembuatansurat->nomor_ba_buka->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_buka->tanggal_surat),
+            'nomor_ba_buka' => $pembuatansurat->nomor_ba_buka->nomor_surat,
+
+
+            'tanggal_ba_evaluasi' => $pembuatansurat->nomor_ba_evaluasi->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_evaluasi->tanggal_surat),
+            'nomor_ba_evaluasi' => $pembuatansurat->nomor_ba_evaluasi->nomor_surat,
+
+
+
+            'tanggal_ba_negosiasi' => $pembuatansurat->nomor_ba_negosiasi->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_negosiasi->tanggal_surat),
+            'nomor_ba_negosiasi' => $pembuatansurat->nomor_ba_negosiasi->nomor_surat,
+
+            'tanggal_ba_hasil_pl' => $pembuatansurat->nomor_ba_hasil_pl->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_hasil_pl->tanggal_surat),
+            'nomor_ba_hasil_pl' => $pembuatansurat->nomor_ba_hasil_pl->nomor_surat,
+
+
+            'tanggal_spk' => $pembuatansurat->nomor_spk->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_spk->tanggal_surat),
+            'nomor_spk' => $pembuatansurat->nomor_spk->nomor_surat,
+
+
+
         ];
-        $kontrak = json_decode(json_encode($kontrak1));
-        // Tutup instance setelah digunakan
-        $spreadsheet->disconnectWorksheets();
-        unset($spreadsheet);
+        $kontrak = json_decode(json_encode($kontrak));
+
         return  view('plnpengadaan.kontraktahap2.detail', compact('kontrakkerja', 'kontrak'));
     }
 
@@ -1318,64 +1414,102 @@ class KontrakKerjaController extends Controller
     }
     public function detailttd($id)
     {
+        $kontrakkerja = KontrakKerja::with('vendor')->find($id);
 
-        $kontrakkerja = KontrakKerja::find($id);
+        $sumberanggaran = SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first();
+        $penyelenggaraData = Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->get()->toArray();
 
-        // Path File
-        $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
+        // dd($penyelenggaraData);
+        $penyelenggara = array();
+        foreach ($penyelenggaraData as $key => $value) {
+            $penyelenggara[$value['nama_jabatan']] = [
+                'nama_pengguna' => $value['nama_pengguna']
 
-        $spreadsheet = IOFactory::load($path);
-        $worksheet = $spreadsheet->setActiveSheetIndexByName('MASTER');
-        // Edit Detail Kontrak
-        $kontrak1 = [
-            'nama_kontrak' => $worksheet->getCell('C12')->getValue(),
-            'lama_pekerjaan' => $worksheet->getCell('C6')->getValue(),
-            'no_urut' => $worksheet->getCell('K5')->getValue(),
-            'tahun' => $worksheet->getCell('K6')->getValue(),
-            'kode_masalah' => $worksheet->getCell('K7')->getValue(),
-            'lokasi_pekerjaan' => $worksheet->getCell('C22')->getValue(),
+            ];
+        }
+        $penyelenggara = json_decode(json_encode($penyelenggara));
 
-            // SPMK
-            'tanggal_spmk' => $worksheet->getCell('C8')->getValue(),
-            'nomor_spmk' => $worksheet->getCell('C9')->getValue(),
+        $pembuatansuratData = PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->get()->toArray();
+        $pembuatansurat = array();
+        foreach ($pembuatansuratData as $key) {
+            $pembuatansurat[$key['nama_surat']] = [
+                'nomor_surat' => $key['no_surat'],
+                'tanggal_surat' => $key['tanggal_pembuatan']
 
-            // Tanggal Pengerjaan Dokumen
-            'tanggal_rks' => date("Y-m-d", strtotime($worksheet->getCell('L10')->getValue())),
-            'tanggal_hps' => date("Y-m-d", strtotime($worksheet->getCell('L11')->getValue())),
-            'tanggal_pakta_pejabat' => date("Y-m-d", strtotime($worksheet->getCell('L12')->getValue())),
-            'tanggal_undangan' => date("Y-m-d", strtotime($worksheet->getCell('L13')->getValue())),
-            'tanggal_pakta_pengguna' => date("Y-m-d", strtotime($worksheet->getCell('L14')->getValue())),
+            ];
+        }
+        $pembuatansurat = json_decode(json_encode($pembuatansurat));
 
-            'tanggal_ba_buka' => date("Y-m-d", strtotime($worksheet->getCell('L18')->getValue())),
-            'tanggal_ba_evaluasi' => date("Y-m-d", strtotime($worksheet->getCell('L19')->getValue())),
-            'tanggal_ba_negosiasi' => date("Y-m-d", strtotime($worksheet->getCell('L20')->getValue())),
-            'tanggal_ba_hasil_pl' => date("Y-m-d", strtotime($worksheet->getCell('L21')->getValue())),
-            'tanggal_spk' => date("Y-m-d", strtotime($worksheet->getCell('L22')->getValue())),
+        // Detail Kontrak
+        $kontrak = [
+            'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
+            'nama_kontrak' => $kontrakkerja->nama_kontrak,
+            'no_urut' => $kontrakkerja->no_urut,
+            'tahun' => $kontrakkerja->tahun,
+            'lama_pekerjaan' => Carbon::parse($kontrakkerja->tanggal_pekerjaan)->diffInDays($kontrakkerja->tanggal_akhir_pekerjaan),
+            'kode_masalah' => $kontrakkerja->kode_masalah,
+            'lokasi_pekerjaan' => $kontrakkerja->lokasi_pekerjaan,
+            'tanggal_spmk' => $kontrakkerja->tanggal_spmk == null ? '' : $this->dateConvertertoInd($kontrakkerja->tanggal_spmk),
+            'nomor_spmk' => $kontrakkerja->no_spmk,
 
-            // Anggaran
-            'skk_ao' => $worksheet->getCell('C26')->getValue(),
-            'tanggal_anggaran' => $worksheet->getCell('C27')->getValue(),
+            'skk_ao' =>  $sumberanggaran->skk_ao,
+            'tanggal_anggaran' => $sumberanggaran->tanggal_anggaran == null ? '' : $this->dateConvertertoInd($sumberanggaran->tanggal_anggaran),
 
-            // Vendor
-            'penyedia' => $worksheet->getCell('F29')->getValue(),
-            'direktur' => $worksheet->getCell('F30')->getValue(),
-            'alamat_jalan' => $worksheet->getCell('F31')->getValue(),
-            'alamat_kota' => $worksheet->getCell('F32')->getValue(),
-            'nama_bank' => $worksheet->getCell('F34')->getValue(),
-            'nomor_rekening' => $worksheet->getCell('F35')->getValue(),
+            'penyedia' => $kontrakkerja->vendor->penyedia,
+            'direktur' => $kontrakkerja->vendor->direktur,
+            'alamat_penyedia' => $kontrakkerja->vendor->alamat,
+            'nama_bank' => $kontrakkerja->vendor->bank,
+            'nomor_rekening' => $kontrakkerja->vendor->nomor_rek,
+            'alamat_jalan' => 'Alamat Jalan',
+            'alamat_kota' => 'Alamat Kota',
 
-            // Penyelenggara
-            'manager' => $worksheet->getCell('F37')->getValue(),
-            'pejabat_pelaksana_pengadaan' => $worksheet->getCell('F38')->getValue(),
-            'direksi' => $worksheet->getCell('F40')->getValue(),
-            'pengawas_pekerjaan' => $worksheet->getCell('F41')->getValue(),
-            'pengawas_k3' => $worksheet->getCell('F42')->getValue(),
-            'pengawas_lapangan' => $worksheet->getCell('F43')->getValue()
+            'manager' => $penyelenggara->manager->nama_pengguna,
+            'pengawas_lapangan' => $penyelenggara->pengawas_lapangan->nama_pengguna,
+            'pejabat_pelaksana_pengadaan' => $penyelenggara->pejabat_pelaksana_pengadaan->nama_pengguna,
+            'pengawas_k3' => $penyelenggara->pengawas_k3->nama_pengguna,
+            'direksi' => $penyelenggara->direksi->nama_pengguna,
+            'pengawas_pekerjaan' => $penyelenggara->pengawas_pekerjaan->nama_pengguna,
+
+            'tanggal_rks' => $pembuatansurat->nomor_rks->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_rks->tanggal_surat),
+
+            'nomor_rks' => $pembuatansurat->nomor_rks->nomor_surat,
+
+            'tanggal_hps' => $pembuatansurat->nomor_hps->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_hps->tanggal_surat),
+            'nomor_hps' => $pembuatansurat->nomor_hps->nomor_surat,
+
+            'tanggal_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pejabat->tanggal_surat),
+            'nomor_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->nomor_surat,
+
+            'tanggal_undangan' => $pembuatansurat->nomor_undangan->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_undangan->tanggal_surat),
+            'nomor_undangan' => $pembuatansurat->nomor_undangan->nomor_surat,
+
+
+            'tanggal_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pengguna->tanggal_surat),
+            'nomor_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->nomor_surat,
+
+            'tanggal_ba_buka' => $pembuatansurat->nomor_ba_buka->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_buka->tanggal_surat),
+            'nomor_ba_buka' => $pembuatansurat->nomor_ba_buka->nomor_surat,
+
+
+            'tanggal_ba_evaluasi' => $pembuatansurat->nomor_ba_evaluasi->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_evaluasi->tanggal_surat),
+            'nomor_ba_evaluasi' => $pembuatansurat->nomor_ba_evaluasi->nomor_surat,
+
+
+
+            'tanggal_ba_negosiasi' => $pembuatansurat->nomor_ba_negosiasi->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_negosiasi->tanggal_surat),
+            'nomor_ba_negosiasi' => $pembuatansurat->nomor_ba_negosiasi->nomor_surat,
+
+            'tanggal_ba_hasil_pl' => $pembuatansurat->nomor_ba_hasil_pl->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_hasil_pl->tanggal_surat),
+            'nomor_ba_hasil_pl' => $pembuatansurat->nomor_ba_hasil_pl->nomor_surat,
+
+
+            'tanggal_spk' => $pembuatansurat->nomor_spk->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_spk->tanggal_surat),
+            'nomor_spk' => $pembuatansurat->nomor_spk->nomor_surat,
+
+
+
         ];
-        $kontrak = json_decode(json_encode($kontrak1));
-        // Tutup instance setelah digunakan
-        $spreadsheet->disconnectWorksheets();
-        unset($spreadsheet);
+        $kontrak = json_decode(json_encode($kontrak));
         return  view('plnpengadaan.tandatanganpengadaan.detail', compact('kontrakkerja', 'kontrak'));
     }
 
@@ -1393,67 +1527,105 @@ class KontrakKerjaController extends Controller
     }
     public function detailkontrakmanager($id)
     {
-        $kontrakkerja = KontrakKerja::find($id);
+        $kontrakkerja = KontrakKerja::with('vendor')->find($id);
 
-        // Path File
-        $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
+        $sumberanggaran = SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first();
+        $penyelenggaraData = Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->get()->toArray();
 
-        $spreadsheet = IOFactory::load($path);
-        $worksheet = $spreadsheet->setActiveSheetIndexByName('MASTER');
-        // dd();
-        // Edit Detail Kontrak
+        // dd($penyelenggaraData);
+        $penyelenggara = array();
+        foreach ($penyelenggaraData as $key => $value) {
+            $penyelenggara[$value['nama_jabatan']] = [
+                'nama_pengguna' => $value['nama_pengguna']
 
-        $kontrak1 = [
-            'nama_kontrak' => $worksheet->getCell('C12')->getValue(),
-            'lama_pekerjaan' => $worksheet->getCell('C6')->getValue(),
-            'no_urut' => $worksheet->getCell('K5')->getValue(),
-            'tahun' => $worksheet->getCell('K6')->getValue(),
-            'kode_masalah' => $worksheet->getCell('K7')->getValue(),
-            'lokasi_pekerjaan' => $worksheet->getCell('C22')->getValue(),
+            ];
+        }
+        $penyelenggara = json_decode(json_encode($penyelenggara));
 
-            // SPMK
-            'tanggal_spmk' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('C8')->getValue()))),
-            'nomor_spmk' => $worksheet->getCell('C9')->getValue(),
+        $pembuatansuratData = PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->get()->toArray();
+        $pembuatansurat = array();
+        foreach ($pembuatansuratData as $key) {
+            $pembuatansurat[$key['nama_surat']] = [
+                'nomor_surat' => $key['no_surat'],
+                'tanggal_surat' => $key['tanggal_pembuatan']
 
-            // Tanggal Pengerjaan Dokumen
-            'tanggal_rks' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L10')->getCalculatedValue()))),
-            'tanggal_hps' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L11')->getCalculatedValue()))),
-            'tanggal_pakta_pejabat' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L12')->getCalculatedValue()))),
-            'tanggal_undangan' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L13')->getCalculatedValue()))),
-            'tanggal_pakta_pengguna' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L14')->getCalculatedValue()))),
+            ];
+        }
+        $pembuatansurat = json_decode(json_encode($pembuatansurat));
 
-            'tanggal_ba_buka' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L18')->getValue()))),
-            'tanggal_ba_evaluasi' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L19')->getValue()))),
-            'tanggal_ba_negosiasi' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L20')->getValue()))),
-            'tanggal_ba_hasil_pl' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L21')->getValue()))),
-            'tanggal_spk' => date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('L22')->getValue()))),
+        // Detail Kontrak
+        $kontrak = [
+            'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
+            'nama_kontrak' => $kontrakkerja->nama_kontrak,
+            'no_urut' => $kontrakkerja->no_urut,
+            'tahun' => $kontrakkerja->tahun,
+            'lama_pekerjaan' => Carbon::parse($kontrakkerja->tanggal_pekerjaan)->diffInDays($kontrakkerja->tanggal_akhir_pekerjaan),
+            'kode_masalah' => $kontrakkerja->kode_masalah,
+            'lokasi_pekerjaan' => $kontrakkerja->lokasi_pekerjaan,
+            'tanggal_spmk' => $kontrakkerja->tanggal_spmk == null ? '' : $this->dateConvertertoInd($kontrakkerja->tanggal_spmk),
+            'nomor_spmk' => $kontrakkerja->no_spmk,
 
-            // Anggaran
-            'skk_ao' => $worksheet->getCell('C26')->getValue(),
-            'tanggal_anggaran' =>  date("Y-m-d", strtotime($this->dateConverter($worksheet->getCell('C27')->getValue()))),
+            'skk_ao' =>  $sumberanggaran->skk_ao,
+            'tanggal_anggaran' => $sumberanggaran->tanggal_anggaran == null ? '' : $this->dateConvertertoInd($sumberanggaran->tanggal_anggaran),
 
-            // Vendor
-            'penyedia' => $worksheet->getCell('F29')->getValue(),
-            'direktur' => $worksheet->getCell('F30')->getValue(),
-            'alamat_jalan' => $worksheet->getCell('F31')->getValue(),
-            'alamat_kota' => $worksheet->getCell('F32')->getValue(),
-            'nama_bank' => $worksheet->getCell('F34')->getValue(),
-            'nomor_rekening' => $worksheet->getCell('F35')->getValue(),
+            'penyedia' => $kontrakkerja->vendor->penyedia,
+            'direktur' => $kontrakkerja->vendor->direktur,
+            'alamat_penyedia' => $kontrakkerja->vendor->alamat,
+            'nama_bank' => $kontrakkerja->vendor->bank,
+            'nomor_rekening' => $kontrakkerja->vendor->nomor_rek,
+            'alamat_jalan' => 'Alamat Jalan',
+            'alamat_kota' => 'Alamat Kota',
 
-            // Penyelenggara
-            'manager' => $worksheet->getCell('F37')->getValue(),
-            'pejabat_pelaksana_pengadaan' => $worksheet->getCell('F38')->getValue(),
-            'direksi' => $worksheet->getCell('F40')->getValue(),
-            'pengawas_pekerjaan' => $worksheet->getCell('F41')->getValue(),
-            'pengawas_k3' => $worksheet->getCell('F42')->getValue(),
-            'pengawas_lapangan' => $worksheet->getCell('F43')->getValue()
+            'manager' => $penyelenggara->manager->nama_pengguna,
+            'pengawas_lapangan' => $penyelenggara->pengawas_lapangan->nama_pengguna,
+            'pejabat_pelaksana_pengadaan' => $penyelenggara->pejabat_pelaksana_pengadaan->nama_pengguna,
+            'pengawas_k3' => $penyelenggara->pengawas_k3->nama_pengguna,
+            'direksi' => $penyelenggara->direksi->nama_pengguna,
+            'pengawas_pekerjaan' => $penyelenggara->pengawas_pekerjaan->nama_pengguna,
+
+            'tanggal_rks' => $pembuatansurat->nomor_rks->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_rks->tanggal_surat),
+
+            'nomor_rks' => $pembuatansurat->nomor_rks->nomor_surat,
+
+            'tanggal_hps' => $pembuatansurat->nomor_hps->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_hps->tanggal_surat),
+            'nomor_hps' => $pembuatansurat->nomor_hps->nomor_surat,
+
+            'tanggal_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pejabat->tanggal_surat),
+            'nomor_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->nomor_surat,
+
+            'tanggal_undangan' => $pembuatansurat->nomor_undangan->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_undangan->tanggal_surat),
+            'nomor_undangan' => $pembuatansurat->nomor_undangan->nomor_surat,
+
+
+            'tanggal_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pengguna->tanggal_surat),
+            'nomor_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->nomor_surat,
+
+            'tanggal_ba_buka' => $pembuatansurat->nomor_ba_buka->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_buka->tanggal_surat),
+            'nomor_ba_buka' => $pembuatansurat->nomor_ba_buka->nomor_surat,
+
+
+            'tanggal_ba_evaluasi' => $pembuatansurat->nomor_ba_evaluasi->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_evaluasi->tanggal_surat),
+            'nomor_ba_evaluasi' => $pembuatansurat->nomor_ba_evaluasi->nomor_surat,
+
+
+
+            'tanggal_ba_negosiasi' => $pembuatansurat->nomor_ba_negosiasi->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_negosiasi->tanggal_surat),
+            'nomor_ba_negosiasi' => $pembuatansurat->nomor_ba_negosiasi->nomor_surat,
+
+            'tanggal_ba_hasil_pl' => $pembuatansurat->nomor_ba_hasil_pl->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_ba_hasil_pl->tanggal_surat),
+            'nomor_ba_hasil_pl' => $pembuatansurat->nomor_ba_hasil_pl->nomor_surat,
+
+
+            'tanggal_spk' => $pembuatansurat->nomor_spk->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_spk->tanggal_surat),
+            'nomor_spk' => $pembuatansurat->nomor_spk->nomor_surat,
+
+
+
         ];
-        $kontrak = json_decode(json_encode($kontrak1));
+        $kontrak = json_decode(json_encode($kontrak));
 
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->get();
-        // dd($kontrak->nama_kontrak);
 
-        unset($spreadsheet);
 
         return view('plnmanager.detail', compact('kontrakkerja', 'kontrak', 'jenis_kontrak', 'id'));
     }

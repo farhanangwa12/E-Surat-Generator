@@ -57,7 +57,7 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Lama Pekerjaan</td>
-                                    <td>{{ $kontrak->lama_pekerjaan }}</td>
+                                    <td>{{ $kontrak->lama_pekerjaan }} Hari</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -122,7 +122,7 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Anggaran</td>
-                                    <td>{{ $kontrak->tanggal_anggaran != null ? date('l, j F Y', strtotime($kontrak->tanggal_anggaran)) : '' }}
+                                    <td>{{ $kontrak->tanggal_anggaran }}
                                     </td>
                                 </tr>
 
@@ -280,8 +280,10 @@
                             <thead>
                                 <tr>
                                     <th scope="col" style="width: 10%;">#</th>
-                                    <th scope="col" style="width: 45%;">Nama informasi</th>
-                                    <th scope="col" style="width: 45%;">Tanggal</th>
+                                    <th scope="col" style="width: 30%;">Nama informasi</th>
+                                    <th scope="col" style="width: 30%;">Tanggal</th>
+                                    <th scope="col" style="width: 30%;">Nomor Surat</th>
+
 
                                 </tr>
                             </thead>
@@ -292,53 +294,74 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal RKS</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_rks)) }}</td>
+                                    <td>{{ $kontrak->tanggal_rks }}</td>
+                                    <td>{{ $kontrak->nomor_rks }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal HPS</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_hps)) }}</td>
+                                    <td>{{ $kontrak->tanggal_hps }}</td>
+                                    <td>{{ $kontrak->nomor_hps }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Pakta Pejabat</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_pakta_pejabat)) }}</td>
+                                    <td>{{ $kontrak->tanggal_pakta_pejabat }}</td>
+                                    <td>{{ $kontrak->nomor_pakta_pejabat }}</td>
+
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Undangan</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_undangan)) }}</td>
+                                    <td>{{ $kontrak->tanggal_undangan }}</td>
+                                    <td>{{ $kontrak->nomor_undangan }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Pakta Pengguna</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_pakta_pengguna)) }}</td>
+                                    <td>{{ $kontrak->tanggal_pakta_pengguna }}</td>
+                                    <td>{{ $kontrak->nomor_pakta_pengguna }}</td>
+
                                 </tr>
                                 <br>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Buka</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_buka)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_buka }}</td>
+                                    <td>{{ $kontrak->nomor_ba_buka }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Evaluasi</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_evaluasi)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_evaluasi }}</td>
+                                    <td>{{ $kontrak->nomor_ba_evaluasi }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Negosiasi</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_negosiasi)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_negosiasi }}</td>
+                                    <td>{{ $kontrak->nomor_ba_negosiasi }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Hasil PL</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_hasil_pl)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_hasil_pl }}</td>
+                                    <td>{{ $kontrak->nomor_ba_hasil_pl }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal SPK</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_spk)) }}</td>
+                                    <td>{{ $kontrak->tanggal_spk }}</td>
+                                    <td>{{ $kontrak->nomor_spk }}</td>
+
                                 </tr>
 
                             </tbody>
@@ -347,7 +370,6 @@
 
                     </div>
                 </div>
-
 
                 {{-- BOQ --}}
 

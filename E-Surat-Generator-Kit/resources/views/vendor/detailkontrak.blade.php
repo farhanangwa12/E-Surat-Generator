@@ -17,7 +17,7 @@
                         Undangan
                     </div>
                     <div class="card-body  d-flex justify-content-center align-items-center">
-                        <iframe src="{{ route('pengajuankontrak.undangan', ['id' => $id, 'isDownload' => 'I']) }}"
+                        <iframe src="{{ route('pengajuankontrak.undangan', ['id' => $id, 'isDownload' => '1']) }}"
                             width="80%" height="500px" frameborder="0"></iframe>
 
                     </div>

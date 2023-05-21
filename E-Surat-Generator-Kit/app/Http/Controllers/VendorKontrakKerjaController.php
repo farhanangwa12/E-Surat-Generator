@@ -25,11 +25,11 @@ class VendorKontrakKerjaController extends Controller
     {
         $kontrakkerja = KontrakKerja::find($id);
 
-        // Path File
-        $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
+        // // Path File
+        // $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
 
-        $spreadsheet = IOFactory::load($path);
-        $worksheet = $spreadsheet->getActiveSheet();
+        // $spreadsheet = IOFactory::load($path);
+        // $worksheet = $spreadsheet->getActiveSheet();
 
         return view('vendor.detailkontrak', compact('kontrakkerja', 'id'));
     }
