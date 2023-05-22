@@ -441,7 +441,7 @@
                                         <td>RKS</td>
                                         <td>
                                             <a
-                                                href="{{ route('rks.tanda-tangan.pengadaan', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tanda
+                                                href="{{ route('rks.tanda-tangan.pengadaan', ['id' => $kontrakkerja->id_kontrakkerja]) }}" class="btn btn-primary">Tanda
                                                 Tangan</a>
                                             <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Preview</a>
@@ -472,7 +472,7 @@
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>BA Nego</td>
                                         <td>
-                                            <a href="#">Tanda
+                                            <a href="#" class="btn btn-primary">Tanda
                                                 Tangan</a>
                                             <a href="{{ route('banego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Detail</a>

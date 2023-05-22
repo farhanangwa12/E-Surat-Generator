@@ -4,45 +4,34 @@ namespace App\Http\Controllers\pengadaantahap2;
 
 use App\Http\Controllers\Controller;
 use App\Models\KontrakKerja;
+use App\Models\PembuatanSuratKontrak;
+use App\Models\Penyelenggara;
 use Illuminate\Http\Request;
 use PDF;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 
+use Carbon\Carbon;
+use Terbilang;
 class CoverController extends Controller
 {
-    // Menampilkan semua data
-    public function index()
-    {
-    }
-
-    // Menampilkan form untuk membuat data baru
-    public function create()
-    {
-    }
-
-    // Menyimpan data baru ke dalam database
-    public function store(Request $request)
-    {
-    }
+   
 
     // Menampilkan detail data
     public function show($id, $isDownload)
     {
-        $kontrakkerja = KontrakKerja::find($id);
-        $spreadsheet = IOFactory::load(storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster));
-        $worksheet = $spreadsheet->setActiveSheetIndexByName('COVER');
+        $kontrakkerja = KontrakKerja::with('vendor')->find($id);
+        
         $surat = [
-            'nama_perusahaan' => $worksheet->getCell('C16')->getCalculatedValue(),
+            'nama_perusahaan' => $kontrakkerja->vendor->penyedia,
 
-            'nomor_pihak_pertama' => $worksheet->getCell('H18')->getCalculatedValue(),
+            'nomor_pihak_pertama' => PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_rks')->first()->no_surat,
 
-            'nomor_pihak_kedua' => $worksheet->getCell('H19')->getCalculatedValue(),
-            'tanggal_awal_kontrak' => $worksheet->getCell('H20')->getCalculatedValue(),
-            'tanggal_akhir_kontrak' => $worksheet->getCell('H21')->getCalculatedValue(),
-            'jangka_waktu' => $worksheet->getCell('H22')->getCalculatedValue(),
-            'nilai_pekerjaan' => $worksheet->getCell('H23')->getCalculatedValue(),
+            'nomor_pihak_kedua' => "Belum 781/MDM-PLN/XII/2022",
+            'tanggal_awal_kontrak' => Carbon::parse($kontrakkerja->tanggal_pekerjaan)->locale('id')->isoFormat('DD MMMM YYYY'),
+            'tanggal_akhir_kontrak' => Carbon::parse($kontrakkerja->tanggal_akhir_pekerjaan)->locale('id')->isoFormat('DD MMMM YYYY'),
+            'jangka_waktu' =>Carbon::parse($kontrakkerja->tanggal_pekerjaan)->diffInDays($kontrakkerja->tanggal_akhir_pekerjaan) . ' ( '.Terbilang::make(Carbon::parse($kontrakkerja->tanggal_pekerjaan)->diffInDays($kontrakkerja->tanggal_akhir_pekerjaan)).' ) ' . 'Hari Kalender',
+            'nilai_pekerjaan' => "Rp. Belum Rupiah",
 
-            'tahun' => $worksheet->getCell('C31')->getCalculatedValue()
+            'tahun' => "TAHUN " .$kontrakkerja->tahun
           
 
 
