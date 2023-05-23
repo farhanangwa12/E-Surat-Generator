@@ -1,6 +1,7 @@
 @extends('template.app')
 
-@section('title', 'Form Penawaran Harga')
+@section('title', 'Ubah Form Penawaran Harga')
+
 
 @section('content')
     <div class="container-fluid p-0">

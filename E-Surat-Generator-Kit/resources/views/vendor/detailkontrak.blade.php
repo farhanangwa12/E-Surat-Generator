@@ -59,57 +59,68 @@
                         <style>
                             td,
                             th {
-
                                 vertical-align: middle;
                             }
                         </style>
                         <div class="row justify-content-end">
-
-
-                            <table class="table table-stripped ">
+                            <table class="table table-stripped">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Nama Dokumen</th>
                                         <th scope="col">Aksi</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
-                                        $no = 1;
+                                    $no = 1;
                                     @endphp
-
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>RKS</td>
-                                        <td><a class="btn btn-primary"
-                                                href="{{ route('rks.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi
-                                                RKS</a></td>
+                                        <td>
+                                            <a class="btn btn-primary" href="{{ route('rks.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi RKS</a>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>BOQ</td>
                                         <td>
                                             <a href="{{ route('boqtandatanganvendor', ['id' => $kontrakkerja->id_kontrakkerja]) }}" class="btn btn-primary">Tanda Tangan BOQ</a>
-
-                                            <a class="btn btn-primary"
-                                                href="{{ route('pengajuankontrak.boq.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi
-                                                BOQ</a>
+                                            <a class="btn btn-primary" href="{{ route('pengajuankontrak.boq.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi BOQ</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>Form Penawaran</td>
-                                        <td><a class="btn btn-primary" href="#">Isi Form Penawaran</a></td>
-
+                                        <td>
+                                            <a class="btn btn-primary" href="{{ route('vendor.formpenawaranharga.create') }}">Isi Form Penawaran</a>
+                                            <a class="btn btn-primary" href="{{ route('vendor.formpenawaranharga.halamanttd') }}">Halamanttd</a>
+                                            <a class="btn btn-primary" href="{{ route('vendor.formpenawaranharga.pdf') }}">Tampilan PDF</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>Pernyataan Garansi</td>
+                                        <td>
+                                            <a class="btn btn-primary" href="{{ route('vendor.pernyataan.garansi.index') }}">Isi Pernyataan Garansi</a>
+                                            <a class="btn btn-primary" href="{{ route('vendor.pernyataan.garansi.halamanttd') }}">Halamanttd</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>Pernyataan Sanggup</td>
+                                        <td>
+                                            <a class="btn btn-primary" href="{{ route('vendor.pernyataan.sangup.index') }}">Isi Pernyataan Sanggup</a>
+                                            <a class="btn btn-primary" href="{{ route('vendor.pernyataan.sangup.halamanttd') }}">Halamanttd</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
-
-
                         </div>
                     </div>
+                    
+
 
 
                     @if ($kontrakkerja->status == 'Dokumen Input Vendor')
