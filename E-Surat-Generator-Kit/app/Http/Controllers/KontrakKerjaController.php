@@ -1266,8 +1266,8 @@ class KontrakKerjaController extends Controller
         }
         $pembuatansurat = json_decode(json_encode($pembuatansurat));
 
-        // Detail Kontrak
-        $kontrak = [
+         // Detail Kontrak
+         $kontrak = [
             'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
             'nama_kontrak' => $kontrakkerja->nama_kontrak,
             'no_urut' => $kontrakkerja->no_urut,
@@ -1283,11 +1283,12 @@ class KontrakKerjaController extends Controller
 
             'penyedia' => $kontrakkerja->vendor->penyedia,
             'direktur' => $kontrakkerja->vendor->direktur,
-            'alamat_penyedia' => $kontrakkerja->vendor->alamat,
             'nama_bank' => $kontrakkerja->vendor->bank,
             'nomor_rekening' => $kontrakkerja->vendor->nomor_rek,
-            'alamat_jalan' => 'Alamat Jalan',
-            'alamat_kota' => 'Alamat Kota',
+            'alamat_jalan' => $kontrakkerja->vendor->alamat_jalan,
+            'alamat_kota' => $kontrakkerja->vendor->alamat_kota,
+            'alamat_provinsi' => $kontrakkerja->vendor->alamat_provinsi,
+
 
             'manager' => $penyelenggara->manager->nama_pengguna,
             'pengawas_lapangan' => $penyelenggara->pengawas_lapangan->nama_pengguna,
@@ -1443,8 +1444,8 @@ class KontrakKerjaController extends Controller
         }
         $pembuatansurat = json_decode(json_encode($pembuatansurat));
 
-        // Detail Kontrak
-        $kontrak = [
+         // Detail Kontrak
+         $kontrak = [
             'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
             'nama_kontrak' => $kontrakkerja->nama_kontrak,
             'no_urut' => $kontrakkerja->no_urut,
@@ -1460,11 +1461,12 @@ class KontrakKerjaController extends Controller
 
             'penyedia' => $kontrakkerja->vendor->penyedia,
             'direktur' => $kontrakkerja->vendor->direktur,
-            'alamat_penyedia' => $kontrakkerja->vendor->alamat,
             'nama_bank' => $kontrakkerja->vendor->bank,
             'nomor_rekening' => $kontrakkerja->vendor->nomor_rek,
-            'alamat_jalan' => 'Alamat Jalan',
-            'alamat_kota' => 'Alamat Kota',
+            'alamat_jalan' => $kontrakkerja->vendor->alamat_jalan,
+            'alamat_kota' => $kontrakkerja->vendor->alamat_kota,
+            'alamat_provinsi' => $kontrakkerja->vendor->alamat_provinsi,
+
 
             'manager' => $penyelenggara->manager->nama_pengguna,
             'pengawas_lapangan' => $penyelenggara->pengawas_lapangan->nama_pengguna,
@@ -1556,8 +1558,8 @@ class KontrakKerjaController extends Controller
         }
         $pembuatansurat = json_decode(json_encode($pembuatansurat));
 
-        // Detail Kontrak
-        $kontrak = [
+         // Detail Kontrak
+         $kontrak = [
             'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
             'nama_kontrak' => $kontrakkerja->nama_kontrak,
             'no_urut' => $kontrakkerja->no_urut,
@@ -1573,11 +1575,12 @@ class KontrakKerjaController extends Controller
 
             'penyedia' => $kontrakkerja->vendor->penyedia,
             'direktur' => $kontrakkerja->vendor->direktur,
-            'alamat_penyedia' => $kontrakkerja->vendor->alamat,
             'nama_bank' => $kontrakkerja->vendor->bank,
             'nomor_rekening' => $kontrakkerja->vendor->nomor_rek,
-            'alamat_jalan' => 'Alamat Jalan',
-            'alamat_kota' => 'Alamat Kota',
+            'alamat_jalan' => $kontrakkerja->vendor->alamat_jalan,
+            'alamat_kota' => $kontrakkerja->vendor->alamat_kota,
+            'alamat_provinsi' => $kontrakkerja->vendor->alamat_provinsi,
+
 
             'manager' => $penyelenggara->manager->nama_pengguna,
             'pengawas_lapangan' => $penyelenggara->pengawas_lapangan->nama_pengguna,
