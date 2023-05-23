@@ -4,41 +4,29 @@ namespace App\Http\Controllers\pengadaantahap2;
 
 use App\Http\Controllers\Controller;
 use App\Models\KontrakKerja;
+use App\Models\PembuatanSuratKontrak;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class SampulController extends Controller
 {
-    // Menampilkan semua data
-    public function index()
-    {
-    }
-
-    // Menampilkan form untuk membuat data baru
-    public function create()
-    {
-    }
-
-    // Menyimpan data baru ke dalam database
-    public function store(Request $request)
-    {
-    }
+   
 
     // Menampilkan detail data
     public function show($id, $isDownload)
     {
-        $kontrakkerja = KontrakKerja::find($id);
-        $spreadsheet = IOFactory::load(storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster));
-        $worksheet = $spreadsheet->setActiveSheetIndexByName('SAMPUL');
+        $kontrakkerja = KontrakKerja::with('vendor')->find($id);
+        
         $surat = [
-            'nomor' => $worksheet->getCell('B20')->getCalculatedValue(),
+            'nomor' => "Nomor : " . PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_spk')->first()->nomor_spk,
 
-            'tanggal' => $worksheet->getCell('B22')->getCalculatedValue(),
+            'tanggal' => "Tanggal : ". Carbon::parse(PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_spk')->first()->tanggal_pembuatan)->isoFormat('DD MMMM YYYY'),
 
-            'pekerjaan' => $worksheet->getCell('B26')->getCalculatedValue(),
-            'nama_perusahaan' => $worksheet->getCell('B44')->getCalculatedValue(),
-            'nilai_pekerjaan' => $worksheet->getCell('B48')->getCalculatedValue(),
+            'pekerjaan' => $kontrakkerja->nama_pekerjaan ."Belum",
+            'nama_perusahaan' => $kontrakkerja->vendor->penyedia,
+            'nilai_pekerjaan' => "200 juta Belum",
            
 
 
@@ -67,18 +55,5 @@ class SampulController extends Controller
         }
     }
 
-    // Menampilkan form untuk mengedit data
-    public function edit($id)
-    {
-    }
-
-    // Mengupdate data ke database
-    public function update(Request $request, $id)
-    {
-    }
-
-    // Menghapus data dari database
-    public function destroy($id)
-    {
-    }
+  
 }

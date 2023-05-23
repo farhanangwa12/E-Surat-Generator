@@ -110,7 +110,7 @@ class KontrakKerjaController extends Controller
 
 
                 $kontrakkerja->tanggal_akhir_pekerjaan =  $worksheetMaster->getCell('C11')->getFormattedValue() == '' ? '' : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('C11')->getCalculatedValue()))->toDateString();
-                $kontrakkerja->id_vendor = 1;
+        
                 $vendor = Vendor::where('penyedia', $worksheetMaster->getCell('F29')->getFormattedValue())->first();
 
                 if (!$vendor) {
@@ -149,12 +149,12 @@ class KontrakKerjaController extends Controller
 
                 $kontrakkerja->lokasi_pekerjaan = $worksheetMaster->getCell('C22')->getValue();
 
-                $kontrakkerja->tanggal_spmk  = $worksheetMaster->getCell('C8')->getFormattedValue() == '' ? null : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('C8')->getFormattedValue()))->toDateString();
+                $kontrakkerja->tanggal_spmk  = $worksheetMaster->getCell('C8')->getFormattedValue() == '' ? null : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('C8')->getCalculatedValue()))->toDateString();
 
-                $kontrakkerja->no_spmk = $request->input('nomor_spmk'); // Nomor SPMK
+                $kontrakkerja->no_spmk = $worksheetMaster->getCell('C9')->getCalculatedValue(); // Nomor SPMK
                 $kontrakkerja->status = "Dokumen Input Pengadaan Tahap 1";
-                $kontrakkerja->no_urut = $worksheetMaster->getCell('K5')->getValue();
-                $kontrakkerja->tahun = $worksheetMaster->getCell('K6')->getValue();
+                $kontrakkerja->no_urut = $worksheetMaster->getCell('K5')->getCalculatedValue();
+                $kontrakkerja->tahun = $worksheetMaster->getCell('K6')->getCalculatedValue();
 
                 $kontrakkerja->kode_masalah = $worksheetMaster->getCell('K7')->getFormattedValue();
 
@@ -166,9 +166,11 @@ class KontrakKerjaController extends Controller
                 // SumberAnggaran
                 $anggaran = new SumberAnggaran();
                 $anggaran->id_kontrakkerja = $id;
-                $anggaran->skk_ao = $worksheetMaster->getCell('C66')->getCalculatedValue();
+                $anggaran->skk_ao = $worksheetMaster->getCell('C26')->getCalculatedValue();
+   
+           
 
-                $anggaran->tanggal_anggaran = $worksheetMaster->getCell('C67')->getFormattedValue() == '' ? null : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('C67')->getCalculatedValue()))->toDateString();
+                $anggaran->tanggal_anggaran = $worksheetMaster->getCell('C27')->getCalculatedValue() == null ? null : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('C27')->getCalculatedValue()))->toDateString();
 
 
 
@@ -1141,11 +1143,12 @@ class KontrakKerjaController extends Controller
 
             'penyedia' => $kontrakkerja->vendor->penyedia,
             'direktur' => $kontrakkerja->vendor->direktur,
-            'alamat_penyedia' => $kontrakkerja->vendor->alamat,
             'nama_bank' => $kontrakkerja->vendor->bank,
             'nomor_rekening' => $kontrakkerja->vendor->nomor_rek,
-            'alamat_jalan' => 'Alamat Jalan',
-            'alamat_kota' => 'Alamat Kota',
+            'alamat_jalan' => $kontrakkerja->vendor->alamat_jalan,
+            'alamat_kota' => $kontrakkerja->vendor->alamat_kota,
+            'alamat_provinsi' => $kontrakkerja->vendor->alamat_provinsi,
+
 
             'manager' => $penyelenggara->manager->nama_pengguna,
             'pengawas_lapangan' => $penyelenggara->pengawas_lapangan->nama_pengguna,

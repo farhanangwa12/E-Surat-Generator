@@ -175,7 +175,8 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Alamat</td>
-                                    <td>{{ $kontrak->alamat_jalan . ',' . $kontrak->alamat_kota }}</td>
+                                    <td>{{ $kontrak->alamat_jalan . ' , ' . $kontrak->alamat_kota . ' , ' . $kontrak->alamat_provinsi }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -440,8 +441,8 @@
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>RKS</td>
                                         <td>
-                                            <a
-                                                href="{{ route('rks.tanda-tangan.pengadaan', ['id' => $kontrakkerja->id_kontrakkerja]) }}" class="btn btn-primary">Tanda
+                                            <a href="{{ route('rks.tanda-tangan.pengadaan', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
+                                                class="btn btn-primary">Tanda
                                                 Tangan</a>
                                             <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Preview</a>

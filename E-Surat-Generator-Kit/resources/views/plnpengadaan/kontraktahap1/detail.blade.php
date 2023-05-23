@@ -175,7 +175,7 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Alamat</td>
-                                    <td>{{ $kontrak->alamat_jalan . ',' . $kontrak->alamat_kota }}</td>
+                                    <td>{{ $kontrak->alamat_jalan . ' , ' . $kontrak->alamat_kota . ' , ' . $kontrak->alamat_provinsi}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
