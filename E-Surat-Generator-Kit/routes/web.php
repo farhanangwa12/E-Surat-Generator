@@ -22,7 +22,8 @@ use App\Http\Controllers\SuratVendor\FormPenawaranHargaController;
 use App\Http\Controllers\SuratVendor\LampiranPenawaranHargaController;
 use App\Http\Controllers\SuratVendor\PaktavendorController;
 use App\Http\Controllers\SuratVendor\PernyataanGaransiController;
-use App\Http\Controllers\SuratVendor\PernyataanSanggupController;
+use App\Http\Controllers\SuratVendor\PernyataanKesanggupanController;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\VendorKelengkapanDokumenController;
@@ -423,13 +424,12 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
 
 
     Route::prefix('form_penawaran')->group(function () {
-        Route::get('formpenawaranharga', [FormPenawaranHargaController::class, 'index'])->name('vendor.formpenawaranharga.index');
-        Route::get('formpenawaranharga/create', [FormPenawaranHargaController::class, 'create'])->name('vendor.formpenawaranharga.create');
-        Route::post('formpenawaranharga', [FormPenawaranHargaController::class, 'store'])->name('vendor.formpenawaranharga.store');
-        Route::get('formpenawaranharga/halamanttd', [FormPenawaranHargaController::class, 'halamanttd'])->name('vendor.formpenawaranharga.halamanttd');
+        Route::get('formpenawaranharga/{id}/create', [FormPenawaranHargaController::class, 'create'])->name('vendor.formpenawaranharga.create');
+        Route::post('formpenawaranharga/simpan/{id}', [FormPenawaranHargaController::class, 'store'])->name('vendor.formpenawaranharga.store');
+        Route::get('formpenawaranharga/{id}/halamanttd', [FormPenawaranHargaController::class, 'halamanttd'])->name('vendor.formpenawaranharga.halamanttd');
         Route::post('formpenawaranharga/simpanttd', [FormPenawaranHargaController::class, 'simpanttd'])->name('vendor.formpenawaranharga.simpanttd');
-        Route::get('formpenawaranharga/pdf', [FormPenawaranHargaController::class, 'pdf'])->name('vendor.formpenawaranharga.pdf');
-        
+        Route::get('formpenawaranharga/{id}/pdf', [FormPenawaranHargaController::class, 'pdf'])->name('vendor.formpenawaranharga.pdf');
+
 
         Route::get('lampiranpenawaranharga', [LampiranPenawaranHargaController::class, 'index'])->name('vendor.lampiranpenawaranharga.index');
         Route::get('lampiranpenawaranharga/create', [LampiranPenawaranHargaController::class, 'create'])->name('vendor.lampiranpenawaranharga.create');
@@ -449,11 +449,11 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
         Route::get('pernyataan_garansi/halamanttd', [PernyataanGaransiController::class, 'halamanttd'])->name('vendor.pernyataan.garansi.halamanttd');
         Route::post('pernyataan_garansi/simpanttd', [PernyataanGaransiController::class, 'simpanttd'])->name('vendor.pernyataan.garansi.simpanttd');
 
-        Route::get('pernyataan_sangup', [PernyataanSanggupController::class, 'index'])->name('vendor.pernyataan.sangup.index');
-        Route::get('pernyataan_sangup/create', [PernyataanSangupController::class, 'create'])->name('vendor.pernyataan.sangup.create');
-        Route::post('pernyataan_sangup', [PernyataanSangupController::class, 'update'])->name('vendor.pernyataan.sangup.update');
-        Route::get('pernyataan_sangup/halamanttd', [PernyataanSangupController::class, 'halamanttd'])->name('vendor.pernyataan.sangup.halamanttd');
-        Route::post('pernyataan_sangup/simpanttd', [PernyataanSangupController::class, 'simpanttd'])->name('vendor.pernyataan.sangup.simpanttd');
+        Route::get('pernyataan_sangup', [PernyataanKesanggupanController::class, 'index'])->name('vendor.pernyataan.sangup.index');
+        Route::get('pernyataan_sangup/create', [PernyataanKesanggupanController::class, 'create'])->name('vendor.pernyataan.sangup.create');
+        Route::post('pernyataan_sangup', [PernyataanKesanggupanController::class, 'update'])->name('vendor.pernyataan.sangup.update');
+        Route::get('pernyataan_sangup/halamanttd', [PernyataanKesanggupanController::class, 'halamanttd'])->name('vendor.pernyataan.sangup.halamanttd');
+        Route::post('pernyataan_sangup/simpanttd', [PernyataanKesanggupanController::class, 'simpanttd'])->name('vendor.pernyataan.sangup.simpanttd');
     });
 });
 

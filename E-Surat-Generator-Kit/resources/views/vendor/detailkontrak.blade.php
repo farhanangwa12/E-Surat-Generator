@@ -73,53 +73,69 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                    $no = 1;
+                                        $no = 1;
                                     @endphp
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>RKS</td>
                                         <td>
-                                            <a class="btn btn-primary" href="{{ route('rks.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi RKS</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('rks.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi
+                                                RKS</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>BOQ</td>
                                         <td>
-                                            <a href="{{ route('boqtandatanganvendor', ['id' => $kontrakkerja->id_kontrakkerja]) }}" class="btn btn-primary">Tanda Tangan BOQ</a>
-                                            <a class="btn btn-primary" href="{{ route('pengajuankontrak.boq.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi BOQ</a>
+                                            <a href="{{ route('boqtandatanganvendor', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
+                                                class="btn btn-primary">Tanda Tangan BOQ</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('pengajuankontrak.boq.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi
+                                                BOQ</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>Form Penawaran</td>
                                         <td>
-                                            <a class="btn btn-primary" href="{{ route('vendor.formpenawaranharga.create') }}">Isi Form Penawaran</a>
-                                            <a class="btn btn-primary" href="{{ route('vendor.formpenawaranharga.halamanttd') }}">Halamanttd</a>
-                                            <a class="btn btn-primary" href="{{ route('vendor.formpenawaranharga.pdf') }}">Tampilan PDF</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.formpenawaranharga.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                Form Penawaran</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.formpenawaranharga.halamanttd',['id' =>  $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.formpenawaranharga.pdf', $kontrakkerja->id_kontrakkerja) }}">Tampilan PDF</a>
                                         </td>
                                     </tr>
+
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>Pernyataan Garansi</td>
                                         <td>
-                                            <a class="btn btn-primary" href="{{ route('vendor.pernyataan.garansi.index') }}">Isi Pernyataan Garansi</a>
-                                            <a class="btn btn-primary" href="{{ route('vendor.pernyataan.garansi.halamanttd') }}">Halamanttd</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.pernyataan.garansi.index') }}">Isi Pernyataan
+                                                Garansi</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.pernyataan.garansi.halamanttd') }}">Halamanttd</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>Pernyataan Sanggup</td>
                                         <td>
-                                            <a class="btn btn-primary" href="{{ route('vendor.pernyataan.sangup.index') }}">Isi Pernyataan Sanggup</a>
-                                            <a class="btn btn-primary" href="{{ route('vendor.pernyataan.sangup.halamanttd') }}">Halamanttd</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.pernyataan.sangup.index') }}">Isi Pernyataan
+                                                Sanggup</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.pernyataan.sangup.halamanttd') }}">Halamanttd</a>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    
+
 
 
 

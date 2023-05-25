@@ -5,7 +5,7 @@ namespace App\Http\Controllers\SuratVendor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class PernyataanSanggupController extends Controller
+class PernyataanKesanggupanController extends Controller
 {
     public function index()
     {

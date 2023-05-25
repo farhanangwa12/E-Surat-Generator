@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Dokumen\BOQ;
 use App\Models\Dokumen\UND;
+use App\Models\FormPenawaran\FormPenawaranHarga;
 use App\Models\SubKontrak\JenisKontrak;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -70,5 +71,15 @@ class KontrakKerja extends Model
     public function boqs()
     {
         return $this->hasMany(BOQ::class, 'id_kontrakkerja');
+    }
+
+
+
+
+    // Form Penawaran Kontrak Kerja
+    // Model KontrakKerja
+    public function formPenawaranHarga()
+    {
+        return $this->hasMany(FormPenawaranHarga::class, 'id_kontrakkerja');
     }
 }
