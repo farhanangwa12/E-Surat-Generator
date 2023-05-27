@@ -35,4 +35,5 @@ class LampiranPenawaranHargaController extends Controller
         
         return redirect()->route('lampiranpenawaranharga.index');
     }
+    
 }

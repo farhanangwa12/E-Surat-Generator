@@ -103,21 +103,53 @@
                                                 href="{{ route('vendor.formpenawaranharga.create', $kontrakkerja->id_kontrakkerja) }}">Isi
                                                 Form Penawaran</a>
                                             <a class="btn btn-primary"
-                                                href="{{ route('vendor.formpenawaranharga.halamanttd',['id' =>  $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                                href="{{ route('vendor.formpenawaranharga.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
                                             <a class="btn btn-primary"
-                                                href="{{ route('vendor.formpenawaranharga.pdf', $kontrakkerja->id_kontrakkerja) }}">Tampilan PDF</a>
+                                                href="{{ route('vendor.formpenawaranharga.pdf', $kontrakkerja->id_kontrakkerja) }}">Tampilan
+                                                PDF</a>
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td>{{ $no++ }}</td>
+                                        <td>Lampiran Penawaran Harga</td>
+                                        <td>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.lampiranpenawaranharga.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                Lampiran Penawaran Harga</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.lampiranpenawaranharga.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.lampiranpenawaranharga.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
+                                                PDF</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>Paktavendor</td>
+                                        <td>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.paktavendor.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                Paktavendor</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.paktavendor.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.paktavendor.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
+                                                PDF</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
                                         <td>Pernyataan Garansi</td>
                                         <td>
                                             <a class="btn btn-primary"
-                                                href="{{ route('vendor.pernyataan.garansi.index') }}">Isi Pernyataan
-                                                Garansi</a>
+                                                href="{{ route('vendor.pernyataan.garansi.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                Pernyataan Garansi</a>
                                             <a class="btn btn-primary"
-                                                href="{{ route('vendor.pernyataan.garansi.halamanttd') }}">Halamanttd</a>
+                                                href="{{ route('vendor.pernyataan.garansi.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.pernyataan.garansi.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
+                                                PDF</a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -125,11 +157,45 @@
                                         <td>Pernyataan Sanggup</td>
                                         <td>
                                             <a class="btn btn-primary"
-                                                href="{{ route('vendor.pernyataan.sangup.index') }}">Isi Pernyataan
-                                                Sanggup</a>
+                                                href="{{ route('vendor.pernyataan.sangup.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                Pernyataan Sanggup</a>
                                             <a class="btn btn-primary"
-                                                href="{{ route('vendor.pernyataan.sangup.halamanttd') }}">Halamanttd</a>
+                                                href="{{ route('vendor.pernyataan.sangup.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.pernyataan.sangup.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
+                                                PDF</a>
                                         </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>Data Pengalaman</td>
+                                        <td>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.datapengalaman.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                Data Pengalaman</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.datapengalaman.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.datapengalaman.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
+                                                PDF</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>Neraca</td>
+                                        <td>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.neraca.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                Neraca</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.neraca.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('vendor.neraca.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
+                                                PDF</a>
+                                        </td>
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -142,8 +208,10 @@
                     @if ($kontrakkerja->status == 'Dokumen Input Vendor')
                         <div class="card">
                             <div class="card-header">
-                                Setelah tombol kirim ditekan, informasi akan langsung dikirimkan ke pihak PLN untuk proses
-                                penawaran harga. Proses ini tidak dapat dibatalkan. Mohon konfirmasi apakah vendor yakin
+                                Setelah tombol kirim ditekan, informasi akan langsung dikirimkan ke
+                                pihak PLN untuk proses
+                                penawaran harga. Proses ini tidak dapat dibatalkan. Mohon konfirmasi
+                                apakah vendor yakin
                                 akan melanjutkan.
 
                             </div>
@@ -164,7 +232,8 @@
                     @if ($kontrakkerja->status == 'Tanda Tangan Vendor')
                         <div class="card">
                             <div class="card-header">
-                                Mohon konfirmasi apakah vendor setuju dengan persyaratan penawaran yang telah disampaikan.
+                                Mohon konfirmasi apakah vendor setuju dengan persyaratan penawaran yang telah
+                                disampaikan.
                                 Jika tidak setuju, silakan klik tombol "Tidak Setuju". Jika setuju, silakan tanda tangan
                                 sebagai tanda persetujuan. Terima kasih atas perhatiannya.
                             </div>

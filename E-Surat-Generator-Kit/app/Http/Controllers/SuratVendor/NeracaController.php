@@ -5,38 +5,27 @@ namespace App\Http\Controllers\SuratVendor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use PDF;
-
-class PernyataanKesanggupanController extends Controller
+class NeracaController extends Controller
 {
-    public function index()
+    public function create($id)
     {
-        return view('vendor.form_penawaran.pernyataan_sanggup');
+        // Implementasi logika pembuatan data pengalaman
     }
 
-    public function create()
+    public function update(Request $request, $id)
     {
-        return view('vendor.form_penawaran.create');
+        // Implementasi logika update data pengalaman
     }
 
-    public function update(Request $request)
+    public function halamanttd($id)
     {
-        // Logika update data
-
-        return redirect()->route('pernyataan.sanggup.index');
+        // Implementasi logika untuk halaman tanda tangan data pengalaman
     }
 
-    public function halamanttd()
+    public function simpanttd(Request $request, $id)
     {
-        return view('vendor.form_penawaran.halamanttd');
+        // Implementasi logika penyimpanan tanda tangan data pengalaman
     }
-
-    public function simpanttd(Request $request)
-    {
-        // Logika menyimpan tanda tangan
-
-        return redirect()->route('pernyataan.sanggup.index');
-    }
-
 
     public function pdf($id)
     {
@@ -58,7 +47,7 @@ class PernyataanKesanggupanController extends Controller
 
         // Generate the PDF using laravel-dompdf
 
-        $pdf = PDF::loadView('vendor.form_penawaran.pernyataansanggup.pdf', $data);
+        $pdf = PDF::loadView('vendor.form_penawaran.neraca.pdf', $data);
 
         // Output the generated PDF to the browser
         return $pdf->stream('pernyataan_sanggup.pdf');
