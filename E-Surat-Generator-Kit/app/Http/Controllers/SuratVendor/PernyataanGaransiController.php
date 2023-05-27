@@ -8,29 +8,56 @@ use PDF;
 
 class PernyataanGaransiController extends Controller
 {
-    public function index()
+    public function index($id)
     {
         return view('vendor.form_penawaran.pernyataan_garansi');
     }
 
-    public function create()
+    public function create($id)
     {
-        return view('vendor.form_penawaran.create');
+        $data = [
+            'nama' => 'John Doe',
+            'jabatan' => 'Manager',
+            'nama_perusahaan' => 'Example Company',
+            'atas_nama' => 'John Doe',
+            'alamat_perusahaan' => '456 Example Avenue, City',
+            'telepon_fax' => '555-1234',
+            'email_perusahaan' => 'info@example.com',
+            'nama_pekerjaan' => 'Example Job',
+            'no_rks' => '1234',
+            'tanggal_rks' => '2023-05-26',
+            'kota_surat' => 'City',
+            'tanggal_surat' => '2023-05-26',
+        ];
+        $data = json_decode(json_encode($data));
+
+        return view('vendor.form_penawaran.pernyataangaransi.create', compact('id', 'data'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        // Logika update data
+         // Validasi input
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'jabatan' => 'required',
+            'bertindak_untuk' => 'required',
+            'atas_nama' => 'required',
+            'alamat' => 'required',
+            'telepon_fax' => 'required',
+            'email' => 'required|email',
+        ]);
+
+        dd($validatedData);
 
         return redirect()->route('pernyataan.garansi.index');
     }
 
-    public function halamanttd()
+    public function halamanttd($id)
     {
         return view('vendor.form_penawaran.halamanttd');
     }
 
-    public function simpanttd(Request $request)
+    public function simpanttd(Request $request,$id)
     {
         // Logika menyimpan tanda tangan
 

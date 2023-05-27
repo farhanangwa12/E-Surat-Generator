@@ -17,6 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_vendor');
             $table->string('kopsurat')->nullable();
             $table->string('file_path');
+            $table->json('data_paktavendor')->nullable();
+            $table->json('data_pernyataan_kesanggupan')->nullable();
+            $table->json('data_pernyataan_garansi')->nullable();
             $table->string('file_tandatangan')->nullable();
             $table->string('no_unik_ttd')->nullable();
             $table->timestamp('tanggal_tandatangan')->nullable();

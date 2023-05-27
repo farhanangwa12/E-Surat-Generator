@@ -4,211 +4,325 @@
 
 @section('content')
     <style>
-        /* CSS styling here */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .header h2 {
+            font-size: 10px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: left;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .tabel-kiri h3,
+        .tabel-kanan h3 {
+            font-weight: normal;
+        }
+
+        .tabel-kiri {
+            border-right: none;
+        }
+
+        .tabel-kanan {
+            border-left: none;
+        }
+
+        .tabel-kiri tr td:nth-child(5) {
+            border-right: none;
+        }
+
+        .tandatangan {
+            float: right;
+            text-align: center;
+        }
     </style>
     <div class="card w-100">
         <div class="card-header">
             <h5 class="card-title">Create Form Penawaran Harga</h5>
         </div>
-        <form action="{{ route('vendor.formpenawaranharga.store', $formPenawaranHarga->id_kontrakkerja) }}" method="post"
-            enctype="multipart/form-data">
-
+        <form action="{{ route('vendor.neraca.update', $id) }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
-                <div class="header mb-3">
-                    <div class="form-group">
-                        <label for="kopsurat">Masukkan gambar kopsurat
-                            dengan ketentuan panjang 120px
-                        </label>
-
-                        <input type="file" name="kopsurat" class="form-control" placeholder="Kopsurat"
-                            accept=".jpg, .jpeg, .png">
-                    </div>
-
-
-
+                <div class="header">
+                    <h1>Kop Surat</h1>
+                    <h2>Sub Title</h2>
                 </div>
                 <main>
-                    <div class="kop clearfix">
-                        <table style="float: left; width: 45%;">
-                            <tr>
-                                <td>Nomor:</td>
-                                <td><input type="text" name="nomor" class="form-control"
-                                        placeholder="Masukkan nomor surat" value="{{ $data['nomor'] }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Lampiran:</td>
-                                <td><input type="text" name="lampiran" placeholder="Masukkan banyak lampiran"
-                                        class="form-control"
-                                        value="
-                                    {{ $data['lampiran'] }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Perihal:</td>
-                                <td>Penawaran Harga</td>
-                            </tr>
-                        </table>
-                        <table style="float: right; width: 45%; text-align:left;">
-                            <tr>
-                                <td colspan="2">
-                                    <div class="form-group">
-
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <input type="text" name="nama_kota" placeholder="Nama tempat"
-                                                    class="form-control" value="{{ $data['nama_kota'] }}">
-                                            </div>
-                                            <div class="col-md-9">
-                                                <input type="date" name="tanggal_pembuatan_surat"
-                                                    placeholder="Tanggal Surat" class="form-control"
-                                                    value="{{ $data['tanggal_pembuatan_surat'] }}">
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Kepada:<br>
-                                    PELAKSANA PENGADAAN BARANG/JASA<br>
-                                    <p style="margin-bottom: -10px;">{{ $isi->namaPerusahaan }}</p><br>
-                                    <p>{{ $isi->alamatPerusahaan }}</p>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="isi" style="margin-top: 5px; margin-left: 50px;">
-                        <p>Yang bertanda tangan di bawah ini:</p>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <div class="tabel clearfix" style="width: 100%;">
                         <table style="width: 100%;">
-                            <tr>
-                                <td>Nama</td>
-                                <td>:</td>
-                                <td><input type="text" name="nama_vendor" class="form-control"
-                                        value="{{ $data['nama_vendor'] }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Jabatan</td>
-                                <td>:</td>
-                                <td><input type="text" name="jabatan" class="form-control"
-                                        value="{{ $data['jabatan'] }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Bertindak untuk</td>
-                                <td>:</td>
-                                <td><input type="text" name="nama_perusahaan" placeholder="PT/CV/Firma................"
-                                        class="form-control" value="{{ $data['nama_perusahaan'] }}"></td>
-                            </tr>
-                            <tr>
-                                <td>dan atas nama</td>
-                                <td>:</td>
-                                <td><input type="text" name="atas_nama" class="form-control"
-                                        placeholder="............................." value="{{ $data['atas_nama'] }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Alamat</td>
-                                <td>:</td>
-                                <td><input type="text" name="alamat_perusahaan" class="form-control"
-                                        value="{{ $data['alamat_perusahaan'] }}"></td>
-                            </tr>
-                            <tr>
-                                <td>No. Telepon/Fax</td>
-                                <td>:</td>
-                                <td><input type="text" name="telepon_fax" class="form-control"
-                                        value="{{ $data['telepon_fax'] }}"></td>
-                            </tr>
-                            <tr>
-                                <td>Email</td>
-                                <td>:</td>
-                                <td style="border-bottom: 2px solid black;"><input type="email" name="email_perusahaan"
-                                        class="form-control" value="{{ $data['email_perusahaan'] }}"></td>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th colspan="5">
+                                        <h3>AKTIVA</h3>
+                                    </th>
+                                    <th colspan="5">
+                                        <h3>PASIVA</h3>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>I</td>
+                                    <td>Aktiva Lancar</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="aktiva_lancar" class="form-control"
+                                            placeholder="Nominal Aktiva Lancar"></td>
+                                    <td></td>
+                                    <td>IV</td>
+                                    <td>Utang jangka pendek</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="utang_jangka_pendek" class="form-control"
+                                            placeholder="Nominal Utang Jangka Pendek"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Kas</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="kas" class="form-control"
+                                            placeholder="Nominal Kas"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Utang dagang</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="utang_dagang" class="form-control"
+                                            placeholder="Nominal Utang Dagang"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Bank</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="bank" class="form-control"
+                                            placeholder="Nominal Bank"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Utang pajak</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="utang_pajak" class="form-control"
+                                            placeholder="Nominal Utang Pajak"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Piutang *)</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="piutang" class="form-control"
+                                            placeholder="Nominal Piutang"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Utang lainnya</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="utang_lainnya" class="form-control"
+                                            placeholder="Nominal Utang Lainnya"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Persediaan Barang</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="persediaan_barang" class="form-control"
+                                            placeholder="Nominal Persediaan Barang"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Jumlah (d)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Rp<input type="text" name="jumlah_d" class="form-control"
+                                            placeholder="Nominal Jumlah (d)"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Pekerjaan dalam Proses</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="pekerjaan_dalam_proses" class="form-control"
+                                            placeholder="Nominal Pekerjaan dalam Proses"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Jumlah (a)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Rp<input type="text" name="jumlah_a" class="form-control"
+                                            placeholder="Nominal Jumlah (a)"></td>
+                                    <td>V</td>
+                                    <td>Utang jangka panjang (e)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>II</td>
+                                    <td>Aktiva tetap</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="aktiva_tetap" class="form-control"
+                                            placeholder="Nominal Aktiva Tetap"></td>
+                                    <td></td>
+                                    <td>VI</td>
+                                    <td>Kekayaan bersih (a+b+c) – (d+e)</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="kekayaan_bersih" class="form-control"
+                                            placeholder="Nominal Kekayaan Bersih"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Peralatan dan Mesin</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="peralatan_dan_mesin_1" class="form-control"
+                                            placeholder="Nominal Peralatan dan Mesin"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Peralatan dan Mesin</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="peralatan_dan_mesin_2" class="form-control"
+                                            placeholder="Nominal Peralatan dan Mesin"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Inventaris</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="inventaris" class="form-control"
+                                            placeholder="Nominal Inventaris"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Gedung-gedung</td>
+                                    <td>:</td>
+                                    <td>Rp<input type="text" name="gedung_gedung" class="form-control"
+                                            placeholder="Nominal Gedung-gedung"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Jumlah (b)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Rp<input type="text" name="jumlah_b" class="form-control"
+                                            placeholder="Nominal Jumlah (b)"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>III</td>
+                                    <td>Aktiva Lainnya (c)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="3">Jumlah</td>
+                                    <td>Rp<input type="text" name="jumlah_a_b" class="form-control"
+                                            placeholder="Nominal Jumlah (b)"></td>
+                                    <td></td>
+                                    <td colspan="3">Jumlah</td>
+                                    <td>Rp<input type="text" name="jumlah_d" class="form-control"
+                                            placeholder="Nominal Jumlah (b)"></td>
+                                </tr>
+                            </tfoot>
                         </table>
-                        <br>
-                        <p>Dengan ini menyatakan:</p>
-                        <ol>
-                            <li>Tunduk pada ketentuan-ketentuan Pengadaan Barang/Jasa yang termuat dalam Peraturan Direksi
-                                No. 0022.P/DIR/2020 tanggal 02 Maret 2020 dan perubahannya No. 0156.P/DIR/2021 Tanggal
-                                2023-05-24 tentang Pedoman Pengadaan Barang/Jasa PT PLN (Persero).</li>
-                            <li>Bersedia dan sanggup melaksanakan Pekerjaan:
-                                <p class="blue-text">
-                                    {{ $isi->kontrakkerja->nama_kontrak . 'PT. PLN (PERSERO) UNIT INDUK WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR' }}
-                                </p>
-                                <br>
-                                <p>Sesuai dengan syarat-syarat yang tercantum dalam:</p>
-                                <div>
-                                    <div class="clearfix" style="">
-                                        <div class="left" style="float:left;width:35%;">
-                                            <p>- Rencana Kerja Dan Syarat-Syarat (RKS)</p>
-                                        </div>
-                                        <div class="right" style="float:right;width:65%;">
-                                            <table style="width: 100%;">
-                                                <tr>
-                                                    <td style="width: 15%">Dengan harga penawaran sebesar Rp. </td>
-                                                    <td style="width: 5%;">:</td>
-                                                    <td style="width: 70%;"><input type="text" name="harga_penawaran"
-                                                            class="form-control number" value="{{ $data['harga_penawaran'] }}">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Pajak Pertambahan Nilai (PPN) 11% (Rp.)</td>
-                                                    <td>:</td>
-                                                    <td><input type="text" name="ppn11" class="form-control number"
-                                                            value="{{ $data['ppn11'] }}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Jumlah Harga (Rp.)</td>
-                                                    <td>:</td>
-                                                    <td><input type="text" name="jumlah_harga" class="form-control number"
-                                                            value="{{ $data['jumlah_harga'] }}">
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    {{-- <p style="border-bottom: 1px dotted black; width:100%; text-align:justify;"
-                                        class="terbilang"></p> --}}
-                                    <div class="form-group">
-                                        <label for="terbilang">Terbilang</label>
-                                        <input type="text" name="terbilang" class="form-control"
-                                            value="{{ $data['terbilang'] }}" >
-                                    </div>
-
-
-                                    <p>Rincian penawaran harga tersebut di atas sudah termasuk PPN 11% seperti yang
-                                        terlampir
-                                        pada
-                                        surat penawaran ini.</p>
-                                </div>
-                            </li>
-                            <li>Penawaran tersebut mengikat dalam jangka waktu 30 (Tiga Puluh) hari terhitung sejak
-                                diterimanya surat penawaran harga.</li>
-                            <br>
-                            <li>Waktu pelaksanaan pekerjaan: <br>
-                                <p class="blue-text">{{ $isi->waktuPelaksanaan }}</p>
-                            </li>
-                            <br>
-                            <li>Terlampir kami sampaikan data kelengkapan dokumen penawaran.</li>
-                        </ol>
                     </div>
-                    <p class="mt-6">Setelah menyimpan isi maka form penawaran akan disimpan dan di tampilkan ke pdf siap
-                        untuk dilakukan print dan tanda tangan</p>
-                    <div>
-                        <a href="{{ route('vendor.kontrakkerja.detail', $formPenawaranHarga->id_kontrakkerja) }}"
-                            class="btn btn-warning">Kembali</a>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-
-                    </div>
-
-
                 </main>
             </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </form>
-
     </div>
 
 @endsection
