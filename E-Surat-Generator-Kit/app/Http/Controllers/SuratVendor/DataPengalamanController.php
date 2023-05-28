@@ -3,73 +3,153 @@
 namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
+use App\Models\FormPenawaran\FormPenawaranHarga;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 
 class DataPengalamanController extends Controller
 {
-    public function index($id)
+    private function refresh($id)
     {
-        // // Mengambil data pengalaman berdasarkan ID
-        // $dataPengalaman = DataPengalaman::where('id', $id)->first();
+        // Cek apakah terdapat data penawaran dengan id_kontrakkerja yang sesuai
+        $formPenawaranHarga = FormPenawaranHarga::where('id_kontrakkerja', $id)->first();
+        if ($formPenawaranHarga) {
+            // Jika ada data penawaran, kembalikan data form penawaran
+            if ($formPenawaranHarga->data_pengalaman == null) {
+                $formPenawaranHarga1 = FormPenawaranHarga::find($formPenawaranHarga->id);
 
-        // // Mengirim data pengalaman ke view
-        // return view('datapengalaman.index', compact('dataPengalaman'));
+                $formPenawaranHarga1->data_pengalaman = json_encode([
+                    'pekerjaan' => null,
+                    'tahun_anggaran' => null,
+                    'nama' =>  null,
+                    'jabatan' => null,
+                    'nama_perusahaan' => null,
+                    'atas_nama' => null,
+                    'alamat' => null,
+                    'telepon_fax' => null,
+                    'email_perusahaan' => null
+                ]);
+                $formPenawaranHarga1->save();
+                return $formPenawaranHarga1;
+            } else {
+                return $formPenawaranHarga;
+            }
+        } else {
+            // Jika tidak ada data penawaran, generate form penawaran dengan array JSON kosong
+            $formPenawaranHarga = new FormPenawaranHarga();
+            $formPenawaranHarga->id_kontrakkerja = $id;
+            $formPenawaranHarga->id_vendor = null;
+            $formPenawaranHarga->kopsurat = null;
+            $formPenawaranHarga->file_path = null;
+            $formPenawaranHarga->data_paktavendor = null;
+            $formPenawaranHarga->data_paktavendor = [];
+            $formPenawaranHarga->data_lamp_nego = [];
+            $formPenawaranHarga->data_pernyataan_kesanggupan = [];
+            $formPenawaranHarga->data_pernyataan_garansi = [];
+            $formPenawaranHarga->neraca = [];
+            $formPenawaranHarga->data_pengalaman = [];
+            $formPenawaranHarga->file_tandatangan = null;
+            $formPenawaranHarga->no_unik_ttd = null;
+            $formPenawaranHarga->tanggal_tandatangan = null;
+            $formPenawaranHarga->save();
+
+            return $formPenawaranHarga;
+        }
+    }
+    public function index()
+    {
+        // Membaca data dari file JSON
+        $datapengalaman = $this->getDataPengalaman();
+
+       
+        return view('vendor.form_penawaran.datapengalaman.index', compact('datapengalaman'));
     }
 
-    public function create($id)
+    public function create()
     {
-        // Menampilkan form create data pengalaman
-        return view('datapengalaman.create', compact('id'));
+        return view('vendor.form_penawaran.datapengalaman.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        // // Validasi data yang dikirim dari form
-        // $validatedData = $request->validate([
-        //     // Tentukan aturan validasi untuk setiap field
-        //     // ...
-        // ]);
+        // Mendapatkan data yang dikirimkan melalui form
+        $data = $request->all();
 
-        // // Simpan data pengalaman baru ke database
-        // DataPengalaman::create($validatedData);
+        // Menambahkan data baru ke dalam array
+        $datapengalaman = $this->getDataPengalaman();
+        $datapengalaman[] = $data;
 
-        // // Redirect ke halaman index atau halaman detail data pengalaman
-        // // ...
+        // Menyimpan data ke file JSON
+        $this->saveDataPengalaman($datapengalaman);
+
+        return redirect()->route('vendor.datapengalaman.index')->with('success', 'Data pengalaman perusahaan berhasil ditambahkan.');
     }
 
     public function edit($id)
     {
-        // // Mengambil data pengalaman berdasarkan ID
-        // $dataPengalaman = DataPengalaman::findOrFail($id);
+        // Mendapatkan data pengalaman perusahaan berdasarkan ID
+        $datapengalaman = $this->getDataPengalaman();
 
-        // // Menampilkan form edit data pengalaman
-        // return view('datapengalaman.edit', compact('dataPengalaman'));
+        if (isset($datapengalaman[$id])) {
+            $data = $datapengalaman[$id];
+            return view('datapengalaman.edit', compact('id', 'data'));
+        }
+
+        return redirect()->route('vendor.datapengalaman.index')->with('error', 'Data pengalaman perusahaan tidak ditemukan.');
     }
 
     public function update(Request $request, $id)
     {
-        // Validasi data yang dikirim dari form
-        $validatedData = $request->validate([
-            // Tentukan aturan validasi untuk setiap field
-            // ...
-        ]);
+        // Mendapatkan data yang dikirimkan melalui form
+        $data = $request->all();
 
-        // // Perbarui data pengalaman di database
-        // $dataPengalaman = DataPengalaman::findOrFail($id);
-        // $dataPengalaman->update($validatedData);
+        // Mendapatkan data pengalaman perusahaan
+        $datapengalaman = $this->getDataPengalaman();
 
-        // Redirect ke halaman index atau halaman detail data pengalaman
-        // ...
+        if (isset($datapengalaman[$id])) {
+            // Mengganti data yang ada dengan data yang baru
+            $datapengalaman[$id] = $data;
+
+            // Menyimpan data ke file JSON
+            $this->saveDataPengalaman($datapengalaman);
+
+            return redirect()->route('vendor.datapengalaman.index')->with('success', 'Data pengalaman perusahaan berhasil diperbarui.');
+        }
+
+        return redirect()->route('vendor.datapengalaman.index')->with('error', 'Data pengalaman perusahaan tidak ditemukan.');
     }
 
     public function destroy($id)
     {
-        // // Hapus data pengalaman dari database
-        // DataPengalaman::destroy($id);
+        // Mendapatkan data pengalaman perusahaan
+        $datapengalaman = $this->getDataPengalaman();
 
-        // // Redirect ke halaman index atau halaman daftar data pengalaman
-        // // ...
+        if (isset($datapengalaman[$id])) {
+            // Menghapus data berdasarkan ID
+            unset($datapengalaman[$id]);
+
+            // Menyimpan data ke file JSON
+            $this->saveDataPengalaman($datapengalaman);
+
+            return redirect()->route('vendor.datapengalaman.index')->with('success', 'Data pengalaman perusahaan berhasil dihapus.');
+        }
+
+        return redirect()->route('vendor.datapengalaman.index')->with('error', 'Data pengalaman perusahaan tidak ditemukan.');
+    }
+
+    private function getDataPengalaman()
+    {
+        $file = Storage::disk('public')->get('datapengalaman.json');
+        $datapengalaman = json_decode($file, true) ?? [];
+
+        return $datapengalaman;
+    }
+
+    private function saveDataPengalaman($datapengalaman)
+    {
+        $json = json_encode($datapengalaman);
+        Storage::disk('public')->put('datapengalaman.json', $json);
     }
 
     public function halamanttd($id)

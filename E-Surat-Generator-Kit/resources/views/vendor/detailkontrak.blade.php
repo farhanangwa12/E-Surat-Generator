@@ -173,7 +173,7 @@
                                         <td>Data Pengalaman</td>
                                         <td>
                                             <a class="btn btn-primary"
-                                                href="{{ route('vendor.datapengalaman.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                href="{{ route('vendor.datapengalaman.index', $kontrakkerja->id_kontrakkerja) }}">Isi
                                                 Data Pengalaman</a>
                                             <a class="btn btn-primary"
                                                 href="{{ route('vendor.datapengalaman.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>

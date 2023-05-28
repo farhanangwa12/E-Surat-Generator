@@ -10,135 +10,44 @@
         <div class="card-header">
             <h5 class="card-title">Create Form Penawaran Harga</h5>
         </div>
-        <form action="{{ route('vendor.formpenawaranharga.store', $formPenawaranHarga->id_kontrakkerja) }}" method="post"
-            enctype="multipart/form-data">
 
-            @csrf
-            <div class="card-body">
-                <div class="header">
-                    {{-- <img src="{{ $kopsurat }}" alt="Kop Surat" style="object-fit: cover;" class="company-logo" width="200px"> --}}
-                    Header
-                </div>
+        <div class="card-body">
+            <form action="{{ route('vendor.datapengalaman.store') }}" method="POST">
+                @csrf
 
-                <main>
-                    <div class="kop">
-                        <h1>DATA PENGALAMAN PERUSAHAAN </h1>
-                        <h2>SESUAI DENGAN BIDANG/SUB BIDANGNYA</h2>
-                    </div>
-                    <table>
-                        <thead>
+                <label for="bidang_pekerjaan">Bidang Pekerjaan:</label>
+                <input type="text" name="bidang_pekerjaan">
 
-                            <tr>
-                                <th rowspan="2">No</th>
-                                <th rowspan="2">Bidang Pekerjaan</th>
-                                <th rowspan="2">Sub Bidang Pekerjaan</th>
-                                <th rowspan="2">Lokasi</th>
-                                <th colspan="2">Pemberi Tugas/Penanggung Jawab
-                                </th>
-                                <th colspan="1">Kontrak
-                                </th>
+                <label for="sub_bidang_pekerjaan">Sub Bidang Pekerjaan:</label>
+                <input type="text" name="sub_bidang_pekerjaan">
 
-                                <th colspan="3">Tanggal Selesai Menurut
-                                </th>
+                <label for="lokasi">Lokasi:</label>
+                <input type="text" name="lokasi">
 
-                            </tr>
-                            <tr>
+                <label for="nama_pemberi_tugas">Nama Pemberi Tugas:</label>
+                <input type="text" name="nama_pemberi_tugas">
 
-                                <th>Nama</th>
-                                <th>Alamat</th>
-                                <th>No Tanggal</th>
-                                <th>Nilai</th>
-                                <th>Nilai Kontrak</th>
-                                <th>BA Serah Terima</th>
-                            </tr>
+                <label for="alamat_pemberi_tugas">Alamat Pemberi Tugas:</label>
+                <input type="text" name="alamat_pemberi_tugas">
 
+                <label for="no_tanggal_kontrak">No Tanggal Kontrak:</label>
+                <input type="text" name="no_tanggal_kontrak">
 
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                                <td>8</td>
-                                <td>9</td>
-                                <td>10</td>
+                <label for="nilai">Nilai:</label>
+                <input type="text" name="nilai">
 
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Bidang 1</td>
-                                <td>Sub Bidang 1</td>
-                                <td>Lokasi 1</td>
-                                <td>Nama Pemberi Tugas 1</td>
-                                <td>Alamat Pemberi Tugas 1</td>
-                                <td>No Tanggal Kontrak 1</td>
-                                <td>Nilai 1</td>
-                                <td>Nilai Kontrak 1</td>
-                                <td>BA Serah Terima 1</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Bidang 2</td>
-                                <td>Sub Bidang 2</td>
-                                <td>Lokasi 2</td>
-                                <td>Nama Pemberi Tugas 2</td>
-                                <td>Alamat Pemberi Tugas 2</td>
-                                <td>No Tanggal Kontrak 2</td>
-                                <td>Nilai 2</td>
-                                <td>Nilai Kontrak 2</td>
-                                <td>BA Serah Terima 2</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <label for="nilai_kontrak">Nilai Kontrak:</label>
+                <input type="text" name="nilai_kontrak">
 
-                    <div class="tandatangan">
-                        <div>............... (Tanggal), .................. 2022</div>
-                        <div>PT/CV/Firma ..............................</div>
-                        <div class="kotak" style="height: 50px; margin: 10px 0;border: 1px solid black;">
+                <label for="ba_serah_terima">BA Serah Terima:</label>
+                <input type="text" name="ba_serah_terima">
 
-                        </div>
-                        <div class="nama-jabatan">Nama Jelas</div>
-                        <div class="nama-jabatan">Jabatan</div>
-                    </div>
-                </main>
-            </div>
-        </form>
+                <button type="submit">Simpan</button>
+            </form>
+
+        </div>
+
 
     </div>
 
-@endsection
-
-@section('javascript')
-    <script>
-        // Mengambil semua elemen dengan kelas 'number'
-        const numberInputs = document.getElementsByClassName('number');
-
-        // Iterasi melalui setiap elemen input dengan kelas 'number'
-        for (let i = 0; i < numberInputs.length; i++) {
-            const input = numberInputs[i];
-
-            // Membatasi input hanya menerima angka
-            input.addEventListener('input', function(event) {
-                const inputValue = event.target.value;
-
-                // Menghapus karakter selain angka
-                const numericValue = inputValue.replace(/[^0-9]/g, '');
-
-                // Mengubah angka menjadi format ribuan dengan titik setiap tiga digit
-                const formattedValue = formatNumber(numericValue);
-
-                // Mengupdate nilai input dengan format angka
-                event.target.value = formattedValue;
-            });
-        }
-
-        // Fungsi untuk memformat angka dengan titik setiap tiga digit
-        function formatNumber(number) {
-            return number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-    </script>
 @endsection

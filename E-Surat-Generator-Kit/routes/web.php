@@ -460,7 +460,11 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
 
         Route::get('datapengalaman/{id}', [DataPengalamanController::class, 'index'])->name('vendor.datapengalaman.index');
         Route::get('datapengalaman/create/{id}', [DataPengalamanController::class, 'create'])->name('vendor.datapengalaman.create');
+        Route::get('datapengalaman/store/{id}', [DataPengalamanController::class, 'store'])->name('vendor.datapengalaman.store');
+        Route::get('datapengalaman/edit/{id}', [DataPengalamanController::class, 'edit'])->name('vendor.datapengalaman.create');
+        
         Route::post('datapengalaman/update/{id}', [DataPengalamanController::class, 'update'])->name('vendor.datapengalaman.update');
+        Route::post('datapengalaman/hapus/{id}/{id_index}', [DataPengalamanController::class, 'destroy'])->name('vendor.datapengalaman.update');
         Route::get('datapengalaman/halamanttd/{id}', [DataPengalamanController::class, 'halamanttd'])->name('vendor.datapengalaman.halamanttd');
         Route::post('datapengalaman/simpanttd/{id}', [DataPengalamanController::class, 'simpanttd'])->name('vendor.datapengalaman.simpanttd');
         Route::get('datapengalaman/pdf/{id}', [DataPengalamanController::class, 'pdf'])->name('vendor.datapengalaman.pdf');

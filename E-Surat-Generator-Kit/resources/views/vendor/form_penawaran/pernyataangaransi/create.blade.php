@@ -75,14 +75,14 @@
                                             <td style="width: 25%;">Nama</td>
                                             <td style="width: 5%;">:</td>
                                             <td style="border-bottom: 2px dotted black;">
-                                                <input type="text" name="nama" placeholder="Masukkan nama" class="form-control">
+                                                <input type="text" name="nama" placeholder="Masukkan nama" class="form-control" value="{{ $data->nama }}">
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Jabatan</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
-                                                <input type="text" name="jabatan" placeholder="Masukkan jabatan" class="form-control">
+                                                <input type="text" name="jabatan" placeholder="Masukkan jabatan" class="form-control" value="{{ $data->jabatan }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -90,21 +90,21 @@
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
                                                 <input type="text" name="bertindak_untuk"
-                                                    placeholder="Masukkan bertindak untuk" class="form-control">
+                                                    placeholder="Masukkan bertindak untuk" class="form-control" value="{{ $data->nama_perusahaan }}">
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>dan atas nama</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
-                                                <input type="text" name="atas_nama" placeholder="Masukkan atas nama" class="form-control">
+                                                <input type="text" name="atas_nama" placeholder="Masukkan atas nama" class="form-control" value="{{ $data->atas_nama }}">
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Alamat</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
-                                                <input type="text" name="alamat" placeholder="Masukkan alamat" class="form-control">
+                                                <input type="text" name="alamat" placeholder="Masukkan alamat" class="form-control" value="{{ $data->alamat_perusahaan }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -112,14 +112,14 @@
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
                                                 <input type="text" name="telepon_fax"
-                                                    placeholder="Masukkan no. telepon/fax" class="form-control">
+                                                    placeholder="Masukkan no. telepon/fax" class="form-control" value="{{ $data->telepon_fax }}">
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Email</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
-                                                <input type="text" name="email" placeholder="Masukkan email" class="form-control">
+                                                <input type="text" name="email" placeholder="Masukkan email" class="form-control" value="{{ $data->email_perusahaan }}">
                                             </td>
                                         </tr>
                                     </table>
@@ -147,7 +147,7 @@
                                     <p>Demikian Surat Pernyataan Jaminan Kualitas ini kami buat dengan penuh rasa
                                         tanggung jawab.</p>
                                     <br>
-                                    <button type="submit">Simpan</button>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
                                 </form>
                             </div>
                         </main>

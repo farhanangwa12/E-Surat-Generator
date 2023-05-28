@@ -62,9 +62,16 @@
         .tabel-kiri tr td:nth-child(5) {
             border-right: none;
         }
+
         .tandatangan {
             float: right;
             text-align: center;
+        }
+
+        /* tabel setelah  */
+        .piutang td,
+        .piutang tr {
+            border: none;
         }
     </style>
 </head>
@@ -76,11 +83,17 @@
     </div>
     <main>
         <div class="tabel clearfix" style="border: 1px solid red; width: 100%;">
+            <h3><b>Neraca Perusahaan Terakhir Per Tanggal ........ Bulan ................................ Tahun ..............									
+            </b></h3>
             <table style="width: 100%;">
                 <thead>
                     <tr>
-                        <th colspan="5"><h3>AKTIVA</h3></th>
-                        <th colspan="5"><h3>PASIVA</h3></th>
+                        <th colspan="5">
+                            <h3>AKTIVA</h3>
+                        </th>
+                        <th colspan="5">
+                            <h3>PASIVA</h3>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -294,7 +307,31 @@
                     </tr>
                 </tfoot>
             </table>
-          
+            <table style="width: 40%;" class="piutang">
+                <tr>
+                    <td> *)</td>
+                    <td>Piutang jangka pendek (sampai dengan enam bulan )</td>
+                    <td>:</td>
+                    <td>Rp...........</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Piutang jangka pendek (lebih dari enam bulan)</td>
+                    <td>:</td>
+                    <td>Rp...........</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Jumlah </td>
+                    <td>:</td>
+                    <td>Rp...........</td>
+                </tr>
+
+
+
+
+            </table>
+
         </div>
     </main>
 

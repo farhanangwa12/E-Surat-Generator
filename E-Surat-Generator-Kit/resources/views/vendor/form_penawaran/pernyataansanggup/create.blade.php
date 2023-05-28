@@ -86,7 +86,7 @@
                                             <td style="width: 5%;">:</td>
                                             <td style="border-bottom: 2px dotted black;">
                                                 <input type="text" name="nama" class="form-control"
-                                                    placeholder="Masukkan nama">
+                                                    placeholder="Masukkan nama" value="{{ $nama }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -94,7 +94,7 @@
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
                                                 <input type="text" name="jabatan" class="form-control"
-                                                    placeholder="Masukkan jabatan">
+                                                    placeholder="Masukkan jabatan" value="{{ $jabatan }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -102,7 +102,7 @@
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
                                                 <input type="text" name="bertindak_untuk" class="form-control"
-                                                    placeholder="Masukkan pihak yang diwakili">
+                                                    placeholder="Masukkan pihak yang diwakili" value="{{ $nama_perusahaan }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -110,7 +110,7 @@
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
                                                 <input type="text" name="atas_nama" class="form-control"
-                                                    placeholder="Masukkan nama pihak yang diwakili">
+                                                    placeholder="Masukkan nama pihak yang diwakili" value="{{ $atas_nama }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -118,7 +118,7 @@
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
                                                 <input type="text" name="alamat" class="form-control"
-                                                    placeholder="Masukkan alamat">
+                                                    placeholder="Masukkan alamat" value="{{ $alamat_perusahaan }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -126,7 +126,7 @@
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
                                                 <input type="text" name="telepon_fax" class="form-control"
-                                                    placeholder="Masukkan nomor telepon/fax">
+                                                    placeholder="Masukkan nomor telepon/fax" value="{{ $telepon_fax }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -134,7 +134,7 @@
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;">
                                                 <input type="text" name="email" class="form-control"
-                                                    placeholder="Masukkan email">
+                                                    placeholder="Masukkan email" value="{{ $email_perusahaan }}">
                                             </td>
                                         </tr>
                                         <!-- Tambahkan input lainnya dengan format yang sama -->

@@ -130,55 +130,55 @@
                                             <td style="width: 25%;">Pekerjaan</td>
                                             <td style="width: 5%;">:</td>
                                             <td style="border-bottom: 2px dotted black;"><input type="text"
-                                                    name="pekerjaan" class="form-control"></td>
+                                                    name="pekerjaan" class="form-control" value="{{ $pekerjaan }}"></td>
                                         </tr>
                                         <tr>
                                             <td>Tahun Anggaran</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;"><input type="text"
-                                                    name="tahun_anggaran" class="form-control"></td>
+                                                    name="tahun_anggaran" class="form-control" value="{{ $tahun_anggaran }}"></td>
                                         </tr>
                                         <tr>
                                             <td>Nama</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;"><input type="text"
-                                                    name="nama" class="form-control"></td>
+                                                    name="nama" class="form-control" value="{{ $nama }}"></td>
                                         </tr>
                                         <tr>
                                             <td>Jabatan</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;"><input type="text"
-                                                    name="jabatan" class="form-control"></td>
+                                                    name="jabatan" class="form-control" value="{{ $jabatan }}"></td>
                                         </tr>
                                         <tr>
                                             <td>Bertindak untuk</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;"><input type="text"
-                                                    name="bertindak_untuk" class="form-control"></td>
+                                                    name="bertindak_untuk" class="form-control" value="{{ $nama_perusahaan }}"></td>
                                         </tr>
                                         <tr>
                                             <td>dan atas nama</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;"><input type="text"
-                                                    name="atas_nama" class="form-control"></td>
+                                                    name="atas_nama" class="form-control" value="{{ $atas_nama }}"></td>
                                         </tr>
                                         <tr>
                                             <td>Alamat:</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;"><input type="text"
-                                                    name="alamat" class="form-control"></td>
+                                                    name="alamat" class="form-control" value="{{ $alamat }}"></td>
                                         </tr>
                                         <tr>
                                             <td>No. Telepon/Fax:</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;"><input type="text"
-                                                    name="telepon_fax" class="form-control"></td>
+                                                    name="telepon_fax" class="form-control" value="{{ $telepon_fax }}"></td>
                                         </tr>
                                         <tr>
                                             <td>Email:</td>
                                             <td>:</td>
                                             <td style="border-bottom: 2px dotted black;"><input type="text"
-                                                    name="email" class="form-control"></td>
+                                                    name="email" class="form-control" value="{{ $email_perusahaan }}"></td>
                                         </tr>
                                     </table>
 
