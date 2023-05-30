@@ -64,6 +64,7 @@ Route::post('/{id}/{status}/{routeName}/changeStatus', [KontrakKerjaController::
 Route::get('/usersetting', [LoginController::class, 'usersetting'])->middleware('auth')->name('usrsetting');
 Route::post('/gantipassword', [LoginController::class, 'gantipass'])->name('gantipass');
 Route::post('/ubahuser', [LoginController::class, 'ubahuser'])->name('ubahuser');
+Route::post('/ubahtandatangan', [LoginController::class, 'ubahanTandaTangan'])->name('ubahtandatangan');
 
 
 // Dokumen Vendor dan Pengadaan 
@@ -255,7 +256,7 @@ Route::prefix('vendor')->group(function () {
 
 // Pegawai 
 // Route untuk index page
-Route::prefix('pegawai')->group(function () {
+Route::prefix('pegawai')->middleware('auth')->group(function () {
     Route::get('/', [PegawaiController::class, 'index'])->name('pegawai');
     // Route untuk halaman create user
     Route::get('/create', [PegawaiController::class, 'create'])->name('pegawai.create');

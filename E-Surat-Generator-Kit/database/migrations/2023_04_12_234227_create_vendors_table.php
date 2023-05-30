@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('vendors', function (Blueprint $table) {
             $table->id('id_vendor');
-            $table->unsignedBigInteger('id_akun')->nullable();
-            $table->unique('id_akun');
             $table->string('penyedia');
             $table->string('direktur');
             $table->string('alamat_jalan');

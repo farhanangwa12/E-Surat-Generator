@@ -18,8 +18,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+     
         'name',
         'email',
+        'vendor_id',
+        'pegawai_id',
         'email_verified_at',
         'password',
         'role',
@@ -45,12 +48,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function pegawai()
-    {
-        return $this->hasOne(Pegawai::class);
-    }
+   
     public function vendor()
     {
-        return $this->hasOne(Vendor::class);
+        return $this->belongsTo(Vendor::class);
+    }
+
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class);
     }
 }

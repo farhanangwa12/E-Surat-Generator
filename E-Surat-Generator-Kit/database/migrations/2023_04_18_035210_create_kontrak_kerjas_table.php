@@ -43,7 +43,7 @@ return new class extends Migration
                 'Tanda Tangan Manager',
                 'Kontrak Kerja Berjalan'
             ]);
-            $table->string('filemaster')->nullable();
+        
             $table->timestamps();
         });
     }

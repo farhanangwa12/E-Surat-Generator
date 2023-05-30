@@ -16,10 +16,28 @@
     <link rel="canonical" href="https://demo-basic.adminkit.io/" />
 
     <title>@yield('title')</title>
-    <link href="{{ asset('tampilan/dist/css/bootstrap.min.css') }}" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    {{-- <link href="{{ asset('tampilan/dist/css/bootstrap.min.css') }}" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> --}}
     <link href="{{ asset('adminkit/css/app.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        .alert {
+            padding: .75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: .25rem;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+    </style>
+
 </head>
 
 
@@ -39,13 +57,14 @@
                         </li>
 
                         <li class="sidebar-item {{ Request::is('pengadaan/dashboard') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{route('dashboard.pengadaan')}}">
+                            <a class="sidebar-link" href="{{ route('dashboard.pengadaan') }}">
                                 <i class="align-middle" data-feather="sliders"></i> <span
                                     class="align-middle">Dashboard</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item {{ Request::is('pengadaan/kontrakthp1/pengajuankontrak') ? 'active' : '' }}">
+                        <li
+                            class="sidebar-item {{ Request::is('pengadaan/kontrakthp1/pengajuankontrak') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('pengajuankontrak.index') }}">
                                 <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">
                                     Pengajuan Kontrak Kerja</span>
@@ -58,7 +77,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item {{ Request::is('pengadaan/tandatangan/tandatangan') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{route('tandatangan.pengadaan')}}">
+                            <a class="sidebar-link" href="{{ route('tandatangan.pengadaan') }}">
                                 <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">
                                     Validasi Pengadaan</span>
                             </a>
@@ -72,14 +91,14 @@
                         </li>
 
                         <li class="sidebar-item {{ Request::is('pegawai') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{route('pegawai')}}">
+                            <a class="sidebar-link" href="{{ route('pegawai') }}">
                                 <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Managemen
                                     Pegawai</span>
                             </a>
                         </li>
 
                         <li class="sidebar-item {{ Request::is('vendor') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{route('vendor')}}">
+                            <a class="sidebar-link" href="{{ route('vendor') }}">
                                 <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">
                                     Managemen Vendor</span>
                             </a>
@@ -167,7 +186,7 @@
                         </li>
 
                         <li class="sidebar-item {{ Request::is('vendor/dashboard') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{route('dashboard.vendor')}}">
+                            <a class="sidebar-link" href="{{ route('dashboard.vendor') }}">
                                 <i class="align-middle" data-feather="sliders"></i> <span
                                     class="align-middle">Dashboard</span>
                             </a>
@@ -197,7 +216,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item {{ Request::is('pengadaan/dashboard') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{route('vendor.kontrakkerja')}}">
+                            <a class="sidebar-link" href="{{ route('vendor.kontrakkerja') }}">
                                 <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">
                                     Kontrak Kerja</span>
                             </a>
@@ -432,11 +451,22 @@
 
 
     @yield('javascript')
-   <script src="{{ asset('adminkit/js/app.js') }}"></script> 
-    <script src="{{ asset('tampilan/dist/js/bootstrap.bundle.min.js') }}"
+    <script src="{{ asset('adminkit/js/app.js') }}"></script>
+    {{-- <script src="{{ asset('tampilan/dist/js/bootstrap.bundle.min.js') }}"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
-    </script>
+    </script> --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var alertElement = document.querySelector('.alert');
 
+            setTimeout(function() {
+                alertElement.style.opacity = '0';
+                setTimeout(function() {
+                    alertElement.remove();
+                }, 1000);
+            }, 5000);
+        });
+    </script>
 </body>
 
 </html>

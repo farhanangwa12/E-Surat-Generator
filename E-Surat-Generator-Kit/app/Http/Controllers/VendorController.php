@@ -32,20 +32,9 @@ class VendorController extends Controller
 
     public function store(Request $request)
     {
-        $akun = $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
 
 
-        ]);
-        $akun = new User($akun);
-        $akun->password = bcrypt($request->get('password'));
-        $akun->role = 'vendor';
-        $akun->save();
-
-
-        $id = $akun->id;
+        // $id = $akun->id;
         $validatedData = $request->validate([
             'penyedia' => 'required|max:255',
             'direktur' => 'required|max:255',
@@ -57,9 +46,23 @@ class VendorController extends Controller
         ]);
 
         $vendor = new Vendor($validatedData);
-        $vendor->id_akun = $id;
+        // $vendor->id_akun = $id;
 
         $vendor->save();
+
+        $akun = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+
+
+        ]);
+        $akun = new User($akun);
+        $akun->password = bcrypt($request->get('password'));
+        $akun->role = 'vendor';
+        $akun->vendor_id = $vendor->id_vendor;
+        $akun->save();
+
         // Redirect ke halaman dashboard
         return redirect()->route('vendor')->with('success', 'Vendor created successfully');
     }

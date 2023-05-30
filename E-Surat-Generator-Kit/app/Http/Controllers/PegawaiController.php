@@ -11,7 +11,7 @@ class PegawaiController extends Controller
     public function index()
     {
         $pegawai = Pegawai::all();
- 
+
         return view('plninternal.Pegawai.index', compact('pegawai'));
     }
 
@@ -22,21 +22,11 @@ class PegawaiController extends Controller
 
     public function store(Request $request)
     {
-        $akun = $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'role' => 'required',
 
-        ]);
-        $akun = new User($akun);
-        $akun->password = bcrypt($request->get('password'));
 
-        $akun->save();
 
-    
-        $id = $akun->id;
-       
+      
+
 
         $pegawai = $request->validate([
             'nama_pegawai' => 'required',
@@ -45,14 +35,26 @@ class PegawaiController extends Controller
         ]);
 
         $pegawai = new Pegawai($pegawai);
-        $pegawai->id_akun = $id;
+        // $pegawai->id_akun = $id;
         $pegawai->save();
 
 
-        
+        $id = $pegawai->id_pegawai;
 
-      
-    
+        $akun = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'role' => 'required',
+
+        ]);
+        $akun = new User($akun);
+        $akun->pegawai_id = $id;
+        $akun->password = bcrypt($request->get('password'));
+
+        $akun->save();
+
+
         return redirect()->route('pegawai')->with('success', 'Pegawai berhasil ditambahkan!');
     }
 
@@ -72,7 +74,7 @@ class PegawaiController extends Controller
     {
         $validatedData = $request->validate([
             'nama_pegawai' => 'required',
-    
+
             'jabatan' => 'required',
             'nomor_jabatan' => 'required'
         ]);
@@ -80,7 +82,7 @@ class PegawaiController extends Controller
 
         $pegawai = Pegawai::find($id);
         $pegawai->nama_pegawai = $validatedData['nama_pegawai'];
-      
+
         // $pegawai->password = bcrypt($request->get('password'));
         $pegawai->jabatan = $validatedData['jabatan'];
         $pegawai->nomor_jabatan = $validatedData['nomor_jabatan'];

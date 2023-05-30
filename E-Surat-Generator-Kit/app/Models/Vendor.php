@@ -12,14 +12,15 @@ class Vendor extends Model
 
     protected $primaryKey = 'id_vendor';
     protected $fillable = [
-        'id_akun', 'penyedia', 'direktur', 'alamat', 'bank', 'nomor_rek', 'alamat_jalan', 'alamat_kota', 'alamat_provinsi', 'telepon', 'webiste', 'faksimili', 'email_perusahaan'
+        'penyedia', 'direktur', 'alamat', 'bank', 'nomor_rek', 'alamat_jalan', 'alamat_kota', 'alamat_provinsi', 'telepon', 'webiste', 'faksimili', 'email_perusahaan'
 
     ];
-
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
+
+
     public function kelengkapandokumen()
     {
         return $this->hasMany(KelengkapanDokumenVendor::class, 'id_vendor', 'id_vendor');

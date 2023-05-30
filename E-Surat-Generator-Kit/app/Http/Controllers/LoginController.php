@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TandaTangan;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class LoginController extends Controller
 {
@@ -88,51 +91,77 @@ class LoginController extends Controller
         // Memvalidasi data yang terkirim
         $request->validate([
             'name' => 'required',
-            'email' => 'required:email',
-            'picture_profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'email' => 'required|email',
+            'picture_profile' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
         // Mengambil data dari session lalu mencari di database
         $user = Auth::user();
         $user_profile = User::find($user->id);
 
-
-        if (!$user_profile->picture_profile == 'default.jpg') {
-            unlink(public_path('photoprofile/' . $user_profile->picture_profile));
-
-            $imageName = time() . '.' . $request->picture_profile->extension();
-
-            // $request->picture_profile->storeAs('/public/photoprofile/', $imageName);
-
-
-            try {
-                $file = $request->file('picture_profile');
-                $path = public_path('photoprofile');
-                $file->move($path, $imageName);
-
-                echo "File $imageName berhasil diupload.";
-            } catch (\Exception $e) {
-                throw new \Exception('Gagal saat menyimpan file: ' . $e->getMessage());
+        // Cek apakah ada uploadan gambar baru
+        if ($request->hasFile('picture_profile')) {
+            // Hapus file gambar profil lama jika bukan default.jpg
+            if ($user_profile->picture_profile !== 'default.jpg') {
+                unlink(public_path('photoprofile/' . $user_profile->picture_profile));
             }
-            $user_profile->picture_profile = $imageName;
-        } else {
 
+            // Simpan gambar profil yang baru diupload
             $imageName = time() . '.' . $request->picture_profile->extension();
-            try {
-                $file = $request->file('picture_profile');
-                $path = public_path('photoprofile');
-                $file->move($path, $imageName);
-
-                echo "File $imageName berhasil diupload.";
-            } catch (\Exception $e) {
-                throw new \Exception('Gagal saat menyimpan file: ' . $e->getMessage());
-            }
+            $request->picture_profile->move(public_path('photoprofile'), $imageName);
             $user_profile->picture_profile = $imageName;
         }
 
+        // Update data nama dan email
         $user_profile->name = $request->input('name');
         $user_profile->email = $request->input('email');
         $user_profile->save();
-        return redirect()->back();
+
+        return redirect()->back()->with('success', 'Data berhasil diperbarui.');
+    }
+
+    public function ubahanTandaTangan(Request $request)
+    { // Validasi form input jika diperlukan
+        $request->validate([
+            'signature' => 'required'
+        ]);
+
+        // Dapatkan ID akun pengguna yang sedang login
+        $userId = auth()->id();
+
+        // Cari tanda tangan yang terkait dengan ID akun
+        $tandaTangan = TandaTangan::where('id_akun', $userId)->first();
+
+        if (!$tandaTangan) {
+            // Jika tanda tangan belum ada, buat entri baru di tabel tanda_tangans
+            $tandaTangan = new TandaTangan();
+            $tandaTangan->id_akun = $userId;
+        } else {
+            // Hapus file tanda tangan lama jika bukan file default
+            $oldFilename = $tandaTangan->tandatangan;
+            if ($oldFilename !== 'default.png') {
+                Storage::disk('public')->delete('tandatangan/' . $oldFilename);
+            }
+        }
+
+        // Ambil data tanda tangan dari input form
+        $signatureData = $request->input('signature');
+
+        // Decode data base64 menjadi gambar
+        $decodedImage = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $signatureData));
+
+        // Buat nama unik untuk file tanda tangan
+        $filename = uniqid('signature_') . '.png';
+
+        // Simpan gambar tanda tangan ke storage
+        Storage::disk('public')->put('tandatangan/' . $filename, $decodedImage);
+
+        // Update kolom tandatangan dengan nama file yang baru
+        $tandaTangan->tandatangan = $filename;
+        $tandaTangan->save();
+
+        // Redirect atau kembali ke halaman yang sesuai
+        return redirect()->back()->with('success', 'Tanda tangan berhasil diperbarui');
     }
 
     public function registrasivendor()
@@ -145,7 +174,7 @@ class LoginController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-        
+
         ]);
 
         $dataakun = [
@@ -153,7 +182,7 @@ class LoginController extends Controller
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
             'role' => 'vendor',
-       
+
         ];
 
         if ($request->hasFile('picture_profile')) {
@@ -162,7 +191,7 @@ class LoginController extends Controller
             $path = $file->storeAs('public/photoprofile', $filename);
             $dataakun['picture_profile'] = $filename;
         }
-      
+
         $user = User::create($dataakun);
         $datavendor = $request->validate([
             'penyedia' => 'required',

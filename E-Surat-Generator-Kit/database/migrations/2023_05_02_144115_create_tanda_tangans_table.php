@@ -13,14 +13,11 @@ return new class extends Migration
     {
         Schema::create('tanda_tangans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_kontrakkerja');
-            $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas');
-            $table->string('tandatangan_pengadaan')->nullable();
-            $table->date('tanggal_tandatangan_pengadaan')->nullable();
-            $table->string('tandatangan_manager')->nullable();
-            $table->date('tanggaltandatangan_manager')->nullable();
-            $table->string('tandatangan_vendor')->nullable();
-            $table->date('tanggal_tandatangan_vendor')->nullable();
+            $table->text('kode_unik')->nullable();
+            $table->unsignedBigInteger('id_akun');
+            $table->string('tandatangan')->default('default.png');
+            $table->string('save_file_path')->default('tandatangan');
+            $table->foreign('id_akun')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

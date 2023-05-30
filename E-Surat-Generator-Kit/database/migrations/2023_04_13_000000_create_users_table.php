@@ -13,14 +13,21 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+           
             $table->string('name');
             $table->string('email')->unique();
+            $table->unsignedBigInteger('vendor_id')->nullable();
+            $table->unsignedBigInteger('pegawai_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('role');
             $table->string('picture_profile')->default('default.jpg');
+
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('vendor_id')->references('id_vendor')->on('vendors')->onDelete('cascade');
+            $table->foreign('pegawai_id')->references('id_pegawai')->on('pegawais')->onDelete('cascade');
         });
     }
 
