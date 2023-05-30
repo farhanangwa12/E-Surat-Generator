@@ -101,7 +101,7 @@ class KontrakKerjaController extends Controller
 
                 // Menyimpan ke kontrak
                 // $newFileName = 'dokumenmeong_' . uniqid() . '.xlsx';
-                $newFileName = 'dokumen_' . uniqid() . '.xlsx';
+                // $newFileName = 'dokumen_' . uniqid() . '.xlsx';
                 // Simpan ke database 
                 $kontrakkerja = new KontrakKerja();
                 $kontrakkerja->nama_kontrak = $worksheetMaster->getCell('C12')->getCalculatedValue();
@@ -158,7 +158,7 @@ class KontrakKerjaController extends Controller
 
                 $kontrakkerja->kode_masalah = $worksheetMaster->getCell('K7')->getFormattedValue();
 
-                $kontrakkerja->filemaster = $newFileName;
+                // $kontrakkerja->filemaster = $newFileName;
 
                 $kontrakkerja->save();
                 $id = $kontrakkerja->id_kontrakkerja;
@@ -244,6 +244,12 @@ class KontrakKerjaController extends Controller
                         'tanggal_pembuatan' => $worksheetMaster->getCell('L12')->getFormattedValue() == '' ? null :
                             Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L12')->getCalculatedValue()))->toDateString()
                     ],
+                    [
+                        'id_kontrakkerja' => $id,
+                        'nama_surat' => 'nomor_pakta_pengguna',
+                        'no_surat' => $worksheetMaster->getCell('K14')->getCalculatedValue(),
+                        'tanggal_pembuatan' => $worksheetMaster->getCell('L14')->getFormattedValue() == '' ? null : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L14')->getCalculatedValue()))->toDateString()
+                    ],
 
                     [
                         'id_kontrakkerja' => $id,
@@ -252,12 +258,16 @@ class KontrakKerjaController extends Controller
                         'tanggal_pembuatan' => $worksheetMaster->getCell('L13')->getFormattedValue() == '' ? null :
                             Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L13')->getCalculatedValue()))->toDateString()
                     ],
+
+
                     [
                         'id_kontrakkerja' => $id,
-                        'nama_surat' => 'nomor_pakta_pengguna',
-                        'no_surat' => $worksheetMaster->getCell('K14')->getCalculatedValue(),
-                        'tanggal_pembuatan' => $worksheetMaster->getCell('L14')->getFormattedValue() == '' ? null : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L14')->getCalculatedValue()))->toDateString()
+                        'nama_surat' => 'batas_akhir_dokumen_penawaran',
+                        'no_surat' => null,
+                        'tanggal_pembuatan' => $worksheetMaster->getCell('L15')->getFormattedValue() == '' ? null :
+                            Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('L15')->getCalculatedValue()))->toDateString()
                     ],
+
 
                     [
                         'id_kontrakkerja' => $id,
