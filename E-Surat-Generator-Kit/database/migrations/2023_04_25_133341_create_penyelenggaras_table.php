@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas')->onDelete('cascade');
             $table->string('nama_jabatan');
             $table->string('nama_pengguna');
+            
             $table->timestamps();
         });
     }

@@ -22,8 +22,11 @@
                                 <h4>Syarat Upload File Excel</h4>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">- Pastikan ada worksheet bernama BOQ & Master</li>
-                                    <li class="list-group-item">- Data yang disimpan dari Excel Worksheet MASTER yaitu Data Kontrak, Data Surat dan nomor, Data Penyelenggara PLN</li>
-                                    <li class="list-group-item">- Data yang disimpan dari Excel Worksheet BOQ yaitu hanya Data dari Uraian, Volume, dan Satuan. pada Uraian terdapat 3 data yang disimpan yaitu Jenis Pekerjaan, Data Barang/jasa dan Sub Data</li>
+                                    <li class="list-group-item">- Data yang disimpan dari Excel Worksheet MASTER yaitu Data
+                                        Kontrak, Data Surat dan nomor, Data Penyelenggara PLN</li>
+                                    <li class="list-group-item">- Data yang disimpan dari Excel Worksheet BOQ yaitu hanya
+                                        Data dari Uraian, Volume, dan Satuan. pada Uraian terdapat 3 data yang disimpan
+                                        yaitu Jenis Pekerjaan, Data Barang/jasa dan Sub Data</li>
 
 
                                     <li class="list-group-item">- Format Jenis Pekerjaan Barang / Jasa Nomornya harus romawi
@@ -38,7 +41,7 @@
                                         and
                                         connector</li>
                                 </ul>
-                              
+
                             </div>
                     </div>
                     <div class="card-body">
@@ -416,10 +419,16 @@
 
 
                             </div>
+                            <div class="form-group my-5">
+                                <label for="batas_akhir_dokumen_penawaran">Batas Akhir Pemasukan Dokumen Penawaran</label>
+                                <div class="row">
+
+                                    <div class="col"> <input type="date" name="batas_akhir_dokumen_penawaran"
+                                            class="form-control" id="batas_akhir_dokumen_penawaran"></div>
+                                </div>
+                            </div>
 
 
-
-                            <br>
                             <div class="form-group mb-3">
                                 <label for="ba_buka">BA Buka</label>
                                 <div class="row">

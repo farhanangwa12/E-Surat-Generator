@@ -110,7 +110,7 @@ class KontrakKerjaController extends Controller
 
 
                 $kontrakkerja->tanggal_akhir_pekerjaan =  $worksheetMaster->getCell('C11')->getFormattedValue() == '' ? '' : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('C11')->getCalculatedValue()))->toDateString();
-        
+
                 $vendor = Vendor::where('penyedia', $worksheetMaster->getCell('F29')->getFormattedValue())->first();
 
                 if (!$vendor) {
@@ -167,8 +167,8 @@ class KontrakKerjaController extends Controller
                 $anggaran = new SumberAnggaran();
                 $anggaran->id_kontrakkerja = $id;
                 $anggaran->skk_ao = $worksheetMaster->getCell('C26')->getCalculatedValue();
-   
-           
+
+
 
                 $anggaran->tanggal_anggaran = $worksheetMaster->getCell('C27')->getCalculatedValue() == null ? null : Carbon::createFromDate(Date::excelToDateTimeObject($worksheetMaster->getCell('C27')->getCalculatedValue()))->toDateString();
 
@@ -489,7 +489,8 @@ class KontrakKerjaController extends Controller
                 //     // echo 'File tidak ditemukan.';
                 // }
 
-                return redirect()->route('pengajuankontrak.index');
+                return redirect()->route('pengajuankontrak.index')->with('success', 'Data Pengajuan Berhasil Ditambahkan');
+
 
                 // $writter = IOFactory::createWriter($spreadsheet, 'Xlsx');
                 // $writter->save(storage_path('app/public/template/mantap.xlsx'));
@@ -522,9 +523,6 @@ class KontrakKerjaController extends Controller
         //     'tanggal_akhir_pekerjaan' => 'required|date',
         //     // 'filemaster' => 'nullable|string|max:255',
         // ]);
-
-        // Generate Random Filename
-        $newFileName = 'dokumen_' . uniqid() . '.xlsx';
 
 
 
@@ -570,7 +568,6 @@ class KontrakKerjaController extends Controller
 
         $kontrakkerja->tanggal_spmk = $request->input('tanggal_spmk'); // Tanggal SPMK
         $kontrakkerja->no_spmk = $request->input('nomor_spmk'); // Nomor SPMK
-        $kontrakkerja->filemaster = $newFileName;
 
         $kontrakkerja->save();
         $id = $kontrakkerja->id_kontrakkerja;
@@ -646,6 +643,12 @@ class KontrakKerjaController extends Controller
                 'no_surat' => $request->input('nomor_pakta_pejabat'),
                 'tanggal_pembuatan' =>  $request->input('tanggal_pakta_pejabat')
             ],
+            [
+                'id_kontrakkerja' => $id,
+                'nama_surat' => 'nomor_pakta_pengguna',
+                'no_surat' => $request->input('nomor_pakta_pengguna'),
+                'tanggal_pembuatan' =>  $request->input('tanggal_pakta_pengguna')
+            ],
 
             [
                 'id_kontrakkerja' => $id,
@@ -653,12 +656,15 @@ class KontrakKerjaController extends Controller
                 'no_surat' => $request->input('nomor_undangan'),
                 'tanggal_pembuatan' => $request->input('tanggal_undangan')
             ],
+
             [
                 'id_kontrakkerja' => $id,
-                'nama_surat' => 'nomor_pakta_pengguna',
-                'no_surat' => $request->input('nomor_pakta_pengguna'),
-                'tanggal_pembuatan' =>  $request->input('tanggal_pakta_pengguna')
+                'nama_surat' => 'batas_akhir_dokumen_penawaran',
+                'no_surat' => null,
+                'tanggal_pembuatan' => $request->input('batas_akhir_dokumen_penawaran')
             ],
+
+
 
             [
                 'id_kontrakkerja' => $id,
@@ -985,6 +991,13 @@ class KontrakKerjaController extends Controller
                 'no_surat' => $request->input('nomor_pakta_pejabat'),
                 'tanggal_pembuatan' =>  $request->input('tanggal_pakta_pejabat')
             ],
+            [
+                'id_kontrakkerja' => $id,
+                'nama_surat' => 'nomor_pakta_pengguna',
+                'no_surat' => $request->input('nomor_pakta_pengguna'),
+                'tanggal_pembuatan' =>  $request->input('tanggal_pakta_pengguna')
+            ],
+
 
             [
                 'id_kontrakkerja' => $id,
@@ -992,11 +1005,13 @@ class KontrakKerjaController extends Controller
                 'no_surat' => $request->input('nomor_undangan'),
                 'tanggal_pembuatan' => $request->input('tanggal_undangan')
             ],
+
+
             [
                 'id_kontrakkerja' => $id,
-                'nama_surat' => 'nomor_pakta_pengguna',
-                'no_surat' => $request->input('nomor_pakta_pengguna'),
-                'tanggal_pembuatan' =>  $request->input('tanggal_pakta_pengguna')
+                'nama_surat' => 'batas_akhir_dokumen_penawaran',
+                'no_surat' => null,
+                'tanggal_pembuatan' => $request->input('batas_akhir_dokumen_penawaran')
             ],
 
             [
@@ -1266,8 +1281,8 @@ class KontrakKerjaController extends Controller
         }
         $pembuatansurat = json_decode(json_encode($pembuatansurat));
 
-         // Detail Kontrak
-         $kontrak = [
+        // Detail Kontrak
+        $kontrak = [
             'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
             'nama_kontrak' => $kontrakkerja->nama_kontrak,
             'no_urut' => $kontrakkerja->no_urut,
@@ -1444,8 +1459,8 @@ class KontrakKerjaController extends Controller
         }
         $pembuatansurat = json_decode(json_encode($pembuatansurat));
 
-         // Detail Kontrak
-         $kontrak = [
+        // Detail Kontrak
+        $kontrak = [
             'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
             'nama_kontrak' => $kontrakkerja->nama_kontrak,
             'no_urut' => $kontrakkerja->no_urut,
@@ -1558,8 +1573,8 @@ class KontrakKerjaController extends Controller
         }
         $pembuatansurat = json_decode(json_encode($pembuatansurat));
 
-         // Detail Kontrak
-         $kontrak = [
+        // Detail Kontrak
+        $kontrak = [
             'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
             'nama_kontrak' => $kontrakkerja->nama_kontrak,
             'no_urut' => $kontrakkerja->no_urut,

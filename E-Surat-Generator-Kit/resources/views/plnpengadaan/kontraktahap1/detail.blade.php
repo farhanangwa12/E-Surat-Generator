@@ -6,6 +6,12 @@
     <div class="container-fluid p-0">
 
         <h1 class="h3 mb-3">Detail Kontrak</h1>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
 
         <div class="row">
             <div class="col-12">
@@ -122,7 +128,7 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Anggaran</td>
-                                    <td>{{ $kontrak->tanggal_anggaran}}
+                                    <td>{{ $kontrak->tanggal_anggaran }}
                                     </td>
                                 </tr>
 
@@ -175,7 +181,8 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Alamat</td>
-                                    <td>{{ $kontrak->alamat_jalan . ' , ' . $kontrak->alamat_kota . ' , ' . $kontrak->alamat_provinsi}}</td>
+                                    <td>{{ $kontrak->alamat_jalan . ' , ' . $kontrak->alamat_kota . ' , ' . $kontrak->alamat_provinsi }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -283,7 +290,7 @@
                                     <th scope="col" style="width: 30%;">Nama informasi</th>
                                     <th scope="col" style="width: 30%;">Tanggal</th>
                                     <th scope="col" style="width: 30%;">Nomor Surat</th>
-                                    
+
 
                                 </tr>
                             </thead>
@@ -311,7 +318,7 @@
                                     <td>{{ $kontrak->tanggal_pakta_pejabat }}</td>
                                     <td>{{ $kontrak->nomor_pakta_pejabat }}</td>
 
-                                    
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -323,37 +330,37 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Pakta Pengguna</td>
-                                    <td>{{$kontrak->tanggal_pakta_pengguna}}</td>
-                                    <td>{{$kontrak->nomor_pakta_pengguna}}</td>
+                                    <td>{{ $kontrak->tanggal_pakta_pengguna }}</td>
+                                    <td>{{ $kontrak->nomor_pakta_pengguna }}</td>
 
                                 </tr>
                                 <br>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Buka</td>
-                                    <td>{{$kontrak->tanggal_ba_buka }}</td>
-                                    <td>{{$kontrak->nomor_ba_buka }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_buka }}</td>
+                                    <td>{{ $kontrak->nomor_ba_buka }}</td>
 
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Evaluasi</td>
-                                    <td>{{$kontrak->tanggal_ba_evaluasi}}</td>
-                                    <td>{{$kontrak->nomor_ba_evaluasi}}</td>
+                                    <td>{{ $kontrak->tanggal_ba_evaluasi }}</td>
+                                    <td>{{ $kontrak->nomor_ba_evaluasi }}</td>
 
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Negosiasi</td>
-                                    <td>{{$kontrak->tanggal_ba_negosiasi}}</td>
-                                    <td>{{$kontrak->nomor_ba_negosiasi}}</td>
+                                    <td>{{ $kontrak->tanggal_ba_negosiasi }}</td>
+                                    <td>{{ $kontrak->nomor_ba_negosiasi }}</td>
 
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Hasil PL</td>
-                                    <td>{{$kontrak->tanggal_ba_hasil_pl}}</td>
-                                    <td>{{$kontrak->nomor_ba_hasil_pl}}</td>
+                                    <td>{{ $kontrak->tanggal_ba_hasil_pl }}</td>
+                                    <td>{{ $kontrak->nomor_ba_hasil_pl }}</td>
 
                                 </tr>
                                 <tr>

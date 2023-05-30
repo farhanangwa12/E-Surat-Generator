@@ -16,8 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_kontrakkerja');
             $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas')->onDelete('cascade');
             $table->string('nama_surat');
-            $table->string('no_surat');
+            $table->string('no_surat')->nullable();
             $table->date('tanggal_pembuatan');
+            $table->text('datasurat')->nullable();
             $table->timestamps();
         });
     }
