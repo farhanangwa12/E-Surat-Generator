@@ -17,7 +17,9 @@ class HPS extends Model
         'ppn11',
         'total_harga',
         'tandatangan_pengadaan',
+        'tanggal_tandatangan_pengadaan',
         'tandatangan_manager',
+        'tanggal_tandatangan_manager',
     ];
 
     public function kontrakKerjas()

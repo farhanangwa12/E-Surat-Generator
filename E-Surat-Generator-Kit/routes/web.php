@@ -71,24 +71,22 @@ Route::post('/ubahtandatangan', [LoginController::class, 'ubahanTandaTangan'])->
 
 Route::prefix('und')->group(function () {
     Route::get('undangan/{id}/{isDownload}', [UndanganController::class, 'Undangan'])->name('pengajuankontrak.undangan');
-    Route::get('tandatanganpengadaanund/{id_kontrakkerja}', [UndanganController::class, 'tandatanganpengadaan'])->name('undangan.tandatangan');
+    Route::get('tandatangan/{id}/{jenis}', [UndanganController::class, 'tandatangan'])->name('undangan.tandatangan');
 
-    Route::post('simpantandatangan', [UndanganController::class, 'simpantandatangan'])->name('undangan.simpantandatangan');
 });
 Route::prefix('rks')->group(function () {
     Route::get('show/{id}/{isDownload}', [RKSController::class, 'showrks'])->name('pengajuankontrak.rks');
     Route::get('isi/{id}', [RKSController::class, 'isirks'])->name('rks.isi');
+
     Route::put('update/{id}', [RKSController::class, 'updaterks'])->name('rks.update');
-    Route::get('tanda-tangan-pengadaan/{id}', [RKSController::class, 'tandaTanganPengadaan'])->name('rks.tanda-tangan.pengadaan');
-    Route::get('tanda-tangan-manager/{id}', [RKSController::class, 'tandaTanganManager'])->name('rks.tanda-tangan.manager');
-    Route::post('tanda-tangan-manager', [RKSController::class, 'simpanTandaTangan'])->name('rks.simpan-tanda-tangan');
+    Route::get('tandatangan/{id}/{jenis}', [RKSController::class, 'tandatangan'])->name('rks.tandatangan');
 });
 Route::prefix('boq')->group(function () {
     Route::get('{id}/{isDownload}/detail', [BOQController::class, 'detail'])->name('pengajuankontrak.boq.detail');
     Route::get('{id}/isi', [BOQController::class, 'isi'])->name('pengajuankontrak.boq.isi');
     Route::put('update/{id}', [BOQController::class, 'update'])->name('pengajuankontrak.boq.update');
-    Route::get('/tandatanganvendor/{id}', [BOQController::class, 'tandatanganvendor'])->name('boqtandatanganvendor');
-    Route::post('/simpantandatangan', [BOQController::class, 'simpantandatangan'])->name('simpantandatanganboq');
+    Route::get('tandatanganvendor/{id}', [BOQController::class, 'tandatanganvendor'])->name('boqtandatanganvendor');
+    Route::post('simpantandatangan', [BOQController::class, 'simpantandatangan'])->name('simpantandatanganboq');
 
     // Route::get('{id}/boq', [BOQController::class, 'index'])->name('pengajuankontrak.boq');
     // Route::post('{id}/boq/create', [BOQController::class, 'store'])->name('pengajuankontrak.boq.create');
@@ -98,9 +96,9 @@ Route::prefix('hps')->group(function () {
     Route::get('{id}/{isDownload}/detail', [HPSController::class, 'detail'])->name('pengajuankontrak.hps.detail');
     Route::get('isi/{id}', [HPSController::class, 'isi'])->name('pengajuankontrak.hps.isi');
     Route::put('update/{id}', [HPSController::class, 'update'])->name('pengajuankontrak.hps.update');
-    Route::get('/hpstandatangan/{id}', [HPSController::class, 'tandatangan'])->name('hpstandatangan');
-    Route::get('/hpstandatanganmanager/{id}', [HPSController::class, 'tandatanganmanager'])->name('hpstandatanganmanager');
-    Route::post('/simpantandatangan', [HPSController::class, 'simpantandatangan'])->name('simpantandatanganhps');
+    Route::get('/hpstandatangan/{id}/{jenis}', [HPSController::class, 'tandatangan'])->name('hps.tandatangan');
+    // Route::get('/hpstandatanganmanager/{id}', [HPSController::class, 'tandatanganmanager'])->name('hpstandatanganmanager');
+    // Route::post('/simpantandatangan', [HPSController::class, 'simpantandatangan'])->name('simpantandatanganhps');
 });
 
 
@@ -463,7 +461,7 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
         Route::get('datapengalaman/create/{id}', [DataPengalamanController::class, 'create'])->name('vendor.datapengalaman.create');
         Route::get('datapengalaman/store/{id}', [DataPengalamanController::class, 'store'])->name('vendor.datapengalaman.store');
         Route::get('datapengalaman/edit/{id}', [DataPengalamanController::class, 'edit'])->name('vendor.datapengalaman.create');
-        
+
         Route::post('datapengalaman/update/{id}', [DataPengalamanController::class, 'update'])->name('vendor.datapengalaman.update');
         Route::post('datapengalaman/hapus/{id}/{id_index}', [DataPengalamanController::class, 'destroy'])->name('vendor.datapengalaman.update');
         Route::get('datapengalaman/halamanttd/{id}', [DataPengalamanController::class, 'halamanttd'])->name('vendor.datapengalaman.halamanttd');

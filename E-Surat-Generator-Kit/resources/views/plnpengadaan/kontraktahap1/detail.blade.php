@@ -322,18 +322,27 @@
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
-                                    <td>Tanggal Undangan</td>
-                                    <td>{{ $kontrak->tanggal_undangan }}</td>
-                                    <td>{{ $kontrak->nomor_undangan }}</td>
-
-                                </tr>
-                                <tr>
-                                    <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Pakta Pengguna</td>
                                     <td>{{ $kontrak->tanggal_pakta_pengguna }}</td>
                                     <td>{{ $kontrak->nomor_pakta_pengguna }}</td>
 
                                 </tr>
+                                <tr>
+                                    <th scope="col">{{ $no++ }}</th>
+                                    <td>Tanggal Undangan</td>
+                                    <td>{{ $kontrak->tanggal_undangan }}</td>
+                                    <td>{{ $kontrak->nomor_undangan }}</td>
+
+                                </tr>
+                                <br>
+                                <tr>
+                                    <th scope="col">{{ $no++ }}</th>
+                                    <td>Batas Akhir Penginputan Dokumen Penawaran</td>
+                                    <td colspan="2">{{ $kontrak->tanggal_undangan }}</td>
+                                    {{-- <td>{{ $kontrak->nomor_undangan }}</td> --}}
+
+                                </tr>
+
                                 <br>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>

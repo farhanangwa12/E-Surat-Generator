@@ -16,7 +16,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-
+use App\Models\HPS;
+use App\Models\Dokumen\RKS;
+use App\Models\Dokumen\UND;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -1220,6 +1222,8 @@ class KontrakKerjaController extends Controller
 
 
 
+
+
         ];
         $kontrak = json_decode(json_encode($kontrak));
 
@@ -1443,6 +1447,7 @@ class KontrakKerjaController extends Controller
     }
     public function detailttd($id)
     {
+        
         $kontrakkerja = KontrakKerja::with('vendor')->find($id);
 
         $sumberanggaran = SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first();
@@ -1503,17 +1508,17 @@ class KontrakKerjaController extends Controller
             'tanggal_rks' => $pembuatansurat->nomor_rks->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_rks->tanggal_surat),
 
             'nomor_rks' => $pembuatansurat->nomor_rks->nomor_surat,
-
+            'rks' =>RKS::where('id_kontrakkerja', $id)->first(),
             'tanggal_hps' => $pembuatansurat->nomor_hps->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_hps->tanggal_surat),
             'nomor_hps' => $pembuatansurat->nomor_hps->nomor_surat,
+            'hps' => HPS::where('id_kontrakkerja', $id)->first(),
 
             'tanggal_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pejabat->tanggal_surat),
             'nomor_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->nomor_surat,
 
             'tanggal_undangan' => $pembuatansurat->nomor_undangan->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_undangan->tanggal_surat),
             'nomor_undangan' => $pembuatansurat->nomor_undangan->nomor_surat,
-
-
+            'undangan' =>UND::where('id_kontrakkerja', $id)->first(),
             'tanggal_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pengguna->tanggal_surat),
             'nomor_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->nomor_surat,
 

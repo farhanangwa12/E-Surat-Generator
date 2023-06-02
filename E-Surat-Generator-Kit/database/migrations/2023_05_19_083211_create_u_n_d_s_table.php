@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_kontrakkerja');
             $table->string('tandatangan_pengadaan')->nullable();
-            $table->date('tanggal_tandatanganpengadaan')->nullable();
+            $table->dateTime('tanggal_tandatangan_pengadaan')->nullable();
+
             $table->timestamps();
             $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas');
         });

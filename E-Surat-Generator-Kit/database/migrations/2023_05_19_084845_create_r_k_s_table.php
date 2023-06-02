@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('r_k_s', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_kontrakkerja');
+            $table->json('datarks')->nullable();
             $table->string('tandatangan_pengadaan')->nullable();
-            $table->date('tanggal_tandatanganpengadaan')->nullable();
-
+            $table->dateTime('tanggal_tandatangan_pengadaan')->nullable();
             $table->string('tandatangan_manager')->nullable();
-            $table->date('tanggal_tandatanganmanager')->nullable();
-
+            $table->dateTime('tanggal_tandatangan_manager')->nullable();
             $table->timestamps();
             $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas')->onDelete('cascade');
         });

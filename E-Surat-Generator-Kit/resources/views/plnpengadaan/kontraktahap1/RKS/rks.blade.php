@@ -442,12 +442,12 @@
                                     <tr>
                                         <td style="width: 20%;">Faksimili</td>
                                         <td style="width: 10%;">:</td>
-                                        <td style="width: 70%;">{{ $surat->faksimili }}></td>
+                                        <td style="width: 70%;">{{ $surat->faksimili }}</td>
                                     </tr>
                                     <tr>
                                         <td style="width: 20%;">e-mail</td>
                                         <td style="width: 10%;">:</td>
-                                        <td style="width: 70%;">{{ $surat->email }}></td>
+                                        <td style="width: 70%;">{{ $surat->email }}</td>
                                     </tr>
                                 </table>
                             </li>
