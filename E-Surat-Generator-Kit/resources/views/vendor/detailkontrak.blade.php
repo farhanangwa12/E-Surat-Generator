@@ -266,6 +266,14 @@
 
 
                 </div>
+
+
+                <div class="card">
+                    <div class="card-header">
+                        Dokumen Kelengkapan
+                    </div>
+                  
+                </div>
             </div>
 
         </div>

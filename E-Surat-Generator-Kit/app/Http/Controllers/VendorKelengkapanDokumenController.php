@@ -19,8 +19,9 @@ class VendorKelengkapanDokumenController extends Controller
     {
 
         $user = Auth::user();
-        $vendor = Vendor::where('id_akun', $user->id)->get()->toArray();
-        $id = $vendor[0]['id_vendor'];
+        $vendor = Vendor::find($user->vendor_id);
+       
+        $id = $vendor->id_vendor;
         // print_r($vendor);
         // $namadokumen = KelengkapanDokumenVendor::rightJoin('jenis_dokumen_kelengkapans', 'kelengkapan_dokumen_vendors.id_jenis_dokumen', '=', 'jenis_dokumen_kelengkapans.id_jenis')->select('jenis_dokumen_kelengkapans.nama_dokumen', 'kelengkapan_dokumen_vendors.tanggal_upload')
         //     ->get();
@@ -44,7 +45,6 @@ class VendorKelengkapanDokumenController extends Controller
 
     public function pdfviewer($name)
     {
-        echo "test";
         // Set the path to the PDF file
         $pdfFile = $name;
 
