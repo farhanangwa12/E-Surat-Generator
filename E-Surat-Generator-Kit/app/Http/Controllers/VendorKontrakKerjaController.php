@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisDokumenKelengkapan;
 use App\Models\KontrakKerja;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -11,7 +12,7 @@ class VendorKontrakKerjaController extends Controller
     public function index()
     {
         $status = [
-           
+
 
             'Kontrak dibatalkan',
             'Kontrak disetujui',
@@ -19,7 +20,7 @@ class VendorKontrakKerjaController extends Controller
             'Kontrak Kerja Berjalan'
         ];
         $kontrak = KontrakKerja::whereIn('status', $status)->get();
-        return view('vendor.pengisiankontrakkerja',compact('kontrak'));   
+        return view('vendor.pengisiankontrakkerja', compact('kontrak'));
     }
     public function detail($id)
     {
@@ -30,8 +31,10 @@ class VendorKontrakKerjaController extends Controller
 
         // $spreadsheet = IOFactory::load($path);
         // $worksheet = $spreadsheet->getActiveSheet();
+        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get();
 
-        return view('vendor.detailkontrak', compact('kontrakkerja', 'id'));
+        
+        return view('vendor.detailkontrak', compact('kontrakkerja', 'id', 'jenisDokumenKelengkapans'));
     }
 
 
@@ -42,8 +45,7 @@ class VendorKontrakKerjaController extends Controller
             'Dokumen Input Vendor',
         ];
         $kontrak = KontrakKerja::whereIn('status', $status)->get();
-      
+
         return view('vendor.kontrakkerja', compact('kontrak'));
-       
     }
 }

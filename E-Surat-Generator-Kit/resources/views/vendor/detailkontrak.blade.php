@@ -205,59 +205,6 @@
 
 
 
-                    @if ($kontrakkerja->status == 'Dokumen Input Vendor')
-                        <div class="card">
-                            <div class="card-header">
-                                Setelah tombol kirim ditekan, informasi akan langsung dikirimkan ke
-                                pihak PLN untuk proses
-                                penawaran harga. Proses ini tidak dapat dibatalkan. Mohon konfirmasi
-                                apakah vendor yakin
-                                akan melanjutkan.
-
-                            </div>
-                            <div class="card-body">
-
-                                <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
-                                    <a href="{{ route('pengajuankontrak.index') }}" class="btn btn-info">Kembali</a>
-                                    <form
-                                        action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Dokumen Input Pengadaan Tahap 2', 'routeName' => 'isikontrak']) }}"
-                                        method="post">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary">Kirim</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                    @if ($kontrakkerja->status == 'Tanda Tangan Vendor')
-                        <div class="card">
-                            <div class="card-header">
-                                Mohon konfirmasi apakah vendor setuju dengan persyaratan penawaran yang telah
-                                disampaikan.
-                                Jika tidak setuju, silakan klik tombol "Tidak Setuju". Jika setuju, silakan tanda tangan
-                                sebagai tanda persetujuan. Terima kasih atas perhatiannya.
-                            </div>
-                            <div class="card-body">
-
-                                <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
-                                    <a href="{{ route('pengajuankontrak.index') }}" class="btn btn-info">Kembali</a>
-                                    <form
-                                        action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Kontrak Dibatalkan', 'routeName' => 'vendor.kontrakkerja']) }}"
-                                        method="post">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary">Tidak Setuju</button>
-                                    </form>
-                                    <form
-                                        action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Kontrak Disetujui', 'routeName' => 'vendor.kontrakkerja']) }}"
-                                        method="post">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary">Setuju</button>
-                                    </form>
-
-                                </div>
-                            </div>
-                        </div>
-                    @endif
 
 
 
@@ -272,8 +219,94 @@
                     <div class="card-header">
                         Dokumen Kelengkapan
                     </div>
-                  
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama Dokumen</th>
+                                    <th>keterangan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($jenisDokumenKelengkapans as $jenisDokumenKelengkapan)
+                                    <tr>
+                                        <td>{{ $jenisDokumenKelengkapan->id_jenis }}</td>
+                                        <td>{{ $jenisDokumenKelengkapan->nama_dokumen }}</td>
+                                        <td>{{ $jenisDokumenKelengkapan->keterangan }}</td>
+                                        @if (empty($jenisDokumenKelengkapan->kelengkapan_dokumen_vendors))
+                                            <td>
+                                                Upload
+                                                @php
+                                                    
+                                                    var_dump($jenisDokumenKelengkapan->kelengkapan_dokumen_vendors);
+                                                @endphp
+                                            </td>
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
+
+
+
+                @if ($kontrakkerja->status == 'Dokumen Input Vendor')
+                    <div class="card">
+                        <div class="card-header">
+                            Setelah tombol kirim ditekan, informasi akan langsung dikirimkan ke
+                            pihak PLN untuk proses
+                            penawaran harga. Proses ini tidak dapat dibatalkan. Mohon konfirmasi
+                            apakah vendor yakin
+                            akan melanjutkan.
+
+                        </div>
+                        <div class="card-body">
+
+                            <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
+                                <a href="{{ route('pengajuankontrak.index') }}" class="btn btn-info">Kembali</a>
+                                <form
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Dokumen Input Pengadaan Tahap 2', 'routeName' => 'isikontrak']) }}"
+                                    method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kirim</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                @if ($kontrakkerja->status == 'Tanda Tangan Vendor')
+                    <div class="card">
+                        <div class="card-header">
+                            Mohon konfirmasi apakah vendor setuju dengan persyaratan penawaran yang telah
+                            disampaikan.
+                            Jika tidak setuju, silakan klik tombol "Tidak Setuju". Jika setuju, silakan tanda tangan
+                            sebagai tanda persetujuan. Terima kasih atas perhatiannya.
+                        </div>
+                        <div class="card-body">
+
+                            <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
+                                <a href="{{ route('pengajuankontrak.index') }}" class="btn btn-info">Kembali</a>
+                                <form
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Kontrak Dibatalkan', 'routeName' => 'vendor.kontrakkerja']) }}"
+                                    method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Tidak Setuju</button>
+                                </form>
+                                <form
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Kontrak Disetujui', 'routeName' => 'vendor.kontrakkerja']) }}"
+                                    method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Setuju</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
 
         </div>

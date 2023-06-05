@@ -15,9 +15,12 @@ return new class extends Migration
             $table->bigIncrements('id_dokumen');
             $table->unsignedBigInteger('id_jenis_dokumen');
             $table->unsignedBigInteger('id_vendor');
+            $table->unsignedBigInteger('id_kontrakkerja')->nullable();
             $table->foreign('id_vendor')->references('id_vendor')->on('vendors');
-            $table->string('file');
-            $table->date('tanggal_upload');
+            $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas');
+            $table->string('file_upload')->nullable();
+            $table->string('tandatangan')->nullable();
+            $table->json('data_dokumen')->nullable();
             $table->timestamps();
         });
     }

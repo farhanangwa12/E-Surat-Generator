@@ -15,10 +15,12 @@ return new class extends Migration
             $table->bigIncrements('id_jenis');
             $table->string('nama_dokumen');
             $table->string('no_dokumen')->unique();
-            $table->enum('dokumen_penting', ['ya', 'tidak'])->default('tidak');
-            $table->text('deskripsi')->nullable();
+            $table->enum('dokumen_sistem', ['ya', 'tidak'])->default('tidak');
+            $table->text('keterangan')->nullable();
+  
             $table->timestamps();
         });
+        
         
     }
 

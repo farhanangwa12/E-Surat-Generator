@@ -19,7 +19,7 @@
        
         .company-logo {
             width: 100%;
-            height: 120px;
+            height: 200px;
             margin-bottom: 10px;
           
         }
@@ -27,7 +27,7 @@
 
         /* Body */
         body {
-            margin-top: 125px;
+            margin-top: 210px;
             /* Adjust this value based on header height */
         }
 
@@ -78,7 +78,7 @@
 
 <body>
     <div class="header">
-        <img src="{{ $kopsurat }}" alt="Kop Surat" style="object-fit: cover;" class="company-logo" width="200px">
+        <img src="{{ $kopsurat }}" alt="Kop Surat"  class="company-logo" height="500px">
     
     </div>
     <main>
@@ -131,7 +131,7 @@
                 <tr>
                     <td>Bertindak untuk</td>
                     <td>:</td>
-                    <td>PT/CV/Firma {{ $namaPerusahaan }}</td>
+                    <td>{{ $vendorperusahaan }}</td>
                 </tr>
                 <tr>
                     <td>dan atas nama</td>

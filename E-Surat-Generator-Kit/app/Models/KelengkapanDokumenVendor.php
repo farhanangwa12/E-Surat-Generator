@@ -9,16 +9,27 @@ class KelengkapanDokumenVendor extends Model
 {
     use HasFactory;
     protected $primaryKey = 'id_dokumen';
+
     protected $fillable = [
-        'id_jenis_dokumen', 'id_vendor', 'file', 'tanggal_upload'
+        'id_jenis_dokumen',
+        'id_vendor',
+        'id_kontrakkerja',
+        'file_upload',
+        'tandatangan',
+        'data_dokumen',
     ];
-    public function jenisdokumen()
+    public function jenisDokumen()
     {
-        $this->belongsTo(JenisDokumenKelengkapan::class, 'id_jenis', 'id_jenis_dokumen');
+        return $this->belongsTo(JenisDokumenKelengkapan::class, 'id_jenis_dokumen', 'id_jenis');
     }
 
-    public function kelengkapandokumen()
+    public function vendor()
     {
-        $this->belongsTo(Vendor::class,'id_vendor','id_vendor');
+        return $this->belongsTo(Vendor::class, 'id_vendor', 'id_vendor');
+    }
+
+    public function kontrakKerja()
+    {
+        return $this->belongsTo(KontrakKerja::class, 'id_kontrakkerja', 'id_kontrakkerja');
     }
 }

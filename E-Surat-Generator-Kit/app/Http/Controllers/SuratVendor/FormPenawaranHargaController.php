@@ -4,29 +4,31 @@ namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
 use App\Models\FormPenawaran\FormPenawaranHarga;
+use App\Models\JenisDokumenKelengkapan;
+use App\Models\KelengkapanDokumenVendor;
 use App\Models\KontrakKerja;
+use App\Models\TandaTangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 use Carbon\Carbon;
 use DNS2D;
+use Illuminate\Support\Facades\Auth;
 use Terbilang;
 
 class FormPenawaranHargaController extends Controller
 {
     private function refresh($id)
     {
-        // Mengambil data KontrakKerja dengan id_kontrakkerja = $id
-        $kontrakKerja = KontrakKerja::where('id_kontrakkerja', $id)->first();
-
-        // Mengambil data FormPenawaranHarga dengan id_kontrakkerja = $id
-        $formPenawaranHarga = FormPenawaranHarga::where('id_kontrakkerja', $id)->first();
 
 
+        // Mencari record dengan no_dokumen yang sesuai di tabel jenis_dokumen_kelengkapans
+        $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', "nomor_tanggal_surat_penawaran_")->with('kelengkapanDokumenVendors')->first();
         // Jika data tidak ditemukan, membuat data baru dengan nilai-nilai null
-        if (!$formPenawaranHarga) {
-            // Simpan file JSON dengan data inputan
+        if (count($jenisDokumen->kelengkapanDokumenVendors) === 0) {
+
             $data = [
+                'kopsurat' => null,
                 'nomor' => null,
                 'lampiran' => null,
                 'nama_kota' => null,
@@ -44,40 +46,26 @@ class FormPenawaranHargaController extends Controller
                 'terbilang' => null
             ];
 
-
-
-            $jsonData = json_encode($data);
-
-
-            // simpan JSON ke dalam file dengan nama time().json
-            $fileName =  "datavendor/formpenawaran/" . time() . '.json';
-            Storage::put('public/' . $fileName, $jsonData);
-
-            // Membuat instance form untuk menyimpan data
-            $formPenawaranHarga = new FormPenawaranHarga();
-            $formPenawaranHarga->id_kontrakkerja = $id;
-            $formPenawaranHarga->id_vendor = $kontrakKerja->id_vendor;
-            $formPenawaranHarga->kopsurat = null;
-            $formPenawaranHarga->file_path = $fileName;
-            $formPenawaranHarga->file_tandatangan = null;
-            $formPenawaranHarga->no_unik_ttd = null;
-            $formPenawaranHarga->tanggal_tandatangan = null;
-            // Setel nilai atribut lainnya sesuai kebutuhan
-
-            $formPenawaranHarga->save();
+            // Membuat record baru di tabel kelengkapan_dokumen_vendors
+            KelengkapanDokumenVendor::create([
+                'id_jenis_dokumen' => $jenisDokumen->id_jenis,
+                'id_vendor' => Auth::user()->vendor_id,
+                'id_kontrakkerja' => $id,
+                'file_upload' => null,
+                'tanggal_upload' => null,
+                'data_dokumen' => json_encode($data)
+            ])->save();
         }
 
-        return $formPenawaranHarga;
+
+        return $jenisDokumen;
     }
 
     public function create($id)
     {
         // Mengambil path file JSON dari database berdasarkan ID
         $formPenawaranHarga = $this->refresh($id);
-        $filePath = 'public/' . $formPenawaranHarga->file_path;
-
-        // Mengambil konten JSON dari file
-        $jsonData = Storage::get($filePath);
+        $jsonData = $formPenawaranHarga->kelengkapanDokumenVendors[0]->data_dokumen;
 
         // Mengubah JSON menjadi array asosiatif
         $data = json_decode($jsonData, true);
@@ -96,18 +84,23 @@ class FormPenawaranHargaController extends Controller
             'waktuPelaksanaan' => $waktuPelaksanaan
         ];
         $isi = json_decode(json_encode($isi));
-      
+
         // Mengirim data ke tampilan
         return view('vendor.form_penawaran.formpenharga.create', compact('formPenawaranHarga', 'data', 'isi'));
     }
 
+
     public function store(Request $request, $id)
     {
+
+
         // Menyimpan file kopsurat
         // $kopsurat = $request->file('kopsurat');
         // Lakukan penyimpanan file kopsurat sesuai kebutuhan
+        // Mendapatkan data gambar dari permintaan
 
         // Mengambil data dari form
+
         $nomor = $request->input('nomor');
         $lampiran = $request->input('lampiran');
         $nama_kota = $request->input('nama_kota');
@@ -123,13 +116,13 @@ class FormPenawaranHargaController extends Controller
         $ppn11 = $request->input('ppn11');
         $jumlah_harga = $request->input('jumlah_harga');
         $terbilang = $request->input('terbilang');
-       
 
 
-        // Simpan nama file dan data lainnya ke database
-        $formPenawaranHarga = $this->refresh($id);
-        $filePath = 'public/' . $formPenawaranHarga->file_path; // Ganti 'fileName' dengan nama file yang ingin Anda muat
-        $jsonData = Storage::get($filePath);
+
+
+        $kelengkapandokumen = $this->refresh($id);
+
+        $jsonData = $kelengkapandokumen->kelengkapanDokumenVendors[0]->data_dokumen;
         $data = json_decode($jsonData, true); // Mengubah JSON menjadi array asosiatif (associative array)
         // Mengupdate nilai-nilai dalam array $data sesuai dengan data yang diberikan
         $data['nomor'] = $nomor;
@@ -142,46 +135,39 @@ class FormPenawaranHargaController extends Controller
         $data['atas_nama'] = $atas_nama;
         $data['alamat_perusahaan'] = $alamat_perusahaan;
         $data['telepon_fax'] = $telepon_fax;
-    
+
         $data['email_perusahaan'] = $email_perusahaan;
         $data['harga_penawaran'] = $harga_penawaran;
         $data['ppn11'] = $ppn11;
         $data['jumlah_harga'] = $jumlah_harga;
         $data['terbilang'] = $terbilang;
 
-        // Mengubah array menjadi JSON
-        $jsonData = json_encode($data);
 
 
-        // Memeriksa apakah file JSON sudah ada
-        if (Storage::exists($filePath)) {
-            // Jika file sudah ada, lakukan pengupdatean seperti yang sudah dijelaskan sebelumnya
-            // ...
-
-            // Simpan file JSON dengan data yang diupdate
-            $jsonData = json_encode($data);
-            Storage::put($filePath, $jsonData);
-        } else {
-            // Jika file belum ada, buat file baru dengan data yang diberikan
-            $jsonData = json_encode($data);
-            Storage::put($filePath, $jsonData);
-        }
-
+        $formPenawaranHarga = KelengkapanDokumenVendor::find($kelengkapandokumen->kelengkapanDokumenVendors[0]->id_dokumen);
         // Bagian menyimpan file 
         if ($request->hasFile('kopsurat')) {
             $file = $request->file('kopsurat');
+            $extension = $file->extension(); // Mendapatkan ekstensi file
 
-            // Buat nama file yang unik dengan menggunakan time(), uniqid(), dan original file name beserta ekstensinya
-            $fileName = time() . '_' . uniqid() . '_' . $file->getClientOriginalName();
 
-            // Simpan file ke direktori yang ditentukan
-            $filePath = $file->storeAs('datavendor/kopsurat', $fileName, 'public');
+            $dataURL = $request->input('hasilkopsurat');
 
-            // Simpan path file ke dalam database
+            // Mengubah data URL menjadi file gambar
+            $fileData = explode(',', $dataURL)[1];
+            $decodedData = base64_decode($fileData);
 
-            $formPenawaranHarga->kopsurat = $filePath;
+            // Menyimpan file gambar ke storage/app/public/dokumenvendor/kopsurat
+            $filename = uniqid() . '_' . date('Ymd') . '.' . $extension;
+            $path = 'dokumenvendor/kopsurat/' . $filename;
+            Storage::disk('public')->put($path, $decodedData);
+
+            $data['kopsurat'] = $filename;
+            $data['path_kopsurat'] = $path;
         }
-
+        // Mengubah array menjadi JSON
+        $jsonData = json_encode($data);
+        $formPenawaranHarga->data_dokumen = $jsonData;
         $formPenawaranHarga->save();
 
         // Redirect ke route 'vendor.kontrakkerja.detail' dengan ID yang sesuai
@@ -196,6 +182,7 @@ class FormPenawaranHargaController extends Controller
 
     public function simpanttd(Request $request)
     {
+        $formPenawaranHarga = $this->refresh($request->input('id'));
         // Menyimpan file tanda tangan ke storage
         $file = $request->file('file_tandatangan');
 
@@ -207,27 +194,24 @@ class FormPenawaranHargaController extends Controller
         $id_kontrakkerja = $request->input('id');
 
 
-        // Mendapatkan atau membuat data FormPenawaranHarga dengan $id_kontrakkerja
-        $formPenawaranHarga = $this->refresh($id_kontrakkerja);
-
         // Update kolom file_tandatangan, no_unik_ttd, dan tanggal_tandatangan
-        $formPenawaranHarga->id_kontrakkerja = $id_kontrakkerja;
-        $formPenawaranHarga->file_tandatangan = $filePath;
-        $formPenawaranHarga->no_unik_ttd = uniqid();
-        $formPenawaranHarga->tanggal_tandatangan = now(); // Memasukkan waktu sekarang
-
-        $formPenawaranHarga->save();
+        $kelengkapandokumen = KelengkapanDokumenVendor::find($formPenawaranHarga->kelengkapanDokumenVendors[0]->id_dokumen);
+        $kelengkapandokumen->file_upload = $filename;
+        $kelengkapandokumen->tandatangan = TandaTangan::where('id',Auth::user()->id)->first()->kode_unik;
+        $kelengkapandokumen->save();
+        dd($id_kontrakkerja);
         return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
     }
 
     public function pdf($id)
     {
+        // Mengambil path file JSON dari database berdasarkan ID
         $formPenawaranHarga = $this->refresh($id);
-        $kopsurat = empty($formPenawaranHarga->kopsurat) ? null : asset('storage/' . $formPenawaranHarga->kopsurat);
-        // Meload File Path
-        $filePath = 'public/' . $formPenawaranHarga->file_path; // Ganti 'fileName' dengan nama file yang ingin Anda muat
-        $jsonData = Storage::get($filePath);
+        $jsonData = $formPenawaranHarga->kelengkapanDokumenVendors[0]->data_dokumen;
+
+
         $data = json_decode($jsonData, true); // Mengubah JSON menjadi array 
+        $kopsurat = asset('storage/' . $data['path_kopsurat']);
 
         // Load data dari kontrakkerja 
         $kontrakKerja = KontrakKerja::find($id);
@@ -245,7 +229,8 @@ class FormPenawaranHargaController extends Controller
         $namaPerusahaan = "PT PLN (PERSERO) UPK TIMOR";
         $alamatPerusahaan = "JL. DIPONEGORO KUANINO - KUPANG";
         $nama = $data['nama_vendor'];
-        $jabatan = $data['nama_vendor'];
+        $jabatan = $data['jabatan'];
+        $vendorperusahaan = $data['nama_perusahaan'];
         $atasNama = $data['atas_nama'];
         $alamat = $data['alamat_perusahaan'];
         $telepon = $data['telepon_fax'];
@@ -263,7 +248,6 @@ class FormPenawaranHargaController extends Controller
         $jumlahHari = $startDate->diffInDays($endDate);
         $waktuPelaksanaan = $kontrakKerja->nama_kontrak . " PT. PLN (PERSERO) UNIT INDUK WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR" . "adalah" . $jumlahHari . "(" . ucfirst(Terbilang::make($jumlahHari)) . ")" . "terhitung sejak tanggal Surat Perintah Kerja (SPK) ditandatangani oleh Pengguna Barang/jasa PT. PLN (Persero) UIW Nusa Tenggara Timur UPK Timor";
 
-
         $data = [
             'kopsurat' => $kopsurat,
             'nomor' => $nomor,
@@ -273,6 +257,7 @@ class FormPenawaranHargaController extends Controller
             'alamatPerusahaan' => $alamatPerusahaan,
             'nama' => $nama,
             'jabatan' => $jabatan,
+            'vendorperusahaan' =>  $vendorperusahaan,
             'atasNama' => $atasNama,
             'alamat' => $alamat,
             'telepon' => $telepon,

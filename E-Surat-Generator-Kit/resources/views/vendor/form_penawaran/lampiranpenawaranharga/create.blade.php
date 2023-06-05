@@ -78,8 +78,8 @@
         <div class="card-header">
             <h5 class="card-title">Create Form Penawaran Harga</h5>
         </div>
-        <form action="{{ route(lampiranpenawaranharga/update/{id}, $formPenawaranHarga->id_kontrakkerja) }}" method="post"
-            enctype="multipart/form-data">
+       
+        <form action="#" method="post" enctype="multipart/form-data">
 
             @csrf
             <div class="card-body">
@@ -167,8 +167,9 @@
                             <tr>
                                 <td>Bertindak untuk</td>
                                 <td>:</td>
-                                <td><input type="text" name="nama_perusahaan" placeholder="PT/CV/Firma................"
-                                        class="form-control" value="{{ $data['nama_perusahaan'] }}"></td>
+                                <td><input type="text" name="nama_perusahaan"
+                                        placeholder="PT/CV/Firma................" class="form-control"
+                                        value="{{ $data['nama_perusahaan'] }}"></td>
                             </tr>
                             <tr>
                                 <td>dan atas nama</td>
@@ -280,5 +281,7 @@
         </form>
 
     </div>
+    <script src="{{ asset('library/cropper-main/dist/cropper.js') }}"></script>
+   
 
 @endsection

@@ -1,6 +1,6 @@
 @extends('template.app')
 
-@section('title', 'Tambah User')
+@section('title', 'Tambah Jenis Dokumen')
 
 @section('content')
     <div class="container-fluid p-0">
@@ -13,28 +13,41 @@
 
 
                     <div class="card-body">
+
+
                         <form method="POST" action="{{ route('jenisdokumen.store') }}">
                             @csrf
 
-                            <div class="mb-3">
+                            <div class="form-group mb-3">
                                 <label for="nama_dokumen" class="form-label">Nama Dokumen</label>
-                                <input type="text" class="form-control" id="nama_dokumen" name="nama_dokumen" required>
+                                <input type="text" class="form-control" id="nama_dokumen" name="nama_dokumen"
+                                    oninput="generateNoDokumen()" >
+                                @error('nama_dokumen')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="dokumen_penting" class="form-label">Dokumen Penting</label>
-                                <select class="form-select" id="dokumen_penting" name="dokumen_penting" required>
-                                    <option value="ya">Ya</option>
-                                    <option value="tidak">Tidak</option>
-                                </select>
+                            <div class="form-group mb-3">
+                                <label for="no_dokumen">Nomor Dokumen</label>
+                                <input type="text" class="form-control" id="no_dokumen" name="no_dokumen" 
+                                    readonly>
+                                @error('no_dokumen')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="deskripsi" class="form-label">Deskripsi</label>
-                                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
+
+
+
+                            <div class="form-group mb-3">
+                                <label for="keterangan">Keterangan</label>
+                                <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+                                @error('keterangan')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
 
-           
+
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
 
@@ -46,4 +59,14 @@
         </div>
 
     </div>
+@endsection
+
+@section('javascript')
+    <script>
+        function generateNoDokumen() {
+            var namaDokumen = document.getElementById('nama_dokumen').value;
+            var noDokumen = namaDokumen.replace(/\s+/g, '_').toLowerCase();
+            document.getElementById('no_dokumen').value = noDokumen;
+        }
+    </script>
 @endsection

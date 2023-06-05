@@ -23,17 +23,17 @@ class JenisDokumenController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'nama_dokumen' => 'required',
-            'dokumen_penting' => 'required|in:ya,tidak',
-            'deskripsi' => 'nullable',
+            'no_dokumen' => 'required',
+            'keterangan' => 'nullable',
         ]);
+      
 
         $jenisDokumen = new JenisDokumenKelengkapan();
         $jenisDokumen->nama_dokumen = $request->nama_dokumen;
-        $jenisDokumen->dokumen_penting = $request->dokumen_penting;
-        $jenisDokumen->deskripsi = $request->deskripsi;
+        $jenisDokumen->no_dokumen = $request->no_dokumen;
+        $jenisDokumen->keterangan = $request->keterangan;
         $jenisDokumen->save();
 
         // Redirect ke halaman dashboard
@@ -52,14 +52,14 @@ class JenisDokumenController extends Controller
     {
         $request->validate([
             'nama_dokumen' => 'required',
-            'dokumen_penting' => 'required|in:ya,tidak',
-            'deskripsi' => 'nullable',
+            'no_dokumen' => 'required',
+            'keterangan' => 'nullable',
         ]);
 
         $jenisdokumen = JenisDokumenKelengkapan::find($id);
         $jenisdokumen->nama_dokumen = $request->nama_dokumen;
-        $jenisdokumen->dokumen_penting = $request->dokumen_penting;
-        $jenisdokumen->deskripsi = $request->deskripsi;
+        $jenisdokumen->no_dokumen = $request->no_dokumen;
+        $jenisdokumen->keterangan = $request->keterangan;
         $jenisdokumen->save();
         return redirect()->route('jenisdokumen')->with('success', 'Jenis Dokumen updated successfully');
     }
