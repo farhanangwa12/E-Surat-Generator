@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_jenis_dokumen');
             $table->unsignedBigInteger('id_vendor');
             $table->unsignedBigInteger('id_kontrakkerja')->nullable();
+            $table->foreign('id_jenis_dokumen')->references('id_jenis')->on('jenis_dokumen_kelengkapans');
             $table->foreign('id_vendor')->references('id_vendor')->on('vendors');
             $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas');
             $table->string('file_upload')->nullable();

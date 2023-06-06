@@ -180,6 +180,7 @@
                                             <td style="border-bottom: 2px dotted black;"><input type="text"
                                                     name="email" class="form-control" value="{{ $email_perusahaan }}"></td>
                                         </tr>
+                                        
                                     </table>
 
                                     <br>

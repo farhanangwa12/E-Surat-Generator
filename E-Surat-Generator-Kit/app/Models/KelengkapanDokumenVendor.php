@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\DokumenVendor\Lampiranpenawaranharga;
+use App\Models\DokumenVendor\Paktavendor;
+use App\Models\DokumenVendor\PernyataanKesanggupan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,5 +39,13 @@ class KelengkapanDokumenVendor extends Model
     public function lampiranPenawaranHargas()
     {
         return $this->hasMany(Lampiranpenawaranharga::class, 'id_dokumen');
+    }
+    public function paktavendor()
+    {
+        return $this->hasOne(Paktavendor::class, 'id_dokumen');
+    }
+    public function pernyataanKesanggupan()
+    {
+        return $this->hasOne(PernyataanKesanggupan::class, 'id_dokumen');
     }
 }

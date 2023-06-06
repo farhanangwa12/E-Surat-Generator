@@ -3,8 +3,14 @@
 namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
+use App\Models\DokumenVendor\Paktavendor;
 use App\Models\FormPenawaran\FormPenawaranHarga;
+use App\Models\JenisDokumenKelengkapan;
+use App\Models\KelengkapanDokumenVendor;
+use App\Models\TandaTangan;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PDF;
 
 class PaktavendorController extends Controller
@@ -12,54 +18,45 @@ class PaktavendorController extends Controller
     public function refresh($id)
     {
         // Cek apakah terdapat data penawaran dengan id_kontrakkerja yang sesuai
-        $formPenawaranHarga = FormPenawaranHarga::where('id_kontrakkerja', $id)->first();
+        // $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', "pakta_integritas_")
+        // $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja',$id)->with('jenisDokumen');
+        $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', 'pakta_integritas_')
+            ->with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
+                $query->where('id_kontrakkerja', $id);
+            }])
+            ->first();
 
-        if ($formPenawaranHarga) {
-            // Jika ada data penawaran, kembalikan data form penawaran
-            if ($formPenawaranHarga->data_paktavendor == null) {
-                $formPenawaranHarga1 = FormPenawaranHarga::find($formPenawaranHarga->id);
+        if ($jenisDokumen->kelengkapanDokumenVendors->isEmpty()) {
 
-                $formPenawaranHarga1->data_paktavendor = json_encode([
-                    'pekerjaan' => null,
-                    'tahun_anggaran' => null,
-                    'nama' =>  null,
-                    'jabatan' => null,
-                    'nama_perusahaan' => null,
-                    'atas_nama' => null,
-                    'alamat' => null,
-                    'telepon_fax' => null,
-                    'email_perusahaan' => null
-                ]);
-                $formPenawaranHarga1->save();
-                return $formPenawaranHarga1;
-            } else {
-                return $formPenawaranHarga;
-            }
-        } else {
-            // Jika tidak ada data penawaran, generate form penawaran dengan array JSON kosong
-            $formPenawaranHarga = new FormPenawaranHarga();
-            $formPenawaranHarga->id_kontrakkerja = $id;
-            $formPenawaranHarga->id_vendor = null;
-            $formPenawaranHarga->kopsurat = null;
-            $formPenawaranHarga->file_path = null;
-            $formPenawaranHarga->data_paktavendor = null;
-            $formPenawaranHarga->data_paktavendor = [];
-            $formPenawaranHarga->data_lamp_nego = [];
-            $formPenawaranHarga->data_pernyataan_kesanggupan = [];
-            $formPenawaranHarga->data_pernyataan_garansi = [];
-            $formPenawaranHarga->neraca = [];
-            $formPenawaranHarga->data_pengalaman = [];
-            $formPenawaranHarga->file_tandatangan = null;
-            $formPenawaranHarga->no_unik_ttd = null;
-            $formPenawaranHarga->tanggal_tandatangan = null;
-            $formPenawaranHarga->save();
 
-            return $formPenawaranHarga;
+            // Membuat record baru di tabel kelengkapan_dokumen_vendors
+            KelengkapanDokumenVendor::create([
+                'id_jenis_dokumen' => $jenisDokumen->id_jenis,
+                'id_vendor' => Auth::user()->vendor_id,
+                'id_kontrakkerja' => $id,
+            ])->save();
         }
+
+
+        $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('paktavendor')->first();
+
+
+
+        if ($kelengkapan->paktavendor === null) {
+
+            $paktavendor = new Paktavendor;
+            $paktavendor->id_dokumen = $kelengkapan->id_dokumen;
+
+            $paktavendor->save();
+        }
+
+        $paktavendor1 = Paktavendor::where('id_dokumen', $kelengkapan->id_dokumen)->first();
+        return $paktavendor1;
     }
     public function create($id)
     {
-        $penawaran = json_decode($this->refresh($id)->data_paktavendor);
+        $penawaran = $this->refresh($id);
+
         // dd($penawaran);
         $data = [
             'id' => $id,
@@ -74,11 +71,11 @@ class PaktavendorController extends Controller
             'tahun_anggaran' => $penawaran->tahun_anggaran,
             'nama' =>  $penawaran->nama,
             'jabatan' => $penawaran->jabatan,
-            'nama_perusahaan' => $penawaran->bertindak_untuk,
+            'nama_perusahaan' => $penawaran->nama_perusahaan,
             'atas_nama' => $penawaran->atas_nama,
             'alamat' => $penawaran->alamat,
             'telepon_fax' => $penawaran->telepon_fax,
-            'email_perusahaan' => $penawaran->email,
+            'email_perusahaan' => $penawaran->email_perusahaan,
             'kota' => 'City',
             'tanggal_surat' => '2023-05-26',
             'namaterang' => 'Example Terang',
@@ -88,6 +85,7 @@ class PaktavendorController extends Controller
 
     public function update(Request $request, $id)
     {
+        $penawaran = $this->refresh($id);
         // Validasi data yang diterima dari form
         $validatedData = $request->validate([
             'pekerjaan' => 'required',
@@ -100,31 +98,56 @@ class PaktavendorController extends Controller
             'telepon_fax' => 'required',
             'email' => 'required|email',
         ]);
-        $id_penawaran = $this->refresh($id)->id;
-        $penawaran = FormPenawaranHarga::find($id_penawaran);
 
-        
-        $penawaran->data_paktavendor = json_encode($validatedData);
-        $penawaran->save();
+        $paktavendor = Paktavendor::find($penawaran->id);
+        $paktavendor->pekerjaan = $validatedData['pekerjaan'];
+        $paktavendor->tahun_anggaran = $validatedData['tahun_anggaran'];
+        $paktavendor->nama = $validatedData['nama'];
+        $paktavendor->jabatan = $validatedData['jabatan'];
+        $paktavendor->nama_perusahaan = $validatedData['bertindak_untuk'];
+        $paktavendor->atas_nama = $validatedData['atas_nama'];
+        $paktavendor->alamat = $validatedData['alamat'];
+        $paktavendor->telepon_fax = $validatedData['telepon_fax'];
+        $paktavendor->email_perusahaan = $validatedData['email'];
+
+        $paktavendor->save();
 
         return redirect()->route('vendor.kontrakkerja.detail', $id);
     }
 
     public function halamanttd($id)
     {
-        return view('vendor.form_penawaran.halamanttd');
+
+        return view('vendor.form_penawaran.paktavendor.halamanttd', compact('id'));
     }
     public function simpanttd(Request $request, $id)
     {
-        // Logika menyimpan tanda tangan
+        $formPenawaranHarga = $this->refresh($request->input('id'));
 
-        return redirect()->route('paktavendor.index');
+        // Menyimpan file tanda tangan ke storage
+        $file = $request->file('file_tandatangan');
+
+        // Generate the new filename using time(), original name, and extension
+        $filename = time() . '_' . $file->getClientOriginalName();
+
+        // Store the file with the new filename
+        $filePath = $file->storeAs('public/dokumenvendor', $filename);
+        $id_kontrakkerja = $request->input('id');
+
+
+        // Update kolom file_tandatangan, no_unik_ttd, dan tanggal_tandatangan
+        $kelengkapandokumen = KelengkapanDokumenVendor::find($formPenawaranHarga->id_dokumen);
+        $kelengkapandokumen->file_upload = $filename;
+        $kelengkapandokumen->tandatangan = TandaTangan::where('id', Auth::user()->id)->first()->kode_unik;
+        $kelengkapandokumen->save();
+
+        return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
     }
 
     public function pdf($id)
     {
-        $penawaran = json_decode($this->refresh($id)->data_paktavendor);
-
+        $penawaran = $this->refresh($id);
+   
         $data = [
             'kopsurat' => 'path/to/kopsurat.jpg',
             'nama_pekerjaan' => "manaf",
