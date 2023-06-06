@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
+use App\Models\DokumenVendor\Pernyataangaransi;
 use App\Models\FormPenawaran\FormPenawaranHarga;
+use App\Models\JenisDokumenKelengkapan;
+use App\Models\KelengkapanDokumenVendor;
 use App\Models\KontrakKerja;
+use App\Models\TandaTangan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PDF;
 
 class PernyataanGaransiController extends Controller
@@ -13,41 +18,47 @@ class PernyataanGaransiController extends Controller
     public function refresh($id)
     {
         // Cek apakah terdapat data penawaran dengan id_kontrakkerja yang sesuai
-        $formPenawaranHarga = FormPenawaranHarga::where('id_kontrakkerja', $id)->first();
+        // $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', "pakta_integritas_")
+        // $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja',$id)->with('jenisDokumen');
+        $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', 'surat_pernyataan_garansi_pekerjaan_')
+            ->with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
+                $query->where('id_kontrakkerja', $id);
+            }])
+            ->first();
 
-        if ($formPenawaranHarga) {
-            // Jika ada data penawaran, kembalikan data form penawaran
-            return $formPenawaranHarga;
-        } else {
-            // Jika tidak ada data penawaran, generate form penawaran dengan array JSON kosong
-            $formPenawaranHarga = new FormPenawaranHarga();
-            $formPenawaranHarga->id_kontrakkerja = $id;
-            $formPenawaranHarga->id_vendor = null;
-            $formPenawaranHarga->kopsurat = null;
-            $formPenawaranHarga->file_path = null;
-            $formPenawaranHarga->data_paktavendor = [];
-            $formPenawaranHarga->data_lamp_nego = [];
-            $formPenawaranHarga->data_pernyataan_kesanggupan = [];
-            $formPenawaranHarga->data_pernyataan_garansi = [];
-            $formPenawaranHarga->neraca = [];
-            $formPenawaranHarga->data_pengalaman = [];
-            $formPenawaranHarga->file_tandatangan = null;
-            $formPenawaranHarga->no_unik_ttd = null;
-            $formPenawaranHarga->tanggal_tandatangan = null;
-            $formPenawaranHarga->save();
+        if ($jenisDokumen->kelengkapanDokumenVendors->isEmpty()) {
 
-            return $formPenawaranHarga;
+
+            // Membuat record baru di tabel kelengkapan_dokumen_vendors
+            KelengkapanDokumenVendor::create([
+                'id_jenis_dokumen' => $jenisDokumen->id_jenis,
+                'id_vendor' => Auth::user()->vendor_id,
+                'id_kontrakkerja' => $id,
+            ])->save();
         }
+
+
+        $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('pernyataanGaransi')->first();
+
+
+
+        if ($kelengkapan->pernyataanGaransi === null) {
+
+            $pernyataanGaransi = new Pernyataangaransi();
+            $pernyataanGaransi->id_dokumen = $kelengkapan->id_dokumen;
+
+            $pernyataanGaransi->save();
+        }
+
+        $pernyataanGaransi1 = Pernyataangaransi::where('id_dokumen', $kelengkapan->id_dokumen)->first();
+        return $pernyataanGaransi1;
     }
-    public function index($id)
-    {
-        return view('vendor.form_penawaran.pernyataan_garansi');
-    }
+
 
     public function create($id)
     {
-        $penawaran = json_decode($this->refresh($id)->data_pernyataan_kesanggupan);
-      
+        $penawaran = $this->refresh($id);
+
         $data = [
             'nama' => $penawaran->nama,
             'jabatan' => $penawaran->jabatan,
@@ -63,13 +74,14 @@ class PernyataanGaransiController extends Controller
             'tanggal_surat' => '2023-05-26',
         ];
         $data = json_decode(json_encode($data));
-       
+
 
         return view('vendor.form_penawaran.pernyataangaransi.create', compact('id', 'data'));
     }
 
     public function update(Request $request, $id)
     {
+        $penawaran = $this->refresh($id);
         // Validasi input
         $validatedData = $request->validate([
             'nama' => 'required',
@@ -82,28 +94,52 @@ class PernyataanGaransiController extends Controller
         ]);
 
 
-        $id_penawaran = $this->refresh($id)->id;
-        $penawaran = FormPenawaranHarga::find($id_penawaran);
-        $penawaran->data_pernyataan_garansi = json_encode($validatedData);
-        $penawaran->save();
+        $pernyataangaransi = Pernyataangaransi::find($penawaran->id);
+        $pernyataangaransi->nama = $validatedData['nama'];
+        $pernyataangaransi->jabatan = $validatedData['jabatan'];
+        $pernyataangaransi->nama_perusahaan = $validatedData['bertindak_untuk'];
+        $pernyataangaransi->atas_nama = $validatedData['atas_nama'];
+        $pernyataangaransi->alamat = $validatedData['alamat'];
+        $pernyataangaransi->telepon_fax = $validatedData['telepon_fax'];
+        $pernyataangaransi->email_perusahaan = $validatedData['email'];
+
+        $pernyataangaransi->save();
         return redirect()->route('vendor.kontrakkerja.detail', $id);
     }
 
     public function halamanttd($id)
     {
-        return view('vendor.form_penawaran.halamanttd');
+
+        return view('vendor.form_penawaran.pernyataangaransi.halamanttd', compact('id'));
     }
 
     public function simpanttd(Request $request, $id)
     {
-        // Logika menyimpan tanda tangan
+        $formPenawaranHarga = $this->refresh($request->input('id'));
 
-        return redirect()->route('pernyataan.garansi.index');
+        // Menyimpan file tanda tangan ke storage
+        $file = $request->file('file_tandatangan');
+
+        // Generate the new filename using time(), original name, and extension
+        $filename = time() . '_' . $file->getClientOriginalName();
+
+        // Store the file with the new filename
+        $filePath = $file->storeAs('public/dokumenvendor', $filename);
+        $id_kontrakkerja = $request->input('id');
+
+
+        // Update kolom file_tandatangan, no_unik_ttd, dan tanggal_tandatangan
+        $kelengkapandokumen = KelengkapanDokumenVendor::find($formPenawaranHarga->id_dokumen);
+        $kelengkapandokumen->file_upload = $filename;
+        $kelengkapandokumen->tandatangan = TandaTangan::where('id', Auth::user()->id)->first()->kode_unik;
+        $kelengkapandokumen->save();
+
+        return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
     }
     public function pdf($id)
     {
-        $penawaran = json_decode($this->refresh($id)->data_pernyataan_garansi);
-    
+        $penawaran = $this->refresh($id)->data_pernyataan_garansi;
+
         $data = [
             'nama' => $penawaran->nama,
             'jabatan' => $penawaran->jabatan,
