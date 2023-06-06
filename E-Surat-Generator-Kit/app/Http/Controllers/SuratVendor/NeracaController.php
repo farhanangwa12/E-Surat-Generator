@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
+use App\Models\DokumenVendor\Neraca;
 use App\Models\FormPenawaran\FormPenawaranHarga;
+use App\Models\JenisDokumenKelengkapan;
+use App\Models\KelengkapanDokumenVendor;
+use App\Models\TandaTangan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PDF;
 
 class NeracaController extends Controller
@@ -12,65 +17,44 @@ class NeracaController extends Controller
     public function refresh($id)
     {
         // Cek apakah terdapat data penawaran dengan id_kontrakkerja yang sesuai
-        $formPenawaranHarga = FormPenawaranHarga::where('id_kontrakkerja', $id)->first();
+        // $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', "pakta_integritas_")
+        // $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja',$id)->with('jenisDokumen');
+        $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', 'neraca_laporan_keuangan_perusahaan_terakhir_yang_memuat_laporan_laba_rugi_')
+            ->with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
+                $query->where('id_kontrakkerja', $id);
+            }])
+            ->first();
 
-        if ($formPenawaranHarga) {
-            // Jika ada data penawaran, kembalikan data form penawaran
-            if ($formPenawaranHarga->neraca == null) {
-                $formPenawaranHarga1 = FormPenawaranHarga::find($formPenawaranHarga->id);
+        if ($jenisDokumen->kelengkapanDokumenVendors->isEmpty()) {
 
-                $formPenawaranHarga1->neraca = json_encode([
-                    'tanggal_neraca' => null,
-                    'aktiva_lancar' => null,
-                    'utang_jangka_pendek' => null,
-                    'kas' => null,
-                    'utang_dagang' => null,
-                    'utang_pajak' => null,
-                    'piutang' => null,
-                    'persediaan_barang' => null,
-                    'pekerjaan_dalam_proses' => null,
-                    'aktiva_tetap' => null,
-                    'kekayaan_bersih' => null,
-                    'peralatan_dan_mesin_1' => null,
-                    'peralatan_dan_mesin_2' => null,
-                    'inventaris' => null,
-                    'gedung_gedung' => null,
-                    'jumlah_a_b' => null,
-                    'jumlah_d' => null,
-                    'piutang_jangka_pendek_sampai_6_bulan' => null,
-                    'piutang_jangka_pendek_lebih_dari_6_bulan' => null,
-                    'jumlah' => null,
-                ]);
-                $formPenawaranHarga1->save();
-                return $formPenawaranHarga1;
-            } else {
-                return $formPenawaranHarga;
-            }
-        } else {
-            // Jika tidak ada data penawaran, generate form penawaran dengan array JSON kosong
-            $formPenawaranHarga = new FormPenawaranHarga();
-            $formPenawaranHarga->id_kontrakkerja = $id;
-            $formPenawaranHarga->id_vendor = 1;
-            $formPenawaranHarga->kopsurat = null;
-            $formPenawaranHarga->file_path = "null";
-            // $formPenawaranHarga->data_paktavendor = json_encode([]);
-            // $formPenawaranHarga->data_lamp_nego = json_encode([]);
-            // $formPenawaranHarga->data_pernyataan_kesanggupan = json_encode([]);
-            // $formPenawaranHarga->data_pernyataan_garansi = json_encode([]);
-            // $formPenawaranHarga->neraca =json_encode([]);
-            // $formPenawaranHarga->data_pengalaman = json_encode([]);
 
-            $formPenawaranHarga->file_tandatangan = null;
-            $formPenawaranHarga->no_unik_ttd = null;
-            $formPenawaranHarga->tanggal_tandatangan = null;
-            $formPenawaranHarga->save();
-
-            return $formPenawaranHarga;
+            // Membuat record baru di tabel kelengkapan_dokumen_vendors
+            KelengkapanDokumenVendor::create([
+                'id_jenis_dokumen' => $jenisDokumen->id_jenis,
+                'id_vendor' => Auth::user()->vendor_id,
+                'id_kontrakkerja' => $id,
+            ])->save();
         }
+
+
+        $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('pernyataanGaransi')->first();
+
+
+
+        if ($kelengkapan->neraca === null) {
+
+            $neraca = new Neraca();
+            $neraca->id_dokumen = $kelengkapan->id_dokumen;
+
+            $neraca->save();
+        }
+
+        $neraca1 = Neraca::where('id_dokumen', $kelengkapan->id_dokumen)->first();
+        return $neraca1;
     }
     public function create($id)
     {
-        $penawaran = json_decode($this->refresh($id)->neraca);
+        $penawaran = $this->refresh($id);
         // dd($penawaran);
         $data = [
             'id' => $id,
@@ -79,6 +63,7 @@ class NeracaController extends Controller
             'utang_jangka_pendek' =>  $penawaran->utang_jangka_pendek,
             'kas' =>  $penawaran->kas,
             'utang_dagang' =>  $penawaran->utang_dagang,
+            'bank' => $penawaran->bank,
             'utang_pajak' =>  $penawaran->utang_pajak,
             'piutang' =>  $penawaran->piutang,
             'persediaan_barang' =>  $penawaran->persediaan_barang,
@@ -104,6 +89,7 @@ class NeracaController extends Controller
 
     public function update(Request $request, $id)
     {
+        $penawaran = $this->refresh($id);
         // Validasi data yang dikirim dari form
         $validatedData = $request->validate([
             'tanggal_neraca' => 'required',
@@ -128,12 +114,31 @@ class NeracaController extends Controller
             'jumlah' => 'required|numeric',
         ]);
 
-        $id_penawaran = $this->refresh($id)->id;
-        $penawaran = FormPenawaranHarga::find($id_penawaran);
 
+        $neraca = Neraca::find($penawaran->id);
+  
+        $neraca->tanggal_neraca = $validatedData['tanggal_neraca'];
+        $neraca->aktiva_lancar = $validatedData['aktiva_lancar'];
+        $neraca->utang_jangka_pendek = $validatedData['utang_jangka_pendek'];
+        $neraca->kas = $validatedData['kas'];
+        $neraca->utang_dagang = $validatedData['utang_dagang'];
+        $neraca->utang_pajak = $validatedData['utang_pajak'];
+        $neraca->piutang = $validatedData['piutang'];
+        $neraca->persediaan_barang = $validatedData['persediaan_barang'];
+        $neraca->pekerjaan_dalam_proses = $validatedData['pekerjaan_dalam_proses'];
+        $neraca->aktiva_tetap = $validatedData['aktiva_tetap'];
+        $neraca->kekayaan_bersih = $validatedData['kekayaan_bersih'];
+        $neraca->peralatan_dan_mesin_1 = $validatedData['peralatan_dan_mesin_1'];
+        $neraca->peralatan_dan_mesin_2 = $validatedData['peralatan_dan_mesin_2'];
+        $neraca->inventaris = $validatedData['inventaris'];
+        $neraca->gedung_gedung = $validatedData['gedung_gedung'];
+        $neraca->jumlah_a_b = $validatedData['jumlah_a_b'];
+        $neraca->jumlah_d = $validatedData['jumlah_d'];
+        $neraca->piutang_jangka_pendek_sampai_6_bulan = $validatedData['piutang_jangka_pendek_sampai_6_bulan'];
+        $neraca->piutang_jangka_pendek_lebih_dari_6_bulan = $validatedData['piutang_jangka_pendek_lebih_dari_6_bulan'];
+        $neraca->jumlah = $validatedData['jumlah'];
 
-        $penawaran->neraca = json_encode($validatedData);
-        $penawaran->save();
+        $neraca->save();
 
         return redirect()->route('vendor.kontrakkerja.detail', $id);
     }
@@ -141,11 +146,32 @@ class NeracaController extends Controller
     public function halamanttd($id)
     {
         // Implementasi logika untuk halaman tanda tangan data pengalaman
+
+        return view('vendor.form_penawaran.neraca.halamanttd', compact('id'));
     }
 
     public function simpanttd(Request $request, $id)
     {
-        // Implementasi logika penyimpanan tanda tangan data pengalaman
+        $formPenawaranHarga = $this->refresh($request->input('id'));
+
+        // Menyimpan file tanda tangan ke storage
+        $file = $request->file('file_tandatangan');
+
+        // Generate the new filename using time(), original name, and extension
+        $filename = time() . '_' . $file->getClientOriginalName();
+
+        // Store the file with the new filename
+        $filePath = $file->storeAs('public/dokumenvendor', $filename);
+        $id_kontrakkerja = $request->input('id');
+
+
+        // Update kolom file_tandatangan, no_unik_ttd, dan tanggal_tandatangan
+        $kelengkapandokumen = KelengkapanDokumenVendor::find($formPenawaranHarga->id_dokumen);
+        $kelengkapandokumen->file_upload = $filename;
+        $kelengkapandokumen->tandatangan = TandaTangan::where('id', Auth::user()->id)->first()->kode_unik;
+        $kelengkapandokumen->save();
+
+        return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
     }
 
     public function pdf($id)

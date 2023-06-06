@@ -331,7 +331,7 @@
                                 <td> *)</td>
                                 <td>Piutang jangka pendek (sampai dengan enam bulan )</td>
                                 <td>:</td>
-                                <td>Rp <input type="text" name="piutang_jangka_pendek_lebih_dari_6_bulan"
+                                <td>Rp <input type="text" name="piutang_jangka_pendek_sampai_6_bulan"
                                         class="form-control number"></td>
                             </tr>
                             <tr>
@@ -345,7 +345,7 @@
                                 <td></td>
                                 <td>Jumlah </td>
                                 <td>:</td>
-                                <td>Rp <input type="text" name="jumlah_piutang" class="form-control number"></td>
+                                <td>Rp <input type="text" name="jumlah" class="form-control number"></td>
                             </tr>
                         </table>
                     </div>

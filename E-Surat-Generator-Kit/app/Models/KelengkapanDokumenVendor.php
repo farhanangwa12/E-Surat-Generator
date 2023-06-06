@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\DokumenVendor\Lampiranpenawaranharga;
+use App\Models\DokumenVendor\Neraca;
 use App\Models\DokumenVendor\Paktavendor;
 use App\Models\DokumenVendor\Pernyataangaransi;
 use App\Models\DokumenVendor\PernyataanKesanggupan;
@@ -52,5 +53,10 @@ class KelengkapanDokumenVendor extends Model
     public function pernyataanGaransi()
     {
         return $this->hasOne(Pernyataangaransi::class, 'id_dokumen');
+    }
+
+    public function neraca()
+    {
+        return $this->hasOne(Neraca::class, 'id_dokumen');
     }
 }
