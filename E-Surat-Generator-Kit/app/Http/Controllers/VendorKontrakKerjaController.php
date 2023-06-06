@@ -31,9 +31,8 @@ class VendorKontrakKerjaController extends Controller
 
         // $spreadsheet = IOFactory::load($path);
         // $worksheet = $spreadsheet->getActiveSheet();
-        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get();
-
-        
+        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get()->toArray();
+        // dd($jenisDokumenKelengkapans[0]['kelengkapan_dokumen_vendors'][0]['id_dokumen']);
         return view('vendor.detailkontrak', compact('kontrakkerja', 'id', 'jenisDokumenKelengkapans'));
     }
 

@@ -232,18 +232,39 @@
                             <tbody>
                                 @foreach ($jenisDokumenKelengkapans as $jenisDokumenKelengkapan)
                                     <tr>
-                                        <td>{{ $jenisDokumenKelengkapan->id_jenis }}</td>
-                                        <td>{{ $jenisDokumenKelengkapan->nama_dokumen }}</td>
-                                        <td>{{ $jenisDokumenKelengkapan->keterangan }}</td>
-                                        @if (empty($jenisDokumenKelengkapan->kelengkapan_dokumen_vendors))
+                                        <td>{{ $jenisDokumenKelengkapan['id_jenis'] }}</td>
+                                        <td>{{ $jenisDokumenKelengkapan['nama_dokumen'] }}</td>
+                                        <td>{{ $jenisDokumenKelengkapan['keterangan'] }}</td>
+
+                                        @if ($jenisDokumenKelengkapan['dokumen_sistem'] == 'ya')
+                                            @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <a href="#" class="btn btn-primary">Detail</a>
+                                                        </div>
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-success">Download</button>
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            @else
+                                                <td>
+
+                                                    Array Kosong
+                                                </td>
+                                            @endif
+                                        @else
                                             <td>
-                                                Upload
-                                                @php
-                                                    
-                                                    var_dump($jenisDokumenKelengkapan->kelengkapan_dokumen_vendors);
-                                                @endphp
+                                                <div class="mb-3">
+                                                    <label for="pdfFile" class="form-label">Upload File PDF</label>
+                                                    <input type="file" class="form-control" id="pdfFile" name="pdfFile"
+                                                        accept=".pdf">
+                                                </div>
                                             </td>
                                         @endif
+
                                     </tr>
                                 @endforeach
                             </tbody>

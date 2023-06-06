@@ -433,7 +433,7 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
 
 
         Route::get('lampiranpenawaranharga/create/{id}', [LampiranPenawaranHargaController::class, 'create'])->name('vendor.lampiranpenawaranharga.create');
-        Route::post('lampiranpenawaranharga/update/{id}', [LampiranPenawaranHargaController::class, 'update'])->name('vendor.lampiranpenawaranharga.update');
+        Route::put('lampiranpenawaranharga/update/{id}', [LampiranPenawaranHargaController::class, 'update'])->name('vendor.lampiranpenawaranharga.update');
         Route::get('lampiranpenawaranharga/halamanttd/{id}', [LampiranPenawaranHargaController::class, 'halamanttd'])->name('vendor.lampiranpenawaranharga.halamanttd');
         Route::post('lampiranpenawaranharga/simpanttd/{id}', [LampiranPenawaranHargaController::class, 'simpanttd'])->name('vendor.lampiranpenawaranharga.simpanttd');
         Route::get('lampiranpenawaranharga/pdf/{id}', [LampiranPenawaranHargaController::class, 'pdf'])->name('vendor.lampiranpenawaranharga.pdf');

@@ -5,10 +5,31 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <style>
+        /* Header */
+        .header {
+            position: fixed;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+
+            padding: 10px 0;
+        }
+
+
+        .company-logo {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+
+        }
+
+
         body {
+            margin-top: 210px;
             font-family: Times New Roman;
             font-size: 12px;
-            margin: 0;
+       
             padding: 0;
         }
 
@@ -78,6 +99,11 @@
 </head>
 
 <body>
+    <div class="header">
+        {{-- <img src="{{ $data2['kopsurat'] }}" alt="Kop Surat" class="company-logo" height="500px"> --}}
+        <img src="{{ $data2['kopsurat'] }}" alt="Kop Surat" class="company-logo" height="500px">
+
+    </div>
     <main>
         <header>
             <h1><u><b>LAMPIRAN RINCIAN HARGA PENAWARAN</b>
@@ -97,8 +123,8 @@
 
                 </tr>
                 <tr>
-                    <th>Harga Satuan</th>
-                    <th>Jumlah</th>
+                    <th>Harga Satuan (Rp.)</th>
+                    <th>Jumlah (Rp.)</th>
                 </tr>
                 <tr>
                     <th>1</th>
@@ -113,7 +139,6 @@
             <tbody>
                 @php
                     
-                   
                     $jenis = 1;
                 @endphp
 
@@ -165,6 +190,11 @@
                     <td colspan="5" class="footer">Jumlah Harga:</td>
                     <td>{{ $data2['jumlah_harga'] }}</td>
                 </tr>
+
+                <tr>
+                    <td colspan="5" class="footer">Dibulatkan:</td>
+                    <td>{{ $data2['dibulatkan'] }}</td>
+                </tr>
                 <tr>
                     <td colspan="5" class="footer">PPN 11%:</td>
                     <td>{{ $data2['ppn_11'] }}</td>
@@ -177,13 +207,35 @@
         </table>
 
 
-        <p>Terbilang: <i>{{ ucwords(@Terbilang::make($data2['harga_total'])) }}</i></p>
+        <p>Terbilang: <i>{{ $data2['terbilang'] }}</i></p>
     </main>
+    <style>
+        .signature-box {
+            margin: auto auto;
+            width: 70%;
+
+
+            border: 1px solid #000;
+
+            text-align: center;
+            padding: 5px;
+        }
+
+        .signature {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .stamp {
+            font-size: 12px;
+
+        }
+    </style>
     <table class="tandatangan" style="width: 100%;">
         <tr>
-            <td style="width:80%;"></td>
+            <td style="width:70%;"></td>
             <td style="text-align: center;">
-                <p>{{ $data2['tanggal_pekerjaan'] }}</p>
+                <p>{{ $data2['kota_surat'] . ' , ' . $data2['tanggal_surat'] }}</p>
                 <p>{{ $data2['penyedia'] }}</p>
             </td>
         </tr>
@@ -192,7 +244,11 @@
 
             <td style="text-align: center;">
                 <div></div>
-                {{-- <div class="square"></div> --}}
+                <div class="signature-box">
+                    <div class="signature">Tanda Tangan</div>
+                    <div class="stamp">Cap Perusahaan</div>
+                </div>
+
                 <p class="bold">{{ $data2['nama_direktur'] }}</p>
             </td>
         </tr>

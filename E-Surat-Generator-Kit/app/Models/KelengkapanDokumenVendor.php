@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\DokumenVendor\Lampiranpenawaranharga;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,5 +32,10 @@ class KelengkapanDokumenVendor extends Model
     public function kontrakKerja()
     {
         return $this->belongsTo(KontrakKerja::class, 'id_kontrakkerja', 'id_kontrakkerja');
+    }
+
+    public function lampiranPenawaranHargas()
+    {
+        return $this->hasMany(Lampiranpenawaranharga::class, 'id_dokumen');
     }
 }

@@ -3,52 +3,107 @@
 namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
+use App\Models\BarJasHPS;
+use App\Models\DokumenVendor\Lampiranpenawaranharga;
 use App\Models\HPS;
+use App\Models\JenisDokumenKelengkapan;
+use App\Models\KelengkapanDokumenVendor;
 use App\Models\KontrakKerja;
 use App\Models\SubKontrak\BarJas;
 use App\Models\SubKontrak\JenisKontrak;
 use App\Models\SubKontrak\SubBarjas;
+use App\Models\TandaTangan;
+use App\Models\Vendor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use DNS2D;
+use Illuminate\Support\Facades\Auth;
 use PDF;
+use Terbilang;
 
 class LampiranPenawaranHargaController extends Controller
 {
+    public function refresh($id)
+    {
+
+        // Mencari record dengan no_dokumen yang sesuai di tabel jenis_dokumen_kelengkapans
+        $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', "harga_nilai_penawaran_")->with(['kelengkapanDokumenVendors' => [
+            'lampiranPenawaranHargas'
+
+        ]])->first();
+        if ($jenisDokumen->kelengkapanDokumenVendors->isEmpty()) {
+
+
+            // Membuat record baru di tabel kelengkapan_dokumen_vendors
+            KelengkapanDokumenVendor::create([
+                'id_jenis_dokumen' => $jenisDokumen->id_jenis,
+                'id_vendor' => Auth::user()->vendor_id,
+                'id_kontrakkerja' => $id,
+            ])->save();
+        }
+        if ($jenisDokumen->kelengkapanDokumenVendors[0]->lampiranPenawaranHargas->isEmpty()) {
+            $data = [];
+            Lampiranpenawaranharga::create([
+                'id_dokumen' => $jenisDokumen->kelengkapanDokumenVendors[0]->id_dokumen,
+                'datalampiran' => $data
+
+            ])->save();
+        }
+
+
+        $lampiranDokumen = Lampiranpenawaranharga::find($jenisDokumen->kelengkapanDokumenVendors[0]->lampiranPenawaranHargas[0]->id);
+
+
+        $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->with('barjas')->get()->toArray();
+
+        $barjaslamp = $lampiranDokumen->datalampiran; // Ubah menjadi array dengan true sebagai argumen kedua
+
+        $no = 0;
+        foreach ($jenis_kontrak as $jen) {
+            foreach ($jen['barjas'] as $barjas) {
+                $barjaslamp[$no]['id_barjas'] = $barjas['id'];
+                if (!array_key_exists('harga_satuan', $barjaslamp[$no])) {
+                    $barjaslamp[$no]['harga_satuan'] = 0;
+                }
+                if (!array_key_exists('jumlah', $barjaslamp[$no])) {
+                    $barjaslamp[$no]['jumlah'] = 0;
+                }
+                $no++;
+            }
+        }
+
+
+
+        $lampiranDokumen->datalampiran = $barjaslamp;
+        $lampiranDokumen->save();
+
+        return $lampiranDokumen;
+    }
     public function index()
     {
         return view('vendor.form_penawaran.lampiranpenawaranharga');
     }
 
-    public function create()
+    public function create($id)
     {
 
-        return view('vendor.form_penawaran.lampiranpenawaranharga.create');
-    }
+        // Mengambil path file JSON dari database berdasarkan ID
+        $formPenawaranHarga = $this->refresh($id);
 
-    public function update(Request $request)
-    {
-        // Logika update data
+        $kontrakkerja = KontrakKerja::find($id);
+        $jenis_kontraks = JenisKontrak::where('id_kontrak', $kontrakkerja->id_kontrakkerja)->get()->toArray();
 
-        return redirect()->route('lampiranpenawaranharga.index');
-    }
-
-    public function halamanttd()
-    {
-        return view('vendor.form_penawaran.halamanttd');
-    }
-    public function pdf($id)
-    {
+        $harga_penawaran = $formPenawaranHarga->datalampiran;
 
         $kontrakbaru = [];
 
-        $jenis_kontraks = JenisKontrak::where('id_kontrak', $id)->get()->toArray();
 
         foreach ($jenis_kontraks as $jenis_kontrak) {
 
-            $databarjas = BarJas::where('id_jenis_kontrak', $jenis_kontrak['id'])->with('barjasHPS')->get()->toArray();
+            $databarjas = BarJas::where('id_jenis_kontrak', $jenis_kontrak['id'])->get()->toArray();
             $data = [];
+            $no = 0;
             if (count($databarjas) != 0) {
 
                 foreach ($databarjas as $barjas) {
@@ -56,7 +111,6 @@ class LampiranPenawaranHargaController extends Controller
 
                     $sub_data = [];
                     $datasubbarjas = SubBarjas::where('id_barjas', $barjas['id'])->get()->toArray();
-
                     if (count($datasubbarjas) != 0) {
                         foreach ($datasubbarjas as $subbarjas) {
                             $sub_data[] = [
@@ -77,11 +131,172 @@ class LampiranPenawaranHargaController extends Controller
                         'uraian' => $barjas['uraian'],
                         'vol' => $barjas['volume'],
                         'sat' => $barjas['satuan'],
-                        'harga_satuan' => "Garong",
-                        'jumlah' => "Garong",
+                        'harga_satuan' => empty($harga_penawaran[$no]) ? 0 : $harga_penawaran[$no]['harga_satuan'],
+                        'jumlah' => empty($harga_penawaran[$no]) ? 0 : $harga_penawaran[$no]['jumlah'],
                         'sub_data' => $sub_data
 
                     ];
+                    $no++;
+                }
+            }
+
+
+            $kontrakbaru[] = [
+                'jenis_kontrak' => $jenis_kontrak['nama_jenis'],
+                'data' => $data
+
+            ];
+        }
+
+        $lampiranPenawaran = $formPenawaranHarga;
+
+        return view('vendor.form_penawaran.lampiranpenawaranharga.create', compact('id', 'kontrakbaru', 'lampiranPenawaran'));
+    }
+
+    public function update(Request $request, $id)
+    {
+
+
+        // Mengambil path file JSON dari database berdasarkan ID
+        $lampiranPenawaran = $this->refresh($id);
+
+
+        $lampiranPenawaran2 = Lampiranpenawaranharga::find($lampiranPenawaran->id);
+
+        // Perbarui nilai-nilai dalam objek $lampiranPenawaran2
+        $lampiranPenawaran2->total_jumlah = $request->input('total_jumlah');
+        $lampiranPenawaran2->dibulatkan = $request->input('dibulatkan');
+        $lampiranPenawaran2->ppn11 = $request->input('ppn11');
+        $lampiranPenawaran2->total_harga = $request->input('harga_total');
+        $lampiranPenawaran2->kota_surat = $request->input('kota_surat');
+        $lampiranPenawaran2->tanggal_surat = $request->input('tanggal_surat');
+        $lampiranPenawaran2->save();
+
+
+        $lampiranPenawaran3 = Lampiranpenawaranharga::find($lampiranPenawaran->id);
+        // Bagian menyimpan file 
+
+        if ($request->hasFile('kopsurat')) {
+
+            $file = $request->file('kopsurat');
+            $extension = $file->extension(); // Mendapatkan ekstensi file
+
+
+            $dataURL = $request->input('hasilkopsurat');
+
+            // Mengubah data URL menjadi file gambar
+            $fileData = explode(',', $dataURL)[1];
+            $decodedData = base64_decode($fileData);
+
+            // Menyimpan file gambar ke storage/app/public/dokumenvendor/kopsurat
+            $filename = uniqid() . '_' . date('Ymd') . '.' . $extension;
+            $path = $lampiranPenawaran2->kopsuratpath . '/' . $filename;
+            Storage::disk('public')->put($path, $decodedData);
+
+            $lampiranPenawaran3->kopsurat = $filename;
+        }
+
+
+
+
+
+        $barjashps = $request->input('lampiran');
+
+        $data = $lampiranPenawaran2->datalampiran;
+
+        $no = 0;
+        foreach ($barjashps as $bhps) {
+            $data[$no]['harga_satuan'] = str_replace('.', '', $bhps['harga_satuan']);
+            $data[$no]['jumlah'] =  str_replace('.', '', $bhps['jumlah']);
+
+            $no++;
+        }
+
+        // Simpan perubahan
+        $lampiranPenawaran3->datalampiran = $data;
+        $lampiranPenawaran3->save();
+
+        // Redirect ke route 'vendor.kontrakkerja.detail' dengan ID yang sesuai
+        return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id]);
+    }
+
+    public function halamanttd($id)
+    {
+    
+        return view('vendor.form_penawaran.lampiranpenawaranharga.halamanttd', compact('id'));
+    }
+
+    public function simpanttd(Request $request)
+    {
+        $formPenawaranHarga = $this->refresh($request->input('id'));
+       
+        // Menyimpan file tanda tangan ke storage
+        $file = $request->file('file_tandatangan');
+
+        // Generate the new filename using time(), original name, and extension
+        $filename = time() . '_' . $file->getClientOriginalName();
+
+        // Store the file with the new filename
+        $filePath = $file->storeAs('public/dokumenvendor', $filename);
+        $id_kontrakkerja = $request->input('id');
+
+
+        // Update kolom file_tandatangan, no_unik_ttd, dan tanggal_tandatangan
+        $kelengkapandokumen = KelengkapanDokumenVendor::find($formPenawaranHarga->id_dokumen);
+        $kelengkapandokumen->file_upload = $filename;
+        $kelengkapandokumen->tandatangan = TandaTangan::where('id', Auth::user()->id)->first()->kode_unik;
+        $kelengkapandokumen->save();
+        
+        return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
+    }
+    public function pdf($id)
+    {
+        // Mengambil path file JSON dari database berdasarkan ID
+        $lampiranPenawaran = $this->refresh($id);
+
+        $datalampiran1 = $lampiranPenawaran->datalampiran;
+        $kontrakbaru = [];
+
+        $jenis_kontraks = JenisKontrak::where('id_kontrak', $id)->get()->toArray();
+
+        foreach ($jenis_kontraks as $jenis_kontrak) {
+
+            $databarjas = BarJas::where('id_jenis_kontrak', $jenis_kontrak['id'])->with('barjasHPS')->get()->toArray();
+            $data = [];
+            if (count($databarjas) != 0) {
+
+                foreach ($databarjas as $barjas) {
+
+
+                    $sub_data = [];
+                    $datasubbarjas = SubBarjas::where('id_barjas', $barjas['id'])->get()->toArray();
+                    $no = 0;
+                    if (count($datasubbarjas) != 0) {
+                        foreach ($datasubbarjas as $subbarjas) {
+                            $sub_data[] = [
+                                "id" => $subbarjas['id'],
+                                "id_barjas" => $subbarjas['id_barjas'],
+                                "uraian" => $subbarjas['uraian'],
+                                "volume" => $subbarjas['volume'],
+                                "satuan" => $subbarjas['satuan'],
+                                // "harga_satuan" => $subbarjas['harga_satuan'],
+                                // "jumlah" => $subbarjas['harga_satuan']
+                            ];
+                            # code...
+                        }
+                    }
+
+                    $data[] = [
+                        'id' => $barjas['id'],
+                        'uraian' => $barjas['uraian'],
+                        'vol' => $barjas['volume'],
+                        'sat' => $barjas['satuan'],
+                        'harga_satuan' => number_format($datalampiran1[$no]['harga_satuan'], 0, ',', '.'),
+                        'jumlah' => number_format($datalampiran1[$no]['jumlah'], 0, ',', '.'),
+                        'sub_data' => $sub_data
+
+                    ];
+                    $no++;
                 }
             }
 
@@ -96,32 +311,29 @@ class LampiranPenawaranHargaController extends Controller
 
 
         $nama_pekerjaan = $kontrak->nama_kontrak;
-        $data2 = [
-            'nama_pekerjaan' => $nama_pekerjaan,
-            'tanggal_pekerjaan' => 2002 - 12 - 20,
-            'penyedia' => 'Mamang Garox',
-            'nama_direktur' => "Hai Mamank",
-            'jumlah_harga' => 20000,
-            'dibulatkan' =>20000,
-            'rok_10' => 20000,
-            'ppn_11' => 20000,
-            'harga_total' => 20000,
+        $vendor = Vendor::find($kontrak->id_vendor);
 
+        $data2 = [
+            'kopsurat' => asset('storage/' . $lampiranPenawaran->kopsuratpath . '/' . $lampiranPenawaran->kopsurat),
+            'nama_pekerjaan' => $nama_pekerjaan,
+            'kota_surat' => "Madiun",
+            'tanggal_surat' =>  Carbon::parse('2023-12-12')->locale('id')->isoFormat('D MMMM YYYY'),
+            'penyedia' => $vendor->penyedia,
+            'nama_direktur' => $vendor->direktur,
+            'jumlah_harga' => number_format($lampiranPenawaran->total_jumlah, 0, ',', '.'),
+            'dibulatkan' => number_format($lampiranPenawaran->dibulatkan, 0, ',', '.'),
+
+            'ppn_11' =>  number_format($lampiranPenawaran->ppn11, 0, ',', '.'),
+            'harga_total' =>  number_format($lampiranPenawaran->total_harga, 0, ',', '.'),
+            'terbilang' => ucwords(Terbilang::make(str_replace('.', '', $lampiranPenawaran->total_harga)))
 
         ];
 
         $pdf = PDF::loadView('vendor.form_penawaran.lampiranpenawaranharga.pdf', compact('data2', 'kontrakbaru'));
         $pdf->setOption(['isRemoteEnabled' => true]);
 
-        $namefile = 'HPS_' . time() . '.pdf';
+        $namefile = 'LampiranPenawaran_' . time() . '.pdf';
         return $pdf->stream($namefile);
-       
-       
     }
-    public function simpanttd(Request $request)
-    {
-        // Logika menyimpan tanda tangan
-
-        return redirect()->route('lampiranpenawaranharga.index');
-    }
+ 
 }
