@@ -68,23 +68,7 @@ class VendorKelengkapanDokumenController extends Controller
 
         // Return file response
         return response()->make($file_content, 200, $headers);
-        // // Read the contents of the PDF file
-        // $pdfContent = file_get_contents($pdfFile);
-
-        // // Create new mPDF object
-        // $mpdf = new Mpdf();
-
-        // // Set document information
-        // $mpdf->SetTitle('Title of the PDF');
-        // $mpdf->SetAuthor('Your Name');
-        // $mpdf->SetSubject('Subject of the PDF');
-        // $mpdf->SetKeywords('Keywords of the PDF');
-
-        // // Write PDF content
-        // $mpdf->WriteHTML($pdfContent);
-
-        // // Output PDF to browser
-        // $mpdf->Output();
+      
     }
 
     public function kelengkapandokumeninternal($idvendor)

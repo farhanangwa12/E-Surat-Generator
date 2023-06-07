@@ -86,6 +86,7 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $formPenawaranHarga->id_kontrakkerja }}">
+                                 
                                     <div class="form-group m-4">
                                         <ol>
                                             <li>Download PDF Form Penawaran dari halaman utama</li>
@@ -94,7 +95,7 @@
                                         </ol>
 
                                         <label for="file_tandatangan">Upload File Tanda Tangan:</label>
-                                        <input type="file" class="form-control" name="file_tandatangan">
+                                        <input type="file" class="form-control" name="file_tandatangan" accept=".pdf">
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\DokumenVendor\Datapengalaman;
 use App\Models\FormPenawaran\FormPenawaranHarga;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,5 +38,9 @@ class Vendor extends Model
     public function formPenawaranHarga()
     {
         return $this->hasMany(FormPenawaranHarga::class, 'id_vendor');
+    }
+    public function dataPengalaman()
+    {
+        return $this->hasMany(Datapengalaman::class, 'id_vendor', 'id_vendor');
     }
 }

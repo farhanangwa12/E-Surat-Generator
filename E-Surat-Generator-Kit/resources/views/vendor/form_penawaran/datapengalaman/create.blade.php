@@ -1,51 +1,102 @@
 @extends('template.app')
 
-@section('title', 'Ubah Form Penawaran Harga')
+@section('title', 'Tambah Data Pengalaman')
 
 @section('content')
     <style>
-        /* CSS styling here */
+        .alert {
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .fade-out {
+            animation: fadeOut 5s ease-in-out forwards;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                display: none;
+            }
+        }
     </style>
     <div class="card w-100">
         <div class="card-header">
-            <h5 class="card-title">Create Form Penawaran Harga</h5>
+            <h5 class="card-title">Tambah Data Pengalaman</h5>
         </div>
 
         <div class="card-body">
-            <form action="{{ route('vendor.datapengalaman.store') }}" method="POST">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <form action="{{ route('vendor.datapengalaman.store', $id) }}" method="POST">
                 @csrf
 
-                <label for="bidang_pekerjaan">Bidang Pekerjaan:</label>
-                <input type="text" name="bidang_pekerjaan">
+                <div class="mb-3">
+                    <label for="bidang_pekerjaan" class="form-label">Bidang Pekerjaan:</label>
+                    <input type="text" class="form-control" id="bidang_pekerjaan" name="bidang_pekerjaan">
+                </div>
 
-                <label for="sub_bidang_pekerjaan">Sub Bidang Pekerjaan:</label>
-                <input type="text" name="sub_bidang_pekerjaan">
+                <div class="mb-3">
+                    <label for="sub_bidang_pekerjaan" class="form-label">Sub Bidang Pekerjaan:</label>
+                    <input type="text" class="form-control" id="sub_bidang_pekerjaan" name="sub_bidang_pekerjaan">
+                </div>
 
-                <label for="lokasi">Lokasi:</label>
-                <input type="text" name="lokasi">
+                <div class="mb-3">
+                    <label for="lokasi" class="form-label">Lokasi:</label>
+                    <input type="text" class="form-control" id="lokasi" name="lokasi">
+                </div>
 
-                <label for="nama_pemberi_tugas">Nama Pemberi Tugas:</label>
-                <input type="text" name="nama_pemberi_tugas">
+                <div class="mb-3">
+                    <label for="nama_pemberi_tugas" class="form-label">Nama Pemberi Tugas:</label>
+                    <input type="text" class="form-control" id="nama_pemberi_tugas" name="nama_pemberi_tugas">
+                </div>
 
-                <label for="alamat_pemberi_tugas">Alamat Pemberi Tugas:</label>
-                <input type="text" name="alamat_pemberi_tugas">
+                <div class="mb-3">
+                    <label for="alamat_pemberi_tugas" class="form-label">Alamat Pemberi Tugas:</label>
+                    <input type="text" class="form-control" id="alamat_pemberi_tugas" name="alamat_pemberi_tugas">
+                </div>
 
-                <label for="no_tanggal_kontrak">No Tanggal Kontrak:</label>
-                <input type="text" name="no_tanggal_kontrak">
+                <div class="mb-3">
+                    <label for="no_tanggal_kontrak" class="form-label">No Tanggal Kontrak:</label>
+                    <input type="text" class="form-control" id="no_tanggal_kontrak" name="no_tanggal_kontrak">
+                </div>
 
-                <label for="nilai">Nilai:</label>
-                <input type="text" name="nilai">
+                <div class="mb-3">
+                    <label for="nilai" class="form-label">Nilai:</label>
+                    <input type="text" class="form-control" id="nilai" name="nilai">
+                </div>
 
-                <label for="nilai_kontrak">Nilai Kontrak:</label>
-                <input type="text" name="nilai_kontrak">
+                <div class="mb-3">
+                    <label for="kontrak" class="form-label">Kontrak:</label>
+                    <input type="text" class="form-control" id="kontrak" name="kontrak">
+                </div>
 
-                <label for="ba_serah_terima">BA Serah Terima:</label>
-                <input type="text" name="ba_serah_terima">
-
-                <button type="submit">Simpan</button>
+                <div class="mb-3">
+                    <label for="ba_serah_terima" class="form-label">BA Serah Terima:</label>
+                    <input type="text" class="form-control" id="ba_serah_terima" name="ba_serah_terima">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
-
         </div>
+
 
 
     </div>

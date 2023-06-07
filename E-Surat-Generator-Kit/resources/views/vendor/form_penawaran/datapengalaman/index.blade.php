@@ -5,30 +5,15 @@
 @section('content')
     <style>
         /* Header */
-        .header {
-            position: fixed;
-            top: -10px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-
-            padding: 10px 0;
-        }
 
 
-        .company-logo {
-            width: 100%;
-            height: 120px;
-            margin-bottom: 10px;
 
-        }
 
 
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
-            margin-top: 20px;
-            margin-bottom: 20px;
+
         }
 
         main .kop {
@@ -86,23 +71,24 @@
     </style>
     <div class="card w-100">
         <div class="card-header">
-            <h5 class="card-title">Create Form Penawaran Harga</h5>
+            <h3>DATA PENGALAMAN PERUSAHAAN</h3>
+            <h4>SESUAI DENGAN BIDANG/SUB BIDANGNYA</h4>
         </div>
 
 
 
         <div class="card-body">
             <div class="header">
-                {{-- <img src="{{ $kopsurat }}" alt="Kop Surat" style="object-fit: cover;" class="company-logo" width="200px"> --}}
-                Header
+
+                <a href="{{ route('vendor.datapengalaman.create', ['id' => $id]) }}" class="btn btn-primary">Tambah</a>
+
             </div>
 
             <main>
                 <div class="kop">
-                    <h1>DATA PENGALAMAN PERUSAHAAN</h1>
-                    <h2>SESUAI DENGAN BIDANG/SUB BIDANGNYA</h2>
+
                 </div>
-                <table>
+                <table class="table">
                     <thead>
                         <tr>
                             <th rowspan="2">No</th>
@@ -119,7 +105,7 @@
                             <th>Alamat</th>
                             <th>No Tanggal</th>
                             <th>Nilai</th>
-                            <th>Nilai Kontrak</th>
+                            <th>Kontrak</th>
                             <th>BA Serah Terima</th>
                         </tr>
                     </thead>
@@ -134,13 +120,14 @@
                                 <td>{{ $data['alamat_pemberi_tugas'] }}</td>
                                 <td>{{ $data['no_tanggal_kontrak'] }}</td>
                                 <td>{{ $data['nilai'] }}</td>
-                                <td>{{ $data['nilai_kontrak'] }}</td>
+                                <td>{{ $data['kontrak'] }}</td>
                                 <td>{{ $data['ba_serah_terima'] }}</td>
                                 <td>
-                                    <a href="{{ route('vendor.datapengalaman.edit', $data['id']) }}"
+                                    <a href="{{ route('vendor.datapengalaman.edit', ['id' => $id, 'id_data' => $data['id']]) }}"
                                         class="btn btn-primary">Edit</a>
-                                    <form action="{{ route('vendor.datapengalaman.destroy', $data['id']) }}" method="POST"
-                                        style="display: inline-block;">
+                                    <form
+                                        action="{{ route('vendor.datapengalaman.destroy', ['id' => $id, 'id_data' => $data['id']]) }}"
+                                        method="POST" style="display: inline-block;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Hapus</button>
@@ -151,18 +138,70 @@
                     </tbody>
                 </table>
 
-                <div class="tandatangan">
-                    <div>............... (Tanggal), .................. 2022</div>
-                    <div>PT/CV/Firma ..............................</div>
-                    <div class="kotak" style="height: 50px; margin: 10px 0;border: 1px solid black;"></div>
-                    <div class="nama-jabatan">Nama Jelas</div>
-                    <div class="nama-jabatan">Jabatan</div>
-                </div>
+
+
             </main>
+
         </div>
 
 
 
+    </div>
+    <div class="card">
+        <div class="card-header">
+            Update Data Penawaran
+        </div>
+        <div class="card-body">
+
+            <form
+                action="{{ route('vendor.datapengalaman.updateDatapengalaman', ['id' => $id, 'id_data' => $kelengkapan->id]) }}"
+                method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="kota_surat" class="form-label">Kota Surat</label>
+                                <input type="text" name="kota_surat" class="form-control" id="kota_surat"
+                                    value="{{ $kelengkapan->kota_surat }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tanggal_surat" class="form-label">Tanggal Surat</label>
+                                <input type="date" name="tanggal_surat" class="form-control" id="tanggal_surat"
+                                    value="{{ $kelengkapan->tanggal_surat }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nama_perusahaan" class="form-label">Nama Perusahaan:</label>
+                        <input type="text" class="form-control" id="nama_perusahaan" name="nama_perusahaan"
+                            value="{{ $kelengkapan->nama_perusahaan }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nama_jelas" class="form-label">Nama Lengkap:</label>
+                        <input type="text" class="form-control" id="nama_jelas" name="nama_jelas"
+                            value="{{ $kelengkapan->nama_jelas }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="jabatan" class="form-label">Jabatan:</label>
+                        <input type="text" class="form-control" id="jabatan" name="jabatan"
+                            value="{{ $kelengkapan->jabatan }}">
+                    </div>
+                    <a href="{{ route('vendor.kontrakkerja.detail', ['id' => $id]) }}" class="btn btn-primary">Kembali</a>
+
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+
+            </form>
+
+        </div>
     </div>
 
 @endsection

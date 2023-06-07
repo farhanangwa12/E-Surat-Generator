@@ -241,7 +241,11 @@
                                                 <td>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <a href="#" class="btn btn-primary">Detail</a>
+                                                            @php
+                                                                print_r($jenisDokumenKelengkapan);
+
+                                                            @endphp
+                                                            <a href="" class="btn btn-primary">Detail</a>
                                                         </div>
                                                         <div class="col">
                                                             <button type="button" class="btn btn-success">Download</button>

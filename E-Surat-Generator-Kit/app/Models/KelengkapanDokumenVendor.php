@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\DokumenVendor\Datapengalaman;
 use App\Models\DokumenVendor\Lampiranpenawaranharga;
 use App\Models\DokumenVendor\Neraca;
 use App\Models\DokumenVendor\Paktavendor;
@@ -58,5 +59,9 @@ class KelengkapanDokumenVendor extends Model
     public function neraca()
     {
         return $this->hasOne(Neraca::class, 'id_dokumen');
+    }
+    public function dataPengalaman()
+    {
+        return $this->hasOne(Datapengalaman::class, 'id_dokumen', 'id_dokumen');
     }
 }

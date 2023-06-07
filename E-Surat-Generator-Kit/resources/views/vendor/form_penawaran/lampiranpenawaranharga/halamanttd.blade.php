@@ -94,7 +94,9 @@
                                         </ol>
 
                                         <label for="file_tandatangan">Upload File Tanda Tangan:</label>
-                                        <input type="file" class="form-control" name="file_tandatangan">
+                                        <input type="file" class="form-control" name="file_tandatangan" accept=".pdf">
+
+                                        
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>

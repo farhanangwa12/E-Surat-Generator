@@ -3,197 +3,250 @@
 namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
+use App\Models\DokumenVendor\Datapengalaman;
+use App\Models\DokumenVendor\Subdatapengalaman;
 use App\Models\FormPenawaran\FormPenawaranHarga;
+use App\Models\JenisDokumenKelengkapan;
+use App\Models\KelengkapanDokumenVendor;
+use App\Models\TandaTangan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 
 class DataPengalamanController extends Controller
 {
-    private function refresh($id)
+    public function refresh($id)
     {
         // Cek apakah terdapat data penawaran dengan id_kontrakkerja yang sesuai
-        $formPenawaranHarga = FormPenawaranHarga::where('id_kontrakkerja', $id)->first();
-        if ($formPenawaranHarga) {
-            // Jika ada data penawaran, kembalikan data form penawaran
-            if ($formPenawaranHarga->data_pengalaman == null) {
-                $formPenawaranHarga1 = FormPenawaranHarga::find($formPenawaranHarga->id);
+        // $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', "pakta_integritas_")
+        // $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja',$id)->with('jenisDokumen');
+        $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', 'memiliki_pengalaman_pengadaan_sejenis_dibuktikan_dengan_salinan_kontrak_spk_')
+            ->with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
+                $query->where('id_kontrakkerja', $id);
+            }])
+            ->first();
 
-                $formPenawaranHarga1->data_pengalaman = json_encode([
-                    'pekerjaan' => null,
-                    'tahun_anggaran' => null,
-                    'nama' =>  null,
-                    'jabatan' => null,
-                    'nama_perusahaan' => null,
-                    'atas_nama' => null,
-                    'alamat' => null,
-                    'telepon_fax' => null,
-                    'email_perusahaan' => null
-                ]);
-                $formPenawaranHarga1->save();
-                return $formPenawaranHarga1;
-            } else {
-                return $formPenawaranHarga;
-            }
-        } else {
-            // Jika tidak ada data penawaran, generate form penawaran dengan array JSON kosong
-            $formPenawaranHarga = new FormPenawaranHarga();
-            $formPenawaranHarga->id_kontrakkerja = $id;
-            $formPenawaranHarga->id_vendor = null;
-            $formPenawaranHarga->kopsurat = null;
-            $formPenawaranHarga->file_path = null;
-            $formPenawaranHarga->data_paktavendor = null;
-            $formPenawaranHarga->data_paktavendor = [];
-            $formPenawaranHarga->data_lamp_nego = [];
-            $formPenawaranHarga->data_pernyataan_kesanggupan = [];
-            $formPenawaranHarga->data_pernyataan_garansi = [];
-            $formPenawaranHarga->neraca = [];
-            $formPenawaranHarga->data_pengalaman = [];
-            $formPenawaranHarga->file_tandatangan = null;
-            $formPenawaranHarga->no_unik_ttd = null;
-            $formPenawaranHarga->tanggal_tandatangan = null;
-            $formPenawaranHarga->save();
+        if ($jenisDokumen->kelengkapanDokumenVendors->isEmpty()) {
 
-            return $formPenawaranHarga;
+
+            // Membuat record baru di tabel kelengkapan_dokumen_vendors
+            KelengkapanDokumenVendor::create([
+                'id_jenis_dokumen' => $jenisDokumen->id_jenis,
+                'id_vendor' => Auth::user()->vendor_id,
+                'id_kontrakkerja' => $id,
+            ])->save();
         }
+
+
+        $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('datapengalaman')->first();
+
+
+
+
+
+        if ($kelengkapan->datapengalaman == null) {
+
+            $datapengalaman = new Datapengalaman();
+            $datapengalaman->id_dokumen = $kelengkapan->id_dokumen;
+            $datapengalaman->id_vendor = Auth::user()->vendor_id;
+            $datapengalaman->save();
+        }
+
+        $datapengalaman1 = Datapengalaman::where('id_vendor', $kelengkapan->id_vendor)->where('id_dokumen', $kelengkapan->id_dokumen)->first();
+
+        return $datapengalaman1;
     }
-    public function index()
+
+    public function index($id)
     {
         // Membaca data dari file JSON
-        $datapengalaman = $this->getDataPengalaman();
+        $kelengkapan = $this->refresh($id);
 
-       
-        return view('vendor.form_penawaran.datapengalaman.index', compact('datapengalaman'));
+        $datapengalaman = Subdatapengalaman::where('id_datapengalaman', $kelengkapan->id)->get();
+
+
+        // $datapengalaman = 
+
+
+        return view('vendor.form_penawaran.datapengalaman.index', compact('id', 'datapengalaman', 'kelengkapan'));
     }
 
-    public function create()
+    public function create($id)
     {
-        return view('vendor.form_penawaran.datapengalaman.create');
+        return view('vendor.form_penawaran.datapengalaman.create', compact('id'));
     }
 
     public function store(Request $request, $id)
     {
-        // Mendapatkan data yang dikirimkan melalui form
-        $data = $request->all();
+        $kelengkapan = $this->refresh($id);
+        $request->validate([
+            'bidang_pekerjaan' => 'required',
+            'sub_bidang_pekerjaan' => 'required',
+            'lokasi' => 'required',
+            'nama_pemberi_tugas' => 'required',
+            'alamat_pemberi_tugas' => 'required',
+            'no_tanggal_kontrak' => 'required',
+            'nilai' => 'required',
+            'kontrak' => 'required',
+            'ba_serah_terima' => 'required',
+        ]);
 
-        // Menambahkan data baru ke dalam array
-        $datapengalaman = $this->getDataPengalaman();
-        $datapengalaman[] = $data;
+        // Simpan data ke model Datapengalaman
+        $subdatapengalaman = new Subdatapengalaman();
+        $subdatapengalaman->id_datapengalaman = $kelengkapan->id;
 
-        // Menyimpan data ke file JSON
-        $this->saveDataPengalaman($datapengalaman);
+        $subdatapengalaman->bidang_pekerjaan = $request->bidang_pekerjaan;
+        $subdatapengalaman->sub_bidang_pekerjaan = $request->sub_bidang_pekerjaan;
+        $subdatapengalaman->lokasi = $request->lokasi;
+        $subdatapengalaman->nama_pemberi_tugas = $request->nama_pemberi_tugas;
+        $subdatapengalaman->alamat_pemberi_tugas = $request->alamat_pemberi_tugas;
+        $subdatapengalaman->no_tanggal_kontrak = $request->no_tanggal_kontrak;
+        $subdatapengalaman->nilai = $request->nilai;
+        $subdatapengalaman->kontrak = $request->kontrak;
+        $subdatapengalaman->ba_serah_terima = $request->ba_serah_terima;
+        // Simpan data lainnya yang diperlukan
 
-        return redirect()->route('vendor.datapengalaman.index')->with('success', 'Data pengalaman perusahaan berhasil ditambahkan.');
+        // Simpan data ke database
+        $subdatapengalaman->save();
+
+        return redirect()->route('vendor.datapengalaman.index', ['id' => $id])->with('success', 'Data pengalaman perusahaan berhasil ditambahkan.');
     }
 
-    public function edit($id)
+    public function edit($id, $id_data)
     {
-        // Mendapatkan data pengalaman perusahaan berdasarkan ID
-        $datapengalaman = $this->getDataPengalaman();
+        $kelengkapan = $this->refresh($id);
+        $datapengalaman = Subdatapengalaman::find($id_data);
 
-        if (isset($datapengalaman[$id])) {
-            $data = $datapengalaman[$id];
-            return view('datapengalaman.edit', compact('id', 'data'));
-        }
-
-        return redirect()->route('vendor.datapengalaman.index')->with('error', 'Data pengalaman perusahaan tidak ditemukan.');
+        return view('vendor.form_penawaran.datapengalaman.edit', compact('id', 'datapengalaman'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $id_data)
     {
-        // Mendapatkan data yang dikirimkan melalui form
-        $data = $request->all();
+        $kelengkapan = $this->refresh($id);
 
-        // Mendapatkan data pengalaman perusahaan
-        $datapengalaman = $this->getDataPengalaman();
 
-        if (isset($datapengalaman[$id])) {
-            // Mengganti data yang ada dengan data yang baru
-            $datapengalaman[$id] = $data;
+        $request->validate([
+            'bidang_pekerjaan' => 'required',
+            'sub_bidang_pekerjaan' => 'required',
+            'lokasi' => 'required',
+            'nama_pemberi_tugas' => 'required',
+            'alamat_pemberi_tugas' => 'required',
+            'no_tanggal_kontrak' => 'required',
+            'nilai' => 'required',
+            'kontrak' => 'required',
+            'ba_serah_terima' => 'required',
+        ]);
 
-            // Menyimpan data ke file JSON
-            $this->saveDataPengalaman($datapengalaman);
+        // Simpan data ke model Datapengalaman
+        $subdatapengalaman = Subdatapengalaman::find($id_data);
+        $subdatapengalaman->id_datapengalaman = $kelengkapan->id;
 
-            return redirect()->route('vendor.datapengalaman.index')->with('success', 'Data pengalaman perusahaan berhasil diperbarui.');
-        }
+        $subdatapengalaman->bidang_pekerjaan = $request->bidang_pekerjaan;
+        $subdatapengalaman->sub_bidang_pekerjaan = $request->sub_bidang_pekerjaan;
+        $subdatapengalaman->lokasi = $request->lokasi;
+        $subdatapengalaman->nama_pemberi_tugas = $request->nama_pemberi_tugas;
+        $subdatapengalaman->alamat_pemberi_tugas = $request->alamat_pemberi_tugas;
+        $subdatapengalaman->no_tanggal_kontrak = $request->no_tanggal_kontrak;
+        $subdatapengalaman->nilai = $request->nilai;
+        $subdatapengalaman->kontrak = $request->kontrak;
+        $subdatapengalaman->ba_serah_terima = $request->ba_serah_terima;
+        // Simpan data lainnya yang diperlukan
 
-        return redirect()->route('vendor.datapengalaman.index')->with('error', 'Data pengalaman perusahaan tidak ditemukan.');
+        // Simpan data ke database
+        $subdatapengalaman->save();
+
+        return redirect()->route('vendor.datapengalaman.index', ['id' => $id])->with('success', 'Data pengalaman perusahaan berhasil diupdate.');
     }
-
-    public function destroy($id)
+    public function updateDataPengalaman(Request $request, $id, $id_data)
     {
-        // Mendapatkan data pengalaman perusahaan
-        $datapengalaman = $this->getDataPengalaman();
+        // Validasi input
+        $validatedData = $request->validate([
+            'kota_surat' => 'nullable|string',
+            'tanggal_surat' => 'nullable|date',
+            'nama_perusahaan' => 'nullable|string',
+            'nama_jelas' => 'nullable|string',
+            'jabatan' => 'nullable|string',
+        ]);
 
-        if (isset($datapengalaman[$id])) {
-            // Menghapus data berdasarkan ID
-            unset($datapengalaman[$id]);
+        // Cari data pengalaman berdasarkan ID
+        $datapengalaman = Datapengalaman::findOrFail($id_data);
 
-            // Menyimpan data ke file JSON
-            $this->saveDataPengalaman($datapengalaman);
+        // Perbarui data pengalaman dengan input yang valid
+        $datapengalaman->kota_surat = $validatedData['kota_surat'];
+        $datapengalaman->tanggal_surat = $validatedData['tanggal_surat'];
+        $datapengalaman->nama_perusahaan = $validatedData['nama_perusahaan'];
+        $datapengalaman->nama_jelas = $validatedData['nama_jelas'];
+        $datapengalaman->jabatan = $validatedData['jabatan'];
 
-            return redirect()->route('vendor.datapengalaman.index')->with('success', 'Data pengalaman perusahaan berhasil dihapus.');
-        }
+        // Simpan perubahan
+        $datapengalaman->save();
 
-        return redirect()->route('vendor.datapengalaman.index')->with('error', 'Data pengalaman perusahaan tidak ditemukan.');
+        // Redirect atau melakukan tindakan lainnya setelah penyimpanan berhasil
+        return redirect()->route('vendor.datapengalaman.index', $id)->with('success', 'Data pengalaman berhasil diperbarui');
     }
 
-    private function getDataPengalaman()
+    public function destroy($id, $id_data)
     {
-        $file = Storage::disk('public')->get('datapengalaman.json');
-        $datapengalaman = json_decode($file, true) ?? [];
 
-        return $datapengalaman;
+        $subdatapengalaman = Subdatapengalaman::find($id_data);
+        // dd($subdatapengalaman);
+        $subdatapengalaman->delete();
+
+
+        return redirect()->route('vendor.datapengalaman.index', ['id' => $id])->with('success', 'Data pengalaman perusahaan berhasil diupdate.');
     }
 
-    private function saveDataPengalaman($datapengalaman)
-    {
-        $json = json_encode($datapengalaman);
-        Storage::disk('public')->put('datapengalaman.json', $json);
-    }
+
 
     public function halamanttd($id)
     {
-        // // Mengambil data pengalaman berdasarkan ID
-        // $dataPengalaman = DataPengalaman::where('id', $id)->first();
 
-        // // Menampilkan halaman tanda tangan
-        // return view('datapengalaman.halamanttd', compact('dataPengalaman'));
+        return view('vendor.form_penawaran.datapengalaman.halamanttd', compact('id'));
     }
 
     public function simpanttd(Request $request, $id)
     {
-        // Validasi data yang dikirim dari form
-        $validatedData = $request->validate([
-            // Tentukan aturan validasi untuk setiap field
-            // ...
-        ]);
+        $formPenawaranHarga = $this->refresh($request->input('id'));
 
-        // // Simpan tanda tangan ke data pengalaman di database
-        // $dataPengalaman = DataPengalaman::findOrFail($id);
-        // $dataPengalaman->tanda_tangan = $validatedData['tanda_tangan'];
-        // $dataPengalaman->save();
+        // Menyimpan file tanda tangan ke storage
+        $file = $request->file('file_tandatangan');
 
-        // Redirect ke halaman index atau halaman detail data pengalaman
-        // ...
+        // Generate the new filename using time(), original name, and extension
+        $filename = time() . '_' . $file->getClientOriginalName();
+
+        // Store the file with the new filename
+        $filePath = $file->storeAs('public/dokumenvendor', $filename);
+        $id_kontrakkerja = $request->input('id');
+
+
+        // Update kolom file_tandatangan, no_unik_ttd, dan tanggal_tandatangan
+        $kelengkapandokumen = KelengkapanDokumenVendor::find($formPenawaranHarga->id_dokumen);
+        $kelengkapandokumen->file_upload = $filename;
+        $kelengkapandokumen->tandatangan = TandaTangan::where('id', Auth::user()->id)->first()->kode_unik;
+        $kelengkapandokumen->save();
+
+        return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
     }
 
     public function pdf($id)
     {
+
+        // Membaca data dari file JSON
+        $kelengkapan = $this->refresh($id);
+
+        $datapengalaman = Subdatapengalaman::where('id_datapengalaman', $kelengkapan->id)->get();
+
         $data = [
-            'nama' => 'John Doe',
-            'jabatan' => 'Manager',
-            'nama_perusahaan' => 'Example Company',
-            'atas_nama' => 'John Doe',
-            'alamat_perusahaan' => '456 Example Avenue, City',
-            'telepon_fax' => '555-1234',
-            'email_perusahaan' => 'info@example.com',
-            'nama_pekerjaan' => 'Example Job',
-            'nomor_rks' => '1234',
-            'tanggal_rks' => '2023-05-26',
-            'kota_surat' => 'City',
-            'tanggal_surat' => '2023-05-26',
-            'nama_terang' => 'Example Terang',
+            'nama' => $kelengkapan->nama_jelas,
+            'jabatan' => $kelengkapan->jabatan,
+            'nama_perusahaan' => $kelengkapan->nama_perusahaan,
+
+            'kota_surat' => $kelengkapan->kota_surat,
+            'tanggal_surat' => Carbon::parse($kelengkapan->tanggal_surat)->locale('id')->isoFormat('DD MMMM YYYY'),
+
+            'datapengalaman' => $datapengalaman
         ];
 
         // Generate the PDF using laravel-dompdf

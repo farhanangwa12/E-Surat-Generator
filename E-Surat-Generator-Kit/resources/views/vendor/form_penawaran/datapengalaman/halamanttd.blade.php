@@ -82,10 +82,10 @@
                         <div class="card">
                             <div class="card-header">Form Upload File Tanda Tangan</div>
                             <div class="card-body">
-                                <form action="{{ route('vendor.formpenawaranharga.simpanttd') }}" method="POST"
+                                <form action="{{ route('vendor.datapengalaman.simpanttd', $id) }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <input type="hidden" name="id" value="{{ $formPenawaranHarga->id_kontrakkerja }}">
+                                    <input type="hidden" name="id" value="{{ $id }}">
                                     <div class="form-group m-4">
                                         <ol>
                                             <li>Download PDF Form Penawaran dari halaman utama</li>
@@ -94,10 +94,10 @@
                                         </ol>
 
                                         <label for="file_tandatangan">Upload File Tanda Tangan:</label>
-                                        <input type="file" class="form-control" name="file_tandatangan">
+                                        <input type="file" class="form-control" name="file_tandatangan" accept=".pdf">
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
-                                </form>
+                                </form> 
                             </div>
                         </div>
                     </div>

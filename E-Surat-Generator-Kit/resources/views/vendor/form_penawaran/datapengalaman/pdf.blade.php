@@ -47,10 +47,11 @@
             font-weight: bold;
             margin: 0;
         }
+
         main table {
             width: 100%;
-            border: 1px solid black; 
-            
+            border: 1px solid black;
+
             /* Mengatur batas (border) hitam pada tabel */
             border-collapse: collapse;
         }
@@ -66,6 +67,7 @@
             padding: 5px;
             text-align: left;
         }
+
         main .tandatangan {
             float: right;
             text-align: center;
@@ -138,42 +140,32 @@
                     <td>10</td>
 
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Bidang 1</td>
-                    <td>Sub Bidang 1</td>
-                    <td>Lokasi 1</td>
-                    <td>Nama Pemberi Tugas 1</td>
-                    <td>Alamat Pemberi Tugas 1</td>
-                    <td>No Tanggal Kontrak 1</td>
-                    <td>Nilai 1</td>
-                    <td>Nilai Kontrak 1</td>
-                    <td>BA Serah Terima 1</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Bidang 2</td>
-                    <td>Sub Bidang 2</td>
-                    <td>Lokasi 2</td>
-                    <td>Nama Pemberi Tugas 2</td>
-                    <td>Alamat Pemberi Tugas 2</td>
-                    <td>No Tanggal Kontrak 2</td>
-                    <td>Nilai 2</td>
-                    <td>Nilai Kontrak 2</td>
-                    <td>BA Serah Terima 2</td>
-                </tr>
+                @foreach ($datapengalaman as $data)
+                    <tr>
+                        <td>{{ $loop->iteration+1 }}</td>
+                        <td>{{ $data['bidang_pekerjaan'] }}</td>
+                        <td>{{ $data['sub_bidang_pekerjaan'] }}</td>
+                        <td>{{ $data['lokasi'] }}</td>
+                        <td>{{ $data['nama_pemberi_tugas'] }}</td>
+                        <td>{{ $data['alamat_pemberi_tugas'] }}</td>
+                        <td>{{ $data['no_tanggal_kontrak'] }}</td>
+                        <td>{{ $data['nilai'] }}</td>
+                        <td>{{ $data['kontrak'] }}</td>
+                        <td>{{ $data['ba_serah_terima'] }}</td>
+                       
+                    </tr>
+                @endforeach
             </tbody>
         </table>
 
         <div class="tandatangan">
-            <div>............... (Tanggal), .................. 2022</div>
-            <div>PT/CV/Firma ..............................</div>
+            <div> {{ $kota_surat }}, {{ $tanggal_surat }}</div>
+            <div> {{ $nama_perusahaan }}</div>
             <div class="kotak" style="height: 50px; margin: 10px 0;border: 1px solid black;">
-                
+
             </div>
-            <div 
-            class="nama-jabatan">Nama Jelas</div>
-            <div class="nama-jabatan">Jabatan</div>
+            <div class="nama-jabatan">{{ $nama }}</div>
+            <div class="nama-jabatan">{{ $jabatan }}</div>
         </div>
     </main>
 

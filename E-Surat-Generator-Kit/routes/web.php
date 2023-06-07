@@ -459,11 +459,13 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
 
         Route::get('datapengalaman/{id}', [DataPengalamanController::class, 'index'])->name('vendor.datapengalaman.index');
         Route::get('datapengalaman/create/{id}', [DataPengalamanController::class, 'create'])->name('vendor.datapengalaman.create');
-        Route::get('datapengalaman/store/{id}', [DataPengalamanController::class, 'store'])->name('vendor.datapengalaman.store');
-        Route::get('datapengalaman/edit/{id}', [DataPengalamanController::class, 'edit'])->name('vendor.datapengalaman.create');
+        Route::post('datapengalaman/store/{id}', [DataPengalamanController::class, 'store'])->name('vendor.datapengalaman.store');
+        Route::get('datapengalaman/edit/{id}/{id_data}', [DataPengalamanController::class, 'edit'])->name('vendor.datapengalaman.edit');
 
-        Route::post('datapengalaman/update/{id}', [DataPengalamanController::class, 'update'])->name('vendor.datapengalaman.update');
-        Route::post('datapengalaman/hapus/{id}/{id_index}', [DataPengalamanController::class, 'destroy'])->name('vendor.datapengalaman.update');
+        Route::put('datapengalaman/update/{id}/{id_data}', [DataPengalamanController::class, 'update'])->name('vendor.datapengalaman.update');
+        Route::put('datapengalaman/updateDataPengalaman/{id}/{id_data}', [DataPengalamanController::class, 'updateDataPengalaman'])->name('vendor.datapengalaman.updateDatapengalaman');
+        
+        Route::delete('datapengalaman/hapus/{id}/{id_data}', [DataPengalamanController::class, 'destroy'])->name('vendor.datapengalaman.destroy');
         Route::get('datapengalaman/halamanttd/{id}', [DataPengalamanController::class, 'halamanttd'])->name('vendor.datapengalaman.halamanttd');
         Route::post('datapengalaman/simpanttd/{id}', [DataPengalamanController::class, 'simpanttd'])->name('vendor.datapengalaman.simpanttd');
         Route::get('datapengalaman/pdf/{id}', [DataPengalamanController::class, 'pdf'])->name('vendor.datapengalaman.pdf');
