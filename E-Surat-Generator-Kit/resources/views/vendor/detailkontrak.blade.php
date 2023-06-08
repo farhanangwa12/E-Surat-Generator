@@ -238,35 +238,90 @@
 
                                         @if ($jenisDokumenKelengkapan['dokumen_sistem'] == 'ya')
                                             @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
+                                                @if (isset($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['file_upload']))
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col">
+
+                                                                <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 1]) }}"
+                                                                    class="btn btn-primary">Detail</a>
+                                                            </div>
+                                                            <div class="col">
+                                                                <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 2]) }}"
+                                                                    class="btn btn-primary">Download</a>
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        Dokumen belum di tandatangani
+                                                    </td>
+                                                @endif
+                                            @else
+                                                <td>
+
+                                                    Isian Dokumen Belum diisi
+                                                </td>
+                                            @endif
+                                        @else
+                                            @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
                                                 <td>
                                                     <div class="row">
                                                         <div class="col">
-                                                            @php
-                                                                print_r($jenisDokumenKelengkapan);
+                                                            <form method="POST"
+                                                                action="{{ route('vendor.kelengkapandok.update', ['id' => $jenisDokumenKelengkapan['id_jenis'], 'id_kontrakkerja' => $id]) }}"
+                                                                enctype="multipart/form-data" id="uploadForm">
+                                                                @method('PUT')
+                                                                @csrf
+                                                                <div class="mb-3">
+                                                                    <label for="fileUpload"
+                                                                        class="btn btn-primary">Update</label>
+                                                                    <input type="file" class="form-control"
+                                                                        id="fileUpload" name="fileUpload" accept=".pdf"
+                                                                        style="display: none;">
 
-                                                            @endphp
-                                                            <a href="" class="btn btn-primary">Detail</a>
+
+                                                                </div>
+
+
+
+
+
+
+                                                            </form>
                                                         </div>
                                                         <div class="col">
-                                                            <button type="button" class="btn btn-success">Download</button>
+
+                                                            <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 1]) }}"
+                                                                class="btn btn-primary">Detail</a>
+                                                        </div>
+                                                        <div class="col">
+                                                            <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 2]) }}"
+                                                                class="btn btn-primary">Download</a>
                                                         </div>
                                                     </div>
 
                                                 </td>
                                             @else
                                                 <td>
+                                                    <form method="POST"
+                                                        action="{{ route('vendor.kelengkapandok.store', ['id' => $jenisDokumenKelengkapan['id_jenis'], 'id_kontrakkerja' => $id]) }}"
+                                                        enctype="multipart/form-data" id="uploadForm">
+                                                        @csrf
+                                                        <div class="mb-3">
+                                                            <label for="fileUpload" class="btn btn-primary">Upload File
+                                                                PDF</label>
+                                                            <input type="file" class="form-control" id="fileUpload"
+                                                                name="fileUpload" accept=".pdf" style="display: none;">
 
-                                                    Array Kosong
+
+                                                        </div>
+
+
+                                                    </form>
                                                 </td>
                                             @endif
-                                        @else
-                                            <td>
-                                                <div class="mb-3">
-                                                    <label for="pdfFile" class="form-label">Upload File PDF</label>
-                                                    <input type="file" class="form-control" id="pdfFile" name="pdfFile"
-                                                        accept=".pdf">
-                                                </div>
-                                            </td>
                                         @endif
 
                                     </tr>
@@ -335,4 +390,25 @@
             </div>
 
         </div>
+
+    @endsection
+    @section('javascript')
+
+        <script>
+            var fileUploadList = document.querySelectorAll('#fileUpload');
+
+            var uploadForm = document.querySelectorAll('#uploadForm');
+            fileUploadList.forEach((fileUpload, index) => {
+                fileUpload.addEventListener('change', function(event) {
+                    var confirmation = confirm('Apakah Anda yakin ingin mengupload dokumen?');
+                    console.log(index);
+                    if (confirmation) {
+                        uploadForm[index].submit();
+
+                    }
+
+                });
+            });
+        </script>
+
     @endsection

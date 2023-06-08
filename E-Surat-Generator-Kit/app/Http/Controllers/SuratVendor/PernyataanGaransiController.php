@@ -58,7 +58,7 @@ class PernyataanGaransiController extends Controller
     public function create($id)
     {
         $penawaran = $this->refresh($id);
-
+ 
         $data = [
             'nama' => $penawaran->nama,
             'jabatan' => $penawaran->jabatan,
@@ -138,8 +138,8 @@ class PernyataanGaransiController extends Controller
     }
     public function pdf($id)
     {
-        $penawaran = $this->refresh($id)->data_pernyataan_garansi;
-
+        $penawaran = $this->refresh($id);
+  
         $data = [
             'nama' => $penawaran->nama,
             'jabatan' => $penawaran->jabatan,

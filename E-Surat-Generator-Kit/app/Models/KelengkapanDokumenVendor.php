@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Models\DokumenVendor\Datapengalaman;
+
+use App\Models\DokumenVendor\Formpenawaranharga;
+
 use App\Models\DokumenVendor\Lampiranpenawaranharga;
 use App\Models\DokumenVendor\Neraca;
 use App\Models\DokumenVendor\Paktavendor;
@@ -63,5 +66,9 @@ class KelengkapanDokumenVendor extends Model
     public function dataPengalaman()
     {
         return $this->hasOne(Datapengalaman::class, 'id_dokumen', 'id_dokumen');
+    }
+    public function formPenawaranHarga()
+    {
+        return $this->hasOne(Formpenawaranharga::class, 'id_dokumen');
     }
 }

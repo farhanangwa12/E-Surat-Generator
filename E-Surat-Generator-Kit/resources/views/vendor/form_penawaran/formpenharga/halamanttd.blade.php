@@ -85,7 +85,7 @@
                                 <form action="{{ route('vendor.formpenawaranharga.simpanttd') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <input type="hidden" name="id" value="{{ $formPenawaranHarga->id_kontrakkerja }}">
+                                    <input type="hidden" name="id" value="{{ $id }}">
                                  
                                     <div class="form-group m-4">
                                         <ol>

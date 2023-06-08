@@ -42,7 +42,11 @@ class LampiranPenawaranHargaController extends Controller
                 'id_kontrakkerja' => $id,
             ])->save();
         }
-        if ($jenisDokumen->kelengkapanDokumenVendors[0]->lampiranPenawaranHargas->isEmpty()) {
+      
+
+        $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('lampiranPenawaranHargas')->first();
+    
+        if ($kelengkapan->lampiranPenawaranHargas->isEmpty()) {
             $data = [];
             Lampiranpenawaranharga::create([
                 'id_dokumen' => $jenisDokumen->kelengkapanDokumenVendors[0]->id_dokumen,
@@ -51,13 +55,14 @@ class LampiranPenawaranHargaController extends Controller
             ])->save();
         }
 
+        $lampiranDokumen =  Lampiranpenawaranharga::where('id_dokumen', $kelengkapan->id_dokumen)->first();
 
-        $lampiranDokumen = Lampiranpenawaranharga::find($jenisDokumen->kelengkapanDokumenVendors[0]->lampiranPenawaranHargas[0]->id);
+
 
 
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->with('barjas')->get()->toArray();
 
-        $barjaslamp = $lampiranDokumen->datalampiran; // Ubah menjadi array dengan true sebagai argumen kedua
+        $barjaslamp = $lampiranDokumen->datalampiran; 
 
         $no = 0;
         foreach ($jenis_kontrak as $jen) {
@@ -80,17 +85,14 @@ class LampiranPenawaranHargaController extends Controller
 
         return $lampiranDokumen;
     }
-    public function index()
-    {
-        return view('vendor.form_penawaran.lampiranpenawaranharga');
-    }
+   
 
     public function create($id)
     {
 
         // Mengambil path file JSON dari database berdasarkan ID
         $formPenawaranHarga = $this->refresh($id);
-
+      
         $kontrakkerja = KontrakKerja::find($id);
         $jenis_kontraks = JenisKontrak::where('id_kontrak', $kontrakkerja->id_kontrakkerja)->get()->toArray();
 
@@ -222,14 +224,14 @@ class LampiranPenawaranHargaController extends Controller
 
     public function halamanttd($id)
     {
-    
+
         return view('vendor.form_penawaran.lampiranpenawaranharga.halamanttd', compact('id'));
     }
 
     public function simpanttd(Request $request)
     {
         $formPenawaranHarga = $this->refresh($request->input('id'));
-       
+
         // Menyimpan file tanda tangan ke storage
         $file = $request->file('file_tandatangan');
 
@@ -246,7 +248,7 @@ class LampiranPenawaranHargaController extends Controller
         $kelengkapandokumen->file_upload = $filename;
         $kelengkapandokumen->tandatangan = TandaTangan::where('id', Auth::user()->id)->first()->kode_unik;
         $kelengkapandokumen->save();
-        
+
         return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
     }
     public function pdf($id)
@@ -335,5 +337,4 @@ class LampiranPenawaranHargaController extends Controller
         $namefile = 'LampiranPenawaran_' . time() . '.pdf';
         return $pdf->stream($namefile);
     }
- 
 }

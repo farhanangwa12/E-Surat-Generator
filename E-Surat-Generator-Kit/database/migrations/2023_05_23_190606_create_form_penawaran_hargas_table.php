@@ -13,24 +13,26 @@ return new class extends Migration
     {
         Schema::create('form_penawaran_harga', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_kontrakkerja');
-            $table->unsignedBigInteger('id_vendor')->nullable();
+            $table->unsignedBigInteger('id_dokumen');
             $table->string('kopsurat')->nullable();
-            $table->string('file_path')->nullable();
-            $table->json('data_paktavendor')->nullable();
-            $table->json('data_lamp_nego')->nullable();         
-            $table->json('data_pernyataan_kesanggupan')->nullable();
-            $table->json('data_pernyataan_garansi')->nullable();
-            $table->json('neraca')->nullable();
-            $table->json('data_pengalaman')->nullable();
-            $table->string('file_tandatangan')->nullable();
-            $table->string('no_unik_ttd')->nullable();
-            $table->timestamp('tanggal_tandatangan')->nullable();
-            // Tambahkan kolom tanggal_tandatangan
-
-            // Tambahkan foreign key atau atribut lainnya sesuai kebutuhan
-
+            $table->string('kopsuratpath')->default('dokumenvendor/kopsurat');
+            $table->string('nomor')->nullable();
+            $table->string('lampiran')->nullable();
+            $table->string('nama_kota')->nullable();
+            $table->date('tanggal_pembuatan_surat')->nullable();
+            $table->string('nama_vendor')->nullable();
+            $table->string('jabatan')->nullable();
+            $table->string('nama_perusahaan')->nullable();
+            $table->string('atas_nama')->nullable();
+            $table->string('alamat_perusahaan')->nullable();
+            $table->string('telepon_fax')->nullable();
+            $table->string('email_perusahaan')->nullable();
+            $table->string('harga_penawaran')->nullable();
+            $table->string('ppn11')->nullable();
+            $table->string('jumlah_harga')->nullable();
             $table->timestamps();
+            $table->foreign('id_dokumen')->references('id_dokumen')->on('kelengkapan_dokumen_vendors')->onDelete('cascade');
+            // Tambahkan kolom tanggal_tandatangan
         });
     }
 

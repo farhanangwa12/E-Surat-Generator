@@ -214,7 +214,10 @@
             <p style="font-weight:bold;">{{ $atasNama }}</p>
 
             <div style="display: inline-block; border: 1px solid black; width:40%; margin: auto;">
-                {!! $barcode !!}
+                {{-- {!! $barcode !!} --}}
+                Materai Rp. 10.000,- <br>
+                Tanda Tangan <br>
+                Dan Cap Perusahaan
             </div>
 
             <p style="font-weight:bold;"><u>{{ strtoupper($nama) }}</u></p>

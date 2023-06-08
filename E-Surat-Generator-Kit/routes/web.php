@@ -72,7 +72,6 @@ Route::post('/ubahtandatangan', [LoginController::class, 'ubahanTandaTangan'])->
 Route::prefix('und')->group(function () {
     Route::get('undangan/{id}/{isDownload}', [UndanganController::class, 'Undangan'])->name('pengajuankontrak.undangan');
     Route::get('tandatangan/{id}/{jenis}', [UndanganController::class, 'tandatangan'])->name('undangan.tandatangan');
-
 });
 Route::prefix('rks')->group(function () {
     Route::get('show/{id}/{isDownload}', [RKSController::class, 'showrks'])->name('pengajuankontrak.rks');
@@ -250,6 +249,16 @@ Route::prefix('vendor')->group(function () {
 
     // Route untuk halaman kelengkapan dokumen
     Route::get('/{idvendor}/kelengkapandokumen', [VendorKelengkapanDokumenController::class, 'kelengkapandokumeninternal'])->name('vendor.kelengkapandokumen');
+    Route::prefix('kelengkapan_dokumen')->group(function () {
+        Route::get('/pdf/{id}/{jenis}', [VendorKelengkapanDokumenController::class, 'pdf'])->name('vendor.kelengkapan-dokumen.pdf');
+
+        // Route untuk menyimpan data user baru dari halaman create user
+        Route::post('/store/{id}/{id_kontrakkerja}', [VendorKelengkapanDokumenController::class, 'store'])->name('vendor.kelengkapandok.store');
+        // Route untuk menyimpan data user yang telah diedit dari halaman edit user
+        Route::put('/update/{id}/{id_kontrakkerja}', [VendorKelengkapanDokumenController::class, 'update'])->name('vendor.kelengkapandok.update');
+        // Route untuk menghapus data user berdasarkan ID
+        Route::delete('/destroy/{id}/{id_kontrakkerja}', [VendorKelengkapanDokumenController::class, 'destroy'])->name('vendor.kelengkapandok.destroy');
+    });
 });
 
 // Pegawai 
@@ -464,7 +473,7 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
 
         Route::put('datapengalaman/update/{id}/{id_data}', [DataPengalamanController::class, 'update'])->name('vendor.datapengalaman.update');
         Route::put('datapengalaman/updateDataPengalaman/{id}/{id_data}', [DataPengalamanController::class, 'updateDataPengalaman'])->name('vendor.datapengalaman.updateDatapengalaman');
-        
+
         Route::delete('datapengalaman/hapus/{id}/{id_data}', [DataPengalamanController::class, 'destroy'])->name('vendor.datapengalaman.destroy');
         Route::get('datapengalaman/halamanttd/{id}', [DataPengalamanController::class, 'halamanttd'])->name('vendor.datapengalaman.halamanttd');
         Route::post('datapengalaman/simpanttd/{id}', [DataPengalamanController::class, 'simpanttd'])->name('vendor.datapengalaman.simpanttd');
