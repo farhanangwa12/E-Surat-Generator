@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\HPS;
 use App\Models\Dokumen\RKS;
 use App\Models\Dokumen\UND;
+use App\Models\JenisDokumenKelengkapan;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -1263,6 +1264,8 @@ class KontrakKerjaController extends Controller
             'Dokumen Input Pengadaan Tahap 2'
         ];
         $kontrak = KontrakKerja::with('vendor')->whereIn('status', $status)->get();
+
+
         return view('plnpengadaan.kontraktahap2.negoharga', compact('kontrak'));
     }
     // Halaman Detail
@@ -1366,8 +1369,10 @@ class KontrakKerjaController extends Controller
 
         ];
         $kontrak = json_decode(json_encode($kontrak));
+        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get()->toArray();
+        // dd($jenisDokumenKelengkapans[0]['kelengkapan_dokumen_vendors'][0]['id_dokumen']);
 
-        return  view('plnpengadaan.kontraktahap2.detail', compact('kontrakkerja', 'kontrak'));
+        return  view('plnpengadaan.kontraktahap2.detail', compact('kontrakkerja', 'kontrak', 'jenisDokumenKelengkapans'));
     }
 
 
@@ -1447,7 +1452,7 @@ class KontrakKerjaController extends Controller
     }
     public function detailttd($id)
     {
-        
+
         $kontrakkerja = KontrakKerja::with('vendor')->find($id);
 
         $sumberanggaran = SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first();
@@ -1508,7 +1513,7 @@ class KontrakKerjaController extends Controller
             'tanggal_rks' => $pembuatansurat->nomor_rks->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_rks->tanggal_surat),
 
             'nomor_rks' => $pembuatansurat->nomor_rks->nomor_surat,
-            'rks' =>RKS::where('id_kontrakkerja', $id)->first(),
+            'rks' => RKS::where('id_kontrakkerja', $id)->first(),
             'tanggal_hps' => $pembuatansurat->nomor_hps->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_hps->tanggal_surat),
             'nomor_hps' => $pembuatansurat->nomor_hps->nomor_surat,
             'hps' => HPS::where('id_kontrakkerja', $id)->first(),
@@ -1518,7 +1523,7 @@ class KontrakKerjaController extends Controller
 
             'tanggal_undangan' => $pembuatansurat->nomor_undangan->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_undangan->tanggal_surat),
             'nomor_undangan' => $pembuatansurat->nomor_undangan->nomor_surat,
-            'undangan' =>UND::where('id_kontrakkerja', $id)->first(),
+            'undangan' => UND::where('id_kontrakkerja', $id)->first(),
             'tanggal_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pengguna->tanggal_surat),
             'nomor_pakta_pengguna' => $pembuatansurat->nomor_pakta_pengguna->nomor_surat,
 

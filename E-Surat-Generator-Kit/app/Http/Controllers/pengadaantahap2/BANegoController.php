@@ -82,9 +82,9 @@ class BANegoController extends Controller
             'vendor' => $vendor->nama_vendor,
             'tandatangan_vendor' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_direktur,
 
-            'pengadaan' =>  Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'pengadaan')->nama_pengguna,
+            'pengadaan' =>  Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'pejabat_pelaksana_pengadaan')->first()->nama_pengguna,
             'tandatangan_pengadaan' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_pengadaan,
-            'manager' => PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'pengadaan')->first()->nama_pengguna,
+            'manager' => Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'manager')->first()->nama_pengguna,
             'tandatangan_manager' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_manager,
 
 
