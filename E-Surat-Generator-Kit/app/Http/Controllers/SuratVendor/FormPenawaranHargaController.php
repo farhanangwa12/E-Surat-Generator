@@ -18,7 +18,7 @@ use Terbilang;
 
 class FormPenawaranHargaController extends Controller
 {
-    private function refresh($id)
+    public function refresh($id)
     {
 
 

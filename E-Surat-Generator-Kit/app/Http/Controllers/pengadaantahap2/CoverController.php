@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\pengadaantahap2;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SuratVendor\FormPenawaranHargaController;
+use App\Models\Dokumen\LampNego;
 use App\Models\KontrakKerja;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\Penyelenggara;
@@ -19,17 +21,23 @@ class CoverController extends Controller
     public function show($id, $isDownload)
     {
         $kontrakkerja = KontrakKerja::with('vendor')->find($id);
+        $formpenawaran = app(FormPenawaranHargaController::class);
+        $nomorpihakkedua = $formpenawaran->refresh($id)->nomor;
+        
+        $lamppenawaran = app(LampNegoController::class);
+        $nilai_pekerjaan = $lamppenawaran->refresh($id)->total_harga;
+        
         
         $surat = [
             'nama_perusahaan' => $kontrakkerja->vendor->penyedia,
 
             'nomor_pihak_pertama' => PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_rks')->first()->no_surat,
 
-            'nomor_pihak_kedua' => "Belum 781/MDM-PLN/XII/2022",
+            'nomor_pihak_kedua' => $nomorpihakkedua,
             'tanggal_awal_kontrak' => Carbon::parse($kontrakkerja->tanggal_pekerjaan)->locale('id')->isoFormat('DD MMMM YYYY'),
             'tanggal_akhir_kontrak' => Carbon::parse($kontrakkerja->tanggal_akhir_pekerjaan)->locale('id')->isoFormat('DD MMMM YYYY'),
             'jangka_waktu' =>Carbon::parse($kontrakkerja->tanggal_pekerjaan)->diffInDays($kontrakkerja->tanggal_akhir_pekerjaan) . ' ( '.Terbilang::make(Carbon::parse($kontrakkerja->tanggal_pekerjaan)->diffInDays($kontrakkerja->tanggal_akhir_pekerjaan)).' ) ' . 'Hari Kalender',
-            'nilai_pekerjaan' => "Rp. Belum Rupiah",
+            'nilai_pekerjaan' => "Rp. " . number_format($nilai_pekerjaan, 0, ',', '.'),
 
             'tahun' => "TAHUN " .$kontrakkerja->tahun
           

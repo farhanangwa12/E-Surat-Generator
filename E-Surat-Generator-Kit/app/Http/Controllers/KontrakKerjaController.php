@@ -1382,6 +1382,7 @@ class KontrakKerjaController extends Controller
     {
         $status = [
             'Validasi Dokumen Pengadaan Tahap 1',
+            'Validasi Dokumen Pengadaan Tahap 2'
         ];
         $kontrak = KontrakKerja::with('vendor')->whereIn('status', $status)->get();
         return view('plnpengadaan.tandatanganpengadaan.tandatangan', compact('kontrak'));
@@ -1627,9 +1628,17 @@ class KontrakKerjaController extends Controller
             'tanggal_rks' => $pembuatansurat->nomor_rks->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_rks->tanggal_surat),
 
             'nomor_rks' => $pembuatansurat->nomor_rks->nomor_surat,
-
+            'rks' => RKS::where('id_kontrakkerja', $id)->first(),
             'tanggal_hps' => $pembuatansurat->nomor_hps->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_hps->tanggal_surat),
             'nomor_hps' => $pembuatansurat->nomor_hps->nomor_surat,
+            'hps' => HPS::where('id_kontrakkerja', $id)->first(),
+
+            'tanggal_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pejabat->tanggal_surat),
+            'nomor_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->nomor_surat,
+
+            'tanggal_undangan' => $pembuatansurat->nomor_undangan->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_undangan->tanggal_surat),
+            'nomor_undangan' => $pembuatansurat->nomor_undangan->nomor_surat,
+            'undangan' => UND::where('id_kontrakkerja', $id)->first(),
 
             'tanggal_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_pakta_pejabat->tanggal_surat),
             'nomor_pakta_pejabat' => $pembuatansurat->nomor_pakta_pejabat->nomor_surat,

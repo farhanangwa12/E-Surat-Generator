@@ -253,7 +253,7 @@
             <tr>
                 <td style="text-align: right;">Terbilang</td>
                 <td>:</td>
-                <td style="text-align:left;">{{ @Terbilang::make($data2['harga_disepakati']); }}</td>
+                <td style="text-align:left;">{{ ucwords(@Terbilang::make($data2['harga_disepakati'])) }}</td>
             </tr>
         </table>
 

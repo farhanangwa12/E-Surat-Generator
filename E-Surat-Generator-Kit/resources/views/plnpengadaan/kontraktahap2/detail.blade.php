@@ -486,7 +486,9 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Lamp Nego</td>
-                                    <td><a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                    <td><a href="{{ route('lampnego.create', ['id'=> $kontrakkerja->id_kontrakkerja]) }}"  class="btn btn-primary">Create</a>
+                                        
+                                        <a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>
 
 
@@ -638,7 +640,7 @@
                         <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
                             <a href="{{ route('negoharga') }}" class="btn btn-info">Kembali</a>
                             <form
-                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Tanda Tangan Vendor', 'routeName' => 'negoharga']) }}"
+                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Validasi Dokumen Pengadaan Tahap 2', 'routeName' => 'negoharga']) }}"
                                 method="post">
                                 @csrf
                                 <button type="submit" class="btn btn-primary">Kirim</button>

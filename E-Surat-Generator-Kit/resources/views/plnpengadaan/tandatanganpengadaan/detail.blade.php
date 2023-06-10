@@ -587,28 +587,56 @@
 
 
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        Dengan ini, dokumen ini memerlukan tanda tangan dan verifikasi dari pengadaan sebelum dikirimkan ke
-                        vendor.
-                        Apakah Anda yakin ingin mengirimkan dokumen ini ke vendor?
-                    </div>
-                    <div class="card-body">
-                        <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
-                            <a href="{{ route('tandatangan.pengadaan') }}" class="btn btn-info">Kembali</a>
-                            <form
-                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Dokumen Input Vendor', 'routeName' => 'tandatangan.pengadaan']) }}"
-                                method="post">
-                                @csrf
-                                <button type="submit" class="btn btn-primary">Kirim</button>
-                            </form>
-                            <form action="#" method="post">
-                                @csrf
-                                <button type="submit" class="btn btn-primary">Kembalikan</button>
-                            </form>
+                @if ($kontrakkerja->status == 'Validasi Dokumen Pengadaan Tahap 1')
+                    <div class="card">
+                        <div class="card-header">
+                            Dengan ini, dokumen ini memerlukan tanda tangan dan verifikasi dari pengadaan sebelum dikirimkan
+                            ke
+                            vendor.
+                            Apakah Anda yakin ingin mengirimkan dokumen ini ke vendor?
+                        </div>
+                        <div class="card-body">
+                            <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
+                                <a href="{{ route('tandatangan.pengadaan') }}" class="btn btn-info">Kembali</a>
+                                <form
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Dokumen Input Vendor', 'routeName' => 'tandatangan.pengadaan']) }}"
+                                    method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kirim</button>
+                                </form>
+                                <form action="#" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kembalikan</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
+
+
+                @if ($kontrakkerja->status == 'Validasi Dokumen Pengadaan Tahap 2')
+                    <div class="card">
+                        <div class="card-header">
+                            Meminta Persetujuan vendor
+                        </div>
+                        <div class="card-body">
+                            <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
+                                <a href="{{ route('tandatangan.pengadaan') }}" class="btn btn-info">Kembali</a>
+                                <form
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Tanda Tangan Vendor', 'routeName' => 'tandatangan.pengadaan']) }}"
+                                    method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kirim</button>
+                                </form>
+                                <form action="#" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kembalikan</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
 
 
 

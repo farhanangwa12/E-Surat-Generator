@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,5 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PegawaiSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(TandatanganSeeder::class);
+    
     }
 }

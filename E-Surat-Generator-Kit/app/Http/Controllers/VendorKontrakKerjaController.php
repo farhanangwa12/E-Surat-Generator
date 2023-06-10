@@ -14,9 +14,9 @@ class VendorKontrakKerjaController extends Controller
         $status = [
 
 
-            'Kontrak dibatalkan',
-            'Kontrak disetujui',
-            'Tanda Tangan Vendor',
+            // 'Kontrak dibatalkan',
+            // 'Kontrak disetujui',
+            // 'Tanda Tangan Vendor',
             'Kontrak Kerja Berjalan'
         ];
         $kontrak = KontrakKerja::whereIn('status', $status)->get();
@@ -36,6 +36,24 @@ class VendorKontrakKerjaController extends Controller
       
         return view('vendor.detailkontrak', compact('kontrakkerja', 'id', 'jenisDokumenKelengkapans'));
     }
+
+
+    public function detailttd($id)
+    {
+        $kontrakkerja = KontrakKerja::find($id);
+
+        // // Path File
+        // $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
+
+        // $spreadsheet = IOFactory::load($path);
+        // $worksheet = $spreadsheet->getActiveSheet();
+        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get()->toArray();
+        // dd($jenisDokumenKelengkapans[0]['kelengkapan_dokumen_vendors'][0]['id_dokumen']);
+      
+  
+        return view('vendor.detailttd', compact('kontrakkerja', 'id', 'jenisDokumenKelengkapans'));
+    }
+
 
 
     public function pengisiankontrakkerja()

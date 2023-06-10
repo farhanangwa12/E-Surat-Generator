@@ -414,8 +414,9 @@
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>HPS</td>
                                     <td>
-                                        <a href="{{ route('hpstandatanganmanager', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                            class="btn btn-primary">Tanda Tangan HPS</a>
+                                        {{-- <a href="{{ route('hpstandatanganmanager', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
+                                            class="btn btn-primary">Tanda Tangan HPS</a> --}}
+                                            <a href="#"  class="btn btn-primary">Tanda Tangan HPS</a>
                                         <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>
 
@@ -539,9 +540,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        Dengan ini, dokumen ini memerlukan tanda tangan dan verifikasi dari pengadaan sebelum dikirimkan ke
-                        vendor.
-                        Apakah Anda yakin ingin mengirimkan dokumen ini ke vendor?
+                  Dengan ini dokumen dokumen akan disetujui dan kontrak berjalan
                     </div>
                     <div class="card-body">
                         <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">

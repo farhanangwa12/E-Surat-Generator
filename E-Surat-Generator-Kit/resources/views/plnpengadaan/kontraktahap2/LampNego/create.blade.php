@@ -1,6 +1,6 @@
 @extends('template.app')
 
-@section('title', 'ISI RKS')
+@section('title', 'Lamp Nego')
 
 @section('content')
 
@@ -32,16 +32,22 @@
 
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('pengajuankontrak.boq.update', $id) }}" id="myForm">
+                        <form method="POST" action="{{ route('lampnego.update', ['id' => $id]) }}" id="myForm">
                             @method('PUT')
                             @csrf
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
-                                        <th>Uraian</th>
-                                        <th>Volume</th>
-                                        <th>Satuan</th>
+                                        <th rowspan="2">No</th>
+                                        <th rowspan="2">Uraian</th>
+                                        <th rowspan="2">Volume</th>
+                                        <th rowspan="2">Satuan</th>
+                                        <th colspan="2">PENAWARAN (Rp.)</th>
+                                        <th colspan="2">NEGOSIASI (Rp.)</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Harga Satuan</th>
+                                        <th>Jumlah</th>
                                         <th>Harga Satuan</th>
                                         <th>Jumlah</th>
                                     </tr>
@@ -80,7 +86,7 @@
                                             return $result;
                                         }
                                         $jenis = 1;
-                                        $semua = 1;
+                                        
                                     @endphp
 
                                     @foreach ($kontrakbaru as $jenis_kontrak)
@@ -91,31 +97,35 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         @php
-                                            $no_data = 1;
+                                            $no_barjas = 0;
+                                            $no_data = 0;
                                         @endphp
                                         @foreach ($jenis_kontrak['data'] as $data)
                                             <tr style="text-align:left;">
-                                                <td>{{ $no_data++ . '.' }}</td>
+                                                <td>{{ $no_data++ }}</td>
                                                 <td style="text-align: left">{{ $data['uraian'] }} </td>
                                                 <td class="vol">{{ $data['vol'] }}</td>
                                                 <td>{{ $data['sat'] }}</td>
+                                                <td>{{ $data['harga_satuan_penawaran'] }}
+                                                </td>
+                                                <td>{{ $data['jumlah_penawaran'] }}</td>
+
                                                 <td><input type="text" class="harga_satuan form-control" pattern="[0-9]*"
                                                         oninput="validateInput(this)"
-                                                        name="boq[{{ $semua }}][harga_satuan]"
-                                                        value="{{ $data['harga_satuan'] }}" />
+                                                        name="negosiasi[{{ $no_barjas }}][harga_satuan]"
+                                                        value="{{ $data['harga_satuan_negosiasi'] }}" />
                                                 </td>
-                                                <td><input type="text" name="boq[{{ $semua }}][jumlah]"
-                                                        class="form-control jumlah" pattern="[0-9]*"
-                                                        value="{{ $data['jumlah'] }}" readonly></td>
+                                                <td><input type="text" name="negosiasi[{{ $no_barjas }}][jumlah]"
+                                                        class="form-control jumlah" pattern="[0-9]*" value="{{ $data['harga_satuan_negosiasi'] }}"
+                                                        readonly></td>
                                                 {{-- <td>{{ $data['harga_satuan'] }}</td>
                                                 <td>{{ $data['jumlah'] }}</td> --}}
                                             </tr>
-                                            @php
-                                                $no_subdata = 1;
-                                                $semua++;
-                                            @endphp
+
                                             @foreach ($data['sub_data'] as $subdata)
                                                 <tr>
                                                     <td></td>
@@ -124,10 +134,16 @@
                                                     <td>{{ $subdata['satuan'] }}</td>
                                                     <td></td>
                                                     <td></td>
+                                                    <td></td>
+                                                    <td></td>
                                                     {{-- <td>{{ $subdata['harga_satuan'] }}</td>
                                                     <td>{{ $subdata['jumlah'] }}</td> --}}
                                                 </tr>
                                             @endforeach
+                                            @php
+                                                $no_barjas++;
+                                                
+                                            @endphp
                                         @endforeach
                                     @endforeach
 
@@ -136,29 +152,42 @@
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Total Jumlah:</strong>
                                         </td>
-                                        <td><input type="number" class="form-control total_harga" name="total_jumlah"
-                                                id="total_jumlah" readonly value="{{ $boq->total_jumlah == null ? 0 : $boq->total_jumlah }}"></td>
+                                        <td>{{ $boq->total_jumlah == null ? 0 : $boq->total_jumlah }}</td>
+                                        <td style="text-align: right;"><strong>Total Jumlah:</strong>
+                                        </td>
+                                        <td><input type="number" class="form-control total_harga"
+                                                name="total_jumlah_negosiasi" id="total_jumlah" readonly
+                                                value="{{ $lampnego->total_jumlah == null ? 0 : $lampnego->total_jumlah }}"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Dibulatkan </strong></td>
-                                        <td><input type="number" class="form-control" id="pembulatan" name="dibulatkan"
-                                                value="{{ $boq->dibulatkan == null ? 0 : $boq->dibulatkan }}" readonly></td>
+                                        <td>{{ $boq->dibulatkan == null ? 0 : $boq->dibulatkan }}
+                                        </td>
+                                        <td style="text-align: right;"><strong>Dibulatkan </strong></td>
+                                        <td><input type="number" class="form-control" id="pembulatan"
+                                                name="dibulatkan_negosiasi"
+                                                value="{{ $lampnego->dibulatkan == null ? 0 : $lampnego->dibulatkan }}" readonly>
+                                        </td>
                                     </tr>
-                                  
+
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>PPN 11%</strong></td>
-                                        <td><input type="number" class="form-control" id="ppn11" name="ppn11"
-                                                readonly value="{{ $boq->ppn11 }}"></td>
+                                        <td>{{ $boq->ppn11 }}</td>
+                                        <td style="text-align: right;"><strong>PPN 11%</strong></td>
+                                        <td><input type="number" class="form-control" id="ppn11" name="ppn11_negosiasi"
+                                                readonly value="{{ $lampnego->ppn11 }}"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Harga Total</strong></td>
-                                        <td><input type="number" class="form-control" id="harga_total" name="harga_total"
-                                                readonly value="{{ $boq->total_harga }}"></td>
+                                        <td>{{ $boq->total_harga }}</td>
+                                        <td style="text-align: right;"><strong>Harga Total</strong></td>
+                                        <td><input type="number" class="form-control" id="harga_total"
+                                                name="harga_total_negosiasi" readonly value="{{ $lampnego->total_harga }}"></td>
                                     </tr>
                                 </tfoot>
                             </table>
                             <div class="form-group">
-                                <a href="{{ route('pengajuankontrak.detail', ['id' => $id]) }}"
+                                <a href="{{ route('negoharga.detail', ['id' => $id]) }}"
                                     class="btn btn-primary">Kembali</a>
 
 
@@ -226,7 +255,7 @@
 
         var totalJumlahInputs = document.querySelector('#total_jumlah');
         var dibulatkanInputs = document.querySelector('#pembulatan');
-        var rok10Inputs = document.querySelector('#rok10');
+
         var ppn11Inputs = document.querySelector('#ppn11');
         var hargaTotal = document.querySelector('#harga_total')
 
@@ -244,8 +273,9 @@
             }
             totalJumlahInputs.value = parseFloat(total_jumlah);
             dibulatkanInputs.value = Math.round(totalJumlahInputs.value);
-            ppn11Inputs.value = (parseFloat(dibulatkanInputs.value) * 0.11).toFixed(2);
-            hargaTotal.value = (parseFloat(dibulatkanInputs.value) + parseFloat(ppn11Inputs
+     
+            ppn11Inputs.value = (parseFloat(dibulatkanInputs.value)  * 0.11).toFixed(2);
+            hargaTotal.value = (parseFloat(dibulatkanInputs.value)  + parseFloat(ppn11Inputs
                 .value)).toFixed(2);
 
 

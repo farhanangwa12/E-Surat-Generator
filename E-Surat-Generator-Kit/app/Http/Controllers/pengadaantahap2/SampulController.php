@@ -18,15 +18,20 @@ class SampulController extends Controller
     public function show($id, $isDownload)
     {
         $kontrakkerja = KontrakKerja::with('vendor')->find($id);
-        
+        $lampirannego = app(LampNegoController::class);
+        // $nomorpihakkedua = $lampirannego->refresh($id)->nomor;
+        $nilai_pekerjaan = $lampirannego->refresh($id)->total_harga;
+        $pembuatansuratkontrak = PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_spk')->first();
+     
+ 
         $surat = [
-            'nomor' => "Nomor : " . PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_spk')->first()->nomor_spk,
+            'nomor' => "Nomor : " . $pembuatansuratkontrak->no_surat,
 
             'tanggal' => "Tanggal : ". Carbon::parse(PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_spk')->first()->tanggal_pembuatan)->isoFormat('DD MMMM YYYY'),
 
-            'pekerjaan' => $kontrakkerja->nama_pekerjaan ."Belum",
+            'pekerjaan' => $kontrakkerja->nama_kontrak,
             'nama_perusahaan' => $kontrakkerja->vendor->penyedia,
-            'nilai_pekerjaan' => "200 juta Belum",
+            'nilai_pekerjaan' => "Rp. " . number_format($nilai_pekerjaan, 0, ',', '.'),
            
 
 

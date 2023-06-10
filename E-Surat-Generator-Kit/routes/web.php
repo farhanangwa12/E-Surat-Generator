@@ -5,7 +5,7 @@ use App\Http\Controllers\KontrakKerjaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\pengadaantahap1\BOQController;
-use App\Http\Controllers\pengadaantahap1\FormpenawaranController;
+
 use App\Http\Controllers\pengadaantahap1\HPSController;
 use App\Http\Controllers\pengadaantahap1\RKSController;
 use App\Http\Controllers\pengadaantahap1\UndanganController;
@@ -101,14 +101,14 @@ Route::prefix('hps')->group(function () {
 });
 
 
-Route::prefix('formpenawaran')->group(function () {
-    Route::get('/', [FormpenawaranController::class, 'index'])->name('formpenawaran.index');
-    Route::get('/create', [FormpenawaranController::class, 'create'])->name('formpenawaran.create');
-    Route::post('/store', [FormpenawaranController::class, 'store'])->name('formpenawaran.store');
-    Route::get('/edit/{id}', [FormpenawaranController::class, 'edit'])->name('formpenawaran.edit');
-    Route::put('/update/{id}', [FormpenawaranController::class, 'update'])->name('formpenawaran.update');
-    Route::delete('/destroy/{id}', [FormpenawaranController::class, 'destroy'])->name('formpenawaran.destroy');
-});
+// Route::prefix('formpenawaran')->group(function () {
+//     Route::get('/', [FormpenawaranController::class, 'index'])->name('formpenawaran.index');
+//     Route::get('/create', [FormpenawaranController::class, 'create'])->name('formpenawaran.create');
+//     Route::post('/store', [FormpenawaranController::class, 'store'])->name('formpenawaran.store');
+//     Route::get('/edit/{id}', [FormpenawaranController::class, 'edit'])->name('formpenawaran.edit');
+//     Route::put('/update/{id}', [FormpenawaranController::class, 'update'])->name('formpenawaran.update');
+//     Route::delete('/destroy/{id}', [FormpenawaranController::class, 'destroy'])->name('formpenawaran.destroy');
+// });
 
 
 Route::prefix('banego')->group(function () {
@@ -137,11 +137,11 @@ Route::prefix('cover')->group(function () {
 // Routing untuk LampNegoController
 Route::prefix('lampnego')->group(function () {
     // Route::get('/', [LampNegoController::class, 'index'])->name('lampnego.index');
-    // Route::get('/create', [LampNegoController::class, 'create'])->name('lampnego.create');
+    Route::get('/create/{id}', [LampNegoController::class, 'create'])->name('lampnego.create');
     // Route::post('/', [LampNegoController::class, 'store'])->name('lampnego.store');
     Route::get('/{id}/{isDownload}', [LampNegoController::class, 'show'])->name('lampnego.show');
     // Route::get('/{id}/edit', [LampNegoController::class, 'edit'])->name('lampnego.edit');
-    // Route::put('/{id}', [LampNegoController::class, 'update'])->name('lampnego.update');
+    Route::put('/update/{id}', [LampNegoController::class, 'update'])->name('lampnego.update');
     // Route::delete('/{id}', [LampNegoController::class, 'destroy'])->name('lampnego.destroy');
 });
 
@@ -378,6 +378,7 @@ Route::prefix('pengadaan')->middleware('auth', 'role:pengadaan')->group(function
         Route::get('{id}/detail', [KontrakKerjaController::class, 'detailttd'])->name('tandatangan.detail');
 
         Route::get('/tandatangan', [KontrakKerjaController::class, 'tandatanganpengadaan'])->name('tandatangan.pengadaan');
+        
         Route::post('/simpanttd', [KontrakKerjaController::class, 'simpanttd'])->name('tandatangan.pengadaan.simpanttd');
     });
 });
@@ -425,10 +426,11 @@ Route::prefix('vendor')->middleware('auth', 'role:vendor')->group(function () {
         Route::get('kontrakkerjadetail/{id}', [VendorKontrakKerjaController::class, 'detail'])->name('vendor.kontrakkerja.detail');
 
 
-        // Route untuk menampilkan form tambah produk
-        Route::get('/pengisiankontrakkerja', [VendorKontrakKerjaController::class, 'pengisiankontrakkerja'])->name('isikontrak');
 
-        // Route untuk menampilkan form tambah produk
+        Route::get('/pengisiankontrakkerja', [VendorKontrakKerjaController::class, 'pengisiankontrakkerja'])->name('isikontrak');
+        Route::get('/kontrakkerjadetailtandatangan/{id}', [VendorKontrakKerjaController::class, 'detailttd'])->name('vendor.kontrakkerja.detail.tandatangan');
+
+
         Route::get('/tandatangan', [VendorTandaTangan::class, 'index'])->name('tandatangan');
     });
 

@@ -332,30 +332,34 @@
                     </div>
                 </div>
 
+
                 <div class="card">
                     <div class="card-header">
-                        Setelah tombol kirim ditekan, informasi akan langsung dikirimkan ke
-                        pihak PLN untuk proses
-                        penawaran harga. Proses ini tidak dapat dibatalkan. Mohon konfirmasi
-                        apakah vendor yakin
-                        akan melanjutkan.
-
+                        Mohon konfirmasi apakah vendor setuju dengan persyaratan penawaran yang telah
+                        disampaikan.
+                        Jika tidak setuju, silakan klik tombol "Tidak Setuju". Jika setuju, silakan tanda tangan
+                        sebagai tanda persetujuan. Terima kasih atas perhatiannya.
                     </div>
                     <div class="card-body">
 
                         <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
                             <a href="{{ route('pengajuankontrak.index') }}" class="btn btn-info">Kembali</a>
                             <form
-                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Dokumen Input Pengadaan Tahap 2', 'routeName' => 'isikontrak']) }}"
+                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Kontrak Dibatalkan', 'routeName' => 'vendor.kontrakkerja']) }}"
                                 method="post">
                                 @csrf
-                                <button type="submit" class="btn btn-primary">Kirim</button>
+                                <button type="submit" class="btn btn-primary">Tidak Setuju</button>
                             </form>
+                            <form
+                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Kontrak Disetujui', 'routeName' => 'vendor.kontrakkerja']) }}"
+                                method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">Setuju</button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
-
-                
             </div>
 
         </div>
