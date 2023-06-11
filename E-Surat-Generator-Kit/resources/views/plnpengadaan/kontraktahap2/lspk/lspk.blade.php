@@ -36,7 +36,7 @@
 
         /* Main */
         main .pekerjaan h1 {
-            text-align: justify;
+            text-align: center;
         }
 
 
@@ -82,13 +82,12 @@
     <main>
         <div class="judul">
             <h1>LAMPIRAN SURAT PERINTAH KERJA</h1>
-            <p style="margin-right: 2px;">Nomor Pihak Pertama : 111.SPK/DAN.01.03/200900/2022 <br>
-                Nomor Pihak Kedua : 781/MDM-PLN/XII/2022 <br>
-                Tanggal : 30 Desember 2022
+            <p style="margin-right: 2px;">Nomor Pihak Pertama : {{ $nomor_pihak_pertama }} <br>
+                Nomor Pihak Kedua : {{ $nomor_pihak_kedua }}<br>
+                Tanggal : {{ $tanggal_spk }}
             </p>
             <div class="pekerjaan">
-                <h1><b>PEKERJAAN PENGADAAN DAN JASA INSTALASI KWH METER ENGINE PLTU JEMBER PT PLN (PERSERO) UNIT INDUK
-                        WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR</b></h1>
+                <h1><b>{{$nama_pekerjaan}}</b></h1>
 
             </div>
 
@@ -96,92 +95,130 @@
 
         <div class="content">
             <table>
-
-                <tr>
-                    <th>No</th>
-                    <th>Uraian</th>
-                    <th>Vol</th>
-                    <th>Sat</th>
-                    <th>Harga Satuan (Rp)</th>
-                    <th>Jumlah (Rp)</th>
-                </tr>
-
-                <tr>
-                    <td>1</td>
-                    <td>Barang A</td>
-                    <td>100</td>
-                    <td>pcs</td>
-                    <td>Rp. 5.000</td>
-                    <td>Rp. 4.500</td>
-
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Barang B</td>
-                    <td>50</td>
-                    <td>kg</td>
-                    <td>Rp. 10.000</td>
-                    <td>Rp. 9.000</td>
-
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Barang C</td>
-                    <td>2</td>
-                    <td>m</td>
-                    <td>Rp. 20.000</td>
-                    <td>Rp. 18.000</td>
-
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Barang D</td>
-                    <td>10</td>
-                    <td>l</td>
-                    <td>Rp. 15.000</td>
-                    <td>Rp. 13.500</td>
-
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Barang E</td>
-                    <td>5</td>
-                    <td>pcs</td>
-                    <td>Rp. 25.000</td>
-                    <td>Rp. 22.500</td>
-
-                </tr>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Uraian</th>
+                        <th>Vol</th>
+                        <th>Sat</th>
+                        <th>Harga Satuan (Rp)</th>
+                        <th>Jumlah (Rp)</th>
+                    </tr>
+                </thead>
 
 
-                <tr style="font-weight: bold;">
-                    <td colspan="5" style="text-align: right;">JUMLAH HARGA</td>
 
-                    <td>203.900.000</td>
+                <tbody>
+                    @php
+                        
+                        function int_to_roman($num)
+                        {
+                            // array untuk angka romawi
+                            $roman = [
+                                'M' => 1000,
+                                'CM' => 900,
+                                'D' => 500,
+                                'CD' => 400,
+                                'C' => 100,
+                                'XC' => 90,
+                                'L' => 50,
+                                'XL' => 40,
+                                'X' => 10,
+                                'IX' => 9,
+                                'V' => 5,
+                                'IV' => 4,
+                                'I' => 1,
+                            ];
+                            $result = '';
+                            // loop melalui array angka romawi
+                            foreach ($roman as $key => $value) {
+                                // dapatkan banyaknya simbol romawi yang dibutuhkan
+                                $numerals = intval($num / $value);
+                                // tambahkan simbol romawi ke string hasil
+                                $result .= str_repeat($key, $numerals);
+                                // kurangi angka asal dengan angka romawi yang telah dihasilkan
+                                $num = $num % $value;
+                            }
+                            return $result;
+                        }
+                        $jenis = 1;
+                    @endphp
 
-                </tr>
-                <tr style="font-weight: bold;">
-                    <td colspan="5" style="text-align: right;">Pembulatan</td>
+                    @foreach ($kontrakbaru as $jenis_kontrak)
+                        <tr style="text-align:left;">
+                            <td>{{ int_to_roman($jenis++) . '.' }}</td>
+                            <td><b>{{ $jenis_kontrak['jenis_kontrak'] }}</b> </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        @php
+                            $no_data = 1;
+                        @endphp
+                        @foreach ($jenis_kontrak['data'] as $data)
+                            <tr style="text-align:left;">
+                                <td>{{ $no_data++ . '.' }}</td>
+                                <td style="text-align: left">{{ $data['uraian'] }} </td>
+                                <td>{{ $data['vol'] }}</td>
+                                <td>{{ $data['sat'] }}</td>
+                                <td>{{ $data['harga_satuan'] }} </td>
+                                <td>{{ $data['jumlah'] }}</td>
+                               
+                            </tr>
+                            @php
+                                $no_subdata = 1;
+                                
+                            @endphp
+                            @foreach ($data['sub_data'] as $subdata)
+                                <tr>
+                                    <td></td>
+                                    <td style="text-align:left;">{{ $subdata['uraian'] }} </td>
+                                    <td>{{ $subdata['volume'] }}</td>
+                                    <td>{{ $subdata['satuan'] }}</td>
+                                    <td></td>
+                                    <td></td>
+                                   
+                                </tr>
+                            @endforeach
+                        @endforeach
+                    @endforeach
 
-                    <td>203.900.000</td>
+                </tbody>
 
-                </tr>
-                <tr style="font-weight: bold;">
-                    <td colspan="5" style="text-align: right;">PPN 11%</td>
+                <tfoot>
+                    <tr style="font-weight: bold;">
+                        <td colspan="5" style="text-align: right;">JUMLAH HARGA</td>
 
-                    <td>203.900.000</td>
+                        <td>{{ $jumlah_harga }}</td>
+
+                    </tr>
+                    <tr style="font-weight: bold;">
+                        <td colspan="5" style="text-align: right;">Pembulatan</td>
+
+                        <td>{{ $pembulatan }}</td>
+
+                    </tr>
+                    <tr style="font-weight: bold;">
+                        <td colspan="5" style="text-align: right;">PPN 11%</td>
+
+                        <td>{{ $ppn11 }}</td>
 
 
-                </tr>
-                <tr style="font-weight: bold;">
-                    <td colspan="5"style="text-align: right;">Harga Total</td>
+                    </tr>
+                    <tr style="font-weight: bold;">
+                        <td colspan="5"style="text-align: right;">Harga Total</td>
 
-                    <td>203.900.000</td>
+                        <td>{{ $total_harga }}</td>
 
-                </tr>
+                    </tr>
+                </tfoot>
+
             </table>
 
-            <h2><i>Terbilang : Duaratus Enampuluh Dua Juta Seratus Limapuluh Sembilan Ribu Enamratus Delapanpuluh Sembilan
-                Rupiah</i></h2>
+            <h2><i>Terbilang : Duaratus Enampuluh Dua Juta Seratus Limapuluh Sembilan Ribu Enamratus Delapanpuluh
+                    Sembilan
+                    Rupiah</i></h2>
 
 
         </div>
@@ -202,7 +239,7 @@
                 <td>Tanda Tangan Manager
                 </td>
             </tr>
-            <tr >
+            <tr>
                 <td><b>BUDI SUSANTI</b></td>
                 <td><b>SELAMET DUNIA AKHIRAT</b>
                 </td>

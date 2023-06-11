@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\pengadaantahap2;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SuratVendor\FormPenawaranHargaController;
+use App\Models\DokumenVendor\Formpenawaranharga;
 use App\Models\KontrakKerja;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\Penyelenggara;
@@ -24,10 +26,14 @@ class SPKBJController extends Controller
 
         $pengadaan = Penyelenggara::where('id_kontrakkerja', $id)->where('nama_jabatan', 'pejabat_pelaksana_pengadaan')->first();
 
+
+        // Data dari Formpenawran 
+        $formpenawaran = app(FormPenawaranHargaController::class)->refresh($id);
+        $nomor_pihak_kedua = $formpenawaran->nomor;
         $data = [
             // Bagian Kop Surat
             'nomor_pihak_pertama' => $pembuatansurat['nomor_rks'][0]['no_surat'],
-            'nomor_pihak_kedua' => '',
+            'nomor_pihak_kedua' => $nomor_pihak_kedua,
 
 
             'pengantar' => "Surat Perintah Kerja &RKS!F10&, untuk selanjutnya disebut Surat Perintah Kerja ini, ditandatangani pada hari &'SPK-BJ'!T10&, tanggal &'SPK-BJ'!T11& bulan &'SPK-BJ'!T12& tahun &'SPK-BJ'!T14&&'SPK-BJ'!S12&, oleh dan antara:",
