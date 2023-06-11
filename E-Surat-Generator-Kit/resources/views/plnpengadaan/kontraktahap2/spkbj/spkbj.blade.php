@@ -1036,10 +1036,7 @@
         <h1 class="centered-text">PASAL 10</h1>
         <h2>MASA PEMELIHARAAN</h2>
         <table class="main-table">
-            <tr>
-                <th>No.</th>
-                <th>Informasi</th>
-            </tr>
+           
             <tr>
                 <td>1.</td>
                 <td>PIHAK KEDUA menjamin atas pekerjaan yang diserahterimakan kepada PIHAK PERTAMA dalam
@@ -1151,10 +1148,7 @@
         <h1 class="centered-text">PASAL 10</h1>
         <h2>MASA PEMELIHARAAN</h2>
         <table class="main-table">
-            <tr>
-                <th>No.</th>
-                <th>Informasi</th>
-            </tr>
+          
             <tr>
                 <td>1.</td>
                 <td>PIHAK KEDUA menjamin atas pekerjaan yang diserahterimakan kepada PIHAK PERTAMA dalam
@@ -1614,10 +1608,7 @@
         <h1 class="centered-text">PASAL 13</h1>
         <h2>FORCE MAJEURE</h2>
         <table class="main-table">
-            <tr>
-                <th>No.</th>
-                <th>Informasi</th>
-            </tr>
+         
             <tr>
                 <td>1.</td>
                 <td>Kejadian Kahar (Force Majeure) adalah setiap keadaan yang berada di luar kontrol yang wajar,
@@ -3775,13 +3766,6 @@
                 <td style="width: 50%;"><b><u>{{ $direktur }}</u></b></td>
             </tr>
         </table>
-
-
-
-
-
-
-
     </main>
 
 </body>
