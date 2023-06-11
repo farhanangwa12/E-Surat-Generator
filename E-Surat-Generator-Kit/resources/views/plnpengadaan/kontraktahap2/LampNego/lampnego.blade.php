@@ -114,8 +114,8 @@
         <table class="header-table" style="width:100%; max-width:100%; table-layout:auto;">
             <tr>
 
-                <td><img src="{{ $logokiri }}" style="vertical-align: top;" alt="Logo Kiri" width="480px"></td>
-                <td><img src="{{ $logo }}" style="margin-left:20%;" alt="Logo PLN" height="40px"></td>
+                <td><img src="{{ $data2['logokiri'] }}" style="vertical-align: top;" alt="Logo Kiri" width="480px"></td>
+                <td><img src="{{ $data2['logo'] }}" style="margin-left:20%;" alt="Logo PLN" height="40px"></td>
 
             </tr>
             <tr>
@@ -157,87 +157,88 @@
                     <th>Harga Satuan</th>
                     <th>Total</th>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Barang A</td>
-                    <td>100</td>
-                    <td>pcs</td>
-                    <td>Rp. 5.000</td>
-                    <td>Rp. 4.500</td>
-                    <td>Rp. 5.000</td>
-                    <td>Rp. 4.500</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Barang B</td>
-                    <td>50</td>
-                    <td>kg</td>
-                    <td>Rp. 10.000</td>
-                    <td>Rp. 9.000</td>
-                    <td>Rp. 5.000</td>
-                    <td>Rp. 4.500</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Barang C</td>
-                    <td>2</td>
-                    <td>m</td>
-                    <td>Rp. 20.000</td>
-                    <td>Rp. 18.000</td>
-                    <td>Rp. 5.000</td>
-                    <td>Rp. 4.500</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Barang D</td>
-                    <td>10</td>
-                    <td>l</td>
-                    <td>Rp. 15.000</td>
-                    <td>Rp. 13.500</td>
-                    <td>Rp. 5.000</td>
-                    <td>Rp. 4.500</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Barang E</td>
-                    <td>5</td>
-                    <td>pcs</td>
-                    <td>Rp. 25.000</td>
-                    <td>Rp. 22.500</td>
-                    <td>Rp. 5.000</td>
-                    <td>Rp. 4.500</td>
-                </tr>
 
+
+                @php
+                    $jenis = 1;
+                @endphp
+                @foreach ($kontrakbaru as $jenis_kontrak)
+                    <tr>
+                        <td>{{ @Terbilang::roman($jenis++) . '.' }}</td>
+                        <td><b>{{ $jenis_kontrak['jenis_kontrak'] }}</b> </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+                    @php
+                        $no_data = 1;
+                    @endphp
+                    @foreach ($jenis_kontrak['data'] as $data)
+                        <tr style="text-align:left;">
+                            <td>{{ $no_data++ . '.' }}</td>
+                            <td style="text-align: left">{{ $data['uraian'] }} </td>
+                            <td>{{ $data['vol'] }}</td>
+                            <td>{{ $data['sat'] }}</td>
+                            <td>{{ $data['harga_satuan_penawaran'] }}</td>
+                            <td>{{ $data['jumlah_penawaran'] }}</td>
+                            <td>{{ $data['harga_satuan_negosiasi'] }}</td>
+                            <td>{{ $data['jumlah_negosiasi'] }}</td>
+
+                        </tr>
+
+                        @foreach ($data['sub_data'] as $subdata)
+                            <tr>
+                                <td></td>
+                                <td style="text-align:left;">{{ $subdata['uraian'] }} </td>
+                                <td>{{ $subdata['volume'] }}</td>
+                                <td>{{ $subdata['satuan'] }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        @endforeach
+                    @endforeach
+                @endforeach
+              
                 <tr>
                     <td colspan="8" style="border-bottom: 5px solid black;"></td>
                 </tr>
                 <tr>
                     <td colspan="4">JUMLAH HARGA</td>
+                    <td> </td>
+                    <td>{{ $data2['jumlah_harga_penawaran'] }}</td>
                     <td></td>
-                    <td>203.900.000</td>
-                    <td></td>
-                    <td>203.900.000</td>
+                    <td>{{ $data2['jumlah_harga_negosiasi'] }}</td>
+
                 </tr>
                 <tr>
                     <td colspan="4">Pembulatan</td>
                     <td></td>
-                    <td>203.900.000</td>
+                    <td>{{ $data2['pembulatan_harga_penawaran'] }}</td>
                     <td></td>
-                    <td>203.900.000</td>
+                    <td>{{ $data2['pembulatan_harga_negosiasi'] }}</td>
+
                 </tr>
                 <tr>
                     <td colspan="4">PPN 11%</td>
                     <td></td>
-                    <td>203.900.000</td>
+                    <td>{{ $data2['ppn11_harga_penawaran'] }}</td>
                     <td></td>
-                    <td>203.900.000</td>
+                    <td>{{ $data2['ppn11_harga_negosiasi'] }}</td>
+
                 </tr>
                 <tr>
                     <td colspan="4">Harga Total</td>
                     <td></td>
-                    <td>203.900.000</td>
+                    <td>{{ $data2['total_harga_penawaran'] }}</td>
                     <td></td>
-                    <td>203.900.000</td>
+                    <td>{{ $data2['total_harga_negosiasi'] }}</td>
+
                 </tr>
             </table>
 
@@ -247,13 +248,12 @@
             <tr>
                 <td style="text-align: right;">Harga Di sepakati</td>
                 <td>=</td>
-                <td style="text-align: left;">Rp262.159.689</td>
+                <td style="text-align: left;">{{ $data2['harga_disepakati']; }}</td>
             </tr>
             <tr>
                 <td style="text-align: right;">Terbilang</td>
                 <td>:</td>
-                <td style="text-align:left;">Duaratus Enampuluh Dua Juta Seratus Limapuluh Sembilan Ribu Enamratus
-                    Delapanpuluh Sembilan Rupiah</td>
+                <td style="text-align:left;">{{ ucwords(@Terbilang::make($data2['harga_disepakati'])) }}</td>
             </tr>
         </table>
 
@@ -261,7 +261,7 @@
             <tr style="text-align: center;">
                 <td style="width: 50%;">SETUJU DAN SEPAKAT,<br>
                     PENYEDIA BARANG/JASA <br>
-                    PT. MULTI INAR BANGUNAN <br>
+                    {{ $data2['penyedia'] }} <br>
                     DIREKTUR
                 </td>
 
@@ -272,17 +272,17 @@
                 </td>
             </tr>
             <tr style="text-align: center;">
-                <td>Tanda tangan Direktur
+                <td>{{ $data2['tandatangan_direktur'] }}
                 </td>
 
-                <td> Tanda tangan Pengadaan
+                <td> {{ $data2['tandatangan_pengadaan'] }}
                 </td>
             </tr>
             <tr style="text-align: center;">
-                <td><b>BUDI SUSANTI</b>
+                <td><b>{{ $data2['direktur'] }}</b>
                 </td>
 
-                <td><b> UNTUNG DAN BERKAH</b>
+                <td><b>{{ $data2['pejabat_pelaksana_pengadaan']; }}</b>
                 </td>
             </tr>
             <tr style="text-align: center;">
@@ -294,14 +294,14 @@
 
             </tr>
             <tr style="text-align: center;">
-                <td colspan="2">Tanda tangan Direktur
+                <td colspan="2">{{ $data2['tandatangan_manager'] }}
                 </td>
 
 
             </tr>
             <tr style="text-align: center;">
                 <td colspan="2">
-                    <b>SELAMET DUNIA AKHIRAT</b>
+                    <b>{{ $data2['manager'] }}</b>
 
                 </td>
 

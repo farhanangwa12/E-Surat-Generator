@@ -57,7 +57,7 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Lama Pekerjaan</td>
-                                    <td>{{ $kontrak->lama_pekerjaan }}</td>
+                                    <td>{{ $kontrak->lama_pekerjaan }} Hari</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -122,7 +122,7 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Anggaran</td>
-                                    <td>{{ $kontrak->tanggal_anggaran != null ? date('l, j F Y', strtotime($kontrak->tanggal_anggaran)) : '' }}
+                                    <td>{{ $kontrak->tanggal_anggaran }}
                                     </td>
                                 </tr>
 
@@ -175,7 +175,8 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Alamat</td>
-                                    <td>{{ $kontrak->alamat_jalan . ',' . $kontrak->alamat_kota }}</td>
+                                    <td>{{ $kontrak->alamat_jalan . ' , ' . $kontrak->alamat_kota . ' , ' . $kontrak->alamat_provinsi }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -262,6 +263,7 @@
                     </div>
                 </div>
                 {{-- Tanggal Pengerjaan Surat Kontrak --}}
+                {{-- Tanggal Pengerjaan Surat Kontrak --}}
                 <div class="card">
                     <div class="card-header">
                         Informasi Pengerjaan Surat Kontrak Pengadaan
@@ -280,8 +282,10 @@
                             <thead>
                                 <tr>
                                     <th scope="col" style="width: 10%;">#</th>
-                                    <th scope="col" style="width: 45%;">Nama informasi</th>
-                                    <th scope="col" style="width: 45%;">Tanggal</th>
+                                    <th scope="col" style="width: 30%;">Nama informasi</th>
+                                    <th scope="col" style="width: 30%;">Tanggal</th>
+                                    <th scope="col" style="width: 30%;">Nomor Surat</th>
+
 
                                 </tr>
                             </thead>
@@ -292,53 +296,83 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal RKS</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_rks)) }}</td>
+                                    <td>{{ $kontrak->tanggal_rks }}</td>
+                                    <td>{{ $kontrak->nomor_rks }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal HPS</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_hps)) }}</td>
+                                    <td>{{ $kontrak->tanggal_hps }}</td>
+                                    <td>{{ $kontrak->nomor_hps }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Pakta Pejabat</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_pakta_pejabat)) }}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="col">{{ $no++ }}</th>
-                                    <td>Tanggal Undangan</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_undangan)) }}</td>
+                                    <td>{{ $kontrak->tanggal_pakta_pejabat }}</td>
+                                    <td>{{ $kontrak->nomor_pakta_pejabat }}</td>
+
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Pakta Pengguna</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_pakta_pengguna)) }}</td>
+                                    <td>{{ $kontrak->tanggal_pakta_pengguna }}</td>
+                                    <td>{{ $kontrak->nomor_pakta_pengguna }}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="col">{{ $no++ }}</th>
+                                    <td>Tanggal Undangan</td>
+                                    <td>{{ $kontrak->tanggal_undangan }}</td>
+                                    <td>{{ $kontrak->nomor_undangan }}</td>
+
                                 </tr>
                                 <br>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
+                                    <td>Batas Akhir Penginputan Dokumen Penawaran</td>
+                                    <td colspan="2">{{ $kontrak->tanggal_undangan }}</td>
+                                    {{-- <td>{{ $kontrak->nomor_undangan }}</td> --}}
+
+                                </tr>
+
+                                <br>
+                                <tr>
+                                    <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Buka</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_buka)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_buka }}</td>
+                                    <td>{{ $kontrak->nomor_ba_buka }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Evaluasi</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_evaluasi)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_evaluasi }}</td>
+                                    <td>{{ $kontrak->nomor_ba_evaluasi }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Negosiasi</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_negosiasi)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_negosiasi }}</td>
+                                    <td>{{ $kontrak->nomor_ba_negosiasi }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Hasil PL</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_hasil_pl)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_hasil_pl }}</td>
+                                    <td>{{ $kontrak->nomor_ba_hasil_pl }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal SPK</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_spk)) }}</td>
+                                    <td>{{ $kontrak->tanggal_spk }}</td>
+                                    <td>{{ $kontrak->nomor_spk }}</td>
+
                                 </tr>
 
                             </tbody>
@@ -347,6 +381,7 @@
 
                     </div>
                 </div>
+
 
 
                 {{-- BOQ --}}
@@ -451,7 +486,9 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Lamp Nego</td>
-                                    <td><a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                    <td><a href="{{ route('lampnego.create', ['id'=> $kontrakkerja->id_kontrakkerja]) }}"  class="btn btn-primary">Create</a>
+                                        
+                                        <a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>
 
 
@@ -513,6 +550,86 @@
                     </div>
                 </div>
 
+                <div class="card">
+                    <div class="card-header">
+                        Dokumen Kelengkapan
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama Dokumen</th>
+                                    <th>keterangan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($jenisDokumenKelengkapans as $jenisDokumenKelengkapan)
+                                    <tr>
+                                        <td>{{ $jenisDokumenKelengkapan['id_jenis'] }}</td>
+                                        <td>{{ $jenisDokumenKelengkapan['nama_dokumen'] }}</td>
+                                        <td>{{ $jenisDokumenKelengkapan['keterangan'] }}</td>
+
+                                        @if ($jenisDokumenKelengkapan['dokumen_sistem'] == 'ya')
+                                            @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
+                                                @if (isset($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['file_upload']))
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col">
+
+                                                                <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 1]) }}"
+                                                                    class="btn btn-primary">Detail</a>
+                                                            </div>
+                                                            <div class="col">
+                                                                <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 2]) }}"
+                                                                    class="btn btn-primary">Download</a>
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        Dokumen belum di tandatangani
+                                                    </td>
+                                                @endif
+                                            @else
+                                                <td>
+
+                                                    Isian Dokumen Belum diisi
+                                                </td>
+                                            @endif
+                                        @else
+                                            @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
+                                                <td>
+                                                    <div class="row">
+                                                      
+                                                        <div class="col">
+
+                                                            <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 1]) }}"
+                                                                class="btn btn-primary">Detail</a>
+                                                        </div>
+                                                        <div class="col">
+                                                            <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 2]) }}"
+                                                                class="btn btn-primary">Download</a>
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            @else
+                                                <td>
+                                                   Belum di Upload
+                                                </td>
+                                            @endif
+                                        @endif
+
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
 
                 <div class="card">
                     <div class="card-header">
@@ -523,7 +640,7 @@
                         <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
                             <a href="{{ route('negoharga') }}" class="btn btn-info">Kembali</a>
                             <form
-                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Tanda Tangan Vendor', 'routeName' => 'negoharga']) }}"
+                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Validasi Dokumen Pengadaan Tahap 2', 'routeName' => 'negoharga']) }}"
                                 method="post">
                                 @csrf
                                 <button type="submit" class="btn btn-primary">Kirim</button>

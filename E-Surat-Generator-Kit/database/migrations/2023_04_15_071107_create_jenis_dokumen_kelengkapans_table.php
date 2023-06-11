@@ -14,8 +14,14 @@ return new class extends Migration
         Schema::create('jenis_dokumen_kelengkapans', function (Blueprint $table) {
             $table->bigIncrements('id_jenis');
             $table->string('nama_dokumen');
+            $table->string('no_dokumen')->unique();
+            $table->enum('dokumen_sistem', ['ya', 'tidak'])->default('tidak');
+            $table->text('keterangan')->nullable();
+  
             $table->timestamps();
         });
+        
+        
     }
 
     /**

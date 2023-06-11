@@ -19,8 +19,9 @@
                     </div>
                     <div class="card-body">
                         <style>
-                            td, th {
-                          
+                            td,
+                            th {
+
                                 vertical-align: middle;
                             }
                         </style>
@@ -30,6 +31,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Nama Dokumen</th>
+                                    <th scope="col">Keterangan</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
@@ -42,15 +44,23 @@
 
                                         <th scope="row">{{ $no++ }}</th>
                                         <td>{{ $item->nama_dokumen }}</td>
-                                        <td> <a href="{{ route('jenisdokumen.edit', ['id' => $item->id_jenis]) }}"
-                                                class="btn btn-primary">Edit</a>
-                                            <form action="{{ route('jenisdokumen.destroy', ['id' => $item->id_jenis]) }}"
-                                                method="POST" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Hapus</button>
-                                            </form>
+                                        <td>{{ $item->keterangan }}</td>
+                                        <td>
+                                            @if ($item->dokumen_sistem == 'tidak')
+                                                <div class="btn-group">
+                                                    <a href="{{ route('jenisdokumen.edit', ['id' => $item->id_jenis]) }}"
+                                                        class="btn btn-primary btn-sm">Edit</a>
+                                                    <form
+                                                        action="{{ route('jenisdokumen.destroy', ['id' => $item->id_jenis]) }}"
+                                                        method="POST" style="display: inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                                    </form>
+                                                </div>
+                                            @endif
                                         </td>
+
                                     </tr>
                                 @endforeach
 

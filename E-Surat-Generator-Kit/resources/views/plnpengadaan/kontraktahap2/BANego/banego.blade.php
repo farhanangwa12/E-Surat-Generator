@@ -141,13 +141,15 @@
 
             <table>
                 <tr>
-                    <td>- Penawaran semula sebesar</td>
-                    <td>: {{ $surat->penawaran_semula }}</td>
+                    <td style="text-align: left;">- Penawaran semula sebesar</td>
+                    <td>:</td>
+                    <td style="text-align: left;"><b>{{ $surat->penawaran_semula }}</b> </td>
                     <td>(Termasuk PPN 11%)</td>
                 </tr>
                 <tr>
-                    <td>- Penawaran setelah negosiasi</td>
-                    <td>: {{ $surat->penawaran_negosiasi }}</td>
+                    <td style="text-align: left;">- Penawaran setelah negosiasi</td>
+                    <td>:</td>
+                    <td style="text-align: left;"><b>{{ $surat->penawaran_negosiasi }}</b></td>
                     <td>(Termasuk PPN 11%)</td>
                 </tr>
             </table>

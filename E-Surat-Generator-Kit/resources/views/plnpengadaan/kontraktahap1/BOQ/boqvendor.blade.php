@@ -258,24 +258,24 @@
 
 
 
-        // function formatAngka(angka) {
-        //     if (angka === '') {
-        //         return '';
-        //     }
+        function formatAngka(angka) {
+            if (angka === '') {
+                return '';
+            }
 
-        //     const numberString = angka.toString();
-        //     const splitArray = numberString.split('');
-        //     let formattedValue = '';
+            const numberString = angka.toString();
+            const splitArray = numberString.split('');
+            let formattedValue = '';
 
-        //     for (let i = 0; i < splitArray.length; i++) {
-        //         formattedValue += splitArray[i];
-        //         if ((splitArray.length - 1 - i) % 3 === 0 && i !== splitArray.length - 1) {
-        //             formattedValue += '.';
-        //         }
-        //     }
+            for (let i = 0; i < splitArray.length; i++) {
+                formattedValue += splitArray[i];
+                if ((splitArray.length - 1 - i) % 3 === 0 && i !== splitArray.length - 1) {
+                    formattedValue += '.';
+                }
+            }
 
-        //     return formattedValue;
-        // }
+            return formattedValue;
+        }
     </script>
 
 

@@ -19,9 +19,12 @@ return new class extends Migration
             $table->integer('rok10')->default(0);
             $table->integer('ppn11')->default(0);
             $table->integer('total_harga')->default(0);
-            $table->timestamps();
+            
             $table->string('tandatangan_pengadaan')->nullable();
+            $table->dateTime('tanggal_tandatangan_pengadaan')->nullable();
             $table->string('tandatangan_manager')->nullable();
+            $table->dateTime('tanggal_tandatangan_manager')->nullable();
+            $table->timestamps();
             $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas')->onDelete('cascade');
         });
     }

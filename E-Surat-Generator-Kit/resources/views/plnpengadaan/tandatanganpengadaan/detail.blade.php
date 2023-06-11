@@ -57,7 +57,7 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Lama Pekerjaan</td>
-                                    <td>{{ $kontrak->lama_pekerjaan }}</td>
+                                    <td>{{ $kontrak->lama_pekerjaan }} Hari</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -122,7 +122,7 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Anggaran</td>
-                                    <td>{{ $kontrak->tanggal_anggaran != null ? date('l, j F Y', strtotime($kontrak->tanggal_anggaran)) : '' }}
+                                    <td>{{ $kontrak->tanggal_anggaran }}
                                     </td>
                                 </tr>
 
@@ -175,7 +175,8 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Alamat</td>
-                                    <td>{{ $kontrak->alamat_jalan . ',' . $kontrak->alamat_kota }}</td>
+                                    <td>{{ $kontrak->alamat_jalan . ' , ' . $kontrak->alamat_kota . ' , ' . $kontrak->alamat_provinsi }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -280,8 +281,10 @@
                             <thead>
                                 <tr>
                                     <th scope="col" style="width: 10%;">#</th>
-                                    <th scope="col" style="width: 45%;">Nama informasi</th>
-                                    <th scope="col" style="width: 45%;">Tanggal</th>
+                                    <th scope="col" style="width: 30%;">Nama informasi</th>
+                                    <th scope="col" style="width: 30%;">Tanggal</th>
+                                    <th scope="col" style="width: 30%;">Nomor Surat</th>
+
 
                                 </tr>
                             </thead>
@@ -292,53 +295,74 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal RKS</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_rks)) }}</td>
+                                    <td>{{ $kontrak->tanggal_rks }}</td>
+                                    <td>{{ $kontrak->nomor_rks }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal HPS</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_hps)) }}</td>
+                                    <td>{{ $kontrak->tanggal_hps }}</td>
+                                    <td>{{ $kontrak->nomor_hps }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Pakta Pejabat</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_pakta_pejabat)) }}</td>
+                                    <td>{{ $kontrak->tanggal_pakta_pejabat }}</td>
+                                    <td>{{ $kontrak->nomor_pakta_pejabat }}</td>
+
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Undangan</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_undangan)) }}</td>
+                                    <td>{{ $kontrak->tanggal_undangan }}</td>
+                                    <td>{{ $kontrak->nomor_undangan }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Pakta Pengguna</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_pakta_pengguna)) }}</td>
+                                    <td>{{ $kontrak->tanggal_pakta_pengguna }}</td>
+                                    <td>{{ $kontrak->nomor_pakta_pengguna }}</td>
+
                                 </tr>
                                 <br>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Buka</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_buka)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_buka }}</td>
+                                    <td>{{ $kontrak->nomor_ba_buka }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Evaluasi</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_evaluasi)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_evaluasi }}</td>
+                                    <td>{{ $kontrak->nomor_ba_evaluasi }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Negosiasi</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_negosiasi)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_negosiasi }}</td>
+                                    <td>{{ $kontrak->nomor_ba_negosiasi }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal BA Hasil PL</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_ba_hasil_pl)) }}</td>
+                                    <td>{{ $kontrak->tanggal_ba_hasil_pl }}</td>
+                                    <td>{{ $kontrak->nomor_ba_hasil_pl }}</td>
+
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal SPK</td>
-                                    <td>{{ date('l, j F Y', strtotime($kontrak->tanggal_spk)) }}</td>
+                                    <td>{{ $kontrak->tanggal_spk }}</td>
+                                    <td>{{ $kontrak->nomor_spk }}</td>
+
                                 </tr>
 
                             </tbody>
@@ -347,6 +371,7 @@
 
                     </div>
                 </div>
+
 
 
                 {{-- BOQ --}}
@@ -381,50 +406,84 @@
                                     @php
                                         $no = 1;
                                     @endphp
-                                    <tr>
-                                        <th scope="col">{{ $no++ }}</th>
-                                        <td>HPS</td>
-                                        <td>
-                                            <a href="{{ route('hpstandatangan', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                                class="btn btn-primary">Tanda Tangan HPS</a>
+                                    @if ($kontrak->hps)
+                                        <tr>
+                                            <th scope="col">{{ $no++ }}</th>
+                                            <td>HPS</td>
+                                            <td>
 
 
-                                            <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                class="btn btn-primary">Detail</a>
+                                                @if (is_null($kontrak->hps->tandatangan_pengadaan))
+                                                    <a href="{{ route('hps.tandatangan', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 'pengadaan']) }}"
+                                                        class="btn btn-primary"
+                                                        onclick="return confirm('Apakah Anda yakin ingin menandatangani dokumen ini? Aksi ini hanya bisa dilakukan sekali dalam 1 dokumen.')">
+                                                        Tanda Tangan HPS
+                                                    </a>
+                                                @endif
 
 
-                                            <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                class="btn btn-primary">Download</a>
-                                        </td>
-                                    </tr>
+
+                                                <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                    class="btn btn-primary">Detail</a>
+
+
+                                                <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                    class="btn btn-primary">Download</a>
+                                            </td>
+                                        </tr>
+                                    @endif
+
                                     <tr style="background: #743461;color: #ffffff;">
                                         <td colspan="3" style="text-align: center;">Surat Vendor</td>
                                     </tr>
-                                    <tr>
-                                        <th scope="col">{{ $no++ }}</th>
-                                        <td>Undangan</td>
-                                        <td>
-                                            <a href="{{ route('undangan.tandatangan', ['id_kontrakkerja' => $kontrakkerja->id_kontrakkerja]) }}"
-                                                class="btn btn-primary">Tanda Tangan</a>
-                                            <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                class="btn btn-primary">Preview</a>
-                                            <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                class="btn btn-primary">Download</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">{{ $no++ }}</th>
-                                        <td>RKS</td>
-                                        <td>
-                                            <a
-                                                href="{{ route('rks.tanda-tangan.pengadaan', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tanda
-                                                Tangan</a>
-                                            <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                class="btn btn-primary">Preview</a>
-                                            <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                class="btn btn-primary">Download</a>
-                                        </td>
-                                    </tr>
+
+                                    @if ($kontrak->rks)
+                                        <tr>
+                                            <th scope="col">{{ $no++ }}</th>
+                                            <td>RKS</td>
+
+                                            <td>
+
+                                                @if (is_null($kontrak->rks->tandatangan_pengadaan))
+                                                    <a href="{{ route('rks.tandatangan', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 'pengadaan']) }}"
+                                                        class="btn btn-primary"
+                                                        onclick="return confirm('Apakah Anda yakin ingin menandatangani dokumen ini? Aksi ini hanya bisa dilakukan sekali dalam 1 dokumen.')">
+                                                        Tanda Tangan
+                                                    </a>
+                                                @endif
+
+                                                <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                    class="btn btn-primary">Preview</a>
+                                                <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                    class="btn btn-primary">Download</a>
+                                            </td>
+                                            </td>
+                                        </tr>
+                                    @endif
+
+                                    @if ($kontrak->undangan)
+                                        <tr>
+                                            <th scope="col">{{ $no++ }}</th>
+                                            <td>Undangan</td>
+
+                                            <td>
+
+                                                @if (is_null($kontrak->undangan->tandatangan_pengadaan))
+                                                    <a href="{{ route('undangan.tandatangan', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 'pengadaan']) }}"
+                                                        class="btn btn-primary"
+                                                        onclick="return confirm('Apakah Anda yakin ingin menandatangani dokumen ini? Aksi ini hanya bisa dilakukan sekali dalam 1 dokumen.')">
+                                                        Tanda Tangan
+                                                    </a>
+                                                @endif
+
+                                                <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                    class="btn btn-primary">Preview</a>
+                                                <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                    class="btn btn-primary">Download</a>
+                                            </td>
+                                            </td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>BOQ</td>
@@ -448,8 +507,7 @@
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>BA Nego</td>
                                         <td>
-                                            <a
-                                                href="#">Tanda
+                                            <a href="#" class="btn btn-primary">Tanda
                                                 Tangan</a>
                                             <a href="{{ route('banego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                 class="btn btn-primary">Detail</a>
@@ -529,24 +587,56 @@
 
 
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        Dengan ini, dokumen ini memerlukan tanda tangan dan verifikasi dari pengadaan sebelum dikirimkan ke
-                        vendor.
-                        Apakah Anda yakin ingin mengirimkan dokumen ini ke vendor?
-                    </div>
-                    <div class="card-body">
-                        <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
-                            <a href="{{ route('tandatangan.pengadaan') }}" class="btn btn-info">Kembali</a>
-                            <form
-                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Dokumen Input Vendor', 'routeName' => 'tandatangan.pengadaan']) }}"
-                                method="post">
-                                @csrf
-                                <button type="submit" class="btn btn-primary">Kirim</button>
-                            </form>
+                @if ($kontrakkerja->status == 'Validasi Dokumen Pengadaan Tahap 1')
+                    <div class="card">
+                        <div class="card-header">
+                            Dengan ini, dokumen ini memerlukan tanda tangan dan verifikasi dari pengadaan sebelum dikirimkan
+                            ke
+                            vendor.
+                            Apakah Anda yakin ingin mengirimkan dokumen ini ke vendor?
+                        </div>
+                        <div class="card-body">
+                            <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
+                                <a href="{{ route('tandatangan.pengadaan') }}" class="btn btn-info">Kembali</a>
+                                <form
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Dokumen Input Vendor', 'routeName' => 'tandatangan.pengadaan']) }}"
+                                    method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kirim</button>
+                                </form>
+                                <form action="#" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kembalikan</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
+
+
+                @if ($kontrakkerja->status == 'Validasi Dokumen Pengadaan Tahap 2')
+                    <div class="card">
+                        <div class="card-header">
+                            Meminta Persetujuan vendor
+                        </div>
+                        <div class="card-body">
+                            <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
+                                <a href="{{ route('tandatangan.pengadaan') }}" class="btn btn-info">Kembali</a>
+                                <form
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Tanda Tangan Vendor', 'routeName' => 'tandatangan.pengadaan']) }}"
+                                    method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kirim</button>
+                                </form>
+                                <form action="#" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kembalikan</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
 
 
 

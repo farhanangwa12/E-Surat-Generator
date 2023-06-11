@@ -8,6 +8,7 @@ use App\Models\KontrakKerja;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\Penyelenggara;
 use App\Models\SumberAnggaran;
+use App\Models\TandaTangan;
 use App\Models\Vendor;
 use Carbon\Carbon;
 use PDF;
@@ -15,6 +16,7 @@ use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use DNS2D;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Terbilang;
@@ -28,24 +30,20 @@ class RKSController extends Controller
         $rks = RKS::where('id_kontrakkerja', $id)->first();
 
 
-        if ($rks) {
-            // Jika record und ada
-            // Lakukan operasi lain yang diinginkan
-
-            $rks = RKS::find($rks->id);
-            $rks->save();
-        } else {
-            // Jika record und tidak ada
+        if (!$rks) {
+           // Jika record und tidak ada
 
             // Buat instance und model untuk menyimpan data
-            $rks = new RKS();
-            $rks->id_kontrakkerja = $id;
-            $rks->tandatangan_pengadaan = null;
-            $rks->tanggal_tandatanganpengadaan = null;
-            $rks->tandatangan_manager = null;
-            $rks->tanggal_tandatanganmanager = null;
-            // Simpan data rks
-            $rks->save();
+            $rks1 = new RKS();
+            $rks1->id_kontrakkerja = $id; // Mengambil nilai id dari $id
+            $rks1->datarks = null; // Mengatur nilai datarks1 sebagai null
+            $rks1->tandatangan_pengadaan = null; // Mengatur nilai tandatangan_pengadaan sebagai null
+            $rks1->tanggal_tandatangan_pengadaan = null; // Mengatur nilai tanggal_tandatangan_pengadaan sebagai null
+            $rks1->tandatangan_manager = null; // Mengatur nilai tandatangan_manager sebagai null
+            $rks1->tanggal_tandatangan_manager = null; // Mengatur nilai tanggal_tandatangan_manager sebagai null
+            $rks1->save();
+        } else {
+            
         }
 
         return 'Data Telah Direfresh';
@@ -59,6 +57,11 @@ class RKSController extends Controller
         $nama_pekerjaanrks =  strtoupper($kontrakkerja->nama_kontrak) . " PT PLN (PERSERO) UNIT INDUK WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR";
 
         $jumlah_harikontrak =  Carbon::parse($kontrakkerja->tanggal_pekerjaan)->diffInDays($kontrakkerja->tanggal_akhir_pekerjaan);
+
+        // Tanggal batas Penawaran
+        $tanggalbataspenawaran = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat', 'batas_akhir_dokumen_penawaran')->first()->tanggal_pembuatan;
+        $masterharitanggal = Carbon::createFromFormat('Y-m-d', $tanggalbataspenawaran)->locale('id')->isoFormat('dddd / D MMMM YYYY');
+
         $surat = [
             'nomor' => PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_rks')->first()->no_surat,
             'tanggal' => Carbon::createFromFormat('Y-m-d', PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_rks')->first()->tanggal_pembuatan)->locale('id')->isoFormat('DD MMMM YYYY'),
@@ -66,8 +69,8 @@ class RKSController extends Controller
 
             // Bagian BAB 1
             'bab_1_2' =>   "Dalam permintaan penawaran harga ini Penyedia Barang/Jasa diminta menawarkan harga untuk pekerjaan : " . $nama_pekerjaanrks,
-            'bab_1_3_tanggal' =>   "Rabu / 28 Desember 2022 Belum",
-            'bab_1_3_pukul' =>   "16:30 Wita Belum",
+            'bab_1_3_tanggal' =>   $masterharitanggal,
+            'bab_1_3_pukul' =>   "16:30 Wita",
             'bab_1_5' =>   "Di dalam surat penawaran harga tersebut mencantumkan kesanggupan jangka waktu pelaksanaan pekerjaan adalah " . $jumlah_harikontrak . " (" . Terbilang::make($jumlah_harikontrak) . ") hari kalender &Q27& Belum.",
             // 'bab_1_6' =>   "Pekerjaan ini akan dibiayai dari sumber dana &MASTER!B26& Nomor : ". SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->skk_ao ."  tanggal ".SumberAnggaran::where('id_kontrakkerja')->first()->tanggal_anggaran."",
             'bab_1_6' =>   "Pekerjaan ini akan dibiayai dari sumber dana &MASTER!B26& Nomor : " . SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->skk_ao . "  tanggal 20-12-2023 Belum",
@@ -104,10 +107,10 @@ class RKSController extends Controller
             // Isian Vendor
             'nama' => $vendor->penyedia,
             'alamat' =>  "$vendor->alamat_jalan , $vendor->alamat_kota, $vendor->alamat_provinsi.",
-            'telepon' =>  "..................." . "belum Vendor migration sudah ditambah",
-            'website' =>  "..................." . "belum Vendor migration sudah ditambah",
-            'faksimili' =>  "..................." . "belum Vendor migration sudah ditambah",
-            'email' =>  "..................." . "belum Vendor migration sudah ditambah",
+            'telepon' =>  $vendor->telepon == null ? '.....................' : $vendor->telepon,
+            'website' =>  $vendor->website == null ? '.....................' : $vendor->website,
+            'faksimili' =>  $vendor->faksimili == null ? '.....................' : $vendor->faksimili,
+            'email' =>  $vendor->email_perusahaan == null ? '.....................' : $vendor->email_perusahaan,
             'pengawasPekerjaan' =>  "..................." . "belum",
             'pengawasK3' =>  "..................." . "belum"
 
@@ -195,10 +198,10 @@ class RKSController extends Controller
             // Isian Vendor
             'nama' => $vendor->penyedia,
             'alamat' =>  "$vendor->alamat_jalan , $vendor->alamat_kota, $vendor->alamat_provinsi.",
-            'telepon' =>  "..................." . "belum Vendor migration sudah ditambah",
-            'website' =>  "..................." . "belum Vendor migration sudah ditambah",
-            'faksimili' =>  "..................." . "belum Vendor migration sudah ditambah",
-            'email' =>  "..................." . "belum Vendor migration sudah ditambah",
+            'telepon' =>  $vendor->telepon == null ? '.....................' : $vendor->telepon,
+            'website' =>  $vendor->website == null ? '.....................' : $vendor->website,
+            'faksimili' =>  $vendor->faksimili == null ? '.....................' : $vendor->faksimili,
+            'email' =>  $vendor->email_perusahaan == null ? '.....................' : $vendor->email_perusahaan,
             'pengawasPekerjaan' =>  "..................." . "belum",
             'pengawasK3' =>  "..................." . "belum"
 
@@ -218,6 +221,7 @@ class RKSController extends Controller
         ];
         return view('plnpengadaan.kontraktahap1.RKS.IsiRKS', compact('surat', 'data', 'id'));
     }
+
     public function updateRKS(Request $request, $id)
     {
 
@@ -258,73 +262,34 @@ class RKSController extends Controller
     }
 
 
-    public function tandaTanganPengadaan($id)
-    {
-        return view('plnpengadaan.kontraktahap1.RKS.rkstandatangan_pengadan', compact('id'));
-    }
-    public function tandaTanganManager($id)
+
+    public function tandatangan($id, $jenis)
     {
 
-        return view('plnpengadaan.kontraktahap1.RKS.rkstandatangan_manager', compact('id'));
-    }
+
+        $rks = RKS::where('id_kontrakkerja', $id)->first();
 
 
-    public function simpanTandaTangan(Request $request)
-    {
+        $authId = Auth::id(); // Mendapatkan ID dari sesi pengguna yang terotentikasi
+        $tandatangan = TandaTangan::where('id_akun', $authId)->first();
 
-        $pengadaan = $request->file('pengadaan');
-        $manager = $request->file('manager');
-
-        $id = $request->input('id');
-
-
-        // $kontrak = KontrakKerja::find($id);
-
-
-        // $fileName = time() . '_' . $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension();
-
-        // $file->move(storage_path('app/public/tandatangan'), $fileName);
-
-        $tandatangan = RKS::where('id_kontrakkerja', $id)->first();
-        $this->refresh($id);
-
-        // ID Tandatangan rks
-
-        if ($pengadaan) {
-
-            if ($request->hasFile('pengadaan')) {
-                $pengadaan = $request->file('pengadaan');
-                $fileName = time() . '_' . $pengadaan->getClientOriginalName();
-                $pengadaan->storeAs('public/tandatangan', $fileName);
-
-                // Simpan nama file ke kolom tandatangan_pengadaan dalam model rks
-                $rks = RKS::find($tandatangan->id);
-                $rks->tandatangan_pengadaan = $fileName;
-                $rks->tanggal_tandatanganpengadaan = Carbon::now();
-                $rks->save();
-
-                return 'Tanda Tangan Pengadaan Berhasil.';
-            }
-
-            return 'Tanda Tangan Gagal karena tanda tangan tidak ada.';
+        if (!$tandatangan) {
+            return redirect()->route('tandatangan.detail')->withErrors('Tandatangan belum dibuat.');
         }
-        if ($manager) {
 
-            if ($request->hasFile('manager')) {
+        $kodeUnik = $tandatangan->kode_unik;
 
-                $fileName = time() . '_' . $manager->getClientOriginalName();
-                $manager->storeAs('public/tandatangan', $fileName);
-
-                // Simpan nama file ke kolom tandatangan_pengadaan dalam model rks
-                $rks = RKS::find($tandatangan->id);
-                $rks->tandatangan_manager = $fileName;
-                $rks->tanggal_tandatanganmanager = Carbon::now();
-                $rks->save();
-
-                return 'Tanda Tangan Manager Berhasil.';
-            }
-
-            return 'Tanda Tangan Gagal karena tanda tangan tidak ada.';
+        $rks2 = RKS::find($rks->id);
+        if ($jenis === 'pengadaan') {
+            $rks2->tandatangan_pengadaan = $kodeUnik;
+            $rks2->tanggal_tandatangan_pengadaan = Carbon::now('Asia/Jakarta');
+        } elseif ($jenis === 'manager') {
+            $rks2->tandatangan_manager = $kodeUnik;
+            $rks2->tanggal_tandatangan_manager = Carbon::now('Asia/Jakarta');
         }
+
+        $rks2->save();
+
+        return redirect()->route('tandatangan.detail', ['id' => $id])->with('success', 'Tanda Tangan Berhasil');
     }
 }

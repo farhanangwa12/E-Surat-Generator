@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Dokumen\BOQ;
 use App\Models\Dokumen\UND;
+use App\Models\FormPenawaran\FormPenawaranHarga;
 use App\Models\SubKontrak\JenisKontrak;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,20 @@ class KontrakKerja extends Model
     use HasFactory;
     protected $primaryKey = 'id_kontrakkerja';
     protected $fillable = [
-        'nama_kontrak', 'id_vendor', 'tanggal_pekerjaan', 'tanggal_akhir_pekerjaan','lokasi_pekerjaan','no_urut','tahun','kode_masalah', 'filemaster'
+        'id_kontrakkerja',
+        'nama_kontrak',
+        'id_vendor',
+        'tanggal_spmk',
+        'no_spmk',
+        'tanggal_kontrak',
+        'tanggal_pekerjaan',
+        'tanggal_akhir_pekerjaan',
+        'lokasi_pekerjaan',
+        'no_urut',
+        'tahun',
+        'kode_masalah',
+        'status',
+        'filemaster'
     ];
     public function vendor()
     {
@@ -57,5 +71,15 @@ class KontrakKerja extends Model
     public function boqs()
     {
         return $this->hasMany(BOQ::class, 'id_kontrakkerja');
+    }
+
+
+
+
+    // Form Penawaran Kontrak Kerja
+    // Model KontrakKerja
+    public function formPenawaranHarga()
+    {
+        return $this->hasMany(FormPenawaranHarga::class, 'id_kontrakkerja');
     }
 }

@@ -18,7 +18,27 @@
                             <div class="form-group mb-3">
                                 <label for="nama_dokumen">Nama Dokumen</label>
                                 <input type="text" name="nama_dokumen" class="form-control" id="nama_dokumen"
-                                    placeholder="Masukkan nama dokumen" value="{{$jenisdokumen->nama_dokumen}}">
+                                    placeholder="Masukkan nama dokumen" value="{{ $jenisdokumen->nama_dokumen }}">
+                                @error('nama_dokumen')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="no_dokumen">Nomor Dokumen</label>
+                                <input type="text" class="form-control" id="no_dokumen" name="no_dokumen"
+                                    value="{{ $jenisdokumen->no_dokumen }}">
+                                @error('no_dokumen')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="keterangan">Keterangan</label>
+                                <textarea class="form-control" id="keterangan" name="keterangan" rows="3">{{ $jenisdokumen->keterangan }}</textarea>
+                                @error('keterangan')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>

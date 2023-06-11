@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,7 +22,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->call(JenisDokumenSeeder::class);
-        $this->call(UserSeeder::class);
         $this->call(VendorSeeder::class);
+        $this->call(PegawaiSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(TandatanganSeeder::class);
+    
     }
 }

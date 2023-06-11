@@ -16,34 +16,34 @@ class UserSeeder extends Seeder
     {
 
 
-        $users = [
-            [
-                'name' => 'Pengadaan',
-                'email' => 'pengadaan@example.com',
-                'password' => bcrypt('password'),
-                'role' => 'pengadaan',
-                'picture_profile' => 'default.jpg'
-            ],
-            [
-                'name' => 'Manager',
-                'email' => 'manager@example.com',
-                'password' => bcrypt('password'),
-                'role' => 'manager',
-                'picture_profile' => 'default.jpg'
+        User::create([
+          
+            'name' => 'John Doe',
+            'email' => 'pengadaan@example.com',
+            'vendor_id' => null,
+            'pegawai_id' => 1,
+            'password' => bcrypt('password'),
+            'role' => 'pengadaan'
+        ]);
 
-            ],
-            [
-                'name' => 'Vendor',
-                'email' => 'vendor@example.com',
-                'password' => bcrypt('password'),
-                'role' => 'vendor',
-                'picture_profile' => 'default.jpg'
+        User::create([
+           
+            'name' => 'Jane Doe',
+            'email' => 'manager@example.com',
+            'vendor_id' => null,
+            'pegawai_id' => 2,
+            'password' => bcrypt('password'),
+            'role' => 'manager'
+        ]);
 
-            ],
-        ];
-
-        foreach ($users as $user) {
-            User::create($user);
-        }
+        User::create([
+          
+            'name' => 'Bob Smith',
+            'email' => 'vendor@example.com',
+            'vendor_id' => 1,
+            'pegawai_id' => null,
+            'password' => bcrypt('password'),
+            'role' => 'vendor'
+        ]);
     }
 }

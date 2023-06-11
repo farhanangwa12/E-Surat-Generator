@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('lamp_negos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_surat');
+          
+            $table->json('datalampnego')->nullable();
+            $table->integer('total_jumlah')->default(0);
+            $table->integer('dibulatkan')->default(0);
+            $table->integer('ppn11')->default(0);
+            $table->integer('total_harga')->default(0);
             $table->timestamps();
+            $table->foreign('id_surat')->references('id')->on('pembuatan_surat_kontraks')->onDelete('cascade');
         });
     }
 

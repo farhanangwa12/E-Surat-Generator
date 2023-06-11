@@ -24,7 +24,7 @@
 
         }
 
-       
+
 
         .centered-text {
             text-align: center;
@@ -75,8 +75,6 @@
         .main-table td {
             vertical-align: top;
         }
-
-       
     </style>
 </head>
 
@@ -102,21 +100,18 @@
             <tr>
                 <td style="width:45%;">NOMOR PIHAK PERTAMA</td>
                 <td style="width:10%;">:</td>
-                <td style="width:45%;">111.SPK/DAN.01.03/200900/2022</td>
+                <td style="width:45%;">{{ $nomor_pihak_pertama }}</td>
             </tr>
             <tr>
                 <td>NOMOR PIHAK KEDUA</td>
                 <td>:</td>
-                <td>781/MDM-PLN/XII/2022</td>
+                <td>{{ $nomor_pihak_kedua }}</td>
             </tr>
         </table>
 
 
         {{-- Pembukaan --}}
-        <p>Surat Perintah Kerja PEKERJAAN PENGADAAN DAN JASA INSTALASI KWH METER ENGINE PLTU JEMBER PT PLN (PERSERO)
-            UNIT INDUK WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR, untuk selanjutnya disebut Surat Perintah Kerja
-            ini, ditandatangani pada hari Jumat, tanggal Tigapuluh bulan Desember tahun Dua Ribu Duapuluh Dua
-            (30-12-2022), oleh dan antara:</p>
+        <p>{{ $pengantar }}</p>
         <table class="main-table">
             <tr>
                 <td style="width:10%;">1.</td>
@@ -130,11 +125,20 @@
                     0018.SKU/DAN.01.03/C20000000/2021 Tanggal 03 Juni 2021, bertindak untuk dan atas nama PT. PLN
                     (Persero) Unit Pelaksana Pembangkitan Timor berkedudukan di Jalan Diponegoro Kuanino - Kupang, untuk
                     selanjutnya dalam Surat Perintah Kerja ini disebut PIHAK PERTAMA.</td>
+
+
             </tr>
             <tr>
                 <td style="width:10%;">2.</td>
 
-                <td style="width:90%;"><b>PT. MULTI DAYA MITRA </b>, suatu badan hukum yang didirikan berdasarkan Akta
+                {{-- <td style="width:90%;"><b>PT. MULTI DAYA MITRA </b>, suatu badan hukum yang didirikan berdasarkan Akta
+                    Notaris Rina Rustianing Warni, S.H., Nomor 90 tanggal 20 Desember 2012, yang telah terdaftar
+                    berdasarkan Keputusan Menteri Hukum Dan Hak Asasi Manusia Republik Indonesia Nomor
+                    AHU-09748-AH.01.01 TAHUN 2013 tanggal 01 Maret 2013, dalam hal ini diwakili oleh DIAN BUDI YUNIATI
+                    selaku Direktur PT. MULTI DAYA MITRA, dengan demikian bertindak untuk dan atas nama PT. MULTI DAYA
+                    MITRA, berkedudukan di Jalan Manyar Airdas No. 15, Surabaya, Jawa Timur, untuk selanjutnya disebut
+                    PIHAK KEDUA.</td> --}}
+                <td style="width:90%;"><b>{{ $penyedia }} </b>, suatu badan hukum yang didirikan berdasarkan Akta
                     Notaris Rina Rustianing Warni, S.H., Nomor 90 tanggal 20 Desember 2012, yang telah terdaftar
                     berdasarkan Keputusan Menteri Hukum Dan Hak Asasi Manusia Republik Indonesia Nomor
                     AHU-09748-AH.01.01 TAHUN 2013 tanggal 01 Maret 2013, dalam hal ini diwakili oleh DIAN BUDI YUNIATI
@@ -152,51 +156,43 @@
             <tr>
                 <td style="width:10%;">1.</td>
 
-                <td style="width:90%;">Peraturan Direksi Nomor : 0022.P/DIR/2020 tanggal 02 Maret 2020 dan perubahannya
-                    No. 0156.P/DIR/2021 tanggal 30 Agustus 2021 tentang Pedoman Pengadaan Barang/Jasa PT PLN (Persero);
-                </td>
+                <td style="width:90%;">{{ $pengantar_berdasarkan[0] }}</td>
             </tr>
             <tr>
                 <td style="width:10%;">2.</td>
 
-                <td style="width:90%;">Surat Kuasa Kerja Anggaran Operasi (SKK-AO) Nomor : 001/OPKIT/C20000000/2022
-                    tanggal 10 Maret 2022;</td>
+                <td style="width:90%;">{{ $pengantar_berdasarkan[1] }}</td>
             </tr>
             <tr>
                 <td style="width:10%;">3.</td>
 
-                <td style="width:90%;">Rencana Kerja dan Syarat-Syarat (RKS) Nomor : 111.RKS/DAN.01.03/200900/2022
-                    tanggal 26 Desember 2022;</td>
+                <td style="width:90%;">{{ $pengantar_berdasarkan[2] }}</td>
             </tr>
 
             <tr>
                 <td style="width:10%;">4.</td>
 
-                <td style="width:90%;">Undangan Pengadaan Barang/Jasa Nomor : 111.UND/DAN.01.03/200900/2022 tanggal 26
-                    Desember 2022;</td>
+                <td style="width:90%;">{{ $pengantar_berdasarkan[3] }}</td>
             </tr>
 
             <tr>
                 <td style="width:10%;">5.</td>
 
-                <td style="width:90%;">Surat Penawaran Harga PIHAK KEDUA Nomor : 781/MDM-PLN/XII/2022 tanggal 28
-                    Desember 2022;</td>
+                <td style="width:90%;">{{ $pengantar_berdasarkan[4] }}</td>
 
             </tr>
 
             <tr>
                 <td style="width:10%;">6.</td>
 
-                <td style="width:90%;">Berita Acara Negoisasi Penawaran Nomor : 111.BA-NEG/DAN.01.03/200900/2022 tanggal
-                    30 Desember 2022;</td>
+                <td style="width:90%;">{{ $pengantar_berdasarkan[5] }}</td>
 
             </tr>
 
             <tr>
                 <td style="width:10%;">7.</td>
 
-                <td style="width:90%;">Berita Acara Hasil Pengadaan Langsung Nomor : 111.BA-HPL/DAN.01.03/200900/2022
-                    tanggal 30 Desember 2022;</td>
+                <td style="width:90%;">{{ $pengantar_berdasarkan[6] }}</td>
 
             </tr>
 
@@ -208,9 +204,7 @@
             <tr>
                 <td style="width:10%;">a.</td>
 
-                <td style="width:90%;">PIHAK PERTAMA menunjuk PIHAK KEDUA untuk melaksanakan PEKERJAAN PENGADAAN DAN
-                    JASA INSTALASI KWH METER ENGINE PLTU JEMBER PT PLN (PERSERO) UNIT INDUK WILAYAH NTT UNIT PELAKSANA
-                    PEMBANGKITAN TIMOR, untuk selanjutnya disebut Pekerjaan;</td>
+                <td style="width:90%;">{{ $pengantar_mengingatkan['a'] }}</td>
             </tr>
             <tr>
                 <td style="width:10%;">b.</td>
@@ -548,13 +542,11 @@
             </tr>
             <tr>
                 <td>2.</td>
-                <td>Selama masa berlakunya Surat Perintah Kerja ini, PIHAK PERTAMA menunjuk <b>Manager Bagian OPHARKIT
-                        UPK Timor</b> sebagai <b>DIREKSI PEKERJAAN</b>.</td>
+                <td>{{ $pasal3[2][0] }} <b>{{ $pasal3[2][1] }}</b> {{ $pasal3[2][2] }} <b>{{ $pasal3[2][3] }}</b>.</td>
             </tr>
             <tr>
                 <td>3.</td>
-                <td>Untuk membantu tugas-tugas DIREKSI PEKERJAAN, PIHAK PERTAMA menunjuk <b>SPV. RENDAL JOM PLTMG
-                        PANAF</b> sebagai <b>PENGAWAS PEKERJAAN</b>.</td>
+                <td>{{ $pasal3[3][0] }}<b>{{ $pasal3[3][1] }}</b> {{ $pasal3[3][2] }} <b>{{ $pasal3[3][3] }}</b>.</td>
             </tr>
             <tr>
                 <td>4.</td>
@@ -564,8 +556,8 @@
             </tr>
             <tr>
                 <td>5.</td>
-                <td>Dalam hal Pengawasan Keselamatan dan Kesehatan Kerja (K3) serta Lingkungan, PIHAK PERTAMA menunjuk
-                    <b>Pejabat Pelaksana K3, Lingkungan & Keamanan UPK TIMOR</b> sebagai <b>PENGAWAS K3L</b>.
+                <td>{{ $pasal3[5][0] }}
+                    <b>{{ $pasal3[5][1] }}</b> {{ $pasal3[5][2] }} <b>{{ $pasal3[5][3] }}</b>.
                 </td>
             </tr>
             <tr>
@@ -749,9 +741,7 @@
         <table class="main-table">
             <tr>
                 <td>1.</td>
-                <td>PIHAK PERTAMA menunjuk PIHAK KEDUA untuk melaksanakan PEKERJAAN PENGADAAN DAN JASA INSTALASI KWH
-                    METER ENGINE PLTU JEMBER PT PLN (PERSERO) UNIT INDUK WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR
-                    sesuai dengan rincian jumlah dan harga pada Lampiran Surat Perintah Kerja ini: <br>
+                <td>{{ $pasal5[1][0] }}<br>
                     <table>
                         <tr>
                             <td>a.</td>
@@ -793,18 +783,14 @@
                         <tr>
                             <td>h.</td>
                             <td>Lokasi pekerjaan adalah sebagai berikut: <br>
-                                - PLTU JEMBER</td>
+                                - {{ $pasal5[1]["h"] }}</td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr>
                 <td>2.</td>
-                <td>PIHAK KEDUA dalam melaksanakan pekerjaan dan melaksanakan pemasangan peralatan untuk PEKERJAAN
-                    PENGADAAN DAN JASA INSTALASI KWH METER ENGINE PLTU JEMBER PT PLN (PERSERO) UNIT INDUK WILAYAH NTT
-                    UNIT PELAKSANA PEMBANGKITAN TIMOR harus memperhatikan Prosedur Pelaksanaan Pekerjaan dan Spesifikasi
-                    Teknik sebagaimana yang tercantum dalam KAK/RKS yang merupakan satu kesatuan yang utuh dan tidak
-                    terpisahkan dari Surat Perintah Kerja ini.</td>
+                <td>{{ $pasal5[2][0] }}</td>
             </tr>
         </table>
         {{-- Pasal 6 --}}
@@ -820,11 +806,7 @@
             </tr>
             <tr>
                 <td>2.</td>
-                <td>Waktu pelaksanaan pekerjaan Surat Perintah Kerja ini adalah berlaku untuk jangka waktu 120 (Seratus
-                    Duapuluh Hari Kalender) Hari kalender terhitung mulai sejak tanggal penandatanganan Surat Perintah
-                    Kerja ini atau terhitung mulai sejak tanggal 30 Desember 2022 sampai dengan berakhir tanggal 29
-                    April 2023, maka seluruh pekerjaan tersebut sudah harus selesai 100% (seratus persen) dan untuk
-                    selanjutnya dapat diserahterimakan kepada PIHAK PERTAMA.
+                <td>{{ $pasal6[2] }}
 
 
 
@@ -856,10 +838,7 @@
                     <table>
                         <tr>
                             <td>a.</td>
-                            <td>Kinerja yang baik atau memenuhi persyaratan-persyaratan yang ditetapkan dalam Surat
-                                Perintah Kerja ini maupun yang tercantum dalam Dokumen Tender/RKS Nomor :
-                                111.RKS/DAN.01.03/200900/2022 tanggal 26 Desember 2022 yang merupakan satu kesatuan yang
-                                utuh dan tidak terpisahkan dari Surat Perintah Kerja ini;
+                            <td>{{ $pasal6[5]['a'] }}
 
 
                             </td>
@@ -922,8 +901,7 @@
             </tr>
             <tr>
                 <td>3.</td>
-                <td>Penyerahan pekerjaan adalah di PLTU JEMBER PLN UPK Timor dan harus memperhatikan prosedur pekerjaan
-                    sesuai dengan lingkup pekerjaan sebagaimana dimaksud pada Pasal 5 Surat Perintah Kerja ini.</td>
+                <td>{{ $pasal7[3] }}</td>
             </tr>
             <tr>
                 <td>4.</td>
@@ -968,15 +946,11 @@
 
             <tr>
                 <td>1.</td>
-                <td>Pekerjaan ini dibiayai dari sumber pendanaan APLN Anggaran Operasi (SKK-AO) tahun 2022
-                    Nomor :
-                    001/OPKIT/C20000000/2022 tanggal 10 Maret 2022.</td>
+                <td>{{ $pasal8[1] }}</td>
             </tr>
             <tr>
                 <td>2.</td>
-                <td>Total Nilai Surat Perintah Kerja ini adalah sebesar Rp 262159689.000 (Duaratus Enampuluh
-                    Dua Juta
-                    Seratus Limapuluh Sembilan Ribu Enamratus Delapanpuluh Sembilan Rupiah).</td>
+                <td>{{ $pasal8[2] }}</td>
             </tr>
             <tr>
                 <td>3.</td>
@@ -1560,19 +1534,19 @@
                         <tr>
                             <td>Bank</td>
                             <td>:</td>
-                            <td style="color: blue">BANK MANDIRI</td>
+                            <td style="color: blue">{{ $pasal11[12]['bank'] }}</td>
                         </tr>
                         <tr>
                             <td>Nama Rekening
                             </td>
                             <td>:</td>
-                            <td style="color: blue">PT. MULTI INAR BANGUNAN</td>
+                            <td style="color: blue">{{ $pasal11[12]['nama_rekening'] }}</td>
                         </tr>
                         <tr>
                             <td>Nomor Rekening
                             </td>
                             <td>:</td>
-                            <td style="color: blue">14211111111</td>
+                            <td style="color: blue">{{ $pasal11[12]['nomor_rekening'] }}</td>
                         </tr>
                     </table>
                 </td>
@@ -3735,16 +3709,16 @@
             <tr>
                 <td>2.</td>
                 <td><b>
-                        PT. MULTI INAR BANGUNAN
+                    {{ $pasal33[2][0] }}
                         <br>
                     </b>
-                    <p>Jalan Manyar Airdas No. 15, Surabaya, Jawa Timur
+                    <p>{{ $pasal33[2][1] }}
                     </p>
                     <table>
                         <tr>
                             <td>Telepon</td>
                             <td>:</td>
-                            <td>(031) 5921256
+                            <td>{{ $pasal33[2][2] }}
                             </td>
 
                         </tr>
@@ -3752,7 +3726,7 @@
                         <tr>
                             <td>Email</td>
                             <td>:</td>
-                            <td>info@multidayamitra.co.id</td>
+                            <td>{{ $pasal33[2][3] }}</td>
 
                         </tr>
                     </table>
@@ -3780,7 +3754,7 @@
         <table style="width: 100%; text-align:center;">
             <tr>
                 <td style="width: 50%"><b>PIHAK KEDUA <br>
-                        PT. MULTI INAR BANGUNAN <br>
+                        {{ $penyedia }} <br>
                         DIREKTUR
                     </b> </td>
                 <td style="width: 50%"><b>PIHAK PERTAMA <br>
@@ -3797,8 +3771,8 @@
 
 
             <tr>
-                <td style="width: 50%;"><b><u>BUDI SUSANTI</i></b> </td>
-                <td style="width: 50%;"><b><u>SELAMET DUNIA AKHIRAT</u></b></td>
+                <td style="width: 50%;"><b><u>{{ $penyedia }}</i></b> </td>
+                <td style="width: 50%;"><b><u>{{ $direktur }}</u></b></td>
             </tr>
         </table>
 

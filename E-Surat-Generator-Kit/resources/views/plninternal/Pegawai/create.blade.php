@@ -49,7 +49,7 @@
                                     <option selected="" disabled>== Pilih Jenis Akun ==</option>
                                     <option value="pengadaan">Pengadaan</option>
                                     <option value="manager">Manager</option>
-                                    <option value="vendor">Vendor</option>
+                                  
                                 </select>
                             </div>
 
