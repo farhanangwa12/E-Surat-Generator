@@ -143,12 +143,12 @@
                      </a>
                  </li>
 
-                 <li class="sidebar-item {{ Request::is('vendor/vendor/kelengkapandok') ? 'active' : '' }}">
+                 {{-- <li class="sidebar-item {{ Request::is('vendor/vendor/kelengkapandok') ? 'active' : '' }}">
                      <a class="sidebar-link" href="{{ route('kelengkapandok') }}">
                          <i class="align-middle" data-feather="user"></i> <span class="align-middle">Kelengkapan
                              Dokumen</span>
                      </a>
-                 </li>
+                 </li> --}}
 
                  <li class="sidebar-item {{ Request::is('vendor/vendor/kontrakkerja') ? 'active' : '' }}">
                      <a class="sidebar-link" href="{{ route('isikontrak') }}">

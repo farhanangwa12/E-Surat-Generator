@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KontrakKerja;
+use App\Models\Pegawai;
 use App\Models\TandaTangan;
 use App\Models\User;
 use App\Models\Vendor;
@@ -71,11 +73,31 @@ class LoginController extends Controller
 
     public function dashboardpln()
     {
-        return view('plninternal.dashboard');
+
+        $data = [
+            'total_kontrakkerja' => KontrakKerja::count(),
+            'total_akun' => User::count(),
+            'total_vendor' => Vendor::count(),
+            'total_pegawai' => Pegawai::count(),
+
+
+
+
+        ];
+        return view('plninternal.dashboard', compact('data'));
     }
     public function dashboardvendor()
     {
-        return view('vendor.dashboard');
+        $data = [
+            'total_kontrakkerja' => KontrakKerja::where('id_kontrakkerja', Auth::user()->vendor_id)->count(),
+
+
+
+
+
+        ];
+
+        return view('vendor.dashboard', compact('data'));
     }
     public function usersetting()
     {
@@ -119,7 +141,13 @@ class LoginController extends Controller
         if ($request->hasFile('picture_profile')) {
             // Hapus file gambar profil lama jika bukan default.jpg
             if ($user_profile->picture_profile !== 'default.jpg') {
-                unlink(public_path('photoprofile/' . $user_profile->picture_profile));
+                if (file_exists(public_path('photoprofile/' . $user_profile->picture_profile))) {
+                    unlink(public_path('photoprofile/' . $user_profile->picture_profile));
+                    echo "File berhasil dihapus.";
+                } else {
+                    echo "File tidak ditemukan.";
+                }
+                // unlink(public_path('photoprofile/' . $user_profile->picture_profile));
             }
 
             // Simpan gambar profil yang baru diupload

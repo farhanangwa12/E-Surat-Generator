@@ -208,9 +208,16 @@
 
                             <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
                                 data-bs-toggle="dropdown">
-                                <img src="{{ asset('adminkit/img/avatars/avatar.jpg') }}"
-                                    class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span
-                                    class="text-dark">{{ auth()->user()->name }}</span>
+                                @if (file_exists(public_path('photoprofile/' . auth()->user()->picture_profile)))
+                                    <img src="{{ asset('photoprofile/' . auth()->user()->picture_profile) }}"
+                                        class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span
+                                        class="text-dark">{{ auth()->user()->name }}</span>
+                                @else
+                                    <img src="{{ asset('photoprofile/default.jpg') }}"
+                                        class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span
+                                        class="text-dark">{{ auth()->user()->name }}</span>
+                                @endif
+
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="{{ route('usrsetting') }}"><i class="align-middle me-1"
@@ -236,7 +243,7 @@
                             <p class="mb-0">
                                 <a class="text-muted" href="https://adminkit.io/"
                                     target="_blank"><strong>AdminKit</strong></a> - <a class="text-muted"
-                                    href="https://adminkit.io/" target="_blank"><strong>Bootstrap Admin
+                                    href="https://adminkit.io/" target="_blank"><strong>Powered By Adminkit
                                         Template</strong></a> &copy;
                             </p>
                         </div>

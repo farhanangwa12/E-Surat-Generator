@@ -8,11 +8,9 @@
 
         <h1 class="h3 mb-3">User Setting</h1>
         @if (session('success'))
-           
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
-           
         @endif
 
 
@@ -51,8 +49,16 @@
 
                             <div class="mb-3 row">
                                 <div class="col-md-4">
-                                    <img id="preview-image" src="{{ asset('photoprofile/' . $data->picture_profile) }}"
-                                        alt="Photoprofile" style="max-width: 400px; max-height: 400px; object-fit: cover;">
+                                    @if (file_exists(public_path('photoprofile/' . auth()->user()->picture_profile)))
+                                        <img id="preview-image" src="{{ asset('photoprofile/' . $data->picture_profile) }}"
+                                            alt="Photoprofile"
+                                            style="max-width: 400px; max-height: 400px; object-fit: cover;">
+                                    @else
+                                        <img id="preview-image" src="{{ asset('photoprofile/default.jpg') }}"
+                                            alt="Photoprofile"
+                                            style="max-width: 400px; max-height: 400px; object-fit: cover;">
+                                    @endif
+
                                 </div>
                                 <div class="col-md-8 d-flex justify-content-center align-items-center">
                                     <div>
@@ -135,7 +141,8 @@
                                     placeholder="Masukkan Password baru">
                             </div>
                             <div class="mb-3">
-                                <label for="password_baru_confirmation" class="form-label">Konfirmasi Password Baru</label>
+                                <label for="password_baru_confirmation" class="form-label">Konfirmasi Password
+                                    Baru</label>
                                 <input type="password" class="form-control" id="password_baru_confirmation"
                                     name="password_baru_confirmation" placeholder="Masukkan Password baru">
                             </div>
