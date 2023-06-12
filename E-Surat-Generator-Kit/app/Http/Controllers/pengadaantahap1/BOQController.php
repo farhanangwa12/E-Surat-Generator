@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\pengadaantahap1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SuratVendor\LampiranPenawaranHargaController;
 use App\Models\Dokumen\BarJasBOQ;
 use App\Models\Dokumen\BOQ;
 use App\Models\KontrakKerja;
@@ -373,6 +374,8 @@ class BOQController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $lampiranpenawaran = App(LampiranPenawaranHargaController::class);
+
         // Mengecek apakah record HPS ada
         $boq = BOQ::where('id_kontrakkerja', $id)->first();
         if ($boq) {
@@ -411,8 +414,9 @@ class BOQController extends Controller
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $kontrakkerja->id_kontrakkerja)->with('barjas')->get()->toArray();
 
         $barjasboq = $request->input('boq');
-
-        $no = 1;
+        // Merge ke lampiran untuk dikirim ke lampiranpenawranharga
+        $request->merge(['lampiran'=> $barjasboq]);
+        $no = 0;
         foreach ($jenis_kontrak as $jen) {
             foreach ($jen['barjas'] as $barjas) {
                 $barjasboq[$no]['id_barjas'] = $barjas['id'];
@@ -422,8 +426,10 @@ class BOQController extends Controller
             }
         }
 
+        $boq = BOQ::where('id_kontrakkerja', $id)->first();
         foreach ($barjasboq as $bboq) {
-            $databarjasboq = BarJasBOQ::where('id_boq', $bboq['id_boq'])->where('id_barjas', $bboq['id_barjas'])->first();
+  
+            $databarjasboq = BarJasBOQ::where('id_boq', $boq->id)->where('id_barjas', $bboq['id_barjas'])->first();
 
             if ($databarjasboq) {
                 $barjasboq = BarJasBOQ::find($databarjasboq->id);
@@ -439,7 +445,9 @@ class BOQController extends Controller
                 ]);
             }
         }
-        // $barjas = BarJasHPS::
+       
+        $lampiranpenawaran->refresh($id);
+        $lampiranpenawaran->update($request, $id);
 
 
         // return redirect()->route('pengajuankontrak.hps.isi', ['id' => $id])->with('success', 'Data berhasil disimpan.');

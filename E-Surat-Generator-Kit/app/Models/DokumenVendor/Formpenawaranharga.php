@@ -22,7 +22,7 @@ class Formpenawaranharga extends Model
         'nama_vendor',
         'jabatan',
         'nama_perusahaan',
-        'atas_nama',
+ 
         'alamat_perusahaan',
         'telepon_fax',
         'email_perusahaan',

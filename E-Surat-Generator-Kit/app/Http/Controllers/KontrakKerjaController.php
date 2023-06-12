@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\pengadaantahap1\BOQController;
+use App\Http\Controllers\pengadaantahap1\HPSController;
 use App\Models\KontrakKerja;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\Penyelenggara;
@@ -23,7 +24,8 @@ use App\Models\JenisDokumenKelengkapan;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-
+use App\Http\Controllers\pengadaantahap1\UndanganController;
+use App\Http\Controllers\pengadaantahap1\RKSController;
 class KontrakKerjaController extends Controller
 {
 
@@ -1230,6 +1232,10 @@ class KontrakKerjaController extends Controller
 
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->get();
 
+        app(HPSController::class)->refresh($id);
+        app(UndanganController::class)->refresh($id);
+        app(RKSController::class)->refresh($id);
+        
         return  view('plnpengadaan.kontraktahap1.detail', compact('kontrakkerja', 'kontrak', 'jenis_kontrak', 'id'));
     }
     // DownloadDokumenVendor

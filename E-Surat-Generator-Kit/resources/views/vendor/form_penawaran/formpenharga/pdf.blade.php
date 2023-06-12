@@ -129,15 +129,13 @@
                     <td>{{ $jabatan }}</td>
                 </tr>
                 <tr>
-                    <td>Bertindak untuk</td>
+                    <td>Bertindak untuk
+                        dan atas nama
+                    </td>
                     <td>:</td>
                     <td>{{ $vendorperusahaan }}</td>
                 </tr>
-                <tr>
-                    <td>dan atas nama</td>
-                    <td>:</td>
-                    <td>{{ $atasNama }}</td>
-                </tr>
+               
                 <tr>
                     <td>Alamat</td>
                     <td>:</td>

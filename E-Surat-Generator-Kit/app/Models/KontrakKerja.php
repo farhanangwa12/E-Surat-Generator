@@ -35,11 +35,11 @@ class KontrakKerja extends Model
     }
     public function pembuatansuratkontrak()
     {
-        return $this->hasOne(PembuatanSuratKontrak::class, 'id_kontrakkerja', 'id_kontrakkerja');
+        return $this->hasMany(PembuatanSuratKontrak::class, 'id_kontrakkerja', 'id_kontrakkerja');
     }
     public function penyelenggara()
     {
-        return $this->hasOne(Penyelenggara::class, 'id_kontrakkerja', 'id_kontrakkerja');
+        return $this->hasMany(Penyelenggara::class, 'id_kontrakkerja', 'id_kontrakkerja');
     }
     public function sumberanggaran()
     {

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use DNS2D;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -31,7 +32,7 @@ class RKSController extends Controller
 
 
         if (!$rks) {
-           // Jika record und tidak ada
+            // Jika record und tidak ada
 
             // Buat instance und model untuk menyimpan data
             $rks1 = new RKS();
@@ -43,7 +44,6 @@ class RKSController extends Controller
             $rks1->tanggal_tandatangan_manager = null; // Mengatur nilai tanggal_tandatangan_manager sebagai null
             $rks1->save();
         } else {
-            
         }
 
         return 'Data Telah Direfresh';
@@ -74,7 +74,7 @@ class RKSController extends Controller
             'bab_1_5' =>   "Di dalam surat penawaran harga tersebut mencantumkan kesanggupan jangka waktu pelaksanaan pekerjaan adalah " . $jumlah_harikontrak . " (" . Terbilang::make($jumlah_harikontrak) . ") hari kalender terhitung sejak berdasarkan Surat Perintah Kerja (SPK) ditandatangani.
             ",
             // 'bab_1_6' =>   "Pekerjaan ini akan dibiayai dari sumber dana &MASTER!B26& Nomor : ". SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->skk_ao ."  tanggal ".SumberAnggaran::where('id_kontrakkerja')->first()->tanggal_anggaran."",
-            'bab_1_6' =>   "Pekerjaan ini akan dibiayai dari sumber dana SKK-AO Nomor : " . $sumberanggaran->skk_ao . "  tanggal ".$sumberanggaran->tanggal_anggaran."",
+            'bab_1_6' =>   "Pekerjaan ini akan dibiayai dari sumber dana SKK-AO Nomor : " . $sumberanggaran->skk_ao . "  tanggal " . Carbon::parse($sumberanggaran->tanggal_anggaran)->locale('id')->isoFormat('DD MMMM YYYY') . "",
             'bab_1_7' =>   $kontrakkerja->lokasi_pekerjaan,
 
 
@@ -145,15 +145,27 @@ class RKSController extends Controller
     }
     public function isirks($id)
     {
-        // echo "test";
+
+        $this->refresh($id);
+
 
         $kontrakkerja = KontrakKerja::find($id);
+
         $vendor = Vendor::find($kontrakkerja->id_vendor);
 
         $nama_pekerjaanrks =  strtoupper($kontrakkerja->nama_kontrak) . " PT PLN (PERSERO) UNIT INDUK WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR";
 
         $jumlah_harikontrak =  Carbon::parse($kontrakkerja->tanggal_pekerjaan)->diffInDays($kontrakkerja->tanggal_akhir_pekerjaan);
 
+        // Tanggal batas Penawaran
+        $tanggalbataspenawaran = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat', 'batas_akhir_dokumen_penawaran')->first()->tanggal_pembuatan;
+        $masterharitanggal = Carbon::createFromFormat('Y-m-d', $tanggalbataspenawaran)->locale('id')->isoFormat('dddd / D MMMM YYYY');
+        $sumberanggaran = SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first();
+
+
+        $penyelenggara = Collection::make(Penyelenggara::where('id_kontrakkerja', $id)->get())->groupBy('nama_jabatan')->toArray();
+
+        // dd($penyelenggara);
         $surat = [
             'nomor' => PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_rks')->first()->no_surat,
             'tanggal' => Carbon::createFromFormat('Y-m-d', PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_rks')->first()->tanggal_pembuatan)->locale('id')->isoFormat('DD MMMM YYYY'),
@@ -161,11 +173,12 @@ class RKSController extends Controller
 
             // Bagian BAB 1
             'bab_1_2' =>   "Dalam permintaan penawaran harga ini Penyedia Barang/Jasa diminta menawarkan harga untuk pekerjaan : " . $nama_pekerjaanrks,
-            'bab_1_3_tanggal' =>   "Rabu / 28 Desember 2022 Belum",
-            'bab_1_3_pukul' =>   "16:30 Wita Belum",
-            'bab_1_5' =>   "Di dalam surat penawaran harga tersebut mencantumkan kesanggupan jangka waktu pelaksanaan pekerjaan adalah " . $jumlah_harikontrak . " (" . Terbilang::make($jumlah_harikontrak) . ") hari kalender &Q27& Belum.",
+            'bab_1_3_tanggal' =>   $masterharitanggal,
+            'bab_1_3_pukul' =>   "16:30 Wita",
+            'bab_1_5' =>   "Di dalam surat penawaran harga tersebut mencantumkan kesanggupan jangka waktu pelaksanaan pekerjaan adalah " . $jumlah_harikontrak . " (" . Terbilang::make($jumlah_harikontrak) . ") hari kalender terhitung sejak berdasarkan Surat Perintah Kerja (SPK) ditandatangani.
+            ",
             // 'bab_1_6' =>   "Pekerjaan ini akan dibiayai dari sumber dana &MASTER!B26& Nomor : ". SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->skk_ao ."  tanggal ".SumberAnggaran::where('id_kontrakkerja')->first()->tanggal_anggaran."",
-            'bab_1_6' =>   "Pekerjaan ini akan dibiayai dari sumber dana &MASTER!B26& Nomor : " . SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->skk_ao . "  tanggal 20-12-2023 Belum",
+            'bab_1_6' =>   "Pekerjaan ini akan dibiayai dari sumber dana SKK-AO Nomor : " . $sumberanggaran->skk_ao . "  tanggal " . Carbon::parse($sumberanggaran->tanggal_anggaran)->locale('id')->isoFormat('DD MMMM YYYY') . "",
             'bab_1_7' =>   $kontrakkerja->lokasi_pekerjaan,
 
 
@@ -203,8 +216,8 @@ class RKSController extends Controller
             'website' =>  $vendor->website == null ? '.....................' : $vendor->website,
             'faksimili' =>  $vendor->faksimili == null ? '.....................' : $vendor->faksimili,
             'email' =>  $vendor->email_perusahaan == null ? '.....................' : $vendor->email_perusahaan,
-            'pengawasPekerjaan' =>  "..................." . "belum",
-            'pengawasK3' =>  "..................." . "belum"
+            'pengawasPekerjaan' =>  !isset($penyelenggara['direksi_vendor'])  ? '.....................' : $penyelenggara['direksi_vendor'][0]['nama_pengguna'],
+            'pengawasK3' =>  !isset($penyelenggara['pengawas_k3_vendor']) ? '.....................' : $penyelenggara['pengawas_k3_vendor'][0]['nama_pengguna']
 
 
 
@@ -226,40 +239,87 @@ class RKSController extends Controller
     public function updateRKS(Request $request, $id)
     {
 
-        $kontrakkerja = KontrakKerja::find($id);
-        $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
-        $spreadsheet = IOFactory::load($path);
-        $worksheet = $spreadsheet->setActiveSheetIndexByName('RKS');
+        $kontrakkerja = KontrakKerja::find($id)->with('vendor')->first();
 
-        $memvalidasiData = $request->validate([
-            'nama' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-            'telepon' => 'required|string|max:255',
-            'website' => 'nullable|url|max:255',
-            'faksimili' => 'nullable|string|max:255',
-            'email' => 'required|email',
-            'pengawas_pekerjaan' => 'required',
-            'pengawas_k3' => 'required'
-        ]);
+        // $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
+        // $spreadsheet = IOFactory::load($path);
+        // $worksheet = $spreadsheet->setActiveSheetIndexByName('RKS');
+
+        // $memvalidasiData = $request->validate([
+        //     'nama' => 'required|string|max:255',
+        //     'alamat' => 'required|string|max:255',
+        //     'telepon' => 'required|string|max:255',
+        //     'website' => 'nullable|url|max:255',
+        //     'faksimili' => 'nullable|string|max:255',
+        //     'email' => 'required|email',
+        //     'pengawas_pekerjaan' => 'required',
+        //     'pengawas_k3' => 'required'
+        // ]);
+        // $vendor = $kontrakkerja->vendor;
+        // $updateVendor = Vendor::find($vendor->id_vendor);
+        // $updateVendor->direktur = $request->input('nama'); // Menyimpan nilai 'nama' dari input
+        // // Lanjutkan dengan mengisi properti lainnya sesuai kebutuhan
+        // $updateVendor->alamat = $request->input('alamat');
+        // $updateVendor->telepon = $request->input('telepon');
+        // $updateVendor->website = $request->input('website');
+        // $updateVendor->faksimili = $request->input('faksimili');
+        // $updateVendor->email = $request->input('email');
+        // $updateVendor->pengawas_pekerjaan = $request->input('pengawas_pekerjaan');
+        // $updateVendor->pengawas_k3 = $request->input('pengawas_k3');
+
+        // $updateVendor->save(); // Simpan perubahan pada objek Vendor ke database
+        $direksiPekerjaan = $request->pengawas_pekerjaan;
+        $pengawasK3 = $request->pengawas_k3;
 
 
-        $direksiPekerjaan = $memvalidasiData['pengawas_pekerjaan'];
-        $pengawasK3 = $memvalidasiData['pengawas_k3'];
 
+        $direksipekerjaanvendor = Penyelenggara::where('id_kontrakkerja', $id)->where('nama_jabatan', 'direksi_vendor')->first();
 
-        $worksheet->setCellValue('F74', $memvalidasiData['nama'])
-            ->setCellValue('F75', $memvalidasiData['alamat'])
-            ->setCellValue('F76', $memvalidasiData['telepon'])
-            ->setCellValue('F77', $memvalidasiData['website'])
-            ->setCellValue('F78', $memvalidasiData['faksimili'])
-            ->setCellValue('F79', $memvalidasiData['email'])
-            ->setCellValue('H88', $direksiPekerjaan)
-            ->setCellValue('H89', $pengawasK3);
+        if (!isset($direksipekerjaanvendor)) {
+            Penyelenggara::create([
+                'id_kontrakkerja' => $id,
+                'nama_jabatan' => 'direksi_vendor',
+                'nama_pengguna' => $direksiPekerjaan,
 
-        // mengirim file Excel sebagai response
-        $writer = new Xlsx($spreadsheet);
-        $writer->save($path);
-        return redirect()->back()->with('success', 'Berhasil mengupdate excel');
+            ])->save();
+        } else {
+            $direksipekerjaanvendor = Penyelenggara::find($direksipekerjaanvendor->id_penyelenggara);
+
+            $direksipekerjaanvendor->nama_jabatan = 'direksi_vendor';
+            $direksipekerjaanvendor->nama_pengguna = $direksiPekerjaan;
+            $direksipekerjaanvendor->save();
+        }
+        $pengawask3vendor = Penyelenggara::where('id_kontrakkerja', $id)->where('nama_jabatan', 'pengawas_k3_vendor')->first();
+        if (!isset($pengawask3vendor)) {
+            Penyelenggara::create([
+                'id_kontrakkerja' => $id,
+                'nama_jabatan' => 'pengawas_k3_vendor',
+                'nama_pengguna' =>  $pengawasK3,
+
+            ])->save();
+        } else {
+            $pengawask3vendor = Penyelenggara::find($pengawask3vendor->id_penyelenggara);
+
+            $pengawask3vendor->nama_jabatan = 'pengawas_k3_vendor';
+            $pengawask3vendor->nama_pengguna =  $pengawasK3;
+            $pengawask3vendor->save();
+        }
+        // $penyelenggara = Penyelenggara::find()
+
+        // $worksheet->setCellValue('F74', $memvalidasiData['nama'])
+        //     ->setCellValue('F75', $memvalidasiData['alamat'])
+        //     ->setCellValue('F76', $memvalidasiData['telepon'])
+        //     ->setCellValue('F77', $memvalidasiData['website'])
+        //     ->setCellValue('F78', $memvalidasiData['faksimili'])
+        //     ->setCellValue('F79', $memvalidasiData['email'])
+        //     ->setCellValue('H88', $direksiPekerjaan)
+        //     ->setCellValue('H89', $pengawasK3);
+
+        // // mengirim file Excel sebagai response
+        // $writer = new Xlsx($spreadsheet);
+        // $writer->save($path);
+
+        return redirect()->back()->with('success', 'Berhasil mengupdate RKS');
     }
 
 

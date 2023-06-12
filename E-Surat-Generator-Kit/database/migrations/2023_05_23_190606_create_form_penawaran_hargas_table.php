@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('nama_vendor')->nullable();
             $table->string('jabatan')->nullable();
             $table->string('nama_perusahaan')->nullable();
-            $table->string('atas_nama')->nullable();
+       
             $table->string('alamat_perusahaan')->nullable();
             $table->string('telepon_fax')->nullable();
             $table->string('email_perusahaan')->nullable();

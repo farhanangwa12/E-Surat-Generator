@@ -1,6 +1,6 @@
 @extends('template.app')
 
-@section('title', 'ISI RKS')
+@section('title', 'BOQ')
 
 @section('content')
 
@@ -80,7 +80,7 @@
                                             return $result;
                                         }
                                         $jenis = 1;
-                                        $semua = 1;
+                                        $semua = 0;
                                     @endphp
 
                                     @foreach ($kontrakbaru as $jenis_kontrak)

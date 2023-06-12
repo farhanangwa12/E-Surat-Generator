@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
 
 
 
@@ -139,8 +139,7 @@
                                 <td>Lampiran:</td>
                                 <td><input type="text" name="lampiran" placeholder="Masukkan banyak lampiran"
                                         class="form-control"
-                                        value="
-                                    {{ $data['lampiran'] }}"></td>
+                                        value="{{ $data['lampiran'] }}"></td>
                             </tr>
                             <tr>
                                 <td>Perihal:</td>
@@ -186,45 +185,46 @@
                             <tr>
                                 <td>Nama</td>
                                 <td>:</td>
-                                <td><input type="text" name="nama_vendor" class="form-control"
-                                        value="{{ $data['nama_vendor'] }}"></td>
+                                {{-- <td><input type="text" name="nama_vendor" class="form-control"
+                                        value="{{ $data['nama_vendor'] }}"></td> --}}
+                                <td>{{ $data['nama_vendor'] }}</td>
                             </tr>
                             <tr>
                                 <td>Jabatan</td>
                                 <td>:</td>
-                                <td><input type="text" name="jabatan" class="form-control"
-                                        value="{{ $data['jabatan'] }}"></td>
+                                {{-- <td><input type="text" name="jabatan" class="form-control"
+                                        value=""></td> --}}
+                                <td>{{ $data['jabatan'] }}</td>
                             </tr>
                             <tr>
-                                <td>Bertindak untuk</td>
+                                <td>Bertindak untuk dan atas nama</td>
                                 <td>:</td>
-                                <td><input type="text" name="nama_perusahaan" placeholder="PT/CV/Firma................"
-                                        class="form-control" value="{{ $data['nama_perusahaan'] }}"></td>
+                                {{-- <td><input type="text" name="nama_perusahaan" placeholder="PT/CV/Firma................"
+                                        class="form-control" value=""></td> --}}
+
+                                        <td>{{ $data['nama_perusahaan'] }}</td>
                             </tr>
-                            <tr>
-                                <td>dan atas nama</td>
-                                <td>:</td>
-                                <td><input type="text" name="atas_nama" class="form-control"
-                                        placeholder="............................." value="{{ $data['atas_nama'] }}">
-                                </td>
-                            </tr>
+
                             <tr>
                                 <td>Alamat</td>
                                 <td>:</td>
-                                <td><input type="text" name="alamat_perusahaan" class="form-control"
-                                        value="{{ $data['alamat_perusahaan'] }}"></td>
+                                {{-- <td><input type="text" name="alamat_perusahaan" class="form-control"
+                                        value="{{ $data['alamat_perusahaan'] }}"></td> --}}
+                                        <td>{{ $data['alamat_perusahaan'] }}</td>
                             </tr>
                             <tr>
                                 <td>No. Telepon/Fax</td>
                                 <td>:</td>
-                                <td><input type="text" name="telepon_fax" class="form-control"
-                                        value="{{ $data['telepon_fax'] }}"></td>
+                                {{-- <td><input type="text" name="telepon_fax" class="form-control"
+                                        value="{{ $data['telepon_fax'] }}"></td> --}}
+                                        <td>{{ $data['telepon_fax'] }}</td>
                             </tr>
                             <tr>
                                 <td>Email</td>
                                 <td>:</td>
-                                <td style="border-bottom: 2px solid black;"><input type="email" name="email_perusahaan"
-                                        class="form-control" value="{{ $data['email_perusahaan'] }}"></td>
+                                {{-- <td style="border-bottom: 2px solid black;"><input type="email" name="email_perusahaan"
+                                        class="form-control" value="{{ $data['email_perusahaan'] }}"></td> --}}
+                                        <td  style="border-bottom: 2px solid black;">{{ $data['email_perusahaan'] }}</td>
                             </tr>
                         </table>
                         <br>
@@ -320,73 +320,73 @@
 @endsection
 
 @section('javascript')
-<script>
-    const inputFile = document.querySelector('input[name="kopsurat"]');
-    const hiddenInput = document.querySelector('.hasilcrop');
-    const previewImage = document.querySelector('.previewImages');
-    const modal = document.getElementById('exampleModal');
+    <script>
+        const inputFile = document.querySelector('input[name="kopsurat"]');
+        const hiddenInput = document.querySelector('.hasilcrop');
+        const previewImage = document.querySelector('.previewImages');
+        const modal = document.getElementById('exampleModal');
 
-    const closeModalButton = document.getElementById('modalClose');
-    const cropButton = document.querySelector('#cropButton');
+        const closeModalButton = document.getElementById('modalClose');
+        const cropButton = document.querySelector('#cropButton');
 
-    var cropper;
+        var cropper;
 
-    // Event listener untuk input file
-    inputFile.addEventListener('change', function(event) {
-        const file = event.target.files[0];
+        // Event listener untuk input file
+        inputFile.addEventListener('change', function(event) {
+            const file = event.target.files[0];
 
-        // Membaca file menggunakan FileReader
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            // Menampilkan gambar pada preview
-            previewImage.src = e.target.result;
+            // Membaca file menggunakan FileReader
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Menampilkan gambar pada preview
+                previewImage.src = e.target.result;
 
-            // Menampilkan modal
-            modal.style.display = 'block';
-
-
-            // Menginisialisasi Cropper pada gambar
-            cropper = new Cropper(previewImage, {
-                autoCropArea: 1,
-                aspectRatio: 3 / 1,
+                // Menampilkan modal
+                modal.style.display = 'block';
 
 
-                viewMode: 3,
+                // Menginisialisasi Cropper pada gambar
+                cropper = new Cropper(previewImage, {
+                    autoCropArea: 1,
+                    aspectRatio: 3 / 1,
 
-            });
 
-        };
-        reader.readAsDataURL(file);
+                    viewMode: 3,
 
-    });
+                });
 
-    closeModalButton.addEventListener('click', function() {
-        modal.style.display = 'none';
-        modalOverlay.style.display = 'none';
-        // Mengosongkan input file dan preview gambar
-        inputFile.value = '';
-        previewImage.src = '';
-        // Mereset Cropper
-        if (cropper) {
-            cropper.destroy();
-            cropper = null;
-        }
-    });
+            };
+            reader.readAsDataURL(file);
 
-    // Event listener untuk tombol Crop pada modal
-    cropButton.addEventListener('click', function() {
+        });
 
-        // Mendapatkan gambar crop dalam bentuk data URL
-        const croppedCanvas = cropper.getCroppedCanvas();
-        const croppedDataURL = croppedCanvas.toDataURL();
+        closeModalButton.addEventListener('click', function() {
+            modal.style.display = 'none';
+            modalOverlay.style.display = 'none';
+            // Mengosongkan input file dan preview gambar
+            inputFile.value = '';
+            previewImage.src = '';
+            // Mereset Cropper
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+        });
 
-        // Menyimpan data URL ke input hidden
-        hiddenInput.value = croppedDataURL;
+        // Event listener untuk tombol Crop pada modal
+        cropButton.addEventListener('click', function() {
 
-        // Menutup modal
-        modal.style.display = 'none';
-    });
-</script>
+            // Mendapatkan gambar crop dalam bentuk data URL
+            const croppedCanvas = cropper.getCroppedCanvas();
+            const croppedDataURL = croppedCanvas.toDataURL();
+
+            // Menyimpan data URL ke input hidden
+            hiddenInput.value = croppedDataURL;
+
+            // Menutup modal
+            modal.style.display = 'none';
+        });
+    </script>
 
     <script>
         // Mengambil semua elemen dengan kelas 'number'

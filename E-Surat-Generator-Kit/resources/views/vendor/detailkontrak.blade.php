@@ -114,9 +114,9 @@
                                         <td>{{ $no++ }}</td>
                                         <td>Lampiran Penawaran Harga</td>
                                         <td>
-                                            <a class="btn btn-primary"
+                                            {{-- <a class="btn btn-primary"
                                                 href="{{ route('vendor.lampiranpenawaranharga.create', $kontrakkerja->id_kontrakkerja) }}">Isi
-                                                Lampiran Penawaran Harga</a>
+                                                Lampiran Penawaran Harga</a> --}}
                                             <a class="btn btn-primary"
                                                 href="{{ route('vendor.lampiranpenawaranharga.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
                                             <a class="btn btn-primary"

@@ -15,7 +15,23 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('login.login');
+
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->role == 'pengadaan') {
+                return redirect()->route('dashboard.pengadaan');
+            }
+            if ($user->role == 'manager') {
+                return redirect()->route('dashboard.manager');
+            }
+            if ($user->role == 'vendor') {
+
+                return redirect()->route('dashboard.vendor');
+            }
+        } else {
+            return view('login.login');
+        }
     }
 
     public function login(Request $request)

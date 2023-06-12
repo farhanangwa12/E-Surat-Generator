@@ -10,7 +10,7 @@
 
         <div class="row">
             <div class="col-12">
-                <form method="POST" action="{{route('rks.update', ['id'=> $id])}}">
+                <form method="POST" action="{{ route('rks.update', ['id' => $id]) }}" id="myForm">
                     @method('PUT')
                     @csrf
                     {{-- Detail Kontrak --}}
@@ -25,7 +25,8 @@
                     @endif
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{route('pengajuankontrak.rks', ['id' => $id, 'isDownload' => '2'])}}" class="btn btn-primary">Download PDF</a>
+                            <a href="{{ route('pengajuankontrak.rks', ['id' => $id, 'isDownload' => '2']) }}"
+                                class="btn btn-primary">Download PDF</a>
                         </div>
                         <div class="card-body">
 
@@ -415,32 +416,44 @@
                                                             <tr>
                                                                 <td style="width: 20%;">Nama</td>
                                                                 <td style="width: 10%;">:</td>
-                                                                <td style="width: 70%;"><input name="nama" type="text" class="form-control" required value="{{$surat->nama}}"></td>
+                                                                <td style="width: 70%;"><input name="nama"
+                                                                        type="text" class="form-control" required
+                                                                        value="{{ $surat->nama }}"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td style="width: 20%;">Alamat</td>
                                                                 <td style="width: 10%;">:</td>
-                                                                <td style="width: 70%;"><input name="alamat" type="text" class="form-control" required value="{{$surat->alamat}}"></td>
+                                                                <td style="width: 70%;"><input name="alamat"
+                                                                        type="text" class="form-control" required
+                                                                        value="{{ $surat->alamat }}"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td style="width: 20%;">Telepon</td>
                                                                 <td style="width: 10%;">:</td>
-                                                                <td style="width: 70%;"><input name="telepon" type="text" class="form-control" required value="{{$surat->telepon}}"></td>
+                                                                <td style="width: 70%;"><input name="telepon"
+                                                                        type="text" class="form-control" required
+                                                                        value="{{ $surat->telepon }}"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td style="width: 20%;">Website</td>
                                                                 <td style="width: 10%;">:</td>
-                                                                <td style="width: 70%;"><input name="website" type="text" class="form-control" required value="{{$surat->website}}"></td>
+                                                                <td style="width: 70%;"><input name="website"
+                                                                        type="text" class="form-control" required
+                                                                        value="{{ $surat->website }}"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td style="width: 20%;">Faksimili</td>
                                                                 <td style="width: 10%;">:</td>
-                                                                <td style="width: 70%;"><input name="faksimili" type="text" class="form-control" value="{{$surat->faksimili}}"></td>
+                                                                <td style="width: 70%;"><input name="faksimili"
+                                                                        type="text" class="form-control"
+                                                                        value="{{ $surat->faksimili }}"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td style="width: 20%;">e-mail</td>
                                                                 <td style="width: 10%;">:</td>
-                                                                <td style="width: 70%;"><input name="email" type="email" class="form-control" required value="{{$surat->email}}"></td>
+                                                                <td style="width: 70%;"><input name="email"
+                                                                        type="email" class="form-control" required
+                                                                        value="{{ $surat->email }}"></td>
                                                             </tr>
                                                         </table>
                                                     </li>
@@ -456,40 +469,46 @@
                                                 berikut : <br>
                                                 Untuk Pengguna Barang/Jasa <br>
 
-                                                 <table style="width: 100%;">
+                                                <table style="width: 100%;">
                                                     <tr>
                                                         <td style="width: 20%;">1. Direksi Pekerjaan</td>
                                                         <td style="width: 10%;">:</td>
-                                                        <td style="width: 70%;">{{ $surat->bab_2_5_direksipekerjaan }}</td>
+                                                        <td style="width: 70%;">{{ $surat->bab_2_5_direksipekerjaan }}
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td style="width: 20%;">2. Pengawas Pekerjaan</td>
                                                         <td style="width: 10%;">:</td>
-                                                        <td style="width: 70%;">{{ $surat->bab_2_5_pengawaspekerjaan }}</td>
-                                                    </tr> 
+                                                        <td style="width: 70%;">{{ $surat->bab_2_5_pengawaspekerjaan }}
+                                                        </td>
+                                                    </tr>
                                                     <tr>
                                                         <td style="width: 20%;">3. Pengawas K3</td>
                                                         <td style="width: 10%;">:</td>
                                                         <td style="width: 70%;">{{ $surat->bab_2_5_pengawask3 }}</td>
                                                     </tr>
-                                                  
+
                                                 </table>
                                                 Untuk Penyedia Barang/Jasa <br>
                                                 <table style="width: 100%;">
-                                                  
+
                                                     <tr>
                                                         <td style="width: 20%;">1. Pengawas Pekerjaan</td>
                                                         <td style="width: 10%;">:</td>
-                                                        <td style="width: 70%;"><input name="pengawas_pekerjaan" type="text" class="form-control" value="{{$surat->pengawasPekerjaan}}"></td>
-                                                    </tr> 
+                                                        <td style="width: 70%;"><input name="pengawas_pekerjaan"
+                                                                type="text" class="form-control"
+                                                                value="{{ $surat->pengawasPekerjaan }}"></td>
+                                                    </tr>
                                                     <tr>
                                                         <td style="width: 20%;">2. Pengawas K3</td>
                                                         <td style="width: 10%;">:</td>
-                                                        <td style="width: 70%;"><input name="pengawas_k3" type="text" class="form-control" value="{{$surat->pengawasPekerjaan}}"></td>
+                                                        <td style="width: 70%;"><input name="pengawas_k3" type="text"
+                                                                class="form-control"
+                                                                value="{{ $surat->pengawasK3 }}"></td>
                                                     </tr>
-                                                  
+
                                                 </table>
-                                               
+
                                             </td>
 
                                         </tr>
@@ -918,7 +937,7 @@
                                                 selalu berpedoman pada
                                                 ketentuan-ketentuan teknis/data yang ada dalam Speck teknik / KAK /
                                                 Persyaratan (RKS) serta
-                                                (Bill of quantity (BoQ).</td>
+                                                Bill of quantity (BoQ).</td>
 
                                         </tr>
                                         <tr>
@@ -946,18 +965,30 @@
 
                         </div>
                     </div>
-                   
+
 
                     <div class="form-group">
-                        <a href="{{route('vendor.kontrakkerja.detail', ['id'=> $id])}}" class="btn btn-primary">Kembali</a>
-                        <button class="btn btn-warning" type="submit">Kirim</button>
+                        <a href="{{ route('vendor.kontrakkerja.detail', ['id' => $id]) }}"
+                            class="btn btn-primary">Kembali</a>
+                        <button class="btn btn-warning" type="button" id="kirim">Kirim</button>
                     </div>
-                    
+
                 </form>
 
             </div>
-         
+
         </div>
 
     </div>
+    <script>
+        let tombolkirim = document.querySelector('#kirim');
+        let form = document.querySelector('#myForm');
+        console.log(tombolkirim);
+        console.log(form);
+
+        tombolkirim.addEventListener('click', function() {
+            form.submit();
+
+        });
+    </script>
 @endsection
