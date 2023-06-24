@@ -148,24 +148,25 @@ class LampNegoController extends Controller
         }
 
         $boq = BOQ::where('id_kontrakkerja', $kontrak->id_kontrakkerja)->first();
-   
-  
+
+
         $data2 = [
             'logokiri' => public_path('undangan/kiri.jpg'),
             'logo' => public_path('undangan/logo.png'), // path ke file header gambar
-            'jumlah_harga_penawaran' => $boq == null ? '0' : $boq->total_jumlah,
-            'jumlah_harga_negosiasi' => $lampnego == null ? '0' : $lampnego->total_jumlah,
+            'jumlah_harga_penawaran' => $boq == null ? '0' : number_format($boq->total_jumlah,0,',','.'),
+            'jumlah_harga_negosiasi' => $lampnego == null ? '0' : number_format($lampnego->total_jumlah,0,',','.'),
 
-            'pembulatan_harga_penawaran' => $boq == null ? '0' : $boq->dibulatkan,
-            'pembulatan_harga_negosiasi' => $lampnego == null ? '0' : $lampnego->dibulatkan,
+            'pembulatan_harga_penawaran' => $boq == null ? '0' : number_format($boq->dibulatkan,0,',','.'),
+            'pembulatan_harga_negosiasi' => $lampnego == null ? '0' : number_format($lampnego->dibulatkan,0,',','.'),
 
-            'ppn11_harga_penawaran' => $boq == null ? '0' : $boq->dibulatkan * 0.11,
-            'ppn11_harga_negosiasi' => $lampnego == null ? '0' : $lampnego->dibulatkan * 0.11,
+            'ppn11_harga_penawaran' => $boq == null ? '0' : number_format($boq->dibulatkan * 0.11,0,',','.'),
+            'ppn11_harga_negosiasi' => $lampnego == null ? '0' : number_format($lampnego->dibulatkan * 0.11,0,',','.'),
 
-            'total_harga_penawaran' => $boq == null ? '0' : ($boq->total_harga * 0.11) + $boq->total_harga,
-            'total_harga_negosiasi' => $lampnego == null ? '0' : ($lampnego->total_harga * 0.11) +  $lampnego->total_harga,
+            'total_harga_penawaran' => $boq == null ? '0' :  number_format($boq->total_harga,0,',','.'),
+            'total_harga_negosiasi' => $lampnego == null ? '0' :   number_format($lampnego->total_harga,0,',','.'),
 
-            'harga_disepakati' =>  $lampnego == null ? '0' : ($lampnego->total_harga * 0.11) +  $lampnego->total_harga,
+            'harga_disepakati' =>  $lampnego == null ? '0' :   number_format($lampnego->total_harga,0,',','.'),
+            'terbilang' => $lampnego == null ?  ucwords(Terbilang::make(0,' Rupiah ')) : ucwords(Terbilang::make($lampnego->total_harga, ' Rupiah ')),
             "penyedia" => $kontrak->vendor->penyedia,
             "tandatangan_direktur" => "Budi Susanti Direktur",
             'direktur' => $kontrak->vendor->direktur,
@@ -176,7 +177,7 @@ class LampNegoController extends Controller
 
 
         ];
-    
+
         // dd($data);
 
         $pdf = PDF::loadView('plnpengadaan.kontraktahap2.LampNego.lampnego', compact('data2', 'kontrakbaru'));
@@ -211,7 +212,7 @@ class LampNegoController extends Controller
         foreach ($jenis_kontraks as $jenis_kontrak) {
 
             $databarjas = BarJas::where('id_jenis_kontrak', $jenis_kontrak['id'])->with('barJasBOQs')->get()->toArray();
-      
+
             $data = [];
             $nobarjas = 0;
             if (count($databarjas) != 0) {
@@ -269,33 +270,46 @@ class LampNegoController extends Controller
     public function update(Request $request, $id)
     {
         $pembuatansuratkontrak = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat', 'nomor_ba_negosiasi')->with('lampnego')->first();
+
         // dd($pembuatansuratkontrak);
         // Mengecek apakah record HPS ada
 
+        // Menghapus titik (.) sebagai pemisah ribuan
+       
         if ($pembuatansuratkontrak->lampnego !== null) {
             // Jika record lampnego ada
             // Lakukan operasi lain yang diinginkan
 
+
+            $totalJumlah = str_replace('.', '',$request->input('total_jumlah_negosiasi'));
+            $dibulatkan = str_replace('.', '', $request->input('dibulatkan_negosiasi'));
+            $ppn11 = str_replace('.', '', $request->input('ppn11_negosiasi'));
+            $totalHarga = str_replace('.', '', $request->input('harga_total_negosiasi'));
+
             $lampnego = LampNego::find($pembuatansuratkontrak->lampnego->id);
             $lampnego->id_surat = $pembuatansuratkontrak->id;
-            $lampnego->total_jumlah = $request->input('total_jumlah_negosiasi');
-            $lampnego->dibulatkan = $request->input('dibulatkan_negosiasi');
-            $lampnego->ppn11 = $request->input('ppn11_negosiasi');
-            $lampnego->total_harga = $request->input('harga_total_negosiasi');
+            $lampnego->total_jumlah = $totalJumlah;
+            $lampnego->dibulatkan = $dibulatkan;
+            $lampnego->ppn11 = $ppn11;
+            $lampnego->total_harga = $totalHarga;
 
             // Simpan data lampnego
             $lampnego->save();
         } else {
+            $totalJumlah = str_replace('.', '',$request->input('total_jumlah_negosiasi'));
+            $dibulatkan = str_replace('.', '', $request->input('dibulatkan_negosiasi'));
+            $ppn11 = str_replace('.', '', $request->input('ppn11_negosiasi'));
+            $totalHarga = str_replace('.', '', $request->input('harga_total_negosiasi'));
             // Jika record lampnego tidak ada
 
             // Buat instance lampnego model untuk menyimpan data
             $lampnego = new LampNego();
             $lampnego->id_surat = $pembuatansuratkontrak->id;
             $lampnego->datalampnego = [];
-            $lampnego->total_jumlah = $request->input('total_jumlah_negosiasi');
-            $lampnego->dibulatkan = $request->input('dibulatkan_negosiasi');
-            $lampnego->ppn11 = $request->input('ppn11_negosiasi');
-            $lampnego->total_harga = $request->input('harga_total_negosiasi');
+            $lampnego->total_jumlah = $totalJumlah;
+            $lampnego->dibulatkan = $dibulatkan;
+            $lampnego->ppn11 = $ppn11;
+            $lampnego->total_harga = $totalHarga;
 
 
             // Simpan data HPS

@@ -88,8 +88,8 @@
                                         <td>{{ $no++ }}</td>
                                         <td>BOQ</td>
                                         <td>
-                                            <a href="{{ route('boqtandatanganvendor', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                                class="btn btn-primary">Tanda Tangan BOQ</a>
+                                            {{-- <a href="{{ route('boqtandatanganvendor', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
+                                                class="btn btn-primary">Tanda Tangan BOQ</a> --}}
                                             <a class="btn btn-primary"
                                                 href="{{ route('pengajuankontrak.boq.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi
                                                 BOQ</a>

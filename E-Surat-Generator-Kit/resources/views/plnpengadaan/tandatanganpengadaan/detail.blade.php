@@ -413,13 +413,13 @@
                                             <td>
 
 
-                                                @if (is_null($kontrak->hps->tandatangan_pengadaan))
+                                                {{-- @if (is_null($kontrak->hps->tandatangan_pengadaan))
                                                     <a href="{{ route('hps.tandatangan', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 'pengadaan']) }}"
                                                         class="btn btn-primary"
                                                         onclick="return confirm('Apakah Anda yakin ingin menandatangani dokumen ini? Aksi ini hanya bisa dilakukan sekali dalam 1 dokumen.')">
                                                         Tanda Tangan HPS
                                                     </a>
-                                                @endif
+                                                @endif --}}
 
 
 
@@ -444,13 +444,13 @@
 
                                             <td>
 
-                                                @if (is_null($kontrak->rks->tandatangan_pengadaan))
+                                                {{-- @if (is_null($kontrak->rks->tandatangan_pengadaan))
                                                     <a href="{{ route('rks.tandatangan', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 'pengadaan']) }}"
                                                         class="btn btn-primary"
                                                         onclick="return confirm('Apakah Anda yakin ingin menandatangani dokumen ini? Aksi ini hanya bisa dilakukan sekali dalam 1 dokumen.')">
                                                         Tanda Tangan
                                                     </a>
-                                                @endif
+                                                @endif --}}
 
                                                 <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                     class="btn btn-primary">Preview</a>
@@ -468,13 +468,13 @@
 
                                             <td>
 
-                                                @if (is_null($kontrak->undangan->tandatangan_pengadaan))
+                                                {{-- @if (is_null($kontrak->undangan->tandatangan_pengadaan))
                                                     <a href="{{ route('undangan.tandatangan', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 'pengadaan']) }}"
                                                         class="btn btn-primary"
                                                         onclick="return confirm('Apakah Anda yakin ingin menandatangani dokumen ini? Aksi ini hanya bisa dilakukan sekali dalam 1 dokumen.')">
                                                         Tanda Tangan
                                                     </a>
-                                                @endif
+                                                @endif --}}
 
                                                 <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                     class="btn btn-primary">Preview</a>

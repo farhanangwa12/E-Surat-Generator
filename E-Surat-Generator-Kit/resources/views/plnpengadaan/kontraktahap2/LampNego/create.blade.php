@@ -91,7 +91,7 @@
 
                                     @foreach ($kontrakbaru as $jenis_kontrak)
                                         <tr style="text-align:left;">
-                                            <td>{{ int_to_roman($jenis++) . '.' }}</td>
+                                            <td>{{ @Terbilang::roman($jenis++) . '.' }}</td>
                                             <td><b>{{ $jenis_kontrak['jenis_kontrak'] }}</b> </td>
                                             <td></td>
                                             <td></td>
@@ -106,7 +106,7 @@
                                         @endphp
                                         @foreach ($jenis_kontrak['data'] as $data)
                                             <tr style="text-align:left;">
-                                                <td>{{ $no_data++ }}</td>
+                                                <td>{{ $no_barjas }}</td>
                                                 <td style="text-align: left">{{ $data['uraian'] }} </td>
                                                 <td class="vol">{{ $data['vol'] }}</td>
                                                 <td>{{ $data['sat'] }}</td>
@@ -125,6 +125,7 @@
                                                 {{-- <td>{{ $data['harga_satuan'] }}</td>
                                                 <td>{{ $data['jumlah'] }}</td> --}}
                                             </tr>
+                                            
 
                                             @foreach ($data['sub_data'] as $subdata)
                                                 <tr>
@@ -155,7 +156,7 @@
                                         <td>{{ $boq->total_jumlah == null ? 0 : $boq->total_jumlah }}</td>
                                         <td style="text-align: right;"><strong>Total Jumlah:</strong>
                                         </td>
-                                        <td><input type="number" class="form-control total_harga"
+                                        <td><input type="text" class="form-control total_harga"
                                                 name="total_jumlah_negosiasi" id="total_jumlah" readonly
                                                 value="{{ $lampnego->total_jumlah == null ? 0 : $lampnego->total_jumlah }}"></td>
                                     </tr>
@@ -164,7 +165,7 @@
                                         <td>{{ $boq->dibulatkan == null ? 0 : $boq->dibulatkan }}
                                         </td>
                                         <td style="text-align: right;"><strong>Dibulatkan </strong></td>
-                                        <td><input type="number" class="form-control" id="pembulatan"
+                                        <td><input type="text" class="form-control" id="pembulatan"
                                                 name="dibulatkan_negosiasi"
                                                 value="{{ $lampnego->dibulatkan == null ? 0 : $lampnego->dibulatkan }}" readonly>
                                         </td>
@@ -174,14 +175,14 @@
                                         <td colspan="5" style="text-align: right;"><strong>PPN 11%</strong></td>
                                         <td>{{ $boq->ppn11 }}</td>
                                         <td style="text-align: right;"><strong>PPN 11%</strong></td>
-                                        <td><input type="number" class="form-control" id="ppn11" name="ppn11_negosiasi"
+                                        <td><input type="text" class="form-control" id="ppn11" name="ppn11_negosiasi"
                                                 readonly value="{{ $lampnego->ppn11 }}"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Harga Total</strong></td>
                                         <td>{{ $boq->total_harga }}</td>
                                         <td style="text-align: right;"><strong>Harga Total</strong></td>
-                                        <td><input type="number" class="form-control" id="harga_total"
+                                        <td><input type="text" class="form-control" id="harga_total"
                                                 name="harga_total_negosiasi" readonly value="{{ $lampnego->total_harga }}"></td>
                                     </tr>
                                 </tfoot>
@@ -265,18 +266,28 @@
                 const nilaiVolume = parseFloat(volume[i].innerHTML);
                 const nilaiHargaSatuan = parseFloat(hargaSatuan[i].value.replace(/\./g, ''));
                 const nilaiJumlah = nilaiHargaSatuan * nilaiVolume;
-                jumlahInputs[i].value = nilaiJumlah.toFixed(0);
+                jumlahInputs[i].value = formatAngka(nilaiJumlah.toFixed(0));
                 total_jumlah += nilaiJumlah;
 
 
 
             }
-            totalJumlahInputs.value = parseFloat(total_jumlah);
-            dibulatkanInputs.value = Math.round(totalJumlahInputs.value);
+            // totalJumlahInputs.value = parseFloat(total_jumlah);
+            // dibulatkanInputs.value = Math.round(totalJumlahInputs.value);
      
-            ppn11Inputs.value = (parseFloat(dibulatkanInputs.value)  * 0.11).toFixed(2);
-            hargaTotal.value = (parseFloat(dibulatkanInputs.value)  + parseFloat(ppn11Inputs
-                .value)).toFixed(2);
+            // ppn11Inputs.value = (parseFloat(dibulatkanInputs.value)  * 0.11).toFixed(2);
+            // hargaTotal.value = (parseFloat(dibulatkanInputs.value)  + parseFloat(ppn11Inputs
+            //     .value)).toFixed(2);
+
+            total_jumlah  = parseFloat(total_jumlah);
+            dibulatkan = Math.round(total_jumlah);
+            ppn11  = (parseFloat(dibulatkan) * 0.11).toFixed(0);
+            harga_total  = (parseFloat(dibulatkan) + parseFloat(ppn11)).toFixed(0);
+
+            totalJumlahInputs.value = formatAngka(total_jumlah);
+            dibulatkanInputs.value = formatAngka(dibulatkan);
+            ppn11Inputs.value = formatAngka(ppn11);
+            hargaTotal.value = formatAngka(harga_total);
 
 
         }

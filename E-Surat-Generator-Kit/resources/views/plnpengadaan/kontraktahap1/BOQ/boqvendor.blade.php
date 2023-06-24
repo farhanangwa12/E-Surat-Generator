@@ -49,43 +49,43 @@
                                 <tbody>
                                     @php
                                         
-                                        function int_to_roman($num)
-                                        {
-                                            // array untuk angka romawi
-                                            $roman = [
-                                                'M' => 1000,
-                                                'CM' => 900,
-                                                'D' => 500,
-                                                'CD' => 400,
-                                                'C' => 100,
-                                                'XC' => 90,
-                                                'L' => 50,
-                                                'XL' => 40,
-                                                'X' => 10,
-                                                'IX' => 9,
-                                                'V' => 5,
-                                                'IV' => 4,
-                                                'I' => 1,
-                                            ];
-                                            $result = '';
-                                            // loop melalui array angka romawi
-                                            foreach ($roman as $key => $value) {
-                                                // dapatkan banyaknya simbol romawi yang dibutuhkan
-                                                $numerals = intval($num / $value);
-                                                // tambahkan simbol romawi ke string hasil
-                                                $result .= str_repeat($key, $numerals);
-                                                // kurangi angka asal dengan angka romawi yang telah dihasilkan
-                                                $num = $num % $value;
-                                            }
-                                            return $result;
-                                        }
+                                        // function int_to_roman($num)
+                                        // {
+                                        //     // array untuk angka romawi
+                                        //     $roman = [
+                                        //         'M' => 1000,
+                                        //         'CM' => 900,
+                                        //         'D' => 500,
+                                        //         'CD' => 400,
+                                        //         'C' => 100,
+                                        //         'XC' => 90,
+                                        //         'L' => 50,
+                                        //         'XL' => 40,
+                                        //         'X' => 10,
+                                        //         'IX' => 9,
+                                        //         'V' => 5,
+                                        //         'IV' => 4,
+                                        //         'I' => 1,
+                                        //     ];
+                                        //     $result = '';
+                                        //     // loop melalui array angka romawi
+                                        //     foreach ($roman as $key => $value) {
+                                        //         // dapatkan banyaknya simbol romawi yang dibutuhkan
+                                        //         $numerals = intval($num / $value);
+                                        //         // tambahkan simbol romawi ke string hasil
+                                        //         $result .= str_repeat($key, $numerals);
+                                        //         // kurangi angka asal dengan angka romawi yang telah dihasilkan
+                                        //         $num = $num % $value;
+                                        //     }
+                                        //     return $result;
+                                        // }
                                         $jenis = 1;
                                         $semua = 0;
                                     @endphp
 
                                     @foreach ($kontrakbaru as $jenis_kontrak)
                                         <tr style="text-align:left;">
-                                            <td>{{ int_to_roman($jenis++) . '.' }}</td>
+                                            <td>{{ @Terbilang::roman($jenis++) . '.' }}</td>
                                             <td><b>{{ $jenis_kontrak['jenis_kontrak'] }}</b> </td>
                                             <td></td>
                                             <td></td>
@@ -136,30 +136,32 @@
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Total Jumlah:</strong>
                                         </td>
-                                        <td><input type="number" class="form-control total_harga" name="total_jumlah"
-                                                id="total_jumlah" readonly value="{{ $boq->total_jumlah == null ? 0 : $boq->total_jumlah }}"></td>
+                                        <td><input type="text" class="form-control total_harga" name="total_jumlah"
+                                                id="total_jumlah" readonly
+                                                value="{{ $boq->total_jumlah == null ? 0 : $boq->total_jumlah }}"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Dibulatkan </strong></td>
-                                        <td><input type="number" class="form-control" id="pembulatan" name="dibulatkan"
-                                                value="{{ $boq->dibulatkan == null ? 0 : $boq->dibulatkan }}" readonly></td>
+                                        <td><input type="text" class="form-control" id="pembulatan" name="dibulatkan"
+                                                value="{{ $boq->dibulatkan == null ? 0 : $boq->dibulatkan }}" readonly>
+                                        </td>
                                     </tr>
-                                  
+
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>PPN 11%</strong></td>
-                                        <td><input type="number" class="form-control" id="ppn11" name="ppn11"
+                                        <td><input type="text" class="form-control" id="ppn11" name="ppn11"
                                                 readonly value="{{ $boq->ppn11 }}"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Harga Total</strong></td>
-                                        <td><input type="number" class="form-control" id="harga_total" name="harga_total"
+                                        <td><input type="text" class="form-control" id="harga_total" name="harga_total"
                                                 readonly value="{{ $boq->total_harga }}"></td>
                                     </tr>
                                 </tfoot>
                             </table>
                             <div class="form-group">
-                                <a href="{{ route('pengajuankontrak.detail', ['id' => $id]) }}"
-                                    class="btn btn-primary">Kembali</a>
+                                <a href="{{ route('vendor.kontrakkerja.detail', $id) }}"
+                                    class="btn btn-warning">Kembali</a>
 
 
                                 <button type="button" id="submitBtn" onclick="submitForm()"
@@ -236,17 +238,22 @@
                 const nilaiVolume = parseFloat(volume[i].innerHTML);
                 const nilaiHargaSatuan = parseFloat(hargaSatuan[i].value.replace(/\./g, ''));
                 const nilaiJumlah = nilaiHargaSatuan * nilaiVolume;
+                console.log("nilai Jumlah" + nilaiJumlah);
                 jumlahInputs[i].value = nilaiJumlah.toFixed(0);
                 total_jumlah += nilaiJumlah;
 
 
 
             }
-            totalJumlahInputs.value = parseFloat(total_jumlah);
-            dibulatkanInputs.value = Math.round(totalJumlahInputs.value);
-            ppn11Inputs.value = (parseFloat(dibulatkanInputs.value) * 0.11).toFixed(2);
-            hargaTotal.value = (parseFloat(dibulatkanInputs.value) + parseFloat(ppn11Inputs
-                .value)).toFixed(2);
+            total_jumlah  = parseFloat(total_jumlah);
+            dibulatkan = Math.round(total_jumlah);
+            ppn11  = (parseFloat(dibulatkan) * 0.11).toFixed(0);
+            harga_total  = (parseFloat(dibulatkan) + parseFloat(ppn11)).toFixed(0);
+
+            totalJumlahInputs.value = formatAngka(total_jumlah);
+            dibulatkanInputs.value = formatAngka(dibulatkan);
+            ppn11Inputs.value = formatAngka(ppn11);
+            hargaTotal.value = formatAngka(harga_total);
 
 
         }

@@ -156,7 +156,7 @@
 
                 @foreach ($kontrakbaru as $jenis_kontrak)
                     <tr style="text-align:left;">
-                        <td>{{ int_to_roman($jenis++) . '.' }}</td>
+                        <td>{{ @Terbilang::roman($jenis++) . '.' }}</td>
                         <td><b>{{ $jenis_kontrak['jenis_kontrak'] }}</b> </td>
                         <td></td>
                         <td></td>

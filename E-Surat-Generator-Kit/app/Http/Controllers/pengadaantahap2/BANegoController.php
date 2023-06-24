@@ -58,7 +58,7 @@ class BANegoController extends Controller
     // Menampilkan detail data
     public function show($id, $isDownload)
     {
-        $this->refresh($id);
+        // $this->refresh($id);
         $kontrakkerja = KontrakKerja::find($id);
 
         $formpenawaran = app(FormPenawaranHargaController::class);

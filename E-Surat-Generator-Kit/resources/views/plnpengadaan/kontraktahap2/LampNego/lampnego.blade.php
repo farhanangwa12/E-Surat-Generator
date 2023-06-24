@@ -248,12 +248,12 @@
             <tr>
                 <td style="text-align: right;">Harga Di sepakati</td>
                 <td>=</td>
-                <td style="text-align: left;">{{ $data2['harga_disepakati']; }}</td>
+                <td style="text-align: left;">Rp.{{ $data2['harga_disepakati']; }}</td>
             </tr>
             <tr>
-                <td style="text-align: right;">Terbilang</td>
+                <td style="text-align: right;"><i>Terbilang</i></td>
                 <td>:</td>
-                <td style="text-align:left;">{{ ucwords(@Terbilang::make($data2['harga_disepakati'])) }}</td>
+                <td style="text-align:left;"><i>{{ $data2['terbilang']; }}</i></td>
             </tr>
         </table>
 
@@ -272,10 +272,13 @@
                 </td>
             </tr>
             <tr style="text-align: center;">
-                <td>{{ $data2['tandatangan_direktur'] }}
+                <td style="height:30px;">
+
+                    {{-- {{ $data2['tandatangan_direktur'] }} --}}
                 </td>
 
-                <td> {{ $data2['tandatangan_pengadaan'] }}
+                <td>
+                     {{-- {{ $data2['tandatangan_pengadaan'] }} --}}
                 </td>
             </tr>
             <tr style="text-align: center;">
@@ -285,7 +288,7 @@
                 <td><b>{{ $data2['pejabat_pelaksana_pengadaan']; }}</b>
                 </td>
             </tr>
-            <tr style="text-align: center;">
+            <tr style="text-align: center; ">
                 <td colspan="2">DISAHKAN OLEH,<br>
                     PENGGUNA BARANG/JASA <br>
                     PT PLN (PERSERO) UPK TIMOR <br>
@@ -293,8 +296,9 @@
                 </td>
 
             </tr>
-            <tr style="text-align: center;">
-                <td colspan="2">{{ $data2['tandatangan_manager'] }}
+            <tr style="text-align: center; height:20px;">
+                <td colspan="2" style="height:30px;">
+                    {{-- {{ $data2['tandatangan_manager'] }} --}}
                 </td>
 
 
