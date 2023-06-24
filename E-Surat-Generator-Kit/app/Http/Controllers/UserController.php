@@ -10,7 +10,8 @@ class UserController extends Controller
 {
     public function show()
     {
-        $users = User::all();
+        $users = User::with('vendor', 'pegawai')->get();
+        
         return view('plninternal.User.index', compact('users'));
     }
 
@@ -21,6 +22,11 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users,email',
+
+        ]);
         $user = new User([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
@@ -30,7 +36,7 @@ class UserController extends Controller
         $user->save();
    
         // Redirect ke halaman dashboard
-        return redirect('/user/show');
+       
         return redirect()->route('users')->with('success', 'User created successfully');
     }
 

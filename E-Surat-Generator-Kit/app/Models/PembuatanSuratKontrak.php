@@ -16,6 +16,11 @@ class PembuatanSuratKontrak extends Model
     {
         return $this->belongsTo(KontrakKerja::class, 'id_kontrakkerja', 'id_kontrakkerja');
     }
+
+    public function hps()
+    {
+        return $this->hasOne(HPS::class, 'id_surat');
+    }
     public function lampnego()
     {
         return $this->hasOne(LampNego::class, 'id_surat');

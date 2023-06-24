@@ -49,8 +49,24 @@ class FormPenawaranHargaController extends Controller
 
             $formpenawaranharga->save();
         }
+        $lampiranpenawaran = app(LampiranPenawaranHargaController::class)->refresh($id);
+        
 
         $formpenawaranharga1 = Formpenawaranharga::where('id_dokumen', $kelengkapan->id_dokumen)->first();
+        $kontrakkerja = KontrakKerja::with('vendor')->find($id)->first();
+        if(isset($lampiranpenawaran)){
+            $formpenawaranharga = Formpenawaranharga::find($formpenawaranharga1->id);
+            $formpenawaranharga->nama_vendor = $kontrakkerja->vendor->direktur;
+            $formpenawaranharga->nama_perusahaan = $kontrakkerja->vendor->penyedia;
+            $formpenawaranharga->jabatan = "Direktur";
+            $formpenawaranharga->email_perusahaan =  $kontrakkerja->vendor->email_perusahaan;
+            $formpenawaranharga->telepon_fax = $kontrakkerja->vendor->telepon ."/". $kontrakkerja->vendor->faximile;
+            $formpenawaranharga->harga_penawaran = $lampiranpenawaran->dibulatkan;
+            $formpenawaranharga->ppn11 = $lampiranpenawaran->ppn11;
+            $formpenawaranharga->jumlah_harga = $lampiranpenawaran->total_harga;
+            $formpenawaranharga->save();
+            
+        }
         return $formpenawaranharga1;
     }
 

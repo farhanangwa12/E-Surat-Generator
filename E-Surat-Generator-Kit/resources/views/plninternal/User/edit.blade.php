@@ -36,6 +36,9 @@
                                     <option @php echo $user->role == "vendor" ? 'selected' : '' @endphp value="vendor">Vendor</option>
                                 </select>
                             </div>
+                            <div class="form-group mb-3">
+                                <label for=""></label>
+                            </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
 

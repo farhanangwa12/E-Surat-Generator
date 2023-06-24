@@ -28,10 +28,10 @@ class LampiranPenawaranHargaController extends Controller
     {
 
         // Mencari record dengan no_dokumen yang sesuai di tabel jenis_dokumen_kelengkapans
-        $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', "harga_nilai_penawaran_")->with(['kelengkapanDokumenVendors' => [
-            'lampiranPenawaranHargas'
-
-        ]])->first();
+        $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', "harga_nilai_penawaran_")->with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->first();
+     
         if ($jenisDokumen->kelengkapanDokumenVendors->isEmpty()) {
 
 
@@ -42,14 +42,14 @@ class LampiranPenawaranHargaController extends Controller
                 'id_kontrakkerja' => $id,
             ])->save();
         }
-      
+
 
         $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('lampiranPenawaranHargas')->first();
-    
+
         if ($kelengkapan->lampiranPenawaranHargas->isEmpty()) {
             $data = [];
             Lampiranpenawaranharga::create([
-                'id_dokumen' => $jenisDokumen->kelengkapanDokumenVendors[0]->id_dokumen,
+                'id_dokumen' => $kelengkapan->id_dokumen,
                 'datalampiran' => $data
 
             ])->save();
@@ -87,73 +87,73 @@ class LampiranPenawaranHargaController extends Controller
     }
    
 
-    public function create($id)
-    {
+    // public function create($id)
+    // {
 
-        // Mengambil path file JSON dari database berdasarkan ID
-        $formPenawaranHarga = $this->refresh($id);
+    //     // Mengambil path file JSON dari database berdasarkan ID
+    //     $formPenawaranHarga = $this->refresh($id);
       
-        $kontrakkerja = KontrakKerja::find($id);
-        $jenis_kontraks = JenisKontrak::where('id_kontrak', $kontrakkerja->id_kontrakkerja)->get()->toArray();
+    //     $kontrakkerja = KontrakKerja::find($id);
+    //     $jenis_kontraks = JenisKontrak::where('id_kontrak', $kontrakkerja->id_kontrakkerja)->get()->toArray();
 
-        $harga_penawaran = $formPenawaranHarga->datalampiran;
+    //     $harga_penawaran = $formPenawaranHarga->datalampiran;
 
-        $kontrakbaru = [];
-
-
-        foreach ($jenis_kontraks as $jenis_kontrak) {
-
-            $databarjas = BarJas::where('id_jenis_kontrak', $jenis_kontrak['id'])->get()->toArray();
-            $data = [];
-            $no = 0;
-            if (count($databarjas) != 0) {
-
-                foreach ($databarjas as $barjas) {
+    //     $kontrakbaru = [];
 
 
-                    $sub_data = [];
-                    $datasubbarjas = SubBarjas::where('id_barjas', $barjas['id'])->get()->toArray();
-                    if (count($datasubbarjas) != 0) {
-                        foreach ($datasubbarjas as $subbarjas) {
-                            $sub_data[] = [
-                                "id" => $subbarjas['id'],
-                                "id_barjas" => $subbarjas['id_barjas'],
-                                "uraian" => $subbarjas['uraian'],
-                                "volume" => $subbarjas['volume'],
-                                "satuan" => $subbarjas['satuan'],
-                                // "harga_satuan" => $subbarjas['harga_satuan'],
-                                // "jumlah" => $subbarjas['harga_satuan']
-                            ];
-                            # code...
-                        }
-                    }
+    //     foreach ($jenis_kontraks as $jenis_kontrak) {
 
-                    $data[] = [
-                        'id' => $barjas['id'],
-                        'uraian' => $barjas['uraian'],
-                        'vol' => $barjas['volume'],
-                        'sat' => $barjas['satuan'],
-                        'harga_satuan' => empty($harga_penawaran[$no]) ? 0 : $harga_penawaran[$no]['harga_satuan'],
-                        'jumlah' => empty($harga_penawaran[$no]) ? 0 : $harga_penawaran[$no]['jumlah'],
-                        'sub_data' => $sub_data
+    //         $databarjas = BarJas::where('id_jenis_kontrak', $jenis_kontrak['id'])->get()->toArray();
+    //         $data = [];
+    //         $no = 0;
+    //         if (count($databarjas) != 0) {
 
-                    ];
-                    $no++;
-                }
-            }
+    //             foreach ($databarjas as $barjas) {
 
 
-            $kontrakbaru[] = [
-                'jenis_kontrak' => $jenis_kontrak['nama_jenis'],
-                'data' => $data
+    //                 $sub_data = [];
+    //                 $datasubbarjas = SubBarjas::where('id_barjas', $barjas['id'])->get()->toArray();
+    //                 if (count($datasubbarjas) != 0) {
+    //                     foreach ($datasubbarjas as $subbarjas) {
+    //                         $sub_data[] = [
+    //                             "id" => $subbarjas['id'],
+    //                             "id_barjas" => $subbarjas['id_barjas'],
+    //                             "uraian" => $subbarjas['uraian'],
+    //                             "volume" => $subbarjas['volume'],
+    //                             "satuan" => $subbarjas['satuan'],
+    //                             // "harga_satuan" => $subbarjas['harga_satuan'],
+    //                             // "jumlah" => $subbarjas['harga_satuan']
+    //                         ];
+    //                         # code...
+    //                     }
+    //                 }
 
-            ];
-        }
+    //                 $data[] = [
+    //                     'id' => $barjas['id'],
+    //                     'uraian' => $barjas['uraian'],
+    //                     'vol' => $barjas['volume'],
+    //                     'sat' => $barjas['satuan'],
+    //                     'harga_satuan' => empty($harga_penawaran[$no]) ? 0 : $harga_penawaran[$no]['harga_satuan'],
+    //                     'jumlah' => empty($harga_penawaran[$no]) ? 0 : $harga_penawaran[$no]['jumlah'],
+    //                     'sub_data' => $sub_data
 
-        $lampiranPenawaran = $formPenawaranHarga;
+    //                 ];
+    //                 $no++;
+    //             }
+    //         }
 
-        return view('vendor.form_penawaran.lampiranpenawaranharga.create', compact('id', 'kontrakbaru', 'lampiranPenawaran'));
-    }
+
+    //         $kontrakbaru[] = [
+    //             'jenis_kontrak' => $jenis_kontrak['nama_jenis'],
+    //             'data' => $data
+
+    //         ];
+    //     }
+
+    //     $lampiranPenawaran = $formPenawaranHarga;
+
+    //     return view('vendor.form_penawaran.lampiranpenawaranharga.create', compact('id', 'kontrakbaru', 'lampiranPenawaran'));
+    // }
 
     public function update(Request $request, $id)
     {
@@ -202,12 +202,13 @@ class LampiranPenawaranHargaController extends Controller
 
 
 
-        $barjashps = $request->input('lampiran');
+        $barjaslamp = $request->input('lampiran');
 
         $data = $lampiranPenawaran2->datalampiran;
 
         $no = 0;
-        foreach ($barjashps as $bhps) {
+    
+        foreach ($barjaslamp as $bhps) {
             $data[$no]['harga_satuan'] = str_replace('.', '', $bhps['harga_satuan']);
             $data[$no]['jumlah'] =  str_replace('.', '', $bhps['jumlah']);
 

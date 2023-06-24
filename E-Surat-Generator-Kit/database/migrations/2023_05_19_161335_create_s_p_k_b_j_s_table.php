@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('s_p_k_b_j_s', function (Blueprint $table) {
             $table->id();
-            $table->tandatangan_direktur();
-            $table->manager();
+            // $table->tandatangan_direktur();
+            // $table->manager();
             $table->timestamps();
         });
     }

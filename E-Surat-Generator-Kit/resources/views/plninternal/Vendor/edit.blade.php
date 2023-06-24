@@ -23,7 +23,7 @@
                         @endif
                         <form method="POST" action="{{ route('vendor.update', $vendor->id_vendor) }}">
                             @csrf
-                          
+
 
                             <div class="form-group mb-3">
                                 <label for="penyedia" class="form-label">Penyedia</label>
@@ -39,33 +39,55 @@
                                 <label for="alamat" class="form-label">Alamat</label>
                                 <div class="row align-start">
                                     <div class="col">
-                                        <input type="text" class="form-control" id="alamat_jalan" name="alamat_jalan" placeholder="Contoh : Jalan Panglima" value="{{$vendor->alamat_jalan}}">
+                                        <input type="text" class="form-control" id="alamat_jalan" name="alamat_jalan"
+                                            placeholder="Contoh : Jalan Panglima" value="{{ $vendor->alamat_jalan }}">
                                     </div>
                                     <div class="col">
-                                        <input type="text" class="form-control" id="alamat_kota" name="alamat_kota" placeholder="Contoh : Madiun" value="{{$vendor->alamat_kota}}">
+                                        <input type="text" class="form-control" id="alamat_kota" name="alamat_kota"
+                                            placeholder="Contoh : Madiun" value="{{ $vendor->alamat_kota }}">
                                     </div>
                                     <div class="col">
-                                        <input type="text" class="form-control" id="alamat_provinsi" name="alamat_provinsi" placeholder="Contoh : Jawa Timur" value="{{$vendor->alamat_provinsi}}">
+                                        <input type="text" class="form-control" id="alamat_provinsi"
+                                            name="alamat_provinsi" placeholder="Contoh : Jawa Timur"
+                                            value="{{ $vendor->alamat_provinsi }}">
                                     </div>
-                                    
-                                   
-                                    
+
+
+
 
 
                                 </div>
-                    
+
                             </div>
                             <div class="form-group mb-3">
                                 <label for="bank" class="form-label">Bank</label>
-                                <input type="text" class="form-control" id="bank" placeholder="Contoh : BANK BNI" value="{{$vendor->bank}}"
-                                    name="bank">
+                                <input type="text" class="form-control" id="bank" placeholder="Contoh : BANK BNI"
+                                    value="{{ $vendor->bank }}" name="bank">
 
 
                             </div>
                             <div class="form-group mb-3">
                                 <label for="nomor_rekening" class="form-label">Nomor Rekening</label>
                                 <input type="text" class="form-control" id="nomor_rekening"
-                                    placeholder="Contoh : 80090XXXXX " name="nomor_rek" value="{{$vendor->nomor_rek}}">
+                                    placeholder="Contoh : 80090XXXXX " name="nomor_rek" value="{{ $vendor->nomor_rek }}">
+                            </div>
+
+
+                            <div class="form-group mb-3">
+                                <label for="telepon">Telepon</label>
+                                <input type="text" class="form-control" id="telepon" name="telepon" placeholder="Contoh : 08XXXXXXX" value="{{ $vendor->telepon }}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="website">Website</label>
+                                <input type="text" class="form-control" id="website" name="website" placeholder="Contoh : www.mywebsite.com" value="{{ $vendor->website }}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="faksimili">Faksimili</label>
+                                <input type="text" class="form-control" id="faksimili" name="faksimili" placeholder="Contoh : (031)21123231" value="{{ $vendor->faksimili }}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="email_perusahaan">Email Perusahaan</label>
+                                <input type="email" class="form-control" id="email_perusahaan" name="email_perusahaan" placeholder="Contoh : perusahaanku@email.com" value="{{ $vendor->email_perusahaan }}">
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>

@@ -11,10 +11,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0"> <a href="{{route('users.create')}}" class="btn btn-primary">Tambah</a>
+                        <h5 class="card-title mb-0"> <a href="{{ route('users.create') }}" class="btn btn-primary">Tambah</a>
                         </h5>
-                        
-                      
+
+
                     </div>
                     <div class="card-body">
 
@@ -24,6 +24,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Jenis Akun</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
@@ -32,12 +33,32 @@
                                     $no = 1;
                                 @endphp
                                 @foreach ($users as $item)
+                                  
                                     <tr>
                                         <td scope="row">{{ $no++ }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
-                                        <td> <a href="{{ route('users.edit',["id"=>$item->id]) }}" class="btn btn-primary">Edit</a>
-                                            <form action="{{ route('users.destroy',["id"=>$item->id]) }}" method="POST"
+
+                                        @if ($item->vendor !== null)
+                                            <td>
+                                                <button class="btn btn-success">Vendor</button>
+
+                                            </td>
+                                        @elseif($item->pegawai !== null)
+                                            <td>
+                                                <button class="btn btn-success">Pegawai</button>
+
+                                            </td>
+                                        @else
+                                            <td>
+                                                <button class="btn btn-danger">Tidak Terhubung</button>
+
+                                            </td>
+                                        @endif
+
+                                        <td> <a href="{{ route('users.edit', ['id' => $item->id]) }}"
+                                                class="btn btn-primary">Edit</a>
+                                            <form action="{{ route('users.destroy', ['id' => $item->id]) }}" method="POST"
                                                 style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')

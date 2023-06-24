@@ -16,15 +16,21 @@ class HPS extends Model
         'rok10',
         'ppn11',
         'total_harga',
-        'tandatangan_pengadaan',
-        'tanggal_tandatangan_pengadaan',
-        'tandatangan_manager',
-        'tanggal_tandatangan_manager',
+        // 'tandatangan_pengadaan',
+        // 'tanggal_tandatangan_pengadaan',
+        // 'tandatangan_manager',
+        // 'tanggal_tandatangan_manager',
     ];
-
-    public function kontrakKerjas()
+    public function suratKontrak()
     {
-        return $this->belongsTo(KontrakKerja::class, 'id_kontrakkerja', 'id_kontrakkerja');
+        return $this->belongsTo(PembuatanSuratKontrak::class, 'id_surat');
     }
+
+    public function barJasHPS()
+    {
+        return $this->hasMany(barJasHPS::class, 'id_hps');
+    }
+    
+
     use HasFactory;
 }

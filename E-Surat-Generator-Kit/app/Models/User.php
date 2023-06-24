@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-     
+
         'name',
         'email',
         'vendor_id',
@@ -48,14 +48,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-   
+    public static $rules = [
+        'email' => 'required|unique:users,email',
+        // aturan validasi lainnya
+    ];
+
     public function vendor()
     {
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(Vendor::class, 'vendor_id');
     }
 
     public function pegawai()
     {
-        return $this->belongsTo(Pegawai::class);
+        return $this->belongsTo(Pegawai::class, 'pegawai_id');
     }
 }

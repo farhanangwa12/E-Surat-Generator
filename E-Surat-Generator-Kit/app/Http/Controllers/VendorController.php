@@ -35,20 +35,41 @@ class VendorController extends Controller
 
 
         // $id = $akun->id;
-        $validatedData = $request->validate([
-            'penyedia' => 'required|max:255',
-            'direktur' => 'required|max:255',
-            'alamat_jalan' => 'required|max:255',
-            'alamat_kota' => 'required|max:255',
-            'alamat_provinsi' => 'required|max:255',
-            'bank' => 'required|max:255',
-            'nomor_rek' => 'required|max:255',
+        $validator = Validator::make($request->all(), [
+            'penyedia' => 'required',
+            'direktur' => 'required',
+            'alamat_jalan' => 'required',
+            'alamat_kota' => 'required',
+            'alamat_provinsi' => 'required',
+            'bank' => 'required',
+            'nomor_rek' => 'required',
+            'telepon' => 'nullable',
+            'website' => 'nullable',
+            'faksimili' => 'nullable',
+            'email_perusahaan' => 'nullable|email',
         ]);
 
-        $vendor = new Vendor($validatedData);
-        // $vendor->id_akun = $id;
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
+        // Jika validasi berhasil, simpan ke model Vendor
+        $vendor = new Vendor;
+        $vendor->penyedia = $request->input('penyedia');
+        $vendor->direktur = $request->input('direktur');
+        $vendor->alamat_jalan = $request->input('alamat_jalan');
+        $vendor->alamat_kota = $request->input('alamat_kota');
+        $vendor->alamat_provinsi = $request->input('alamat_provinsi');
+        $vendor->bank = $request->input('bank');
+        $vendor->nomor_rek = $request->input('nomor_rek');
+        $vendor->telepon = $request->input('telepon');
+        $vendor->website = $request->input('website');
+        $vendor->faksimili = $request->input('faksimili');
+        $vendor->email_perusahaan = $request->input('email_perusahaan');
         $vendor->save();
+
+
+
 
         $akun = $request->validate([
             'name' => 'required',
@@ -77,27 +98,43 @@ class VendorController extends Controller
     {
 
 
-
-        $validatedData = $request->validate([
-
-            'penyedia' => 'required|max:255',
-            'direktur' => 'required|max:255',
-            'alamat' => 'required|max:255',
-            'bank' => 'required|max:255',
-            'nomor_rek' => 'required|max:255',
+        // $id = $akun->id;
+        $validator = Validator::make($request->all(), [
+            'penyedia' => 'required',
+            'direktur' => 'required',
+            'alamat_jalan' => 'required',
+            'alamat_kota' => 'required',
+            'alamat_provinsi' => 'required',
+            'bank' => 'required',
+            'nomor_rek' => 'required',
+            'telepon' => 'nullable',
+            'website' => 'nullable',
+            'faksimili' => 'nullable',
+            'email_perusahaan' => 'nullable|email',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
 
         $vendor = Vendor::find($id);
 
-        $vendor->penyedia = $validatedData['penyedia'];
-        $vendor->direktur = $validatedData['direktur'];
-        $vendor->alamat = $validatedData['alamat'];
-        $vendor->bank = $validatedData['bank'];
-        $vendor->nomor_rek = $validatedData['nomor_rek'];
-
+        // Jika validasi berhasil, simpan ke model Vendor
+        $vendor = new Vendor;
+        $vendor->penyedia = $request->input('penyedia');
+        $vendor->direktur = $request->input('direktur');
+        $vendor->alamat_jalan = $request->input('alamat_jalan');
+        $vendor->alamat_kota = $request->input('alamat_kota');
+        $vendor->alamat_provinsi = $request->input('alamat_provinsi');
+        $vendor->bank = $request->input('bank');
+        $vendor->nomor_rek = $request->input('nomor_rek');
+        $vendor->telepon = $request->input('telepon');
+        $vendor->website = $request->input('website');
+        $vendor->faksimili = $request->input('faksimili');
+        $vendor->email_perusahaan = $request->input('email_perusahaan');
         $vendor->save();
+
         return redirect()->route('vendor')->with('success', 'vendor updated successfully');
     }
 

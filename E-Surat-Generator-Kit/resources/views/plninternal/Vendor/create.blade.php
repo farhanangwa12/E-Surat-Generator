@@ -20,10 +20,15 @@
                 <form method="POST" action="{{ route('vendor.store') }}">
                     <div class="card">
                         <div class="card-header">
-                            Data User
+                            Data User <br>
+                            {{-- <button type="button" id="toggleButton" class="btn btn-primary" onclick="toggleAccount()">Tambah Akun</button> --}}
                         </div>
 
-                        <div class="card-body">
+
+                        {{-- <div class="card-body" id="akun" style="display: none;"> --}}
+                        <div class="card-body" id="akun" style="">
+
+
 
                             @csrf
                             <div class="form-group mb-3">
@@ -44,6 +49,24 @@
 
 
                         </div>
+
+
+                        <script>
+                            function toggleAccount() {
+                                var akunDiv = document.getElementById('akun');
+                                var toggleButton = document.getElementById('toggleButton');
+
+                                if (akunDiv.style.display === 'none') {
+                                    akunDiv.style.display = 'block';
+                                    toggleButton.textContent = 'Batal';
+
+                                } else {
+                                    akunDiv.style.display = 'none';
+                                    toggleButton.textContent = 'Tambah Akun';
+
+                                }
+                            }
+                        </script>
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -54,7 +77,6 @@
 
 
                             @csrf
-
 
 
                             <div class="form-group mb-3">
@@ -71,21 +93,20 @@
                                 <label for="alamat" class="form-label">Alamat</label>
                                 <div class="row align-start">
                                     <div class="col">
-                                        <input type="text" class="form-control" id="alamat_jalan" name="alamat_jalan" placeholder="Contoh : Jalan Panglima">
+                                        <input type="text" class="form-control" id="alamat_jalan" name="alamat_jalan"
+                                            placeholder="Contoh : Jalan Panglima">
                                     </div>
                                     <div class="col">
-                                        <input type="text" class="form-control" id="alamat_kota" name="alamat_kota" placeholder="Contoh : Madiun">
+                                        <input type="text" class="form-control" id="alamat_kota" name="alamat_kota"
+                                            placeholder="Contoh : Madiun">
                                     </div>
                                     <div class="col">
-                                        <input type="text" class="form-control" id="alamat_provinsi" name="alamat_provinsi" placeholder="Contoh : Jawa Timur">
+                                        <input type="text" class="form-control" id="alamat_provinsi"
+                                            name="alamat_provinsi" placeholder="Contoh : Jawa Timur">
                                     </div>
-                                    
-                                   
-                                    
-
 
                                 </div>
-                    
+
                             </div>
                             <div class="form-group mb-3">
                                 <label for="bank" class="form-label">Bank</label>
@@ -98,6 +119,27 @@
                                 <label for="nomor_rekening" class="form-label">Nomor Rekening</label>
                                 <input type="text" class="form-control" id="nomor_rekening"
                                     placeholder="Contoh : 80090XXXXX " name="nomor_rek">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="telepon" class="form-label">Telepon</label>
+                                <input type="text" class="form-control" placeholder="Contoh : 08XXXXXXX"id="telepon"
+                                    name="telepon">
+                            </div>
+                            <div class="mb-3">
+                                <label for="website" class="form-label">Website</label>
+                                <input type="text" class="form-control" placeholder="Contoh : www.mywebsite.com"
+                                    id="website" name="website">
+                            </div>
+                            <div class="mb-3">
+                                <label for="faksimili" class="form-label">Faksimili</label>
+                                <input type="text" class="form-control" placeholder="Contoh : (031)21123231"
+                                    id="faksimili" name="faksimili">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email_perusahaan" class="form-label">Email Perusahaan</label>
+                                <input type="email" class="form-control" placeholder="Contoh : perusahaanku@email.com"
+                                    id="email_perusahaan" name="email_perusahaan">
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
 

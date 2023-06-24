@@ -27,7 +27,7 @@
                                 </div>
                             @endif
                             <input type="hidden" name="id_jenis_kontrak" value="{{ $id_jenis_kontrak }}">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="uraian">Uraian</label>
                                 <input type="text" class="form-control @error('uraian') is-invalid @enderror"
                                     name="uraian" value="{{ old('uraian') }}">
@@ -35,7 +35,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="volume">Volume</label>
                                 <input type="number" step="0.01"
                                     class="form-control @error('volume') is-invalid @enderror" name="volume"
@@ -44,7 +44,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="satuan">Satuan</label>
                                 <input type="text" class="form-control @error('satuan') is-invalid @enderror"
                                     name="satuan" value="{{ old('satuan') }}">

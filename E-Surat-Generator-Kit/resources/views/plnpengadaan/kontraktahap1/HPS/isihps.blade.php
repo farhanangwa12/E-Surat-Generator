@@ -1,6 +1,6 @@
 @extends('template.app')
 
-@section('title', 'ISI RKS')
+@section('title', 'HPS')
 
 @section('content')
 
@@ -49,43 +49,43 @@
                                 <tbody>
                                     @php
                                         
-                                        function int_to_roman($num)
-                                        {
-                                            // array untuk angka romawi
-                                            $roman = [
-                                                'M' => 1000,
-                                                'CM' => 900,
-                                                'D' => 500,
-                                                'CD' => 400,
-                                                'C' => 100,
-                                                'XC' => 90,
-                                                'L' => 50,
-                                                'XL' => 40,
-                                                'X' => 10,
-                                                'IX' => 9,
-                                                'V' => 5,
-                                                'IV' => 4,
-                                                'I' => 1,
-                                            ];
-                                            $result = '';
-                                            // loop melalui array angka romawi
-                                            foreach ($roman as $key => $value) {
-                                                // dapatkan banyaknya simbol romawi yang dibutuhkan
-                                                $numerals = intval($num / $value);
-                                                // tambahkan simbol romawi ke string hasil
-                                                $result .= str_repeat($key, $numerals);
-                                                // kurangi angka asal dengan angka romawi yang telah dihasilkan
-                                                $num = $num % $value;
-                                            }
-                                            return $result;
-                                        }
+                                        // function int_to_roman($num)
+                                        // {
+                                        //     // array untuk angka romawi
+                                        //     $roman = [
+                                        //         'M' => 1000,
+                                        //         'CM' => 900,
+                                        //         'D' => 500,
+                                        //         'CD' => 400,
+                                        //         'C' => 100,
+                                        //         'XC' => 90,
+                                        //         'L' => 50,
+                                        //         'XL' => 40,
+                                        //         'X' => 10,
+                                        //         'IX' => 9,
+                                        //         'V' => 5,
+                                        //         'IV' => 4,
+                                        //         'I' => 1,
+                                        //     ];
+                                        //     $result = '';
+                                        //     // loop melalui array angka romawi
+                                        //     foreach ($roman as $key => $value) {
+                                        //         // dapatkan banyaknya simbol romawi yang dibutuhkan
+                                        //         $numerals = intval($num / $value);
+                                        //         // tambahkan simbol romawi ke string hasil
+                                        //         $result .= str_repeat($key, $numerals);
+                                        //         // kurangi angka asal dengan angka romawi yang telah dihasilkan
+                                        //         $num = $num % $value;
+                                        //     }
+                                        //     return $result;
+                                        // }
                                         $jenis = 1;
                                         $semua = 1;
                                     @endphp
 
                                     @foreach ($kontrakbaru as $jenis_kontrak)
                                         <tr style="text-align:left;">
-                                            <td>{{ int_to_roman($jenis++) . '.' }}</td>
+                                            <td>{{ @Terbilang::roman($jenis++) . '.' }}</td>
                                             <td><b>{{ $jenis_kontrak['jenis_kontrak'] }}</b> </td>
                                             <td></td>
                                             <td></td>
@@ -136,27 +136,27 @@
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Total Jumlah:</strong>
                                         </td>
-                                        <td><input type="number" class="form-control total_harga" name="total_jumlah"
+                                        <td><input type="text" class="form-control total_harga" name="total_jumlah"
                                                 id="total_jumlah" readonly value="{{ $hps->total_jumlah == null ? 0 : $hps->total_jumlah }}"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Dibulatkan </strong></td>
-                                        <td><input type="number" class="form-control" id="pembulatan" name="dibulatkan"
+                                        <td><input type="text" class="form-control" id="pembulatan" name="dibulatkan"
                                                 value="{{ $hps->dibulatkan == null ? 0 : $hps->dibulatkan }}" readonly></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>ROK 10% </strong></td>
-                                        <td><input type="number" class="form-control" id="rok10" name="rok10"
+                                        <td><input type="text" class="form-control" id="rok10" name="rok10"
                                                 readonly value="{{ $hps->rok10 }}"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>PPN 11%</strong></td>
-                                        <td><input type="number" class="form-control" id="ppn11" name="ppn11"
+                                        <td><input type="text" class="form-control" id="ppn11" name="ppn11"
                                                 readonly value="{{ $hps->ppn11 }}"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="text-align: right;"><strong>Harga Total</strong></td>
-                                        <td><input type="number" class="form-control" id="harga_total" name="harga_total"
+                                        <td><input type="text" class="form-control" id="harga_total" name="harga_total"
                                                 readonly value="{{ $hps->total_harga }}"></td>
                                     </tr>
                                 </tfoot>
@@ -240,18 +240,24 @@
                 const nilaiVolume = parseFloat(volume[i].innerHTML);
                 const nilaiHargaSatuan = parseFloat(hargaSatuan[i].value.replace(/\./g, ''));
                 const nilaiJumlah = nilaiHargaSatuan * nilaiVolume;
-                jumlahInputs[i].value = nilaiJumlah.toFixed(0);
+                jumlahInputs[i].value = formatAngka(nilaiJumlah.toFixed(0));
                 total_jumlah += nilaiJumlah;
 
 
 
+                
             }
-            totalJumlahInputs.value = parseFloat(total_jumlah);
-            dibulatkanInputs.value = Math.round(totalJumlahInputs.value);
-            rok10Inputs.value = (parseFloat(dibulatkanInputs.value) * 0.1).toFixed(2);
-            ppn11Inputs.value = ((parseFloat(dibulatkanInputs.value) + parseFloat(rok10Inputs.value)) * 0.11).toFixed(2);
-            hargaTotal.value = (parseFloat(dibulatkanInputs.value) + parseFloat(rok10Inputs.value) + parseFloat(ppn11Inputs
-                .value)).toFixed(2);
+            totalJumlah = parseFloat(total_jumlah);
+            dibulatkan = Math.round(totalJumlah);
+            rok10 = (parseFloat(dibulatkan) * 0.1).toFixed(0);
+            ppn11 =  ((parseFloat(dibulatkan) + parseFloat(rok10)) * 0.11).toFixed(0);
+            harga_total = (parseFloat(dibulatkan) + parseFloat(rok10) + parseFloat(ppn11)).toFixed(0);
+
+            totalJumlahInputs.value = formatAngka(totalJumlah);
+            dibulatkanInputs.value = formatAngka(dibulatkan);
+            rok10Inputs.value =  formatAngka(rok10);
+            ppn11Inputs.value = formatAngka(ppn11);
+            hargaTotal.value =  formatAngka(harga_total);
 
 
         }
@@ -263,24 +269,24 @@
 
 
 
-        // function formatAngka(angka) {
-        //     if (angka === '') {
-        //         return '';
-        //     }
+        function formatAngka(angka) {
+            if (angka === '') {
+                return '';
+            }
 
-        //     const numberString = angka.toString();
-        //     const splitArray = numberString.split('');
-        //     let formattedValue = '';
+            const numberString = angka.toString();
+            const splitArray = numberString.split('');
+            let formattedValue = '';
 
-        //     for (let i = 0; i < splitArray.length; i++) {
-        //         formattedValue += splitArray[i];
-        //         if ((splitArray.length - 1 - i) % 3 === 0 && i !== splitArray.length - 1) {
-        //             formattedValue += '.';
-        //         }
-        //     }
+            for (let i = 0; i < splitArray.length; i++) {
+                formattedValue += splitArray[i];
+                if ((splitArray.length - 1 - i) % 3 === 0 && i !== splitArray.length - 1) {
+                    formattedValue += '.';
+                }
+            }
 
-        //     return formattedValue;
-        // }
+            return formattedValue;
+        }
     </script>
 
 

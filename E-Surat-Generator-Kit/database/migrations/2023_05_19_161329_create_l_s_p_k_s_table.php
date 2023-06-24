@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('l_s_p_k_s', function (Blueprint $table) {
             $table->id();
-            $table->tandatangan_direktur();
-            $table->tandatangan_manager();
+          
             $table->timestamps();
         });
     }

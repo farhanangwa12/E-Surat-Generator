@@ -33,6 +33,11 @@ class KontrakKerja extends Model
     {
         return $this->belongsTo(Vendor::class, 'id_vendor', 'id_vendor');
     }
+
+    public function dataVendor()
+    {
+        return $this->hasMany(DataVendor::class, 'id_kontrakkerja');
+    }
     public function pembuatansuratkontrak()
     {
         return $this->hasMany(PembuatanSuratKontrak::class, 'id_kontrakkerja', 'id_kontrakkerja');
@@ -60,10 +65,7 @@ class KontrakKerja extends Model
 
 
     // Dokumen
-    public function hps()
-    {
-        return $this->hasMany(HPS::class, 'id_kontrakkerja', 'id_kontrakkerja');
-    }
+
     public function und()
     {
         return $this->hasMany(UND::class, 'id_kontrakkerja');
