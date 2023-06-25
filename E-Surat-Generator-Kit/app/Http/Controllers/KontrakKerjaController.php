@@ -1157,6 +1157,14 @@ class KontrakKerjaController extends Controller
         }
         $pembuatansurat = json_decode(json_encode($pembuatansurat));
 
+        // Hitung  Barang dan Jasa
+        $banyakdatabarang = JenisKontrak::where('id_kontrak', $id)->with('barJas')->get();
+        $hitungbarangdanjasa = $banyakdatabarang->sum(function ($jenisKontrak) {
+            return $jenisKontrak->barJas->count();
+        });
+        
+       
+        
         // Detail Kontrak
         $kontrak = [
             'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
@@ -1223,6 +1231,9 @@ class KontrakKerjaController extends Controller
 
             'tanggal_spk' => $pembuatansurat->nomor_spk->tanggal_surat == null ? '' : $this->dateConvertertoInd($pembuatansurat->nomor_spk->tanggal_surat),
             'nomor_spk' => $pembuatansurat->nomor_spk->nomor_surat,
+
+
+            'banyakbarangdanjasa' => $hitungbarangdanjasa
 
 
 

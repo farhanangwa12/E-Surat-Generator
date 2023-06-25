@@ -271,7 +271,7 @@
                                                         <div class="col">
                                                             <form method="POST"
                                                                 action="{{ route('vendor.kelengkapandok.update', ['id' => $jenisDokumenKelengkapan['id_jenis'], 'id_kontrakkerja' => $id]) }}"
-                                                                enctype="multipart/form-data" id="uploadForm">
+                                                                enctype="multipart/form-data" id="uploadForm" class="formuntukUpload">
                                                                 @method('PUT')
                                                                 @csrf
                                                                 <div class="mb-3">
@@ -307,7 +307,7 @@
                                                 <td>
                                                     <form method="POST"
                                                         action="{{ route('vendor.kelengkapandok.store', ['id' => $jenisDokumenKelengkapan['id_jenis'], 'id_kontrakkerja' => $id]) }}"
-                                                        enctype="multipart/form-data" id="uploadForm">
+                                                        enctype="multipart/form-data" id="uploadForm" class="formuntukUpload">
                                                         @csrf
                                                         <div class="mb-3">
                                                             <label for="fileUpload" class="btn btn-primary">Upload File
@@ -366,13 +366,16 @@
         <script>
             var fileUploadList = document.querySelectorAll('#fileUpload');
 
-            var uploadForm = document.querySelectorAll('#uploadForm');
+            // var formUploadList = document.querySelectorAll('#uploadForm');
+            var formUploadList = document.querySelectorAll('.formuntukUpload');
+            console.log(formUploadList);
             fileUploadList.forEach((fileUpload, index) => {
                 fileUpload.addEventListener('change', function(event) {
                     var confirmation = confirm('Apakah Anda yakin ingin mengupload dokumen?');
                     console.log(index);
                     if (confirmation) {
-                        uploadForm[index].submit();
+                        console.log( formUploadList[index]);
+                        // formUploadList[index].submit();
 
                     }
 

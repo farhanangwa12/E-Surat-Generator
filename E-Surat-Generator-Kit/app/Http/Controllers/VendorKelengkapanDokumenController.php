@@ -125,8 +125,10 @@ class VendorKelengkapanDokumenController extends Controller
 
 
 
-    public function store($id, $id_kontrakkerja, Request $request)
+    public function store(Request $request, $id, $id_kontrakkerja)
     {
+        dd("id" + $id);
+        dd("id_kontrakkerja" + $id_kontrakkerja);
         // Step 1: Mencari JenisDokumenKelengkapan dengan relasi kelengkapanDokumenVendors
         $jenisDokumen = JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->find($id);
 
