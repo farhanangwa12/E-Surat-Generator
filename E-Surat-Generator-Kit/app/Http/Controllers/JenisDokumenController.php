@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JenisDokumenKelengkapan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class JenisDokumenController extends Controller
 {
@@ -23,12 +24,19 @@ class JenisDokumenController extends Controller
 
     public function store(Request $request)
     {
+        $messages = [
+         
+            'no_dokumen.unique' => 'The document number already exists in the database and must be different with other record.',
+        ];
         $request->validate([
             'nama_dokumen' => 'required',
-            'no_dokumen' => 'required',
+            'no_dokumen' => [
+                'required',
+                Rule::unique(JenisDokumenKelengkapan::class, 'no_dokumen'),
+            ],
             'keterangan' => 'nullable',
-        ]);
-      
+        ],$messages);
+
 
         $jenisDokumen = new JenisDokumenKelengkapan();
         $jenisDokumen->nama_dokumen = $request->nama_dokumen;
@@ -44,17 +52,24 @@ class JenisDokumenController extends Controller
     public function edit($id)
     {
         $jenisdokumen = JenisDokumenKelengkapan::find($id);
-
+      
         return view('plninternal.NamaDokumenCRUD.edit', compact('jenisdokumen'));
     }
 
     public function update(Request $request, $id)
     {
+        $messages = [
+         
+            'no_dokumen.unique' => 'The document number already exists in the database and must be different with other record.',
+        ];
         $request->validate([
             'nama_dokumen' => 'required',
-            'no_dokumen' => 'required',
+            'no_dokumen' => [
+                'required',
+                Rule::unique(JenisDokumenKelengkapan::class, 'no_dokumen'),
+            ],
             'keterangan' => 'nullable',
-        ]);
+        ],$messages);
 
         $jenisdokumen = JenisDokumenKelengkapan::find($id);
         $jenisdokumen->nama_dokumen = $request->nama_dokumen;

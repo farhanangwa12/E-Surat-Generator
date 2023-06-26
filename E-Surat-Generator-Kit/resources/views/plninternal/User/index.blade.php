@@ -11,6 +11,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
                         <h5 class="card-title mb-0"> <a href="{{ route('users.create') }}" class="btn btn-primary">Tambah</a>
                         </h5>
 
@@ -33,7 +39,6 @@
                                     $no = 1;
                                 @endphp
                                 @foreach ($users as $item)
-                                  
                                     <tr>
                                         <td scope="row">{{ $no++ }}</td>
                                         <td>{{ $item->name }}</td>

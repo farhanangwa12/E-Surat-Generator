@@ -2,9 +2,10 @@
 
 @section('title', 'Management Vendor')
 <style>
-    th,td {
+    th,
+    td {
         vertical-align: middle;
-        
+
     }
 </style>
 @section('content')
@@ -16,6 +17,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
                         <h5 class="card-title mb-0"> <a href="{{ route('vendor.create') }}" class="btn btn-primary">Tambah</a>
                         </h5>
 
@@ -44,7 +51,8 @@
                                         <th scope="row">{{ $no++ }}</th>
                                         <td>{{ $item->penyedia }}</td>
                                         <td>{{ $item->direktur }}</td>
-                                        <td>{{ $item->alamat_jalan . ', ' . $item->alamat_kota . ', ' . $item->alamat_provinsi }}</td>
+                                        <td>{{ $item->alamat_jalan . ', ' . $item->alamat_kota . ', ' . $item->alamat_provinsi }}
+                                        </td>
                                         <td>{{ $item->bank }}</td>
                                         <td>{{ $item->nomor_rek }}</td>
                                         <td> <a href="{{ route('vendor.edit', ['id' => $item->id_vendor]) }}"
@@ -55,7 +63,9 @@
                                                 method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger">Hapus</button>
+                                                <button type="submit"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
+                                                    class="btn btn-danger">Hapus</button>
                                             </form>
                                         </td>
                                     </tr>

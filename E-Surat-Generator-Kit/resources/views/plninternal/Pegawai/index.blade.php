@@ -11,6 +11,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
                         <h5 class="card-title mb-0"> <a href="{{ route('pegawai.create') }}" class="btn btn-primary">Tambah</a>
                         </h5>
 
@@ -41,11 +47,13 @@
 
                                         <td> <a href="{{ route('pegawai.edit', ['id' => $item->id_pegawai]) }}"
                                                 class="btn btn-primary">Edit</a>
-                                            <form action="{{ route('pegawai.destroy', ['id' => $item->id_pegawai]) }}" method="POST"
-                                                style="display: inline-block;">
+                                            <form action="{{ route('pegawai.destroy', ['id' => $item->id_pegawai]) }}"
+                                                method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger">Hapus</button>
+                                                <button type="submit"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
+                                                    class="btn btn-danger">Hapus</button>
                                             </form>
                                         </td>
                                     </tr>

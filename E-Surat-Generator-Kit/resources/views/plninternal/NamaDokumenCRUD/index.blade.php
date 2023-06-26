@@ -11,6 +11,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
                         <h5 class="card-title mb-0"> <a href="{{ route('jenisdokumen.create') }}"
                                 class="btn btn-primary">Tambah</a>
                         </h5>
@@ -55,7 +61,9 @@
                                                         method="POST" style="display: inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger btn-sm">Hapus</button>
+                                                        <button type="submit"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
+                                                            class="btn btn-danger btn-sm">Hapus</button>
                                                     </form>
                                                 </div>
                                             @endif

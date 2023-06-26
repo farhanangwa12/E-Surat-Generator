@@ -6,11 +6,18 @@
 
     <div class="container-fluid p-0">
 
-        <h1 class="h3 mb-3">{{$jenis->nama_jenis}}</h1>
+        <h1 class="h3 mb-3">{{ $jenis->nama_jenis }}</h1>
 
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                    </div>
 
                     <div class="card-body">
                         <div class="text-right mb-3">
@@ -65,7 +72,7 @@
                                             {{-- <td>{{ $subbarjas['harga_satuan'] }}</td>
                                             <td>{{ $subbarjas['jumlah'] }}</td> --}}
                                             <td>
-                                                
+
                                                 <a href="{{ route('subbarjas.edit', ['id' => $subbarjas['id_subbarjas']]) }}"
                                                     class="btn btn-primary">Edit</a>
                                                 <form

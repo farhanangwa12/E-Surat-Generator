@@ -1,11 +1,11 @@
 @extends('template.app')
 
-@section('title', 'Edit User')
+@section('title', 'Edit Vendor')
 
 @section('content')
     <div class="container-fluid p-0">
 
-        <h1 class="h3 mb-3">Edit User</h1>
+        <h1 class="h3 mb-3">Edit Vendor</h1>
 
         <div class="row">
             <div class="col-12">
@@ -23,8 +23,6 @@
                         @endif
                         <form method="POST" action="{{ route('vendor.update', $vendor->id_vendor) }}">
                             @csrf
-
-
                             <div class="form-group mb-3">
                                 <label for="penyedia" class="form-label">Penyedia</label>
                                 <input type="text" class="form-control" id="penyedia"

@@ -1,6 +1,6 @@
 @extends('template.app')
 
-@section('title', 'Edit User')
+@section('title', 'Edit Pegawai')
 
 @section('content')
     <div class="container-fluid p-0">
