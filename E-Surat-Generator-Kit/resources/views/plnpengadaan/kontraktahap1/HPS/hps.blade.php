@@ -273,7 +273,7 @@
             <i>{{$data2['harga_total']}}</i></p> --}}
          
         <p style="text-align: left;margin-top:20px; margin-bottom:20px;">Terbilang:
-            <i>{{ ucwords(@Terbilang::make($data2['harga_total'])) }}</i></p>
+            <i>{{$data2['terbilang'] }}</i></p>
     </main>
     <table style="width: 100%; text-align:center;">
         <tr>

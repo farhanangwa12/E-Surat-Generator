@@ -20,22 +20,42 @@ use PDF;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use DNS2D;
 use Illuminate\Support\Facades\Auth;
-
+use Terbilang;
 class HPSController extends Controller
 {
     public function refresh($id)
     {
-        $pembuatansuratkontrak = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat','nomor_hps')->with('hps')->first();
-    
-        // // Mengecek apaka    h record HPS ada
+        $pembuatansuratkontrak = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat', 'nomor_hps')->with('hps.barjashps')->first();
+
+        // // Mengecek apakah record HPS ada
         // $hps = HPS::where('id_kontrakkerja', $id)->first();
 
- 
+
         if (isset($pembuatansuratkontrak->hps)) {
             // Jika record HPS ada
             // Lakukan operasi lain yang diinginkan
+            $total_jumlah = 0;
+            foreach ($pembuatansuratkontrak->hps->barjashps as $bhps) {
+                $databarjasHPS = BarJasHPS::where('id_hps', $bhps['id_hps'])->where('id_barjas', $bhps['id_barjas'])->first();
+
+                $total_jumlah +=  str_replace(".", "", $databarjasHPS->jumlah);
+            }
+
+            $total_jumlah1 = $total_jumlah;
+
+            $dibulatkan = round($total_jumlah);
+            $rok10 = round($dibulatkan * 0.1);
+            $ppn11 = round(($dibulatkan + $rok10) * 0.11);
+            $total_harga = $dibulatkan + $rok10 + $ppn11;
+
 
             $hps = HPS::find($pembuatansuratkontrak->hps->id);
+            $hps->total_jumlah = number_format($total_jumlah1, 0, ",", ".");
+
+            $hps->dibulatkan =  number_format($total_jumlah1, 0, ",", ".");
+            $hps->rok10 =   number_format($rok10, 0, ",", ".");
+            $hps->ppn11 =   number_format($ppn11, 0, ",", ".");
+            $hps->total_harga =   number_format($total_harga, 0, ",", ".");
             $hps->save();
         } else {
             // Jika record HPS tidak ada
@@ -55,7 +75,7 @@ class HPSController extends Controller
             $hps->save();
         }
 
-      
+
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->with('barjas')->get()->toArray();
 
         $barjashps = [];
@@ -85,13 +105,12 @@ class HPSController extends Controller
                 ]);
             }
         }
-       
-        
-      
+
+
+
         $hps2 = HPS::where('id', $hps->id)->with('barJasHPS')->first();
-   
+
         return $hps2;
-        
     }
 
 
@@ -99,7 +118,7 @@ class HPSController extends Controller
     public function detail($id, $isDownload)
     {
         $hps = $this->refresh($id);
-       
+
         $kontrak = KontrakKerja::find($id); // contoh data kontrak. Sesuaikan dengan kebutuhan Anda.
 
         $nomor = PembuatanSuratKontrak::where('id_kontrakkerja', $kontrak->id_kontrakkerja)->where('nama_surat', 'nomor_hps')->first()->no_surat;
@@ -139,14 +158,14 @@ class HPSController extends Controller
                             # code...
                         }
                     }
-
+                    
                     $data[] = [
                         'id' => $barjas['id'],
                         'uraian' => $barjas['uraian'],
                         'vol' => $barjas['volume'],
                         'sat' => $barjas['satuan'],
-                        'harga_satuan' => number_format($barjas['barjas_h_p_s'][0]['harga_satuan'],0,',','.'),
-                        'jumlah' => number_format($barjas['barjas_h_p_s'][0]['jumlah'],0,',','.'),
+                        'harga_satuan' => number_format(str_replace(".", "",$barjas['barjas_h_p_s'][0]['harga_satuan']), 0, ',', '.'),
+                        'jumlah' => number_format(str_replace(".", "",$barjas['barjas_h_p_s'][0]['jumlah']), 0, ',', '.'),
                         'sub_data' => $sub_data
 
                     ];
@@ -181,11 +200,12 @@ class HPSController extends Controller
             'nama_pekerjaan' => $nama_pekerjaan,
             'nama_manager' => $nama_manager,
             'pengadaan' => $nama_pengadaan,
-            'jumlah_harga' => number_format($hps->total_jumlah, 0, ',','.'),
-            'dibulatkan' =>number_format( $hps->dibulatkan, 0, ',','.'),
-            'rok_10' => number_format($hps->rok10, 0, ',','.'),
-            'ppn_11' =>number_format( $hps->ppn11, 0, ',','.'),
-            'harga_total' => number_format($hps->total_harga, 0, ',','.'),
+            'jumlah_harga' => number_format(str_replace(".", "",$hps->total_jumlah), 0, ',', '.'),
+            'dibulatkan' => number_format(str_replace(".", "",$hps->dibulatkan), 0, ',', '.'),
+            'rok_10' => number_format(str_replace(".", "",$hps->rok10), 0, ',', '.'),
+            'ppn_11' => number_format(str_replace(".", "",$hps->ppn11), 0, ',', '.'),
+            'harga_total' => number_format(str_replace(".", "",$hps->total_harga), 0, ',', '.'),
+            'terbilang' => ucwords(Terbilang::make(str_replace(".", "", $hps->total_harga), ' Rupiah')),
             'tandatangan_pengadaan' => $hps->tandatangan_pengadaan == null ?  '0' : preg_replace("/[^0-9]/", "", $tandatangan_pengadaan),
             'tandatangan_manager' => $hps->tandatangan_manager == null ?  '0' : preg_replace("/[^0-9]/", "", $tandatangan_manager)
 
@@ -221,8 +241,8 @@ class HPSController extends Controller
     public function isi($id)
     {
         $hps = $this->refresh($id);
-       
-     
+
+
         $jenis_kontraks = JenisKontrak::where('id_kontrak', $id)->get()->toArray();
         // $hps = HPS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first();
 
@@ -294,7 +314,7 @@ class HPSController extends Controller
             // Lakukan operasi lain yang diinginkan
 
             $hps2 = HPS::find($hps->id);
-          
+
             $hps2->id_surat = $hps->id_surat;
             $hps2->total_jumlah = $request->input('total_jumlah');
             $hps2->dibulatkan = $request->input('dibulatkan');
@@ -304,7 +324,7 @@ class HPSController extends Controller
             // $hps->tandatangan_pengadaan = $request->input('tandatangan_pengadaan');
             // $hps->tandatangan_manager = $request->input('tandatangan_manager');
             // Simpan data HPS
-            
+
             $hps2->save();
         } else {
             // Jika record HPS tidak ada
@@ -323,7 +343,7 @@ class HPSController extends Controller
             // Simpan data HPS
             $hps2->save();
         }
-        
+
         $kontrakkerja = KontrakKerja::find($id);
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->with('barjas')->get()->toArray();
 
@@ -356,7 +376,7 @@ class HPSController extends Controller
                 ]);
             }
         }
-  
+
 
 
         return redirect()->route('pengajuankontrak.hps.isi', ['id' => $id])->with('success', 'Data berhasil disimpan.');
@@ -390,7 +410,7 @@ class HPSController extends Controller
             }
 
             $hps2->save();
-         
+
             return redirect()->route('tandatangan.detail', ['id' => $id])->with('success', 'Tanda Tangan Berhasil');
         } catch (\Exception $e) {
             // Tangani error
