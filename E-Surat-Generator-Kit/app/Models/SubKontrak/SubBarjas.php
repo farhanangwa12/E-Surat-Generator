@@ -19,6 +19,6 @@ class SubBarjas extends Model
 
     public function Barjas()
     {
-        return $this->belongsTo(Barjas::class);
+        return $this->belongsTo(BarJas::class,'id_barjas');
     }
 }

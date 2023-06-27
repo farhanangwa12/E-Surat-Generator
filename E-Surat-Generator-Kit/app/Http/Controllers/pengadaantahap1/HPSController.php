@@ -26,12 +26,12 @@ class HPSController extends Controller
     public function refresh($id)
     {
         $pembuatansuratkontrak = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat','nomor_hps')->with('hps')->first();
-  
-        // // Mengecek apakah record HPS ada
+    
+        // // Mengecek apaka    h record HPS ada
         // $hps = HPS::where('id_kontrakkerja', $id)->first();
 
-
-        if (isset($hps)) {
+ 
+        if (isset($pembuatansuratkontrak->hps)) {
             // Jika record HPS ada
             // Lakukan operasi lain yang diinginkan
 
@@ -85,9 +85,13 @@ class HPSController extends Controller
                 ]);
             }
         }
-        $hps = HPS::find($hps->id)->with('barjasHPS')->first();
-
-        return $hps;
+       
+        
+      
+        $hps2 = HPS::where('id', $hps->id)->with('barJasHPS')->first();
+   
+        return $hps2;
+        
     }
 
 
@@ -95,6 +99,7 @@ class HPSController extends Controller
     public function detail($id, $isDownload)
     {
         $hps = $this->refresh($id);
+       
         $kontrak = KontrakKerja::find($id); // contoh data kontrak. Sesuaikan dengan kebutuhan Anda.
 
         $nomor = PembuatanSuratKontrak::where('id_kontrakkerja', $kontrak->id_kontrakkerja)->where('nama_surat', 'nomor_hps')->first()->no_surat;
@@ -216,7 +221,8 @@ class HPSController extends Controller
     public function isi($id)
     {
         $hps = $this->refresh($id);
-   
+       
+     
         $jenis_kontraks = JenisKontrak::where('id_kontrak', $id)->get()->toArray();
         // $hps = HPS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first();
 
@@ -282,39 +288,42 @@ class HPSController extends Controller
     {
         // Mengecek apakah record HPS ada
         $hps = $this->refresh($id);
+        // dd($hps);
         if ($hps) {
             // Jika record HPS ada
             // Lakukan operasi lain yang diinginkan
 
-            $hps = HPS::find($hps->id);
-            $hps->id_surat = $id;
-            $hps->total_jumlah = $request->input('total_jumlah');
-            $hps->dibulatkan = $request->input('dibulatkan');
-            $hps->rok10 = $request->input('rok10');
-            $hps->ppn11 = $request->input('ppn11');
-            $hps->total_harga = $request->input('harga_total');
+            $hps2 = HPS::find($hps->id);
+          
+            $hps2->id_surat = $hps->id_surat;
+            $hps2->total_jumlah = $request->input('total_jumlah');
+            $hps2->dibulatkan = $request->input('dibulatkan');
+            $hps2->rok10 = $request->input('rok10');
+            $hps2->ppn11 = $request->input('ppn11');
+            $hps2->total_harga = $request->input('harga_total');
             // $hps->tandatangan_pengadaan = $request->input('tandatangan_pengadaan');
             // $hps->tandatangan_manager = $request->input('tandatangan_manager');
             // Simpan data HPS
-            $hps->save();
+            
+            $hps2->save();
         } else {
             // Jika record HPS tidak ada
 
             // Buat instance HPS model untuk menyimpan data
-            $hps = new HPS();
-            $hps->id_surat = $id;
-            $hps->total_jumlah = $request->input('total_jumlah');
-            $hps->dibulatkan = $request->input('dibulatkan');
-            $hps->rok10 = $request->input('rok10');
-            $hps->ppn11 = $request->input('ppn11');
-            $hps->total_harga = $request->input('harga_total');
+            $hps2 = new HPS();
+            $hps2->id_surat = $hps->id_surat;
+            $hps2->total_jumlah = $request->input('total_jumlah');
+            $hps2->dibulatkan = $request->input('dibulatkan');
+            $hps2->rok10 = $request->input('rok10');
+            $hps2->ppn11 = $request->input('ppn11');
+            $hps2->total_harga = $request->input('harga_total');
             // $hps->tandatangan_pengadaan = $request->input('tandatangan_pengadaan');
             // $hps->tandatangan_manager = $request->input('tandatangan_manager');
 
             // Simpan data HPS
-            $hps->save();
+            $hps2->save();
         }
-
+        
         $kontrakkerja = KontrakKerja::find($id);
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->with('barjas')->get()->toArray();
 
@@ -324,7 +333,7 @@ class HPSController extends Controller
         foreach ($jenis_kontrak as $jen) {
             foreach ($jen['barjas'] as $barjas) {
                 $barjashps[$no]['id_barjas'] = $barjas['id'];
-                $barjashps[$no]['id_hps'] = $hps->id;
+                $barjashps[$no]['id_hps'] = $hps2->id;
 
                 $no++;
             }

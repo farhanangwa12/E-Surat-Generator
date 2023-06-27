@@ -23,7 +23,7 @@
                         <div class="text-right mb-3">
                             {{-- <a href="{{ route('jenis_kontrak.index', ['id' => $jenisKontrak->id_kontrak]) }}"
                                 class="btn btn-primary">Kembali</a> --}}
-                            <a href="{{ route('barjas.create', ['id_jenis_kontrak' => $id_jenis_kontrak]) }}"
+                            <a href="{{ route('barjas.create', ['id_kontrakkerja'=>$id_kontrakkerja,'id_jenis_kontrak' => $id_jenis_kontrak]) }}"
                                 class="btn btn-success">Tambah
                                 BarJas</a>
 
@@ -90,6 +90,13 @@
                             </tbody>
                         </table>
 
+                        <div class="row">
+                            <div class="col">
+                                <a href="{{ route('pengajuankontrak.detail', ['id' => $id_kontrakkerja]) }}"
+                                    class="btn btn-primary">Kembali</a>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
 

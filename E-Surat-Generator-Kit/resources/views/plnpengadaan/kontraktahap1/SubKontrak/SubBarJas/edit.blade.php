@@ -41,8 +41,12 @@
                               <label for="jumlah" class="form-label">Jumlah</label>
                               <input type="number" class="form-control" id="jumlah" name="jumlah" value="{{ $subbarjas->jumlah }}" required>
                             </div> --}}
+                            <div class="mb-3 form-group">
+                              <a href="{{ route('subkontrak.show', ['id_kontrakkerja' => $id_kontrakkerja, 'id_jenis' => $id_jenis_kontrak]) }}"
+                                class="btn btn-primary">Kembali</a>
+                              <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
                         
-                            <button type="submit" class="btn btn-primary">Update</button>
                           </form>
 
 

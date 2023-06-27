@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_hps');
             $table->unsignedBigInteger('id_barjas');
-            $table->decimal('harga_satuan', 10, 2);
-            $table->decimal('jumlah', 10, 2);
+            $table->string('harga_satuan');
+            $table->string('jumlah');
             $table->timestamps();
             $table->foreign('id_barjas')->references('id')->on('bar_jas')->onDelete('cascade');
             $table->foreign('id_hps')->references('id')->on('h_p_s')->onDelete('cascade');

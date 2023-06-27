@@ -332,17 +332,17 @@ Route::middleware('auth')->group(function () {
             Route::get('{id}/downloadall', [KontrakKerjaController::class, 'DownloadVendorDoc'])->name('pengajuankontrak.downloadvendor');
         });
         Route::prefix('/subkontrak')->group(function () {
-            Route::get('show/{id}/{id_jenis}', [SubKontrakController::class, 'show'])->name('subkontrak.show');
+            Route::get('show/{id_kontrakkerja}/{id_jenis}', [SubKontrakController::class, 'show'])->name('subkontrak.show');
 
             Route::prefix('barjas')->group(function () {
                 // Rute untuk menampilkan form create
-                Route::get('/create/{id_jenis_kontrak}', [BarJasController::class, 'create'])->name('barjas.create');
+                Route::get('/create/{id_kontrakkerja}/{id_jenis_kontrak}', [BarJasController::class, 'create'])->name('barjas.create');
 
                 // Rute untuk menyimpan data dari form create
-                Route::post('/', [BarjasController::class, 'store'])->name('barjas.store');
+                Route::post('/{id_kontrakkerja}', [BarjasController::class, 'store'])->name('barjas.store');
 
                 // Rute untuk menampilkan data berdasarkan id
-                Route::get('/{id}', [BarjasController::class, 'show'])->name('barjas.show');
+                Route::get('/show/{id}', [BarjasController::class, 'show'])->name('barjas.show');
 
                 // Rute untuk menampilkan form edit
                 Route::get('/{id}/edit', [BarjasController::class, 'edit'])->name('barjas.edit');
@@ -358,16 +358,16 @@ Route::middleware('auth')->group(function () {
                 Route::get('/create/{id_barjas}', [SubBarJasController::class, 'create'])->name('subbarjas.create');
 
                 // Rute untuk menampilkan halaman edit data
-                Route::get('/{id}/edit', [SubBarJasController::class, 'edit'])->name('subbarjas.edit');
+                Route::get('/edit/{id}', [SubBarJasController::class, 'edit'])->name('subbarjas.edit');
 
                 // Rute untuk menyimpan data
                 Route::post('/', [SubBarJasController::class, 'store'])->name('subbarjas.store');
 
                 // Rute untuk mengupdate data
-                Route::put('/{id}', [SubBarJasController::class, 'update'])->name('subbarjas.update');
+                Route::put('/update/{id}', [SubBarJasController::class, 'update'])->name('subbarjas.update');
 
                 // Rute untuk menghapus data
-                Route::delete('/{id}', [SubBarJasController::class, 'destroy'])->name('subbarjas.destroy');
+                Route::delete('/delete/{id}', [SubBarJasController::class, 'destroy'])->name('subbarjas.destroy');
             });
         });
 

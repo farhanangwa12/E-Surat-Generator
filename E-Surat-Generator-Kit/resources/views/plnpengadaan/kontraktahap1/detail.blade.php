@@ -418,7 +418,7 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $j->nama_jenis }}</td>
-                                        <td><a href="{{ route('subkontrak.show', ['id' => $id, 'id_jenis' => $j->id]) }}"
+                                        <td><a href="{{ route('subkontrak.show', ['id_kontrakkerja' => $id, 'id_jenis' => $j->id]) }}"
                                                 class="btn btn-primary">Aksi</a></td>
                                     </tr>
 

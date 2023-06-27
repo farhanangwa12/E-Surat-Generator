@@ -15,7 +15,7 @@
                         <h1>Tambah Data</h1>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('barjas.store') }}" method="post">
+                        <form action="{{ route('barjas.store',$id_kontrakkerja) }}" method="post">
                             @csrf
                             @if ($errors->any())
                                 <div class="alert alert-danger">
@@ -62,6 +62,8 @@
                                 @enderror
                             </div> --}}
                             <div class="form-group">
+                                <a href="{{ route('subkontrak.show', ['id_kontrakkerja' => $id_kontrakkerja, 'id_jenis' => $id_jenis_kontrak]) }}"
+                                    class="btn btn-primary">Kembali</a>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form>

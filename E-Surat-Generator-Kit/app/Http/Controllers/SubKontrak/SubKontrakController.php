@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class SubKontrakController extends Controller
 {
-    public function show($id, $id_jenis){
+    public function show($id_kontrakkerja, $id_jenis){
         $barjas = BarJas::where('id_jenis_kontrak', $id_jenis)->get()->toArray();
         $data = [];
         foreach ($barjas as $databarjas){
@@ -43,8 +43,8 @@ class SubKontrakController extends Controller
         }
         $jenis = JenisKontrak::find($id_jenis);
         $id_jenis_kontrak = $id_jenis;
-
-        return view('plnpengadaan.kontraktahap1.SubKontrak.index', compact('data', 'id_jenis_kontrak','jenis'));
+        
+        return view('plnpengadaan.kontraktahap1.SubKontrak.index', compact('data', 'id_jenis_kontrak','jenis', 'id_kontrakkerja'));
     }
 
 
