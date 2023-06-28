@@ -271,14 +271,19 @@
                                                         <div class="col">
                                                             <form method="POST"
                                                                 action="{{ route('vendor.kelengkapandok.update', ['id' => $jenisDokumenKelengkapan['id_jenis'], 'id_kontrakkerja' => $id]) }}"
-                                                                enctype="multipart/form-data" id="uploadForm" class="formuntukUpload">
+                                                                enctype="multipart/form-data"
+                                                                id="uploadForm{{ 'Update' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                                class="formuntukUpload">
                                                                 @method('PUT')
                                                                 @csrf
                                                                 <div class="mb-3">
-                                                                    <label for="fileUpload"
+                                                                    <label
+                                                                        for="fileUpload{{ 'Update' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                                        onclick="uploadFile('Update{{ $jenisDokumenKelengkapan['id_jenis'] }}')"
                                                                         class="btn btn-primary">Update</label>
                                                                     <input type="file" class="form-control"
-                                                                        id="fileUpload" name="fileUpload" accept=".pdf"
+                                                                        id="fileUpload{{ 'Update' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                                        name="fileUpload" accept=".pdf"
                                                                         style="display: none;">
 
 
@@ -300,6 +305,15 @@
                                                             <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 2]) }}"
                                                                 class="btn btn-primary">Download</a>
                                                         </div>
+                                                        <div class="col">
+                                                            <form action="{{ route('vendor.kelengkapandok.destroy' , ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'],  'id_kontrakkerja' => $id]) }}" method="POST">
+                                                                @method('DELETE')
+                                                                @csrf
+                                                                <button class="btn btn-danger" onclick="confirmation('Apakah anda yakin ingin menghapus ?')">Hapus</button>
+                                                            
+                                                            </form>
+                                                            
+                                                        </div>
                                                     </div>
 
                                                 </td>
@@ -307,12 +321,19 @@
                                                 <td>
                                                     <form method="POST"
                                                         action="{{ route('vendor.kelengkapandok.store', ['id' => $jenisDokumenKelengkapan['id_jenis'], 'id_kontrakkerja' => $id]) }}"
-                                                        enctype="multipart/form-data" id="uploadForm" class="formuntukUpload">
+                                                        enctype="multipart/form-data"
+                                                        id="uploadForm{{ 'Store' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                        class="formuntukUpload">
                                                         @csrf
                                                         <div class="mb-3">
-                                                            <label for="fileUpload" class="btn btn-primary">Upload File
+                                                            <label
+                                                                for="fileUpload{{ 'Store' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                                onclick="uploadFile('Store{{ $jenisDokumenKelengkapan['id_jenis'] }}')"
+                                                                class="btn btn-primary">Upload
+                                                                File
                                                                 PDF</label>
-                                                            <input type="file" class="form-control" id="fileUpload"
+                                                            <input type="file" class="form-control"
+                                                                id="fileUpload{{ 'Store' . $jenisDokumenKelengkapan['id_jenis'] }}"
                                                                 name="fileUpload" accept=".pdf" style="display: none;">
 
 
@@ -323,6 +344,7 @@
                                                 </td>
                                             @endif
                                         @endif
+
 
                                     </tr>
                                 @endforeach
@@ -355,32 +377,75 @@
                     </div>
                 </div>
 
-                
+
             </div>
 
         </div>
 
     @endsection
     @section('javascript')
-
         <script>
-            var fileUploadList = document.querySelectorAll('#fileUpload');
+            function uploadFile(formId) {
+                var form = document.getElementById("uploadForm" + formId);
+                var fileInput = document.querySelector("#fileUpload" + formId);
 
-            // var formUploadList = document.querySelectorAll('#uploadForm');
-            var formUploadList = document.querySelectorAll('.formuntukUpload');
-            console.log(formUploadList);
-            fileUploadList.forEach((fileUpload, index) => {
+
+                fileInput.addEventListener('change', function(event) {
+
+                    var file = fileInput.files[0];
+
+                    if (file) {
+                        var confirmation = confirm('Apakah Anda yakin ingin mengupload dokumen baru?');
+
+                        if (confirmation) {
+                            form.submit();
+                        } else {
+                            // Menghapus file yang dipilih jika tidak dikonfirmasi
+                            fileInput.value = "";
+                        }
+                    }
+                });
+            }
+        </script>
+
+
+        {{-- <script>
+            var fileUploadListStore = document.getElementById('fileUploadStore');
+            var fileUploadListUpdate = document.querySelectorAll('#fileUploadUpdate');
+
+
+            var formUploadListUpdate = document.querySelectorAll('#uploadFormUpdate');
+            var formUploadListStore = document.querySelectorAll('#uploadFormStore');
+
+            // var formUploadList = document.querySelectorAll('.formuntukUpload');
+
+            console.log('test :', fileUploadListStore[0]);
+            fileUploadListStore.forEach((fileUpload, index) => {
                 fileUpload.addEventListener('change', function(event) {
-                    var confirmation = confirm('Apakah Anda yakin ingin mengupload dokumen?');
+                    var confirmation = confirm('Apakah Anda yakin ingin mengupload dokumen baru?');
                     console.log(index);
                     if (confirmation) {
-                        console.log( formUploadList[index]);
-                        // formUploadList[index].submit();
+                        console.log(formUploadListStore[index]);
+                        formUploadListStore[index].submit();
 
                     }
 
                 });
             });
-        </script>
+
+
+            fileUploadListUpdate.forEach((fileUpload, index) => {
+                fileUpload.addEventListener('change', function(event) {
+                    var confirmation = confirm('Apakah Anda yakin ingin memperbarui dokumen?');
+                    console.log(index);
+                    if (confirmation) {
+                        console.log(formUploadListUpdate[index]);
+                        formUploadListUpdate[index].submit();
+
+                    }
+
+                });
+            });
+        </script> --}}
 
     @endsection

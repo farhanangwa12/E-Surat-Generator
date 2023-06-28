@@ -127,8 +127,9 @@ class VendorKelengkapanDokumenController extends Controller
 
     public function store(Request $request, $id, $id_kontrakkerja)
     {
-        dd("id" + $id);
-        dd("id_kontrakkerja" + $id_kontrakkerja);
+
+        // dd("id:" . $id . 'id_kontrakkerja' . $id_kontrakkerja);
+        // dd("id_kontrakkerja" . $id_kontrakkerja);
         // Step 1: Mencari JenisDokumenKelengkapan dengan relasi kelengkapanDokumenVendors
         $jenisDokumen = JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->find($id);
 
@@ -179,7 +180,7 @@ class VendorKelengkapanDokumenController extends Controller
         $tanggal = now()->format('Ymd');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
-        $filename = $tanggal . '_DOK_' . $originalName . '.' . $extension;
+        $filename = $tanggal . '_DOK_' .$extension;
 
         return $filename;
     }
@@ -187,6 +188,8 @@ class VendorKelengkapanDokumenController extends Controller
 
     public function update(Request $request, $id, $id_kontrakkerja)
     {
+      
+
         // Step 1: Mencari JenisDokumenKelengkapan dengan relasi kelengkapanDokumenVendors
         $jenisDokumen = JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->find($id);
 
@@ -236,7 +239,7 @@ class VendorKelengkapanDokumenController extends Controller
         $kelengkapanvendor = KelengkapanDokumenVendor::find($id);
         // Menghapus file yang lama (jika ada)
 
-        $path = storage_path('app/public/kelengkapandokumen/' . $kelengkapanvendor->file);
+        $path = storage_path('app/public/dokumenvendor/' . $kelengkapanvendor->file_upload);
         // Menghapus File jika berhasil redirect
 
 

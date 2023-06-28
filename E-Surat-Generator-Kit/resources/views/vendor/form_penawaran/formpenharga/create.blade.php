@@ -86,7 +86,7 @@
                 <div class="header mb-3">
                     <div class="form-group">
                         <label for="kopsurat">Masukkan gambar kopsurat
-                            dengan ketentuan panjang 120px
+                           
                         </label>
                         <input type="file" name="kopsurat" class="form-control" placeholder="Kopsurat"
                             accept=".jpg, .jpeg, .png">
@@ -110,8 +110,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" id="modalCancel"
-                                            data-dismiss="modal">Cancel</button>
+                                        {{-- <button type="button" class="btn btn-secondary" id="modalCancel"
+                                            data-dismiss="modal">Cancel</button> --}}
                                         <button type="button" class="btn btn-primary" id="cropButton">Crop</button>
                                     </div>
                                 </div>
@@ -209,7 +209,7 @@
                 // Menginisialisasi Cropper pada gambar
                 cropper = new Cropper(previewImage, {
                     autoCropArea: 1,
-                    aspectRatio: 3 / 1,
+                    aspectRatio:   600 / 128 ,
 
 
                     viewMode: 3,

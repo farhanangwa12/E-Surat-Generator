@@ -89,7 +89,9 @@ class RKSController extends Controller
             'bab_2_5_pengawaspekerjaan' =>   Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'pengawas_pekerjaan')->first()->nama_pengguna,
             'bab_2_5_pengawask3' =>  Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'pengawas_k3')->first()->nama_pengguna,
             'bab_2_7' =>   $jumlah_harikontrak . "( " . ucwords(Terbilang::make($jumlah_harikontrak)) . " ) " . "hari kalender",
-            'bab_2_8_kontrak' =>   "Kontrak Pengadaan Pekerjaan ini dibiayai dari APLN &MASTER!B26&.",
+            // 'bab_2_8_kontrak' =>   "Kontrak Pengadaan Pekerjaan ini dibiayai dari APLN &MASTER!B26&.",
+            'bab_2_8_kontrak' =>   "Kontrak Pengadaan Pekerjaan ini dibiayai dari APLN SKK-AO.",
+
             'bab_2_8_nomor' =>   "Nomor : " . SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->skk_ao,
             //  'bab_2_8_tanggal' =>   "Tanggal : ". Carbon::parse("2023-12-20")->locale('id')->format('j F Y'),
             'bab_2_8_tanggal' =>   "Tanggal : " . Carbon::parse(SumberAnggaran::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tanggal_anggaran)->locale('id')->isoFormat('Do MMMM YYYY'),
@@ -112,8 +114,8 @@ class RKSController extends Controller
             'website' =>  $vendor->website == null ? '.....................' : $vendor->website,
             'faksimili' =>  $vendor->faksimili == null ? '.....................' : $vendor->faksimili,
             'email' =>  $vendor->email_perusahaan == null ? '.....................' : $vendor->email_perusahaan,
-            'pengawasPekerjaan' =>  "..................." . "belum",
-            'pengawasK3' =>  "..................." . "belum"
+            'pengawasPekerjaan' =>  "..................." ,
+            'pengawasK3' =>  "..................."
 
 
 

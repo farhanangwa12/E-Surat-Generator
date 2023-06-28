@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dokumen\BarJasBOQ;
+use App\Models\Dokumen\BOQ;
 use App\Models\DokumenVendor\Formpenawaranharga;
 use App\Models\JenisDokumenKelengkapan;
 use App\Models\KelengkapanDokumenVendor;
 use App\Models\KontrakKerja;
+use App\Models\PembuatanSuratKontrak;
 use App\Models\TandaTangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -50,22 +53,21 @@ class FormPenawaranHargaController extends Controller
             $formpenawaranharga->save();
         }
         $lampiranpenawaran = app(LampiranPenawaranHargaController::class)->refresh($id);
-        
+
 
         $formpenawaranharga1 = Formpenawaranharga::where('id_dokumen', $kelengkapan->id_dokumen)->first();
         $kontrakkerja = KontrakKerja::with('vendor')->find($id)->first();
-        if(isset($lampiranpenawaran)){
+        if (isset($lampiranpenawaran)) {
             $formpenawaranharga = Formpenawaranharga::find($formpenawaranharga1->id);
             $formpenawaranharga->nama_vendor = $kontrakkerja->vendor->direktur;
             $formpenawaranharga->nama_perusahaan = $kontrakkerja->vendor->penyedia;
             $formpenawaranharga->jabatan = "Direktur";
             $formpenawaranharga->email_perusahaan =  $kontrakkerja->vendor->email_perusahaan;
-            $formpenawaranharga->telepon_fax = $kontrakkerja->vendor->telepon ."/". $kontrakkerja->vendor->faximile;
+            $formpenawaranharga->telepon_fax = $kontrakkerja->vendor->telepon . "/" . $kontrakkerja->vendor->faximile;
             $formpenawaranharga->harga_penawaran = $lampiranpenawaran->dibulatkan;
             $formpenawaranharga->ppn11 = $lampiranpenawaran->ppn11;
             $formpenawaranharga->jumlah_harga = $lampiranpenawaran->total_harga;
             $formpenawaranharga->save();
-            
         }
         return $formpenawaranharga1;
     }
@@ -114,17 +116,41 @@ class FormPenawaranHargaController extends Controller
         $lampiran = $request->input('lampiran');
         $nama_kota = $request->input('nama_kota');
         $tanggal_pembuatan_surat = $request->input('tanggal_pembuatan_surat');
-        $nama_vendor = $request->input('nama_vendor');
-        $jabatan = $request->input('jabatan');
-        $nama_perusahaan = $request->input('nama_perusahaan');
-        $atas_nama = $request->input('atas_nama');
-        $alamat_perusahaan = $request->input('alamat_perusahaan');
-        $telepon_fax = $request->input('telepon_fax');
-        $email_perusahaan = $request->input('email_perusahaan');
-        $harga_penawaran = $request->input('harga_penawaran');
-        $ppn11 = $request->input('ppn11');
-        $jumlah_harga = $request->input('jumlah_harga');
-        $terbilang = $request->input('terbilang');
+        // $nama_vendor = $request->input('nama_vendor');
+        // $jabatan = $request->input('jabatan');
+        // $nama_perusahaan = $request->input('nama_perusahaan');
+        // $atas_nama = $request->input('atas_nama');
+        // $alamat_perusahaan = $request->input('alamat_perusahaan');
+        // $telepon_fax = $request->input('telepon_fax');
+        // $email_perusahaan = $request->input('email_perusahaan');
+        // $harga_penawaran = $request->input('harga_penawaran');
+        // $ppn11 = $request->input('ppn11');
+        // $jumlah_harga = $request->input('jumlah_harga');
+        // $terbilang = $request->input('terbilang');
+        $kontrakkerja = KontrakKerja::where('id_kontrakkerja', $id)->with('vendor')->first();
+        $nama_vendor = $kontrakkerja->vendor->direktur;
+        $jabatan = "Direktur";
+        $nama_perusahaan = $kontrakkerja->vendor->penyedia;
+        // $atas_nama = $request->input('atas_nama');
+        $atas_nama = "Atas Nama";
+        $alamat_perusahaan = $kontrakkerja->vendor->alamat_jalan . ' , ' . $kontrakkerja->vendor->alamat_kota . ' , ' . $kontrakkerja->vendor->alamat_provinsi;
+        $telepon_fax = $kontrakkerja->vendor->telepon_fax;
+        $email_perusahaan = $kontrakkerja->vendor->email_perusahaan;
+
+        // $boq = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat','nomor_rks')->with('b_o_q_s.barjas_b_o_q_s')->first();
+        // dd($boq);
+        // $boq = BOQ::where('id_kontrakkerja', $id)->with('barJasBOQs')->first();
+        // $total_jumlah = 0;
+        // foreach ($boq->barJasBOQs as $bboq) {
+        //     $databarjasBOQ = BarJasBOQ::where('id_boq', $bboq['id_boq'])->where('id_barjas', $bboq['id_barjas'])->first();
+
+        //     $total_jumlah +=  str_replace(".", "", $databarjasBOQ->jumlah);
+        // }
+
+        $harga_penawaran = 200000;
+        $ppn11 = "20000";
+        $jumlah_harga = "2000";
+        $terbilang = "Dua Ribu Rupiah";
 
 
 
@@ -179,7 +205,7 @@ class FormPenawaranHargaController extends Controller
         $formpenawaranharga->nama_vendor = $data['nama_vendor'];
         $formpenawaranharga->jabatan = $data['jabatan'];
         $formpenawaranharga->nama_perusahaan = $data['nama_perusahaan'];
-        $formpenawaranharga->atas_nama = $data['atas_nama'];
+        $formpenawaranharga->nama_vendor = $data['atas_nama'];
         $formpenawaranharga->alamat_perusahaan = $data['alamat_perusahaan'];
         $formpenawaranharga->telepon_fax = $data['telepon_fax'];
         $formpenawaranharga->email_perusahaan = $data['email_perusahaan'];
@@ -198,19 +224,19 @@ class FormPenawaranHargaController extends Controller
 
     public function halamanttd($id)
     {
-        
+
         return view('vendor.form_penawaran.formpenharga.halamanttd', compact('id'));
     }
 
     public function simpanttd(Request $request)
     {
         // Mengambil path file JSON dari database berdasarkan ID
-       
+
         $formPenawaranHarga = $this->refresh($request->input('id'));
 
 
         $kelengkapan = KelengkapanDokumenVendor::find($formPenawaranHarga->id_dokumen);
-    
+
 
         // Menyimpan file tanda tangan ke storage
         $file = $request->file('file_tandatangan');
