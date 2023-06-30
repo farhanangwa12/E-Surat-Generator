@@ -24,33 +24,33 @@ use Terbilang;
 
 class RKSController extends Controller
 {
-    public function refresh($id)
-    {
+    // public function refresh($id)
+    // {
 
-        // Mengecek apakah record rks ada
-        $rks = RKS::where('id_kontrakkerja', $id)->first();
+    //     // Mengecek apakah record rks ada
+    //     $rks = RKS::where('id_kontrakkerja', $id)->first();
 
 
-        if (!$rks) {
-            // Jika record und tidak ada
+    //     if (!$rks) {
+    //         // Jika record und tidak ada
 
-            // Buat instance und model untuk menyimpan data
-            $rks1 = new RKS();
-            $rks1->id_kontrakkerja = $id; // Mengambil nilai id dari $id
-            $rks1->datarks = null; // Mengatur nilai datarks1 sebagai null
-            $rks1->tandatangan_pengadaan = null; // Mengatur nilai tandatangan_pengadaan sebagai null
-            $rks1->tanggal_tandatangan_pengadaan = null; // Mengatur nilai tanggal_tandatangan_pengadaan sebagai null
-            $rks1->tandatangan_manager = null; // Mengatur nilai tandatangan_manager sebagai null
-            $rks1->tanggal_tandatangan_manager = null; // Mengatur nilai tanggal_tandatangan_manager sebagai null
-            $rks1->save();
-        } else {
-        }
+    //         // Buat instance und model untuk menyimpan data
+    //         $rks1 = new RKS();
+    //         $rks1->id_kontrakkerja = $id; // Mengambil nilai id dari $id
+    //         $rks1->datarks = null; // Mengatur nilai datarks1 sebagai null
+    //         $rks1->tandatangan_pengadaan = null; // Mengatur nilai tandatangan_pengadaan sebagai null
+    //         $rks1->tanggal_tandatangan_pengadaan = null; // Mengatur nilai tanggal_tandatangan_pengadaan sebagai null
+    //         $rks1->tandatangan_manager = null; // Mengatur nilai tandatangan_manager sebagai null
+    //         $rks1->tanggal_tandatangan_manager = null; // Mengatur nilai tanggal_tandatangan_manager sebagai null
+    //         $rks1->save();
+    //     } else {
+    //     }
 
-        return 'Data Telah Direfresh';
-    }
+    //     return 'Data Telah Direfresh';
+    // }
     public function showrks($id, $isDownload)
     {
-        $this->refresh($id);
+        // $this->refresh($id);
         $kontrakkerja = KontrakKerja::find($id);
         $vendor = Vendor::find($kontrakkerja->id_vendor);
 
@@ -105,8 +105,8 @@ class RKSController extends Controller
             // Bagian Nama Terang Tanda tangan
             'namaterang_manager' =>   Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'manager')->first()->nama_pengguna,
             'namaterang_pengadaan' =>  Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'pejabat_pelaksana_pengadaan')->first()->nama_pengguna,
-            'tandatangan_manager' => RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ?  '0'  : RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_manager,
-            'tandatangan_pengadaan' => RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ?  '0'  : RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_pengadaan,
+            // 'tandatangan_manager' => RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ?  '0'  : RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_manager,
+            // 'tandatangan_pengadaan' => RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ?  '0'  : RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_pengadaan,
             // Isian Vendor
             'nama' => $vendor->penyedia,
             'alamat' =>  "$vendor->alamat_jalan , $vendor->alamat_kota, $vendor->alamat_provinsi.",
@@ -126,7 +126,7 @@ class RKSController extends Controller
         $data = [
             'logokiri' => public_path('undangan/kiri.jpg'),
             'logo' => public_path('undangan/logo.png'), // path ke file header gambar
-            'tandatangan' =>   DNS2D::getBarcodePNG('4', 'QRCODE'),
+            // 'tandatangan' =>   DNS2D::getBarcodePNG('4', 'QRCODE'),
             'surat' => $surat
 
 
@@ -148,7 +148,7 @@ class RKSController extends Controller
     public function isirks($id)
     {
 
-        $this->refresh($id);
+        // $this->refresh($id);
 
 
         $kontrakkerja = KontrakKerja::find($id);
@@ -209,8 +209,8 @@ class RKSController extends Controller
             // Bagian Nama Terang Tanda tangan
             'namaterang_manager' =>   Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'manager')->first()->nama_pengguna,
             'namaterang_pengadaan' =>  Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'pejabat_pelaksana_pengadaan')->first()->nama_pengguna,
-            'tandatangan_manager' => RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ?  '0'  : RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_manager,
-            'tandatangan_pengadaan' => RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ?  '0'  : RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_pengadaan,
+            // 'tandatangan_manager' => RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ?  '0'  : RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_manager,
+            // 'tandatangan_pengadaan' => RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ?  '0'  : RKS::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_pengadaan,
             // Isian Vendor
             'nama' => $vendor->penyedia,
             'alamat' =>  "$vendor->alamat_jalan , $vendor->alamat_kota, $vendor->alamat_provinsi.",
@@ -230,7 +230,7 @@ class RKSController extends Controller
         $data = [
             // 'logokiri' => public_path('undangan/kiri.jpg'),
             // 'logo' => public_path('undangan/logo.png'), // path ke file header gambar
-            'tandatangan' =>   DNS2D::getBarcodePNG('4', 'QRCODE'),
+            // 'tandatangan' =>   DNS2D::getBarcodePNG('4', 'QRCODE'),
             'surat' => $surat
 
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\pengadaantahap1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Dokumen\UND;
+
 use App\Models\KontrakKerja;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\Penyelenggara;
@@ -19,29 +19,12 @@ require_once base_path('vendor/tcpdf/tcpdf.php');
 
 class UndanganController extends Controller
 {
-     public function refresh($id)
-     {
-
-          // Mengecek apakah record und ada
-          $und = UND::where('id_kontrakkerja', $id)->first();
-
-
-          if (!$und) {
-               // Buat instance und model untuk menyimpan data
-               $und1 = new UND();
-               $und1->id_kontrakkerja = $id; // Mengambil nilai id dari $id
-               $und1->tandatangan_pengadaan = null; // Mengatur nilai tandatangan_pengadaan sebagai null
-               $und1->tanggal_tandatangan_pengadaan = null; // Mengatur nilai tanggal_tandatangan_pengadaan sebagai null
-               $und1->save();
-          }
-
-          return 'Data Telah Direfresh';
-     }
+    
      // Undangan Ada backup
      // Undangan
      public function Undangan($id, $isDownload)
      {
-          $this->refresh($id);
+          
 
           $kontrak = KontrakKerja::with('vendor')->find($id);
           $surat =  PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat', 'nomor_undangan')->first();
@@ -61,7 +44,7 @@ class UndanganController extends Controller
                'paragraf1' => "Sehubungan dengan rencana $rksnama_pekerjaan, maka dengan ini kami mengundang perusahaan saudara untuk  mengikuti proses Pengadaan Barang/Jasa di lingkungan PT PLN (Persero) Unit Induk Wilayah Nusa Tenggara Timur Unit Pelaksana Pembangkitan Timor melalui metode pengadaan langsung.",
                'paragraf2' => "Terlampir kami sampaikan Rencana Kerja dan Syarat-Syarat (RKS) $rksnama_pekerjaan Pengadaan Barang/Jasa yang dimaksud.",
                'hari_tanggal' => $masterharitanggal,
-               'tandatangan_pengadaan' => UND::where('id_kontrakkerja', $id)->first()->tandatangan_pengadaan == null ? 0 : UND::where('id_kontrakkerja', $id)->first()->tandatangan_pengadaan,
+               // 'tandatangan_pengadaan' => UND::where('id_kontrakkerja', $id)->first()->tandatangan_pengadaan == null ? 0 : UND::where('id_kontrakkerja', $id)->first()->tandatangan_pengadaan,
                'nama_pengadaan' => Penyelenggara::where('id_kontrakkerja', $kontrak->id_kontrakkerja)->where('nama_jabatan', 'pejabat_pelaksana_pengadaan')->first()->nama_pengguna,
                'footer' => public_path('undangan/footer.png'),
 
@@ -82,32 +65,32 @@ class UndanganController extends Controller
                return "Parameter tidak valid";
           }
      }
-     public function tandatangan($id, $jenis)
-     {
+     // public function tandatangan($id, $jenis)
+     // {
  
  
-         $und = UND::where('id_kontrakkerja', $id)->first();
+     //     $und = UND::where('id_kontrakkerja', $id)->first();
  
  
-         $authId = Auth::id(); // Mendapatkan ID dari sesi pengguna yang terotentikasi
-         $tandatangan = TandaTangan::where('id_akun', $authId)->first();
+     //     $authId = Auth::id(); // Mendapatkan ID dari sesi pengguna yang terotentikasi
+     //     $tandatangan = TandaTangan::where('id_akun', $authId)->first();
  
-         if (!$tandatangan) {
-             return redirect()->route('tandatangan.detail')->withErrors('Tandatangan belum dibuat.');
-         }
+     //     if (!$tandatangan) {
+     //         return redirect()->route('tandatangan.detail')->withErrors('Tandatangan belum dibuat.');
+     //     }
  
-         $kodeUnik = $tandatangan->kode_unik;
+     //     $kodeUnik = $tandatangan->kode_unik;
  
-         $und2 = UND::find($und->id);
-         if ($jenis === 'pengadaan') {
-             $und2->tandatangan_pengadaan = $kodeUnik;
-             $und2->tanggal_tandatangan_pengadaan = Carbon::now('Asia/Jakarta');
-         } elseif ($jenis === 'manager') {
+     //     $und2 = UND::find($und->id);
+     //     if ($jenis === 'pengadaan') {
+     //         $und2->tandatangan_pengadaan = $kodeUnik;
+     //         $und2->tanggal_tandatangan_pengadaan = Carbon::now('Asia/Jakarta');
+     //     } elseif ($jenis === 'manager') {
             
-         }
+     //     }
  
-         $und2->save();
+     //     $und2->save();
  
-         return redirect()->route('tandatangan.detail', ['id' => $id])->with('success', 'Tanda Tangan Berhasil');
-     }
+     //     return redirect()->route('tandatangan.detail', ['id' => $id])->with('success', 'Tanda Tangan Berhasil');
+     // }
 }

@@ -164,9 +164,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="height:5em;">@if ($data['tandatangan_pengadaan'] != 0)
+                    <td style="height:5em;">
+                        
+                        {{-- @if ($data['tandatangan_pengadaan'] != 0)
                         <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG( $data['tandatangan_pengadaan'], 'QRCODE')}}" alt="Barcode">
-                    @endif</td>
+                    @endif --}}
+                
+                </td>
                 </tr>
                 <tr>
                     <td><b>{{ $data['nama_pengadaan']; }}</b></td>

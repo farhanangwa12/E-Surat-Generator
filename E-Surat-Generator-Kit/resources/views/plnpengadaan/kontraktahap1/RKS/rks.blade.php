@@ -864,17 +864,17 @@
 
                 <tr>
                     <td style="width:50%; text-align:center; height: 80px;">
-                        @if ($surat->tandatangan_manager != 0)
+                        {{-- @if ($surat->tandatangan_manager != 0)
                             <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG($surat->tandatangan_manager, 'QRCODE') }}"
                                 alt="Barcode">
-                        @endif
+                        @endif --}}
 
                     </td>
                     <td style="width:50%; text-align:center;  height: 80px;">
-                        @if ($surat->tandatangan_pengadaan != 0)
+                        {{-- @if ($surat->tandatangan_pengadaan != 0)
                             <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG($surat->tandatangan_pengadaan, 'QRCODE') }}"
                                 alt="Barcode">
-                        @endif
+                        @endif --}}
                     </td>
 
                 </tr>

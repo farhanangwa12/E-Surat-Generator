@@ -437,53 +437,55 @@
                                         <td colspan="3" style="text-align: center;">Surat Vendor</td>
                                     </tr>
 
-                                    @if ($kontrak->rks)
-                                        <tr>
-                                            <th scope="col">{{ $no++ }}</th>
-                                            <td>RKS</td>
+                                    {{-- @if ($kontrak->rks)
+                                      
+                                    @endif --}}
 
-                                            <td>
+                                    <tr>
+                                        <th scope="col">{{ $no++ }}</th>
+                                        <td>RKS</td>
 
-                                                {{-- @if (is_null($kontrak->rks->tandatangan_pengadaan))
-                                                    <a href="{{ route('rks.tandatangan', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 'pengadaan']) }}"
-                                                        class="btn btn-primary"
-                                                        onclick="return confirm('Apakah Anda yakin ingin menandatangani dokumen ini? Aksi ini hanya bisa dilakukan sekali dalam 1 dokumen.')">
-                                                        Tanda Tangan
-                                                    </a>
-                                                @endif --}}
+                                        <td>
 
-                                                <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                    class="btn btn-primary">Preview</a>
-                                                <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                    class="btn btn-primary">Download</a>
-                                            </td>
-                                            </td>
-                                        </tr>
-                                    @endif
+                                            {{-- @if (is_null($kontrak->rks->tandatangan_pengadaan))
+                                                <a href="{{ route('rks.tandatangan', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 'pengadaan']) }}"
+                                                    class="btn btn-primary"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menandatangani dokumen ini? Aksi ini hanya bisa dilakukan sekali dalam 1 dokumen.')">
+                                                    Tanda Tangan
+                                                </a>
+                                            @endif --}}
 
-                                    @if ($kontrak->undangan)
-                                        <tr>
-                                            <th scope="col">{{ $no++ }}</th>
-                                            <td>Undangan</td>
+                                            <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                class="btn btn-primary">Preview</a>
+                                            <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                class="btn btn-primary">Download</a>
+                                        </td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">{{ $no++ }}</th>
+                                        <td>Undangan</td>
 
-                                            <td>
+                                        <td>
 
-                                                {{-- @if (is_null($kontrak->undangan->tandatangan_pengadaan))
-                                                    <a href="{{ route('undangan.tandatangan', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 'pengadaan']) }}"
-                                                        class="btn btn-primary"
-                                                        onclick="return confirm('Apakah Anda yakin ingin menandatangani dokumen ini? Aksi ini hanya bisa dilakukan sekali dalam 1 dokumen.')">
-                                                        Tanda Tangan
-                                                    </a>
-                                                @endif --}}
+                                            {{-- @if (is_null($kontrak->undangan->tandatangan_pengadaan))
+                                                <a href="{{ route('undangan.tandatangan', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 'pengadaan']) }}"
+                                                    class="btn btn-primary"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menandatangani dokumen ini? Aksi ini hanya bisa dilakukan sekali dalam 1 dokumen.')">
+                                                    Tanda Tangan
+                                                </a>
+                                            @endif --}}
 
-                                                <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                    class="btn btn-primary">Preview</a>
-                                                <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                    class="btn btn-primary">Download</a>
-                                            </td>
-                                            </td>
-                                        </tr>
-                                    @endif
+                                            <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                class="btn btn-primary">Preview</a>
+                                            <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                class="btn btn-primary">Download</a>
+                                        </td>
+                                        </td>
+                                    </tr>
+                                    {{-- @if ($kontrak->undangan)
+                                     
+                                    @endif --}}
                                     <tr>
                                         <th scope="col">{{ $no++ }}</th>
                                         <td>BOQ</td>

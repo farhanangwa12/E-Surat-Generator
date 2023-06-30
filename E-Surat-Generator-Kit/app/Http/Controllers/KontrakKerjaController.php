@@ -18,8 +18,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\HPS;
-use App\Models\Dokumen\RKS;
-use App\Models\Dokumen\UND;
+// use App\Models\Dokumen\RKS;
+
 use App\Models\JenisDokumenKelengkapan;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -1245,8 +1245,7 @@ class KontrakKerjaController extends Controller
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->get();
 
         app(HPSController::class)->refresh($id);
-        app(UndanganController::class)->refresh($id);
-        app(RKSController::class)->refresh($id);
+       
 
         return  view('plnpengadaan.kontraktahap1.detail', compact('kontrakkerja', 'kontrak', 'jenis_kontrak', 'id'));
     }
@@ -1492,11 +1491,10 @@ class KontrakKerjaController extends Controller
             ->get();
 
         $pembuatansurat = $pembuatansuratData->groupBy('nama_surat')->toArray();
-
+        // dd($pembuatansurat);
 
         // dd($pembuatansurat);
 
-        // dd($pembuatansurat['nomor_rks']);
         // Detail Kontrak
         $kontrak = [
             'id_kontrakkerja' => $kontrakkerja->id_kontrakkerja,
@@ -1531,7 +1529,7 @@ class KontrakKerjaController extends Controller
             'tanggal_rks' => $pembuatansurat['nomor_rks'][0]['tanggal_pembuatan'] == null ? '' : $this->dateConvertertoInd($pembuatansurat['nomor_rks'][0]['tanggal_pembuatan']),
 
             'nomor_rks' => $pembuatansurat['nomor_rks'][0]['no_surat'],
-            'rks' => RKS::where('id_kontrakkerja', $id)->first(),
+            // 'rks' => $pembuatansurat['nomor_rks'][0]['nama_surat'],
             'tanggal_hps' => $pembuatansurat['nomor_hps'][0]['tanggal_pembuatan'] == null ? '' : $this->dateConvertertoInd($pembuatansurat['nomor_hps'][0]['tanggal_pembuatan']),
             'nomor_hps' => $pembuatansurat['nomor_hps'][0]['no_surat'],
             'hps' => $pembuatansurat['nomor_hps'][0]['hps'],
@@ -1541,7 +1539,7 @@ class KontrakKerjaController extends Controller
 
             'tanggal_undangan' => $pembuatansurat['nomor_undangan'][0]['tanggal_pembuatan'] == null ? '' : $this->dateConvertertoInd($pembuatansurat['nomor_undangan'][0]['tanggal_pembuatan']),
             'nomor_undangan' => $pembuatansurat['nomor_undangan'][0]['no_surat'],
-            'undangan' => UND::where('id_kontrakkerja', $id)->first(),
+            // 'undangan' => UND::where('id_kontrakkerja', $id)->first(),
             'tanggal_pakta_pengguna' => $pembuatansurat['nomor_pakta_pengguna'][0]['tanggal_pembuatan'] == null ? '' : $this->dateConvertertoInd($pembuatansurat['nomor_pakta_pengguna'][0]['tanggal_pembuatan']),
             'nomor_pakta_pengguna' => $pembuatansurat['nomor_pakta_pengguna'][0]['no_surat'],
 
