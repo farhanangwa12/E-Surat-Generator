@@ -49,7 +49,7 @@ class BOQController extends Controller
 
             $boq->ppn11 = 0;
             $boq->total_harga = 0;
-            $boq->tandatangan_direktur = null;
+            // $boq->tandatangan_direktur = null;
 
             // Simpan data boq
             $boq->save();
@@ -389,7 +389,7 @@ class BOQController extends Controller
 
             $boq->ppn11 = $request->input('ppn11');
             $boq->total_harga = $request->input('harga_total');
-            $boq->tandatangan_direktur = $request->input('tandatangan_direktur');
+            // $boq->tandatangan_direktur = $request->input('tandatangan_direktur');
 
             // Simpan data boq
             $boq->save();
@@ -404,7 +404,7 @@ class BOQController extends Controller
 
             $boq->ppn11 = $request->input('ppn11');
             $boq->total_harga = $request->input('harga_total');
-            $boq->tandatangan_direktur = $request->input('tandatangan_direktur');
+            // $boq->tandatangan_direktur = $request->input('tandatangan_direktur');
 
             // Simpan data boq
             $boq->save();
@@ -446,7 +446,7 @@ class BOQController extends Controller
             }
         }
        
-        $lampiranpenawaran->refresh($id);
+
         $lampiranpenawaran->update($request, $id);
 
 

@@ -25,4 +25,5 @@ class PembuatanSuratKontrak extends Model
     {
         return $this->hasOne(LampNego::class, 'id_surat');
     }
+
 }

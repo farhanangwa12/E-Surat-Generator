@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('lampiranpenawaranhargas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_dokumen');
-            $table->integer('total_jumlah')->default(0);
-            $table->integer('dibulatkan')->default(0);
-            $table->integer('ppn11')->default(0);
-            $table->integer('total_harga')->default(0);
-            $table->json('datalampiran')->nullable();
+            $table->string('total_jumlah')->default(0);
+            $table->string('dibulatkan')->default(0);
+            $table->string('ppn11')->default(0);
+            $table->string('total_harga')->default(0);
+            $table->json('datalamp')->nullable();
             // $table->string('kota_surat')->nullable();
             // $table->date('tanggal_surat')->nullable();
             // $table->string('nama_perusahaan')->nullable();

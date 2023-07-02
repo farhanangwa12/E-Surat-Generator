@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('b_o_q_s', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_kontrakkerja');
-            $table->integer('total_jumlah')->default(0);
-            $table->integer('dibulatkan')->default(0);
-            // $table->integer('rok10')->default(0);
-            $table->integer('ppn11')->default(0);
-            $table->integer('total_harga')->default(0);
+            $table->string('total_jumlah')->default(0);
+            $table->string('dibulatkan')->default(0);
+            // $table->string('rok10')->default(0);
+            $table->string('ppn11')->default(0);
+            $table->string('total_harga')->default(0);
             $table->timestamps();
-            $table->string('tandatangan_direktur')->nullable();
-            $table->date('tanggal_tandatangan')->nullable();
+            // $table->string('tandatangan_direktur')->nullable();
+            // $table->date('tanggal_tandatangan')->nullable();
             $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas')->onDelete('cascade');
         });
     }

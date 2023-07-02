@@ -239,7 +239,7 @@
                 const nilaiHargaSatuan = parseFloat(hargaSatuan[i].value.replace(/\./g, ''));
                 const nilaiJumlah = nilaiHargaSatuan * nilaiVolume;
                 console.log("nilai Jumlah" + nilaiJumlah);
-                jumlahInputs[i].value = nilaiJumlah.toFixed(0);
+                jumlahInputs[i].value = formatAngka(nilaiJumlah.toFixed(0)); 
                 total_jumlah += nilaiJumlah;
 
 

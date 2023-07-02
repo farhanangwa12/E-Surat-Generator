@@ -4,11 +4,13 @@ namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
 use App\Models\BarJasHPS;
+use App\Models\Dokumen\BOQ;
 use App\Models\DokumenVendor\Lampiranpenawaranharga;
 use App\Models\HPS;
 use App\Models\JenisDokumenKelengkapan;
 use App\Models\KelengkapanDokumenVendor;
 use App\Models\KontrakKerja;
+use App\Models\PembuatanSuratKontrak;
 use App\Models\SubKontrak\BarJas;
 use App\Models\SubKontrak\JenisKontrak;
 use App\Models\SubKontrak\SubBarjas;
@@ -31,7 +33,7 @@ class LampiranPenawaranHargaController extends Controller
         $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', "harga_nilai_penawaran_")->with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
             $query->where('id_kontrakkerja', $id);
         }])->first();
-     
+
         if ($jenisDokumen->kelengkapanDokumenVendors->isEmpty()) {
 
 
@@ -50,7 +52,7 @@ class LampiranPenawaranHargaController extends Controller
             $data = [];
             Lampiranpenawaranharga::create([
                 'id_dokumen' => $kelengkapan->id_dokumen,
-                'datalampiran' => $data
+                'datalamp' => $data
 
             ])->save();
         }
@@ -62,8 +64,8 @@ class LampiranPenawaranHargaController extends Controller
 
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->with('barjas')->get()->toArray();
 
-        $barjaslamp = $lampiranDokumen->datalampiran; 
-
+        $barjaslamp = $lampiranDokumen->datalamp;
+      
         $no = 0;
         foreach ($jenis_kontrak as $jen) {
             foreach ($jen['barjas'] as $barjas) {
@@ -80,19 +82,19 @@ class LampiranPenawaranHargaController extends Controller
 
 
 
-        $lampiranDokumen->datalampiran = $barjaslamp;
+        $lampiranDokumen->datalamp = $barjaslamp;
         $lampiranDokumen->save();
 
         return $lampiranDokumen;
     }
-   
+
 
     // public function create($id)
     // {
 
     //     // Mengambil path file JSON dari database berdasarkan ID
     //     $formPenawaranHarga = $this->refresh($id);
-      
+
     //     $kontrakkerja = KontrakKerja::find($id);
     //     $jenis_kontraks = JenisKontrak::where('id_kontrak', $kontrakkerja->id_kontrakkerja)->get()->toArray();
 
@@ -166,61 +168,89 @@ class LampiranPenawaranHargaController extends Controller
         $lampiranPenawaran2 = Lampiranpenawaranharga::find($lampiranPenawaran->id);
 
         // Perbarui nilai-nilai dalam objek $lampiranPenawaran2
+        // $lampiranPenawaran2->total_jumlah = $request->input('total_jumlah');
+        // $lampiranPenawaran2->dibulatkan = $request->input('dibulatkan');
+        // $lampiranPenawaran2->ppn11 = $request->input('ppn11');
+        // $lampiranPenawaran2->total_harga = $request->input('harga_total');
+        // $lampiranPenawaran2->kota_surat = $request->input('kota_surat');
+        // $lampiranPenawaran2->tanggal_surat = $request->input('tanggal_surat');
+        // $pembuatansuratkontrak = PembuatanSuratKontrak::where('id_kontrakkerja', $id)
+        //     ->where('nama_surat', 'nomor_rks')
+        //     ->with(['boq', 'b_o_q_s.barjas_b_o_q_s'])
+        //     ->first();
+        $boq = BOQ::where('id_kontrakkerja', $id)->with('barJasBOQs')->first()->toArray();
+       
+        $databoq = [
+            "total_jumlah" => $boq['total_jumlah'],
+            "dibulatkan" => $boq['dibulatkan'],
+            "ppn11" => $boq['ppn11'],
+            "total_harga" => $boq['total_harga']
+
+        ];
+ 
+        $barjasboqdata = [];
+        foreach ($boq['bar_jas_b_o_qs'] as $barjasboq) {
+            $databoq[] = [
+                'harga_satuan' => $barjasboq['harga_satuan'],
+                'jumlah' => $barjasboq['jumlah']
+            ];
+           
+       
+        }
         $lampiranPenawaran2->total_jumlah = $request->input('total_jumlah');
         $lampiranPenawaran2->dibulatkan = $request->input('dibulatkan');
         $lampiranPenawaran2->ppn11 = $request->input('ppn11');
         $lampiranPenawaran2->total_harga = $request->input('harga_total');
-        $lampiranPenawaran2->kota_surat = $request->input('kota_surat');
-        $lampiranPenawaran2->tanggal_surat = $request->input('tanggal_surat');
+        $lampiranPenawaran2->datalamp = $barjasboqdata;
         $lampiranPenawaran2->save();
-
+      
 
         $lampiranPenawaran3 = Lampiranpenawaranharga::find($lampiranPenawaran->id);
         // Bagian menyimpan file 
 
-        if ($request->hasFile('kopsurat')) {
+        // if ($request->hasFile('kopsurat')) {
 
-            $file = $request->file('kopsurat');
-            $extension = $file->extension(); // Mendapatkan ekstensi file
-
-
-            $dataURL = $request->input('hasilkopsurat');
-
-            // Mengubah data URL menjadi file gambar
-            $fileData = explode(',', $dataURL)[1];
-            $decodedData = base64_decode($fileData);
-
-            // Menyimpan file gambar ke storage/app/public/dokumenvendor/kopsurat
-            $filename = uniqid() . '_' . date('Ymd') . '.' . $extension;
-            $path = $lampiranPenawaran2->kopsuratpath . '/' . $filename;
-            Storage::disk('public')->put($path, $decodedData);
-
-            $lampiranPenawaran3->kopsurat = $filename;
-        }
+        //     $file = $request->file('kopsurat');
+        //     $extension = $file->extension(); // Mendapatkan ekstensi file
 
 
+        //     $dataURL = $request->input('hasilkopsurat');
+
+        //     // Mengubah data URL menjadi file gambar
+        //     $fileData = explode(',', $dataURL)[1];
+        //     $decodedData = base64_decode($fileData);
+
+        //     // Menyimpan file gambar ke storage/app/public/dokumenvendor/kopsurat
+        //     $filename = uniqid() . '_' . date('Ymd') . '.' . $extension;
+        //     $path = $lampiranPenawaran2->kopsuratpath . '/' . $filename;
+        //     Storage::disk('public')->put($path, $decodedData);
+
+        //     $lampiranPenawaran3->kopsurat = $filename;
+        // }
 
 
 
-        $barjaslamp = $request->input('lampiran');
 
-        $data = $lampiranPenawaran2->datalampiran;
 
-        $no = 0;
-    
-        foreach ($barjaslamp as $bhps) {
-            $data[$no]['harga_satuan'] = str_replace('.', '', $bhps['harga_satuan']);
-            $data[$no]['jumlah'] =  str_replace('.', '', $bhps['jumlah']);
+        // $barjaslamp = $request->input('lampiran');
 
-            $no++;
-        }
+        // $data = $lampiranPenawaran2->datalampiran;
 
-        // Simpan perubahan
-        $lampiranPenawaran3->datalampiran = $data;
-        $lampiranPenawaran3->save();
+        // $no = 0;
+
+        // foreach ($barjaslamp as $bhps) {
+        //     $data[$no]['harga_satuan'] = str_replace('.', '', $bhps['harga_satuan']);
+        //     $data[$no]['jumlah'] =  str_replace('.', '', $bhps['jumlah']);
+
+        //     $no++;
+        // }
+
+        // // Simpan perubahan
+        // $lampiranPenawaran3->datalampiran = $data;
+        // $lampiranPenawaran3->save();
 
         // Redirect ke route 'vendor.kontrakkerja.detail' dengan ID yang sesuai
-        return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id]);
+        // return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id]);
     }
 
     public function halamanttd($id)

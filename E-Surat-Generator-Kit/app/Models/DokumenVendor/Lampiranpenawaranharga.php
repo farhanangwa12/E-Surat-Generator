@@ -20,16 +20,16 @@ class Lampiranpenawaranharga extends Model
         'dibulatkan',
         'ppn11',
         'total_harga',
-        'datalampiran',
-        'kota_surat',
-        'tanggal_surat',
-        'nama_perusahaan',
-        'direktur',
+        'datalamp',
+        // 'kota_surat',
+        // 'tanggal_surat',
+        // 'nama_perusahaan',
+        // 'direktur',
     ];
 
 
     protected $casts = [
-        'datalampiran' => 'json',
+        'datalamp' => 'json',
     ];
 
     public function dokumen()
