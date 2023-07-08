@@ -214,6 +214,29 @@ class LoginController extends Controller
     }
     public function simpanvendor(Request $request)
     {
+
+
+
+        $datavendor = $request->validate([
+            'penyedia' => 'required',
+            'direktur' => 'required',
+            'alamat_jalan' => 'required',
+            'alamat_kota' => 'required',
+            'alamat_provinsi' => 'required',
+            'bank' => 'required',
+            'nomor_rek' => 'required',
+            'telepon' => 'nullable',
+            'website' => 'nullable',
+            'faksimili' => 'nullable',
+            'email_perusahaan' => 'nullable|email',
+            'pengawas_pekerjaan' => 'nullable',
+            'pengawas_k3' => 'nullable',
+        ]);
+
+
+        $vendor = Vendor::create($datavendor);
+
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -228,27 +251,20 @@ class LoginController extends Controller
             'role' => 'vendor',
 
         ];
+        $dataakun['vendor_id'] = $vendor->id_vendor;
 
-        if ($request->hasFile('picture_profile')) {
-            $file = $request->file('picture_profile');
-            $filename = $file->getClientOriginalName() . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('public/photoprofile', $filename);
-            $dataakun['picture_profile'] = $filename;
-        }
 
+        // Cek apakah ada uploadan gambar baru
+        // if ($request->hasFile('picture_profile')) {
+           
+        //     // Hapus file gambar profil lama jika bukan default.jpg
+        //     // Simpan gambar profil yang baru diupload
+        //     $imageName = time() . '.' . $request->picture_profile->extension();
+        //     $request->picture_profile->move(public_path('photoprofile'), $imageName);
+        //     $dataakun['picture_profile'] = $imageName;
+        // }
+      
         $user = User::create($dataakun);
-        $datavendor = $request->validate([
-            'penyedia' => 'required',
-            'direktur' => 'required',
-            'alamat_jalan' => 'required',
-            'alamat_kota' => 'required',
-            'alamat_provinsi' => 'required',
-            'bank' => 'required',
-            'nomor_rek' => 'required',
-        ]);
-        $datavendor['id_akun'] = $user->id;
-
-        Vendor::create($datavendor);
         return redirect()->route('login')->with('success', 'Registrasi vendor berhasil. Silakan login.');
     }
 }

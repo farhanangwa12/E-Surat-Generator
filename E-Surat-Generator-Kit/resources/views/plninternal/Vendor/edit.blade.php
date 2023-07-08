@@ -73,19 +73,35 @@
 
                             <div class="form-group mb-3">
                                 <label for="telepon">Telepon</label>
-                                <input type="text" class="form-control" id="telepon" name="telepon" placeholder="Contoh : 08XXXXXXX" value="{{ $vendor->telepon }}">
+                                <input type="text" class="form-control" id="telepon" name="telepon"
+                                    placeholder="Contoh : 08XXXXXXX" value="{{ $vendor->telepon }}">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="website">Website</label>
-                                <input type="text" class="form-control" id="website" name="website" placeholder="Contoh : www.mywebsite.com" value="{{ $vendor->website }}">
+                                <input type="text" class="form-control" id="website" name="website"
+                                    placeholder="Contoh : www.mywebsite.com" value="{{ $vendor->website }}">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="faksimili">Faksimili</label>
-                                <input type="text" class="form-control" id="faksimili" name="faksimili" placeholder="Contoh : (031)21123231" value="{{ $vendor->faksimili }}">
+                                <input type="text" class="form-control" id="faksimili" name="faksimili"
+                                    placeholder="Contoh : (031)21123231" value="{{ $vendor->faksimili }}">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="email_perusahaan">Email Perusahaan</label>
-                                <input type="email" class="form-control" id="email_perusahaan" name="email_perusahaan" placeholder="Contoh : perusahaanku@email.com" value="{{ $vendor->email_perusahaan }}">
+                                <input type="email" class="form-control" id="email_perusahaan" name="email_perusahaan"
+                                    placeholder="Contoh : perusahaanku@email.com"
+                                    value="{{ $vendor->email_perusahaan }}">
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="pengawas_pekerjaan">Pengawas Pekerjaan:</label>
+                                <input type="text" class="form-control" name="pengawas_pekerjaan"
+                                    id="pengawas_pekerjaan" value="{{ $vendor->pengawas_pekerjaan }}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="pengawas_k3">Pengawas K3:</label>
+                                <input type="text" class="form-control" name="pengawas_k3" id="pengawas_k3"
+                                    value="{{ $vendor->pengawas_k3 }}">
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>

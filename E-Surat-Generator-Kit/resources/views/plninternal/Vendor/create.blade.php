@@ -141,6 +141,16 @@
                                 <input type="email" class="form-control" placeholder="Contoh : perusahaanku@email.com"
                                     id="email_perusahaan" name="email_perusahaan">
                             </div>
+
+                            <div class="form-group mb-3">
+                                <label for="pengawas_pekerjaan">Pengawas Pekerjaan:</label>
+                                <input type="text" class="form-control" name="pengawas_pekerjaan"
+                                    id="pengawas_pekerjaan">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="pengawas_k3">Pengawas K3:</label>
+                                <input type="text" class="form-control" name="pengawas_k3" id="pengawas_k3">
+                            </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
 
 

@@ -29,10 +29,18 @@
                 <h3>Registrasi Vendor</h3>
             </div>
             <div class="card-body">
+                @if ($errors->has('penyedia'))
+                    <span class="text-danger">
+                        @foreach ($errors->get('penyedia') as $error)
+                            {{ $error }}<br>
+                        @endforeach
+                    </span>
+                @endif
                 <ul class="nav nav-tabs" id="registrationTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
-                            type="button" role="tab" aria-controls="tab1" aria-selected="true">Data Identitas Vendor</button>
+                            type="button" role="tab" aria-controls="tab1" aria-selected="true">Data Identitas
+                            Vendor</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link disabled" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
@@ -110,6 +118,55 @@
                                 @enderror
                             </div>
 
+                            <div class="mb-3">
+                                <label for="telepon" class="form-label">Telepon:</label>
+                                <input type="text" class="form-control" name="telepon" id="telepon"
+                                    placeholder="Contoh : 08XXXXXXX">
+                                @error('telepon')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="website" class="form-label">Website:</label>
+                                <input type="text" class="form-control" name="website" id="website"
+                                    placeholder="Contoh : www.mywebsite.com">
+                                @error('website')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="faksimili" class="form-label">Faksimili:</label>
+                                <input type="text" class="form-control" name="faksimili" id="faksimili"
+                                    placeholder="Contoh : (031)21123231">
+                                @error('faksimili')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="email_perusahaan" class="form-label">Email Perusahaan:</label>
+                                <input type="email" class="form-control" name="email_perusahaan"
+                                    id="email_perusahaan" placeholder="Contoh : perusahaan@example.com">
+                                @error('email_perusahaan')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="pengawas_pekerjaan">Pengawas Pekerjaan:</label>
+                                <input type="text" class="form-control" name="pengawas_pekerjaan"
+                                    id="pengawas_pekerjaan" placeholder="Masukkan nama pengawas pekerjaan">
+                                @error('pengawas_pekerjaan')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="pengawas_k3">Pengawas K3:</label>
+                                <input type="text" class="form-control" name="pengawas_k3" id="pengawas_k3"
+                                    placeholder="Masukkan nama pengawas K3">
+                                @error('pengawas_k3')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
 
 
                             <button type="button" class="btn btn-primary" onclick="goToTab(2)">Selanjutnya</button>
@@ -155,15 +212,15 @@
                             </div>
 
 
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label for="picture_profile" class="form-label">Picture Profile</label>
                                 <input type="file"
                                     class="form-control @error('picture_profile') is-invalid @enderror"
-                                    name="picture_profile">
+                                    name="picture_profile" accept=".png, .jpg, .jpeg">
                                 @error('picture_profile')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <button type="button" class="btn btn-primary" onclick="goToTab(1)">Kembali</button>
                             <button class="btn btn-primary">Submit</button>

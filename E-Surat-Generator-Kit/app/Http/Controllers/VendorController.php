@@ -46,7 +46,9 @@ class VendorController extends Controller
             'telepon' => 'nullable',
             'website' => 'nullable',
             'faksimili' => 'nullable',
-            'email_perusahaan' => 'nullable|email',
+            'email_perusahaan' => 'nullable',
+            'pengawas_pekerjaan' => 'nullable',
+            'pengawas_k3' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -66,6 +68,8 @@ class VendorController extends Controller
         $vendor->website = $request->input('website');
         $vendor->faksimili = $request->input('faksimili');
         $vendor->email_perusahaan = $request->input('email_perusahaan');
+        $vendor->pengawas_pekerjaan = $request->input('pengawas_pekerjaan');
+        $vendor->pengawas_k3 = $request->input('pengawas_k3');
         $vendor->save();
 
 
@@ -111,6 +115,8 @@ class VendorController extends Controller
             'website' => 'nullable',
             'faksimili' => 'nullable',
             'email_perusahaan' => 'nullable|email',
+            'pengawas_pekerjaan' => 'nullable',
+            'pengawas_k3' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -119,9 +125,7 @@ class VendorController extends Controller
 
 
         $vendor = Vendor::find($id);
-
         // Jika validasi berhasil, simpan ke model Vendor
-        $vendor = new Vendor;
         $vendor->penyedia = $request->input('penyedia');
         $vendor->direktur = $request->input('direktur');
         $vendor->alamat_jalan = $request->input('alamat_jalan');
@@ -133,6 +137,8 @@ class VendorController extends Controller
         $vendor->website = $request->input('website');
         $vendor->faksimili = $request->input('faksimili');
         $vendor->email_perusahaan = $request->input('email_perusahaan');
+        $vendor->pengawas_pekerjaan = $request->input('pengawas_pekerjaan');
+        $vendor->pengawas_k3 = $request->input('pengawas_k3');
         $vendor->save();
 
         return redirect()->route('vendor')->with('success', 'vendor updated successfully');
