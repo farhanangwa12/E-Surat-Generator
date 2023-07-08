@@ -171,16 +171,16 @@
                 </tr>
                 <tr>
                     <td style="height: 5%;">
-                        @if ($surat->tandatangan_vendor != 0)
+                        {{-- @if ($surat->tandatangan_vendor != 0)
                             <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG($surat->tandatangan_vendor, 'QRCODE') }}"
                                 alt="Barcode">
-                        @endif
+                        @endif --}}
                     </td>
                     <td>
-                        @if ($surat->tandatangan_vendor != 0)
+                        {{-- @if ($surat->tandatangan_vendor != 0)
                             <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG($surat->tandatangan_pengadaan, 'QRCODE') }}"
                                 alt="Barcode">
-                        @endif
+                        @endif --}}
                     </td>
 
                 </tr>
@@ -200,10 +200,10 @@
                 </tr>
                 <tr>
                     <td colspan="2" style="height: 5%;">
-                        @if ($surat->tandatangan_vendor != 0)
+                        {{-- @if ($surat->tandatangan_vendor != 0)
                             <img src="data:image/png;base64,{{ @DNS2D::getBarcodePNG($surat->tandatangan_manager, 'QRCODE') }}"
                                 alt="Barcode">
-                        @endif
+                        @endif --}}
                     </td>
 
                 </tr>

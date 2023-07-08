@@ -81,10 +81,10 @@
         <form action="{{ route('vendor.neraca.update', $id) }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
-                <div class="header">
+                {{-- <div class="header">
                     <h1>Kop Surat</h1>
                     <h2>Sub Title</h2>
-                </div>
+                </div> --}}
                 <main>
                     @if ($errors->any())
                         <div class="alert alert-danger">
@@ -116,14 +116,16 @@
                                     <td>I</td>
                                     <td>Aktiva Lancar</td>
                                     <td>:</td>
-                                    <td>Rp<input type="text" name="aktiva_lancar" class="form-control number"
-                                            placeholder="Nominal Aktiva Lancar" value="{{ $aktiva_lancar }}"></td>
+                                    <td>Rp<input id="aktiva_lancar" type="text" name="aktiva_lancar"
+                                            class="form-control number" placeholder="Nominal Aktiva Lancar"
+                                            value="{{ $aktiva_lancar }}"></td>
                                     <td></td>
                                     <td>IV</td>
                                     <td>Utang jangka pendek</td>
                                     <td>:</td>
                                     <td>Rp<input type="text" name="utang_jangka_pendek" class="form-control number"
-                                            placeholder="Nominal Utang Jangka Pendek" value="{{ $utang_jangka_pendek }}"></td>
+                                            placeholder="Nominal Utang Jangka Pendek" value="{{ $utang_jangka_pendek }}">
+                                    </td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -200,8 +202,12 @@
                                     <td>Jumlah (a)</td>
                                     <td></td>
                                     <td></td>
-                                    <td>Rp<input type="text" name="jumlah_a" class="form-control number"
-                                            placeholder="Nominal Jumlah (a)"></td>
+                                    <td>Rp
+
+                                        <input type="text" name="jumlah_a" class="form-control number"
+                                            placeholder="Nominal Jumlah (a)">
+                                    </td>
+                                  
                                     <td>V</td>
                                     <td>Utang jangka panjang (e)</td>
                                     <td></td>
@@ -349,7 +355,7 @@
                             </tr>
                         </table>
                     </div>
-                   
+
                 </main>
 
             </div>

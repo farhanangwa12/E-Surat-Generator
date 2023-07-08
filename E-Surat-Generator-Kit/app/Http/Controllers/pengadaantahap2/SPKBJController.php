@@ -118,7 +118,7 @@ class SPKBJController extends Controller
                 12 => [
                     'bank' => $kontrakkerja->vendor->bank,
                     'nama_rekening' => $kontrakkerja->vendor->penyedia,
-                    'nomor_rekening' => $kontrakkerja->nomor_rek
+                    'nomor_rekening' => $kontrakkerja->vendor->nomor_rek
                 ]
             ],
 

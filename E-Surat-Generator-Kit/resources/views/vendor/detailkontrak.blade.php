@@ -182,7 +182,7 @@
                                                 PDF</a>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>Neraca</td>
                                         <td>
@@ -196,7 +196,7 @@
                                                 PDF</a>
                                         </td>
 
-                                    </tr>
+                                    </tr> --}}
                                 </tbody>
                             </table>
                         </div>

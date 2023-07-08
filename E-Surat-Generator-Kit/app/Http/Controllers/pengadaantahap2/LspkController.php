@@ -4,6 +4,7 @@ namespace App\Http\Controllers\pengadaantahap2;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\SuratVendor\FormPenawaranHargaController;
+use App\Models\Dokumen\LampNego;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\SubKontrak\BarJas;
 use App\Models\SubKontrak\JenisKontrak;
@@ -11,7 +12,7 @@ use App\Models\SubKontrak\SubBarjas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
-
+use Terbilang;
 class LspkController extends Controller
 {
 
@@ -56,7 +57,7 @@ class LspkController extends Controller
                                 "uraian" => $subbarjas['uraian'],
                                 "volume" => $subbarjas['volume'],
                                 "satuan" => $subbarjas['satuan'],
-                           
+
                             ];
                             # code...
                         }
@@ -67,9 +68,9 @@ class LspkController extends Controller
                         'uraian' => $barjas['uraian'],
                         'vol' => $barjas['volume'],
                         'sat' => $barjas['satuan'],
-                     
-                        'harga_satuan' => empty($datalampnego) ? 0 :  number_format($datalampnego[$no]['harga_satuan'], 0,',','.'),
-                        'jumlah' => empty($datalampnego) ? 0 :  number_format($datalampnego[$no]['jumlah'], 0, ',', '.'),
+
+                        'harga_satuan' => empty($datalampnego) ? 0 :  number_format(str_replace('.', '', $datalampnego[$no]['harga_satuan']), 0, ',', '.'),
+                        'jumlah' => empty($datalampnego) ? 0 :  number_format(str_replace('.', '', $datalampnego[$no]['jumlah']), 0, ',', '.'),
                         'sub_data' => $sub_data
 
                     ];
@@ -83,6 +84,8 @@ class LspkController extends Controller
 
             ];
         }
+
+      
         $data = [
             'logokiri' => public_path('undangan/kiri.jpg'),
             'logo' => public_path('undangan/logo.png'), // path ke file header gambar
@@ -91,12 +94,13 @@ class LspkController extends Controller
 
             'nama_pekerjaan' => 'PEKERJAAN PENGADAAN DAN JASA INSTALASI KWH METER ENGINE PLTU JEMBER PT PLN (PERSERO) UNIT INDUK
             WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR',
-            'tanggal_spk' => Carbon::parse( $pembuatansuratkontrak->tanggal_pembuatan)->locale('id')->isoFormat('DD MMMM YYYY'),
+            'tanggal_spk' => Carbon::parse($pembuatansuratkontrak->tanggal_pembuatan)->locale('id')->isoFormat('DD MMMM YYYY'),
             'kontrakbaru' => $kontrakbaru,
-            'jumlah_harga' => number_format($lampnego->total_jumlah, 0, ',', '.'),
-            'pembulatan' => number_format($lampnego->dibulatkan, 0, ',', '.'),
-            'ppn11' => number_format($lampnego->ppn11, 0, ',', '.'),
-            'total_harga' => number_format($lampnego->total_harga, 0, ',', '.'),
+            'jumlah_harga' => number_format(str_replace('.','',$lampnego->total_jumlah), 0, ',', '.'),
+            'pembulatan' => number_format(str_replace('.','',$lampnego->dibulatkan), 0, ',', '.'),
+            'ppn11' => number_format(str_replace('.','',$lampnego->ppn11), 0, ',', '.'),
+            'total_harga' => number_format(str_replace('.','',$lampnego->total_harga), 0, ',', '.'),
+            'terbilang' => ucwords(Terbilang::make(str_replace('.','',$lampnego->total_harga), ' Rupiah'))
 
 
 

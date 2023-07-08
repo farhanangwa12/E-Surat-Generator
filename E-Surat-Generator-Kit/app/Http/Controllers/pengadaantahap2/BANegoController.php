@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\SuratVendor\FormPenawaranHargaController;
 use App\Models\Dokumen\BANego;
 use App\Models\Dokumen\LampNego;
+use App\Models\DokumenVendor\Formpenawaranharga;
+use App\Models\DokumenVendor\Lampiranpenawaranharga;
 use App\Models\KontrakKerja;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\Penyelenggara;
@@ -60,16 +62,22 @@ class BANegoController extends Controller
     {
         // $this->refresh($id);
         $kontrakkerja = KontrakKerja::find($id);
-
-        $formpenawaran = app(FormPenawaranHargaController::class);
-    
-        $nilai_pekerjaan = $formpenawaran->refresh($id)->jumlah_harga;
-        $lampnego = app(LampNegoController::class);
-        $penawaran_negosiasi = $lampnego->refresh($id)->total_harga;
+        $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id){
+            $query->where('id_kontrakkerja', $id);
+        }])->first();
+  
+        $nilai_pekerjaan = $formpenawaran->jumlah_harga;
+        $lampirannego = LampNego::with(['pembuatansuratkontrak'=> function ($query) use ($id){
+            $query->where('id_kontrakkerja', $id);
+        }])->first();
+        
+   
+        $penawaran_negosiasi = $lampirannego->total_harga;
 
 
         $banegotanggal = PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_ba_negosiasi')->first()->tanggal_pembuatan;
         $vendor = Vendor::find($kontrakkerja->id_vendor);
+  
 
         $surat = [
             'nomor' => "Nomor : " . PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_ba_negosiasi')->first()->no_surat,
@@ -79,21 +87,20 @@ class BANegoController extends Controller
 
             'paragraf_1' => "Pada  hari  ini,  " . Carbon::parse($banegotanggal)->locale('id')->isoFormat('dddd') . " tanggal " . Terbilang::make(Carbon::parse($banegotanggal)->format('d')) . " bulan " . Carbon::parse($banegotanggal)->format('F') . " tahun " . Terbilang::make($kontrakkerja->tahun) . " (" . Carbon::parse($banegotanggal)->format('d-m-Y') . "), yang bertanda tangan di bawah ini selaku Pejabat Pelaksana Pengadaan Barang/Jasa di Lingkungan PT PLN (Persero) Unit Induk Wilayah Nusa Tenggara Timur Unit Pelaksana Pembangkitan Timor telah menyelenggarakan Negosiasi untuk pekerjaan tersebut di atas dengan hasil sebagai berikut :",
 
-
-            'penawaran_semula' => "Rp. " . number_format($nilai_pekerjaan, 0, ',', '.'),
-            'penawaran_negosiasi' => "Rp. " . number_format($penawaran_negosiasi, 0, ',', '.'),
+            'penawaran_semula' => "Rp. " . number_format(str_replace('.', '', $nilai_pekerjaan), 0, ',', '.'),
+            'penawaran_negosiasi' => "Rp. " . number_format(str_replace('.','',$penawaran_negosiasi), 0, ',', '.'),
 
             // tanda Tangan
             'namaperusahaan' => $vendor->penyedia,
 
             // Nama Terang
             'vendor' => $vendor->direktur,
-            'tandatangan_vendor' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_direktur,
+            // 'tandatangan_vendor' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_direktur,
 
             'pengadaan' =>  Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'pejabat_pelaksana_pengadaan')->first()->nama_pengguna,
-            'tandatangan_pengadaan' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_pengadaan,
+            // 'tandatangan_pengadaan' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_pengadaan,
             'manager' => Penyelenggara::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_jabatan', 'manager')->first()->nama_pengguna,
-            'tandatangan_manager' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_manager,
+            // 'tandatangan_manager' => BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first() == null ? '0' : BANego::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first()->tandatangan_manager,
 
 
 

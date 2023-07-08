@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->string('faksimili')->nullable();
             $table->string('email_perusahaan')->nullable();
+            $table->string('pengawas_pekerjaan')->nullable();
+            $table->string('pengawas_k3')->nullable();
             $table->timestamps();
         });
         

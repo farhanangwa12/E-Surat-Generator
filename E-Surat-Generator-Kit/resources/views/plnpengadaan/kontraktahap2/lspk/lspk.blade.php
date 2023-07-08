@@ -216,9 +216,7 @@
 
             </table>
 
-            <h2><i>Terbilang : Duaratus Enampuluh Dua Juta Seratus Limapuluh Sembilan Ribu Enamratus Delapanpuluh
-                    Sembilan
-                    Rupiah</i></h2>
+            <h2><i>Terbilang : {{ $terbilang; }}</i></h2>
 
 
         </div>
@@ -234,9 +232,9 @@
                     MANAGER
                 </td>
             </tr>
-            <tr style="height: 80px;">
-                <td>Tanda Tangan Direktur</td>
-                <td>Tanda Tangan Manager
+            <tr >
+                <td></td>
+                <td style="height: 80px;">
                 </td>
             </tr>
             <tr>

@@ -153,19 +153,19 @@ class LampNegoController extends Controller
         $data2 = [
             'logokiri' => public_path('undangan/kiri.jpg'),
             'logo' => public_path('undangan/logo.png'), // path ke file header gambar
-            'jumlah_harga_penawaran' => $boq == null ? '0' : number_format($boq->total_jumlah,0,',','.'),
-            'jumlah_harga_negosiasi' => $lampnego == null ? '0' : number_format($lampnego->total_jumlah,0,',','.'),
+            'jumlah_harga_penawaran' => $boq == null ? '0' : number_format(str_replace('.','',$boq->total_jumlah),0,',','.'),
+            'jumlah_harga_negosiasi' => $lampnego == null ? '0' : number_format(str_replace('.','',$lampnego->total_jumlah),0,',','.'),
 
-            'pembulatan_harga_penawaran' => $boq == null ? '0' : number_format($boq->dibulatkan,0,',','.'),
-            'pembulatan_harga_negosiasi' => $lampnego == null ? '0' : number_format($lampnego->dibulatkan,0,',','.'),
+            'pembulatan_harga_penawaran' => $boq == null ? '0' : number_format(str_replace('.','',$boq->dibulatkan),0,',','.'),
+            'pembulatan_harga_negosiasi' => $lampnego == null ? '0' : number_format(str_replace('.','',$lampnego->dibulatkan),0,',','.'),
 
-            'ppn11_harga_penawaran' => $boq == null ? '0' : number_format($boq->dibulatkan * 0.11,0,',','.'),
-            'ppn11_harga_negosiasi' => $lampnego == null ? '0' : number_format($lampnego->dibulatkan * 0.11,0,',','.'),
+            'ppn11_harga_penawaran' => $boq == null ? '0' : number_format(str_replace('.','',$boq->dibulatkan) ,0,',','.'),
+            'ppn11_harga_negosiasi' => $lampnego == null ? '0' : number_format(str_replace('.','',$lampnego->dibulatkan) ,0,',','.'),
 
-            'total_harga_penawaran' => $boq == null ? '0' :  number_format($boq->total_harga,0,',','.'),
-            'total_harga_negosiasi' => $lampnego == null ? '0' :   number_format($lampnego->total_harga,0,',','.'),
+            'total_harga_penawaran' => $boq == null ? '0' :  number_format(str_replace('.','',$boq->total_harga),0,',','.'),
+            'total_harga_negosiasi' => $lampnego == null ? '0' :   number_format(str_replace('.','',$lampnego->total_harga),0,',','.'),
 
-            'harga_disepakati' =>  $lampnego == null ? '0' :   number_format($lampnego->total_harga,0,',','.'),
+            'harga_disepakati' =>  $lampnego == null ? '0' :   number_format(str_replace('.','',$lampnego->total_harga),0,',','.'),
             'terbilang' => $lampnego == null ?  ucwords(Terbilang::make(0,' Rupiah ')) : ucwords(Terbilang::make($lampnego->total_harga, ' Rupiah ')),
             "penyedia" => $kontrak->vendor->penyedia,
             "tandatangan_direktur" => "Budi Susanti Direktur",

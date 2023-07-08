@@ -138,6 +138,9 @@
                     </tbody>
                 </table>
 
+                <a href="{{ route('vendor.kontrakkerja.detail', ['id' => $id]) }}" class="btn btn-primary">Kembali</a>
+
+
 
 
             </main>
@@ -147,7 +150,7 @@
 
 
     </div>
-    <div class="card">
+    {{-- <div class="card">
         <div class="card-header">
             Update Data Penawaran
         </div>
@@ -202,7 +205,7 @@
             </form>
 
         </div>
-    </div>
+    </div> --}}
 
 @endsection
 
