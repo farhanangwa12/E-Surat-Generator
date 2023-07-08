@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\SuratVendor\LampiranPenawaranHargaController;
 use App\Models\Dokumen\BarJasBOQ;
 use App\Models\Dokumen\BOQ;
+use App\Models\DokumenVendor\Formpenawaranharga;
 use App\Models\KontrakKerja;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\Penyelenggara;
+
 use App\Models\SubKontrak\BarJas;
 use App\Models\SubKontrak\JenisKontrak;
 use App\Models\SubKontrak\SubBarjas;
@@ -19,6 +21,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\NamedRange;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+
 use TCPDF;
 use PDF;
 use Terbilang;
@@ -261,7 +264,15 @@ class BOQController extends Controller
         // $perhitungancontroller = app(PerhitunganController::class);
         // $barisTerakhir =  $perhitungancontroller->mencariTotalHarga($spreadsheet, "HPS") + 0;
 
-
+        // Formpenawaran 
+        $formpenawaranModel = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->first();
+     
+   
+        $nama_kota =  isset($formpenawaranModel->nama_kota) ? $formpenawaranModel->nama_kota : '.............';
+        $tanggal_surat = isset($formpenawaranModel->tanggal_pembuatan_surat) ?  Carbon::createFromFormat('Y-m-d', $formpenawaranModel->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY') : '.................';
+        
         $data2 = [
             'logokiri' => public_path('undangan/kiri.jpg'),
             'logo' => public_path('undangan/logo.png'), // path ke file header gambar
@@ -269,6 +280,7 @@ class BOQController extends Controller
             // 'surat' => $surat
             'nomor' => $nomor,
             'tanggal_pekerjaan' => Carbon::createFromFormat('Y-m-d', $tanggal)->locale('id')->isoFormat('D MMMM YYYY'),
+            'tanggal_vendor' => $nama_kota . ', ' . $tanggal_surat,
             'nama_pekerjaan' => $nama_pekerjaan,
 
             'penyedia' => $nama_perusahaan,
@@ -280,6 +292,7 @@ class BOQController extends Controller
             'ppn_11' => BOQ::where('id_kontrakkerja', $id)->first()->ppn11,
 
             'harga_total' => BOQ::where('id_kontrakkerja', $id)->first()->total_harga,
+            'terbilang' => ucwords(Terbilang::make(str_replace('.','' , BOQ::where('id_kontrakkerja', $id)->first()->total_harga), ' Rupiah'))
 
 
 
@@ -313,7 +326,7 @@ class BOQController extends Controller
 
     public function isi($id)
     {
-        $this->refresh($id);
+   
         $kontrakkerja = KontrakKerja::find($id);
         $jenis_kontraks = JenisKontrak::where('id_kontrak', $kontrakkerja->id_kontrakkerja)->get()->toArray();
         $boq = BOQ::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->first();

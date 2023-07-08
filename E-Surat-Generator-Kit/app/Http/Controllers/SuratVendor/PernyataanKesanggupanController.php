@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
+use App\Models\DokumenVendor\Formpenawaranharga;
 use App\Models\DokumenVendor\PernyataanKesanggupan;
-use App\Models\FormPenawaran\FormPenawaranHarga;
+
 use App\Models\JenisDokumenKelengkapan;
 use App\Models\KelengkapanDokumenVendor;
 use App\Models\KontrakKerja;
+use App\Models\PembuatanSuratKontrak;
 use App\Models\TandaTangan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
@@ -40,26 +43,27 @@ class PernyataanKesanggupanController extends Controller
         }
 
 
-        $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('pernyataanKesanggupan')->first();
+        // $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('pernyataanKesanggupan')->first();
+        $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->first();
 
+        return $kelengkapan;
 
+        // if ($kelengkapan->pernyataankesanggupan === null) {
 
-        if ($kelengkapan->pernyataankesanggupan === null) {
+        //     $pernyataankesanggupan = new PernyataanKesanggupan();
+        //     $pernyataankesanggupan->id_dokumen = $kelengkapan->id_dokumen;
 
-            $pernyataankesanggupan = new PernyataanKesanggupan();
-            $pernyataankesanggupan->id_dokumen = $kelengkapan->id_dokumen;
+        //     $pernyataankesanggupan->save();
+        // }
 
-            $pernyataankesanggupan->save();
-        }
-
-        $pernyataankesanggupan1 = PernyataanKesanggupan::where('id_dokumen', $kelengkapan->id_dokumen)->first();
-        return $pernyataankesanggupan1;
+        // $pernyataankesanggupan1 = PernyataanKesanggupan::where('id_dokumen', $kelengkapan->id_dokumen)->first();
+        // return $pernyataankesanggupan1;
     }
 
     public function create($id)
     {
         $penawaran = $this->refresh($id);
-  
+
         $data = [
             'id' => $id,
             'nama' => $penawaran->nama,
@@ -142,21 +146,32 @@ class PernyataanKesanggupanController extends Controller
     public function pdf($id)
     {
         $penawaran = $this->refresh($id);
+        $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->first();
+        $kopsurat = asset('/storage/' . $formpenawaran->kopsuratpath . '/' . $formpenawaran->kopsurat);
 
+
+        // Informasi RKS
+        $pembuatansuratkontrak = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat', 'nomor_rks')->first();
+
+        // Informasi Kontrakkerja
+        $kontrakkerja = KontrakKerja::find($id)->with('vendor')->first();
         $data = [
-            'nama' => $penawaran->nama,
-            'jabatan' => $penawaran->jabatan,
-            'nama_perusahaan' =>  $penawaran->bertindak_untuk,
-            'atas_nama' =>  $penawaran->atas_nama,
-            'alamat_perusahaan' =>  $penawaran->alamat,
-            'telepon_fax' =>  $penawaran->telepon_fax,
-            'email_perusahaan' =>  $penawaran->email,
+            'kopsurat' => $kopsurat,
+            'nama' => $kontrakkerja->vendor->direktur,
+            'jabatan' => 'Direktur',
+            'nama_perusahaan' =>  $kontrakkerja->vendor->penyedia,
+            // 'atas_nama' =>  $kontrakkerja->vendor->penyedia,
+            'alamat_perusahaan' =>  $kontrakkerja->vendor->alamat_jalan . ', ' . $kontrakkerja->vendor->alamat_kota . ', ' . $kontrakkerja->vendor->alamat_provinsi,
+            'telepon_fax' =>  $kontrakkerja->vendor->telepon_fax,
+            'email_perusahaan' =>  $kontrakkerja->vendor->email_perusahaan,
             'nama_pekerjaan' => strtoupper(KontrakKerja::find($id)->nama_kontrak),
-            'nomor_rks' => '1234',
-            'tanggal_rks' => '2023-05-26',
-            'kota_surat' => 'City',
-            'tanggal_surat' => '2023-05-26',
-            'nama_terang' => 'Example Terang',
+            'nomor_rks' => $pembuatansuratkontrak->no_surat,
+            'tanggal_rks' => Carbon::parse($pembuatansuratkontrak->tanggal_pembuatan)->locale('id')->isoFormat('D MMMM YYYY'),
+            'nama_perusahaan_terang' => isset($kontrakkerja->vendor->penyedia) ? $kontrakkerja->vendor->penyedia  : 'PT./CV ........ ',
+            'kota_surat' => $formpenawaran->nama_kota,
+            'tanggal_surat' => Carbon::parse($formpenawaran->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
         ];
 
         // Generate the PDF using laravel-dompdf

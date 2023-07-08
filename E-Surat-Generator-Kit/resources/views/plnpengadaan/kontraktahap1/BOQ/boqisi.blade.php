@@ -121,36 +121,36 @@
             <tbody>
                 @php
                     
-                    function int_to_roman($num)
-                    {
-                        // array untuk angka romawi
-                        $roman = [
-                            'M' => 1000,
-                            'CM' => 900,
-                            'D' => 500,
-                            'CD' => 400,
-                            'C' => 100,
-                            'XC' => 90,
-                            'L' => 50,
-                            'XL' => 40,
-                            'X' => 10,
-                            'IX' => 9,
-                            'V' => 5,
-                            'IV' => 4,
-                            'I' => 1,
-                        ];
-                        $result = '';
-                        // loop melalui array angka romawi
-                        foreach ($roman as $key => $value) {
-                            // dapatkan banyaknya simbol romawi yang dibutuhkan
-                            $numerals = intval($num / $value);
-                            // tambahkan simbol romawi ke string hasil
-                            $result .= str_repeat($key, $numerals);
-                            // kurangi angka asal dengan angka romawi yang telah dihasilkan
-                            $num = $num % $value;
-                        }
-                        return $result;
-                    }
+                    // function int_to_roman($num)
+                    // {
+                    //     // array untuk angka romawi
+                    //     $roman = [
+                    //         'M' => 1000,
+                    //         'CM' => 900,
+                    //         'D' => 500,
+                    //         'CD' => 400,
+                    //         'C' => 100,
+                    //         'XC' => 90,
+                    //         'L' => 50,
+                    //         'XL' => 40,
+                    //         'X' => 10,
+                    //         'IX' => 9,
+                    //         'V' => 5,
+                    //         'IV' => 4,
+                    //         'I' => 1,
+                    //     ];
+                    //     $result = '';
+                    //     // loop melalui array angka romawi
+                    //     foreach ($roman as $key => $value) {
+                    //         // dapatkan banyaknya simbol romawi yang dibutuhkan
+                    //         $numerals = intval($num / $value);
+                    //         // tambahkan simbol romawi ke string hasil
+                    //         $result .= str_repeat($key, $numerals);
+                    //         // kurangi angka asal dengan angka romawi yang telah dihasilkan
+                    //         $num = $num % $value;
+                    //     }
+                    //     return $result;
+                    // }
                     $jenis = 1;
                 @endphp
 
@@ -214,13 +214,13 @@
         </table>
      
 
-        <p>Terbilang:  <i>{{ ucwords(@Terbilang::make($data2['harga_total'])) }}</i></p>
+        <p>Terbilang:  <i>{{ $data2['terbilang']; }}</i></p>
     </main>
     <table class="tandatangan" style="width: 100%;">
         <tr>
             <td style="width:80%;"></td>
             <td style="text-align: center;">
-                <p>?? {{$data2['tanggal_pekerjaan']}}</p>
+                <p> {{$data2['tanggal_vendor']}}</p>
                 <p>{{$data2['penyedia']}}</p>
             </td>
         </tr>

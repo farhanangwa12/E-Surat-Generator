@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
-use App\Models\DokumenVendor\Paktavendor;
-use App\Models\FormPenawaran\FormPenawaranHarga;
+use App\Models\DokumenVendor\Formpenawaranharga;
+// use App\Models\DokumenVendor\Paktavendor;
+
 use App\Models\JenisDokumenKelengkapan;
 use App\Models\KelengkapanDokumenVendor;
+use App\Models\KontrakKerja;
 use App\Models\TandaTangan;
+use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,29 +41,32 @@ class PaktavendorController extends Controller
         }
 
 
-        $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('paktavendor')->first();
+        $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->first();
+        return $kelengkapan;
 
 
+        // if ($kelengkapan->paktavendor === null) {
 
-        if ($kelengkapan->paktavendor === null) {
+        //     $paktavendor = new Paktavendor;
+        //     $paktavendor->id_dokumen = $kelengkapan->id_dokumen;
 
-            $paktavendor = new Paktavendor;
-            $paktavendor->id_dokumen = $kelengkapan->id_dokumen;
+        //     $paktavendor->save();
+        // }
 
-            $paktavendor->save();
-        }
-
-        $paktavendor1 = Paktavendor::where('id_dokumen', $kelengkapan->id_dokumen)->first();
-        return $paktavendor1;
+        // $paktavendor1 = Paktavendor::where('id_dokumen', $kelengkapan->id_dokumen)->first();
+        // return $paktavendor1;
     }
     public function create($id)
     {
         $penawaran = $this->refresh($id);
-
+        $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->first();
+        $kopsurat = asset('/storage/' . $formpenawaran->kopsuratpath . '/' . $formpenawaran->kopsurat);
         // dd($penawaran);
         $data = [
             'id' => $id,
-            'kopsurat' => 'path/to/kopsurat.jpg',
+            'kopsurat' => $kopsurat,
             'nama_pekerjaan' => "Pekerjaan",
             'nomor' => '1234',
             'lampiran' => 'Lorem Ipsum',
@@ -99,18 +105,18 @@ class PaktavendorController extends Controller
             'email' => 'required|email',
         ]);
 
-        $paktavendor = Paktavendor::find($penawaran->id);
-        $paktavendor->pekerjaan = $validatedData['pekerjaan'];
-        $paktavendor->tahun_anggaran = $validatedData['tahun_anggaran'];
-        $paktavendor->nama = $validatedData['nama'];
-        $paktavendor->jabatan = $validatedData['jabatan'];
-        $paktavendor->nama_perusahaan = $validatedData['bertindak_untuk'];
-        $paktavendor->atas_nama = $validatedData['atas_nama'];
-        $paktavendor->alamat = $validatedData['alamat'];
-        $paktavendor->telepon_fax = $validatedData['telepon_fax'];
-        $paktavendor->email_perusahaan = $validatedData['email'];
+        // $paktavendor = Paktavendor::find($penawaran->id);
+        // $paktavendor->pekerjaan = $validatedData['pekerjaan'];
+        // $paktavendor->tahun_anggaran = $validatedData['tahun_anggaran'];
+        // $paktavendor->nama = $validatedData['nama'];
+        // $paktavendor->jabatan = $validatedData['jabatan'];
+        // $paktavendor->nama_perusahaan = $validatedData['bertindak_untuk'];
+        // $paktavendor->atas_nama = $validatedData['atas_nama'];
+        // $paktavendor->alamat = $validatedData['alamat'];
+        // $paktavendor->telepon_fax = $validatedData['telepon_fax'];
+        // $paktavendor->email_perusahaan = $validatedData['email'];
 
-        $paktavendor->save();
+        // $paktavendor->save();
 
         return redirect()->route('vendor.kontrakkerja.detail', $id);
     }
@@ -147,27 +153,36 @@ class PaktavendorController extends Controller
     public function pdf($id)
     {
         $penawaran = $this->refresh($id);
-   
+        $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->first();
+        $kopsurat = asset('/storage/' . $formpenawaran->kopsuratpath . '/' . $formpenawaran->kopsurat);
+
+        // Informasi Kontrakkerja
+        $kontrakkerja = KontrakKerja::find($id)->with('vendor')->first();
+
+    
         $data = [
-            'kopsurat' => 'path/to/kopsurat.jpg',
-            'nama_pekerjaan' => "manaf",
-            'nomor' => '1234',
-            'lampiran' => 'Lorem Ipsum',
-            'tanggal' => '2023-05-26',
-            'namaPerusahaan' => 'Example Company',
-            'alamatPerusahaan' => '123 Example Street, City',
+            'kopsurat' => $kopsurat,
+            'nama_pekerjaan' =>  $kontrakkerja->nama_kontrak . " PT PLN (PERSERO) UNIT INDUK
+            WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR",
+            // 'nomor' => '1234',
+            // 'lampiran' => 'Lorem Ipsum',
+            // 'tanggal' => '2023-05-26',
+            // 'namaPerusahaan' => $kontrakkerja->vendor->penyedia,
+            // 'alamatPerusahaan' => $kontrakkerja->vendor->alamat_jalan. ', ' . $kontrakkerja->vendor->alamat_kota . ', ' . $kontrakkerja->vendor->alamat_provinsi,
             'pekerjaan' => 'Example Job',
             'tahun_anggaran' => '2023',
-            'nama' =>  $penawaran->nama,
-            'jabatan' => $penawaran->jabatan,
-            'nama_perusahaan' => $penawaran->bertindak_untuk,
-            'atas_nama' => $penawaran->atas_nama,
-            'alamat' => $penawaran->alamat,
-            'telepon_fax' => $penawaran->telepon_fax,
-            'email_perusahaan' => $penawaran->email,
-            'kota' => 'City',
-            'tanggal_surat' => '2023-05-26',
-            'namaterang' => 'Example Terang',
+            'nama' =>  $kontrakkerja->vendor->direktur,
+            'jabatan' => "Direktur",
+            'nama_perusahaan' => $kontrakkerja->vendor->penyedia,
+            // 'atas_nama' => $penawaran->atas_nama,
+            'alamat' =>$kontrakkerja->vendor->alamat_jalan. ', ' . $kontrakkerja->vendor->alamat_kota . ', ' . $kontrakkerja->vendor->alamat_provinsi,
+            'telepon_fax' => $kontrakkerja->vendor->telepon_fax,
+            'email_perusahaan' =>$kontrakkerja->vendor->email_perusahaan,
+            'kota' => $formpenawaran->nama_kota,
+            'tanggal_surat' => Carbon::parse($formpenawaran->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
+            'namaterang' => $kontrakkerja->vendor->direktur,
         ];
         // Generate the PDF using laravel-dompdf
         $pdf = PDF::loadView('vendor.form_penawaran.paktavendor.pdf', $data);

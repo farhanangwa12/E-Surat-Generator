@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lampiran Penawaran harga</title>
     <style>
         /* Header */
         .header {
@@ -109,7 +110,8 @@
             <h1><u><b>LAMPIRAN RINCIAN HARGA PENAWARAN</b>
                 </u>
             </h1>
-            <p><b>{{ $data2['nama_pekerjaan'] }}</b> </p>
+            <p><b>{{ $data2['nama_pekerjaan'] }} PT PLN (PERSERO) UNIT INDUK
+                WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR</b> </p>
 
         </header>
         <table>
@@ -144,7 +146,7 @@
 
                 @foreach ($kontrakbaru as $jenis_kontrak)
                     <tr style="text-align:left;">
-                        <td>{{ @Terbilang::make($jenis++) . '.' }}</td>
+                        <td>{{ @Terbilang::roman($jenis++) . '.' }}</td>
                         <td><b>{{ $jenis_kontrak['jenis_kontrak'] }}</b> </td>
                         <td></td>
                         <td></td>

@@ -27,7 +27,8 @@
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
-            margin-top: 20px;
+            margin-top: 150px;
+
             margin-bottom: 20px;
         }
 
@@ -88,8 +89,8 @@
 
 <body>
     <div class="header">
-        {{-- <img src="{{ $kopsurat }}" alt="Kop Surat" style="object-fit: cover;" class="company-logo" width="200px"> --}}
-        Header
+        <img src="{{ $kopsurat }}" alt="Kop Surat" style="object-fit: cover;" class="company-logo" width="200px">
+
     </div>
 
     <main>
@@ -142,7 +143,7 @@
                 </tr>
                 @foreach ($datapengalaman as $data)
                     <tr>
-                        <td>{{ $loop->iteration+1 }}</td>
+                        <td>{{ $loop->iteration  }}</td>
                         <td>{{ $data['bidang_pekerjaan'] }}</td>
                         <td>{{ $data['sub_bidang_pekerjaan'] }}</td>
                         <td>{{ $data['lokasi'] }}</td>
@@ -152,7 +153,7 @@
                         <td>{{ $data['nilai'] }}</td>
                         <td>{{ $data['kontrak'] }}</td>
                         <td>{{ $data['ba_serah_terima'] }}</td>
-                       
+
                     </tr>
                 @endforeach
             </tbody>
@@ -161,7 +162,7 @@
         <div class="tandatangan">
             <div> {{ $kota_surat }}, {{ $tanggal_surat }}</div>
             <div> {{ $nama_perusahaan }}</div>
-            <div class="kotak" style="height: 50px; margin: 10px 0;border: 1px solid black;">
+            <div class="kotak" style="height: 50px; margin: 10px 0;">
 
             </div>
             <div class="nama-jabatan">{{ $nama }}</div>

@@ -18,6 +18,7 @@ class JenisDokumenSeeder extends Seeder
                 'nama_dokumen' => 'Nomor & Tanggal Surat Penawaran
             ',
                 'dokumen_sistem' => 'ya',
+       
                 'keterangan' => 'Dokumen Surat Penawaran'
             ],
             [

@@ -211,7 +211,7 @@
         <div class="tandatangan" style="margin-top: 30px;">
             <p style="font-weight:bold;">{{ $atasNama }}</p>
 
-            <div style="display: inline-block; border: 1px solid black; width:40%; margin: auto;">
+            <div style="display: inline-block; border: 1px solid black; width:80%; margin: auto;">
                 {{-- {!! $barcode !!} --}}
                 Materai Rp. 10.000,- <br>
                 Tanda Tangan <br>

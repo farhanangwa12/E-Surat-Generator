@@ -2,6 +2,7 @@
 
 namespace App\Models\DokumenVendor;
 
+use App\Models\KelengkapanDokumenVendor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,17 +20,17 @@ class Formpenawaranharga extends Model
         'lampiran',
         'nama_kota',
         'tanggal_pembuatan_surat',
-        'nama_vendor',
-        'jabatan',
-        'nama_perusahaan',
+        // 'nama_vendor',
+        // 'jabatan',
+        // 'nama_perusahaan',
  
-        'alamat_perusahaan',
-        'telepon_fax',
-        'email_perusahaan',
-        'harga_penawaran',
-        'ppn11',
-        'jumlah_harga',
-        'tanggal_tandatangan',
+        // 'alamat_perusahaan',
+        // 'telepon_fax',
+        // 'email_perusahaan',
+        // 'harga_penawaran',
+        // 'ppn11',
+        // 'jumlah_harga',
+        // 'tanggal_tandatangan',
     ];
 
     public function dokumen()

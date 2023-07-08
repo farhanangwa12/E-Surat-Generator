@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pernyataan Sanggup</title>
     <style>
         /* Header */
         .header {
@@ -61,9 +62,9 @@
 </head>
 
 <body>
-    <div class="header" style="background: grey;">
-        {{-- <img src="{{ $kopsurat }}" alt="Kop Surat" style="object-fit: cover;" class="company-logo" width="200px"> --}}
-        Kop Surat
+    <div class="header">
+        <img src="{{ $kopsurat }}" alt="Kop Surat" style="object-fit: cover;" class="company-logo" width="200px">
+
     </div>
     <main>
         <h4 style="font-family: Arial; font-size: 16px; font-weight: bold; text-align:center;">SURAT PERNYATAAN</h4>
@@ -85,15 +86,15 @@
                     <td style="border-bottom: 2px dotted black;">{{ $jabatan }}</td>
                 </tr>
                 <tr>
-                    <td>Bertindak untuk</td>
+                    <td style="width: 30%;">Bertindak untuk dan atas nama</td>
                     <td>:</td>
                     <td style="border-bottom: 2px dotted black;">{{ $nama_perusahaan }}</td>
                 </tr>
-                <tr>
-                    <td>dan atas nama</td>
+                {{-- <tr>
+                    <td></td>
                     <td>:</td>
                     <td style="border-bottom: 2px dotted black;">{{ $atas_nama }}</td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td>Alamat</td>
                     <td>:</td>
@@ -138,17 +139,22 @@
 
             </div>
         </div>
-        <div class="tandatangan" style="margin-top: 30px;">
-            <p>{{ $kota_surat }}, {{ $tanggal_surat }} 2022</p>
-            <p>PT./CV {{ $nama_perusahaan }}</p>
-            <br>
-            <p style="font-family: Arial;">Materai Rp. 10.000,-</p>
-            <br>
-            <p style="font-family: Arial;">Tanda Tangan</p>
-            <p style="font-family: Arial;">Dan Cap Perusahaan</p>
+        <div class="tandatangan" style="margin-top: 30px;height:20%;">
+            <div style="float: right; text-align: center;">
+                <p>{{ $kota_surat }}, {{ $tanggal_surat }}</p>
+                <p> {{ $nama_perusahaan_terang }}</p>
+                <p>{{ $jabatan }}</p>
+                <br>
+                <div class="" style="border: 1px solid black; height:110px;">
+                    <p style="font-family: Arial;">Materai Rp. 10.000,-</p>
+                    <p style="font-family: Arial;">Tanda Tangan</p>
+                    <p style="font-family: Arial;">Dan Cap Perusahaan</p>
+                </div>
 
-            <p>({{ $nama }})</p>
-            <p>{{ $jabatan }}</p>
+
+                <p>(<b>{{ strtoupper($nama) }}</b>)</p>
+
+            </div>
         </div>
 
     </main>

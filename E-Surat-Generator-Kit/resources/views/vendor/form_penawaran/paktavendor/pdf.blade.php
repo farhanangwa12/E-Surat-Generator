@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pakta vendor</title>
     <style>
         /* Header */
         .header {
@@ -76,8 +77,8 @@
 
 <body>
     <div class="header">
-        {{-- <img src="{{ $kopsurat }}" alt="Kop Surat" style="object-fit: cover;" class="company-logo" width="200px"> --}}
-        Kop Surat
+        <img src="{{ $kopsurat }}" alt="Kop Surat" style="object-fit: cover;" class="company-logo" width="200px">
+        
     </div>
     <main>
         {{-- <div class="kop clearfix">
@@ -120,7 +121,7 @@
             </p>
             <br>
             <br>
-            <table style="width:90%; border: 1px solid pink;">
+            <table style="width:90%;">
                 <tr>
                     <td style="width: 25%;">Pekerjaan</td>
                     <td style="width: 5%;">:</td>
@@ -142,15 +143,11 @@
                     <td style="border-bottom: 2px dotted black;">{{ $jabatan }}</td>
                 </tr>
                 <tr>
-                    <td>Bertindak untuk</td>
+                    <td style="width: 20%;">Bertindak untuk dan atas nama </td>
                     <td>:</td>
                     <td style="border-bottom: 2px dotted black;">{{ $nama_perusahaan }}</td>
                 </tr>
-                <tr>
-                    <td>dan atas nama</td>
-                    <td>:</td>
-                    <td style="border-bottom: 2px dotted black;">{{ $atas_nama }}</td>
-                </tr>
+               
                 <tr>
                     <td>Alamat:</td>
                     <td>:</td>
@@ -210,7 +207,6 @@
                 <p>{{ $kota }}, {{ $tanggal_surat }}</p>
                 <p>Penyedia Barang dan Jasa,</p>
                 <p>{{ $nama_perusahaan }}</p>
-                <br>
                 <p>Direktur</p>
                 <div style="border: 1px solid black; padding: 5px; width: 100px; margin:auto; text-align: center;">
                     Material Rp

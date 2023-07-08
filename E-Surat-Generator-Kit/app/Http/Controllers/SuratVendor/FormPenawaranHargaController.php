@@ -295,7 +295,6 @@ class FormPenawaranHargaController extends Controller
         $hargaPenawaran = $data->harga_penawaran;
         $ppn = $data->ppn11;
         $jumlahHarga = $data->jumlah_harga;
-        $terbilang = "Error";
 
         $startDate = Carbon::parse($kontrakKerja->tanggal_pekerjaan);
         $endDate = Carbon::parse($kontrakKerja->tanggal_akhir_pekerjaan);
@@ -304,6 +303,8 @@ class FormPenawaranHargaController extends Controller
 
         $data = [
             'kopsurat' => $kopsurat,
+            // 'kopsurat' => "test",
+
             'nomor' => $nomor,
             'lampiran' => $lampiran,
             'tanggal' => $tanggal,
@@ -320,13 +321,13 @@ class FormPenawaranHargaController extends Controller
             'hargaPenawaran' => $hargaPenawaran,
             'ppn' => $ppn,
             'jumlahHarga' => $jumlahHarga,
-            'terbilang' => $terbilang,
+            'terbilang' =>  ucwords(Terbilang::make(str_replace('.', '', $jumlahHarga)," Rupiah")),
             'waktuPelaksanaan' => $waktuPelaksanaan,
 
             'tanggalPengadaan' => $tanggalPengadaan,
 
         ];
-
+    
         // Generate QR code
         // $barcode = !empty($tandatangan) ? DNS2D::getBarcodeHTML($tandatangan, 'QRCODE', 4, 4) : ' Materai Rp. 10.000,- <br> Tanda Tangan Dan Cap Perusahaan';
         // $data['barcode'] = $barcode;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SuratVendor;
 use App\Http\Controllers\Controller;
 use App\Models\BarJasHPS;
 use App\Models\Dokumen\BOQ;
+use App\Models\DokumenVendor\Formpenawaranharga;
 use App\Models\DokumenVendor\Lampiranpenawaranharga;
 use App\Models\HPS;
 use App\Models\JenisDokumenKelengkapan;
@@ -48,7 +49,7 @@ class LampiranPenawaranHargaController extends Controller
 
         $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('lampiranPenawaranHargas')->first();
 
-        if ($kelengkapan->lampiranPenawaranHargas->isEmpty()) {
+        if (!$kelengkapan->lampiranPenawaranHargas) {
             $data = [];
             Lampiranpenawaranharga::create([
                 'id_dokumen' => $kelengkapan->id_dokumen,
@@ -57,6 +58,7 @@ class LampiranPenawaranHargaController extends Controller
             ])->save();
         }
 
+        $this->getBOQData($id);
         $lampiranDokumen =  Lampiranpenawaranharga::where('id_dokumen', $kelengkapan->id_dokumen)->first();
 
 
@@ -65,7 +67,12 @@ class LampiranPenawaranHargaController extends Controller
         $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->with('barjas')->get()->toArray();
 
         $barjaslamp = $lampiranDokumen->datalamp;
-      
+
+
+
+
+
+
         $no = 0;
         foreach ($jenis_kontrak as $jen) {
             foreach ($jen['barjas'] as $barjas) {
@@ -88,7 +95,42 @@ class LampiranPenawaranHargaController extends Controller
         return $lampiranDokumen;
     }
 
+    public function getBOQData($id)
+    {
+        $kelengkapandokumenModel = KelengkapanDokumenVendor::with(['lampiranPenawaranHargas', 'jenisDokumen' => function ($query) {
+            $query->where('no_dokumen', 'harga_nilai_penawaran_');
+        }])->where('id_kontrakkerja', $id)->first();
 
+        $boq = BOQ::where('id_kontrakkerja', $id)->with('barJasBOQs')->first()->toArray();
+        $barjasboqdata = $boq['bar_jas_b_o_qs'];
+
+        // $databoq = [
+        //     "total_jumlah" => $boq['total_jumlah'],
+        //     "dibulatkan" => $boq['dibulatkan'],
+        //     "ppn11" => $boq['ppn11'],
+        //     "total_harga" => $boq['total_harga']
+
+        // ];
+
+        // $barjasboqdata = [];
+        // foreach ($boq['bar_jas_b_o_qs'] as $barjasboq) {
+        //     $databoq[] = [
+        //         'harga_satuan' => $barjasboq['harga_satuan'],
+        //         'jumlah' => $barjasboq['jumlah']
+        //     ];
+        // }
+
+        $lampiranPenawaran2 = Lampiranpenawaranharga::find($kelengkapandokumenModel->lampiranPenawaranHargas->id);
+        $lampiranPenawaran2->total_jumlah = $boq['total_jumlah'];
+        $lampiranPenawaran2->dibulatkan = $boq['dibulatkan'];
+        $lampiranPenawaran2->ppn11 = $boq['ppn11'];
+        $lampiranPenawaran2->total_harga = $boq['total_harga'];
+        $lampiranPenawaran2->datalamp = $barjasboqdata;
+        $lampiranPenawaran2->save();
+
+
+        return $lampiranPenawaran2;
+    }
     // public function create($id)
     // {
 
@@ -179,7 +221,7 @@ class LampiranPenawaranHargaController extends Controller
         //     ->with(['boq', 'b_o_q_s.barjas_b_o_q_s'])
         //     ->first();
         $boq = BOQ::where('id_kontrakkerja', $id)->with('barJasBOQs')->first()->toArray();
-       
+
         $databoq = [
             "total_jumlah" => $boq['total_jumlah'],
             "dibulatkan" => $boq['dibulatkan'],
@@ -187,15 +229,13 @@ class LampiranPenawaranHargaController extends Controller
             "total_harga" => $boq['total_harga']
 
         ];
- 
+
         $barjasboqdata = [];
         foreach ($boq['bar_jas_b_o_qs'] as $barjasboq) {
             $databoq[] = [
                 'harga_satuan' => $barjasboq['harga_satuan'],
                 'jumlah' => $barjasboq['jumlah']
             ];
-           
-       
         }
         $lampiranPenawaran2->total_jumlah = $request->input('total_jumlah');
         $lampiranPenawaran2->dibulatkan = $request->input('dibulatkan');
@@ -203,9 +243,9 @@ class LampiranPenawaranHargaController extends Controller
         $lampiranPenawaran2->total_harga = $request->input('harga_total');
         $lampiranPenawaran2->datalamp = $barjasboqdata;
         $lampiranPenawaran2->save();
-      
 
-        $lampiranPenawaran3 = Lampiranpenawaranharga::find($lampiranPenawaran->id);
+
+        // $lampiranPenawaran3 = Lampiranpenawaranharga::find($lampiranPenawaran->id);
         // Bagian menyimpan file 
 
         // if ($request->hasFile('kopsurat')) {
@@ -287,7 +327,8 @@ class LampiranPenawaranHargaController extends Controller
         // Mengambil path file JSON dari database berdasarkan ID
         $lampiranPenawaran = $this->refresh($id);
 
-        $datalampiran1 = $lampiranPenawaran->datalampiran;
+        $datalampiran1 = $lampiranPenawaran->datalamp;
+
         $kontrakbaru = [];
 
         $jenis_kontraks = JenisKontrak::where('id_kontrak', $id)->get()->toArray();
@@ -324,8 +365,8 @@ class LampiranPenawaranHargaController extends Controller
                         'uraian' => $barjas['uraian'],
                         'vol' => $barjas['volume'],
                         'sat' => $barjas['satuan'],
-                        'harga_satuan' => number_format($datalampiran1[$no]['harga_satuan'], 0, ',', '.'),
-                        'jumlah' => number_format($datalampiran1[$no]['jumlah'], 0, ',', '.'),
+                        'harga_satuan' => number_format(str_replace('.', '', $datalampiran1[$no]['harga_satuan']), 0, ',', '.'),
+                        'jumlah' => number_format(str_replace('.', '', $datalampiran1[$no]['jumlah']), 0, ',', '.'),
                         'sub_data' => $sub_data
 
                     ];
@@ -346,18 +387,24 @@ class LampiranPenawaranHargaController extends Controller
         $nama_pekerjaan = $kontrak->nama_kontrak;
         $vendor = Vendor::find($kontrak->id_vendor);
 
+
+        // Form Penawaran 
+        $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->first();
+        $kopsurat = asset('/storage/' . $formpenawaran->kopsuratpath . '/' . $formpenawaran->kopsurat);
         $data2 = [
-            'kopsurat' => asset('storage/' . $lampiranPenawaran->kopsuratpath . '/' . $lampiranPenawaran->kopsurat),
+            'kopsurat' => $kopsurat,
             'nama_pekerjaan' => $nama_pekerjaan,
-            'kota_surat' => "Madiun",
-            'tanggal_surat' =>  Carbon::parse('2023-12-12')->locale('id')->isoFormat('D MMMM YYYY'),
+            'kota_surat' => $formpenawaran->nama_kota,
+            'tanggal_surat' =>  Carbon::parse($formpenawaran->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
             'penyedia' => $vendor->penyedia,
             'nama_direktur' => $vendor->direktur,
-            'jumlah_harga' => number_format($lampiranPenawaran->total_jumlah, 0, ',', '.'),
-            'dibulatkan' => number_format($lampiranPenawaran->dibulatkan, 0, ',', '.'),
+            'jumlah_harga' => number_format(str_replace('.', '', $lampiranPenawaran->total_jumlah), 0, ',', '.'),
+            'dibulatkan' => number_format(str_replace('.', '', $lampiranPenawaran->dibulatkan), 0, ',', '.'),
 
-            'ppn_11' =>  number_format($lampiranPenawaran->ppn11, 0, ',', '.'),
-            'harga_total' =>  number_format($lampiranPenawaran->total_harga, 0, ',', '.'),
+            'ppn_11' =>  number_format(str_replace('.', '', $lampiranPenawaran->ppn11), 0, ',', '.'),
+            'harga_total' =>  number_format(str_replace('.', '', $lampiranPenawaran->total_harga), 0, ',', '.'),
             'terbilang' => ucwords(Terbilang::make(str_replace('.', '', $lampiranPenawaran->total_harga)))
 
         ];

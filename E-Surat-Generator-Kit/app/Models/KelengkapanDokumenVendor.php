@@ -44,7 +44,7 @@ class KelengkapanDokumenVendor extends Model
 
     public function lampiranPenawaranHargas()
     {
-        return $this->hasMany(Lampiranpenawaranharga::class, 'id_dokumen');
+        return $this->hasOne(Lampiranpenawaranharga::class, 'id_dokumen');
     }
     public function paktavendor()
     {

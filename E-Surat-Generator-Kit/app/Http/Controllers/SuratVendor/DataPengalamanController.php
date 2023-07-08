@@ -4,10 +4,13 @@ namespace App\Http\Controllers\SuratVendor;
 
 use App\Http\Controllers\Controller;
 use App\Models\DokumenVendor\Datapengalaman;
+use App\Models\DokumenVendor\Formpenawaranharga as DokumenVendorFormpenawaranharga;
 use App\Models\DokumenVendor\Subdatapengalaman;
 use App\Models\FormPenawaran\FormPenawaranHarga;
 use App\Models\JenisDokumenKelengkapan;
 use App\Models\KelengkapanDokumenVendor;
+use App\Models\KontrakKerja;
+use App\Models\PembuatanSuratKontrak;
 use App\Models\TandaTangan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -238,13 +241,26 @@ class DataPengalamanController extends Controller
 
         $datapengalaman = Subdatapengalaman::where('id_datapengalaman', $kelengkapan->id)->get();
 
-        $data = [
-            'nama' => $kelengkapan->nama_jelas,
-            'jabatan' => $kelengkapan->jabatan,
-            'nama_perusahaan' => $kelengkapan->nama_perusahaan,
 
-            'kota_surat' => $kelengkapan->kota_surat,
-            'tanggal_surat' => Carbon::parse($kelengkapan->tanggal_surat)->locale('id')->isoFormat('DD MMMM YYYY'),
+        $formpenawaran = DokumenVendorFormpenawaranharga::with(['dokumen' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->first();
+        $kopsurat = asset('/storage/' . $formpenawaran->kopsuratpath . '/' . $formpenawaran->kopsurat);
+
+
+        // Informasi RKS
+        $pembuatansuratkontrak = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat', 'nomor_rks')->first();
+    
+        // Informasi Kontrakkerja
+        $kontrakkerja = KontrakKerja::find($id)->with('vendor')->first();
+        $data = [
+            'kopsurat' => $kopsurat,
+            'nama' =>$kontrakkerja->vendor->direktur,
+            'jabatan' => 'Direktur',
+            'nama_perusahaan' =>  $kontrakkerja->vendor->penyedia,
+
+            'kota_surat' => $formpenawaran->nama_kota,
+            'tanggal_surat' => Carbon::parse($formpenawaran->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
 
             'datapengalaman' => $datapengalaman
         ];
