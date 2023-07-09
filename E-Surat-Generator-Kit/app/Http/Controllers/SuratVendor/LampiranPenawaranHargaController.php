@@ -322,7 +322,7 @@ class LampiranPenawaranHargaController extends Controller
 
         return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
     }
-    public function pdf($id)
+    public function pdf($id, $jenis)
     {
         // Mengambil path file JSON dari database berdasarkan ID
         $lampiranPenawaran = $this->refresh($id);
@@ -413,6 +413,16 @@ class LampiranPenawaranHargaController extends Controller
         $pdf->setOption(['isRemoteEnabled' => true]);
 
         $namefile = 'LampiranPenawaran_' . time() . '.pdf';
-        return $pdf->stream($namefile);
+       
+
+        if ($jenis == 1) {
+            // Menampilkan output di browser
+            return $pdf->stream($namefile);
+        } else if ($jenis == 2) {
+            // Download file
+            return $pdf->download($namefile);
+        } else {
+            return "Parameter tidak valid";
+        }
     }
 }

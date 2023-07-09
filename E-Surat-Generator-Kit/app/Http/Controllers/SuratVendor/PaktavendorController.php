@@ -150,7 +150,7 @@ class PaktavendorController extends Controller
         return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
     }
 
-    public function pdf($id)
+    public function pdf($id, $jenis)
     {
         $penawaran = $this->refresh($id);
         $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
@@ -190,6 +190,20 @@ class PaktavendorController extends Controller
         // Set paper size and orientation
         $pdf->setPaper('letter', 'portrait');
         // Output the generated PDF to the browser
-        return $pdf->stream('paktavendor.pdf');
+        $namefile = 'Pakta_vendor' . time() . '.pdf';
+
+        if ($jenis == 1) {
+      
+            // Menampilkan output di browser
+            return $pdf->stream($namefile);
+        } else if ($jenis == 2) {
+        
+
+            // Download file
+            return $pdf->download($namefile);
+        } else {
+            return "Parameter tidak valid";
+        }
+       
     }
 }

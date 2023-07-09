@@ -75,7 +75,7 @@
                                     @php
                                         $no = 1;
                                     @endphp
-                                    <tr>
+                                    {{-- <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>RKS</td>
                                         <td>
@@ -83,7 +83,7 @@
                                                 href="{{ route('rks.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi
                                                 RKS</a>
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>BOQ</td>
@@ -100,88 +100,90 @@
                                         <td>Form Penawaran</td>
                                         <td>
                                             <a class="btn btn-primary"
-                                                href="{{ route('vendor.formpenawaranharga.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                href="{{ route('vendor.formpenawaranharga.create', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi
                                                 Form Penawaran</a>
                                             <a class="btn btn-primary"
                                                 href="{{ route('vendor.formpenawaranharga.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
                                             <a class="btn btn-primary"
-                                                href="{{ route('vendor.formpenawaranharga.pdf', $kontrakkerja->id_kontrakkerja) }}">Tampilan
+                                                href="{{ route('vendor.formpenawaranharga.pdf',  ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 1]) }}">Tampilan
                                                 PDF</a>
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td>{{ $no++ }}</td>
-                                        <td>Lampiran Penawaran Harga</td>
-                                        <td>
-                                            {{-- <a class="btn btn-primary"
+                                    @if ($statusformpenawaran)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>Lampiran Penawaran Harga</td>
+                                            <td>
+                                                {{-- <a class="btn btn-primary"
                                                 href="{{ route('vendor.lampiranpenawaranharga.create', $kontrakkerja->id_kontrakkerja) }}">Isi
                                                 Lampiran Penawaran Harga</a> --}}
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.lampiranpenawaranharga.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.lampiranpenawaranharga.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
-                                                PDF</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ $no++ }}</td>
-                                        <td>Paktavendor</td>
-                                        <td>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.paktavendor.create', $kontrakkerja->id_kontrakkerja) }}">Isi
-                                                Paktavendor</a>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.paktavendor.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.paktavendor.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
-                                                PDF</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ $no++ }}</td>
-                                        <td>Pernyataan Garansi</td>
-                                        <td>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.pernyataan.garansi.create', $kontrakkerja->id_kontrakkerja) }}">Isi
-                                                Pernyataan Garansi</a>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.pernyataan.garansi.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.pernyataan.garansi.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
-                                                PDF</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ $no++ }}</td>
-                                        <td>Pernyataan Sanggup</td>
-                                        <td>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.pernyataan.sangup.create', $kontrakkerja->id_kontrakkerja) }}">Isi
-                                                Pernyataan Sanggup</a>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.pernyataan.sangup.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.pernyataan.sangup.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
-                                                PDF</a>
-                                        </td>
-                                    </tr>
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.lampiranpenawaranharga.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.lampiranpenawaranharga.pdf', ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 1]) }}">Tampilan
+                                                    PDF</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>Paktavendor</td>
+                                            <td>
+                                                {{-- <a class="btn btn-primary"
+                                                    href="{{ route('vendor.paktavendor.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                    Paktavendor</a> --}}
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.paktavendor.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.paktavendor.pdf',  ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 1]) }}">Tampilan
+                                                    PDF</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>Pernyataan Garansi</td>
+                                            <td>
+                                                {{-- <a class="btn btn-primary"
+                                                    href="{{ route('vendor.pernyataan.garansi.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                    Pernyataan Garansi</a> --}}
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.pernyataan.garansi.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.pernyataan.garansi.pdf',  ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 1]) }}">Tampilan
+                                                    PDF</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>Pernyataan Sanggup</td>
+                                            <td>
+                                                {{-- <a class="btn btn-primary"
+                                                    href="{{ route('vendor.pernyataan.sangup.create', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                    Pernyataan Sanggup</a> --}}
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.pernyataan.sangup.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.pernyataan.sangup.pdf',  ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 1]) }}">Tampilan
+                                                    PDF</a>
+                                            </td>
+                                        </tr>
 
 
-                                    <tr>
-                                        <td>{{ $no++ }}</td>
-                                        <td>Data Pengalaman</td>
-                                        <td>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.datapengalaman.index', $kontrakkerja->id_kontrakkerja) }}">Isi
-                                                Data Pengalaman</a>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.datapengalaman.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('vendor.datapengalaman.pdf', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Tampilan
-                                                PDF</a>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>Data Pengalaman</td>
+                                            <td>
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.datapengalaman.index', $kontrakkerja->id_kontrakkerja) }}">Isi
+                                                    Data Pengalaman</a>
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.datapengalaman.halamanttd', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Halamanttd</a>
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('vendor.datapengalaman.pdf',  ['id' => $kontrakkerja->id_kontrakkerja, 'jenis' => 1]) }}">Tampilan
+                                                    PDF</a>
+                                            </td>
+                                        </tr>
+                                    @endif
                                     {{-- <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>Neraca</td>
@@ -214,33 +216,88 @@
 
                 </div>
 
-
-                <div class="card">
-                    <div class="card-header">
-                        Dokumen Kelengkapan
-                    </div>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nama Dokumen</th>
-                                    <th>keterangan</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($jenisDokumenKelengkapans as $jenisDokumenKelengkapan)
+                @if ($statusformpenawaran)
+                    <div class="card">
+                        <div class="card-header">
+                            Dokumen Kelengkapan
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td>{{ $jenisDokumenKelengkapan['id_jenis'] }}</td>
-                                        <td>{{ $jenisDokumenKelengkapan['nama_dokumen'] }}</td>
-                                        <td>{{ $jenisDokumenKelengkapan['keterangan'] }}</td>
+                                        <th>ID</th>
+                                        <th>Nama Dokumen</th>
+                                        <th>keterangan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($jenisDokumenKelengkapans as $jenisDokumenKelengkapan)
+                                        <tr>
+                                            <td>{{ $jenisDokumenKelengkapan['id_jenis'] }}</td>
+                                            <td>{{ $jenisDokumenKelengkapan['nama_dokumen'] }}</td>
+                                            <td>{{ $jenisDokumenKelengkapan['keterangan'] }}</td>
 
-                                        @if ($jenisDokumenKelengkapan['dokumen_sistem'] == 'ya')
-                                            @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
-                                                @if (isset($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['file_upload']))
+                                            @if ($jenisDokumenKelengkapan['dokumen_sistem'] == 'ya')
+                                                @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
+                                                    @if (isset($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['file_upload']))
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col">
+
+                                                                    <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 1]) }}"
+                                                                        class="btn btn-primary">Detail</a>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 2]) }}"
+                                                                        class="btn btn-primary">Download</a>
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+                                                    @else
+                                                        <td>
+                                                            Dokumen belum di tandatangani
+                                                        </td>
+                                                    @endif
+                                                @else
+                                                    <td>
+
+                                                        Isian Dokumen Belum diisi
+                                                    </td>
+                                                @endif
+                                            @else
+                                                @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
                                                     <td>
                                                         <div class="row">
+                                                            <div class="col">
+                                                                <form method="POST"
+                                                                    action="{{ route('vendor.kelengkapandok.update', ['id' => $jenisDokumenKelengkapan['id_jenis'], 'id_kontrakkerja' => $id]) }}"
+                                                                    enctype="multipart/form-data"
+                                                                    id="uploadForm{{ 'Update' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                                    class="formuntukUpload">
+                                                                    @method('PUT')
+                                                                    @csrf
+                                                                    <div class="mb-3">
+                                                                        <label
+                                                                            for="fileUpload{{ 'Update' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                                            onclick="uploadFile('Update{{ $jenisDokumenKelengkapan['id_jenis'] }}')"
+                                                                            class="btn btn-primary">Update</label>
+                                                                        <input type="file" class="form-control"
+                                                                            id="fileUpload{{ 'Update' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                                            name="fileUpload" accept=".pdf"
+                                                                            style="display: none;">
+
+
+                                                                    </div>
+
+
+
+
+
+
+                                                                </form>
+                                                            </div>
                                                             <div class="col">
 
                                                                 <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 1]) }}"
@@ -250,109 +307,60 @@
                                                                 <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 2]) }}"
                                                                     class="btn btn-primary">Download</a>
                                                             </div>
+                                                            <div class="col">
+                                                                <form
+                                                                    action="{{ route('vendor.kelengkapandok.destroy', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'id_kontrakkerja' => $id]) }}"
+                                                                    method="POST">
+                                                                    @method('DELETE')
+                                                                    @csrf
+                                                                    <button class="btn btn-danger"
+                                                                        onclick="confirmation('Apakah anda yakin ingin menghapus ?')">Hapus</button>
+
+                                                                </form>
+
+                                                            </div>
                                                         </div>
 
                                                     </td>
                                                 @else
                                                     <td>
-                                                        Dokumen belum di tandatangani
+                                                        <form method="POST"
+                                                            action="{{ route('vendor.kelengkapandok.store', ['id' => $jenisDokumenKelengkapan['id_jenis'], 'id_kontrakkerja' => $id]) }}"
+                                                            enctype="multipart/form-data"
+                                                            id="uploadForm{{ 'Store' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                            class="formuntukUpload">
+                                                            @csrf
+                                                            <div class="mb-3">
+                                                                <label
+                                                                    for="fileUpload{{ 'Store' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                                    onclick="uploadFile('Store{{ $jenisDokumenKelengkapan['id_jenis'] }}')"
+                                                                    class="btn btn-primary">Upload
+                                                                    File
+                                                                    PDF</label>
+                                                                <input type="file" class="form-control"
+                                                                    id="fileUpload{{ 'Store' . $jenisDokumenKelengkapan['id_jenis'] }}"
+                                                                    name="fileUpload" accept=".pdf"
+                                                                    style="display: none;">
+
+
+                                                            </div>
+
+
+                                                        </form>
                                                     </td>
                                                 @endif
-                                            @else
-                                                <td>
-
-                                                    Isian Dokumen Belum diisi
-                                                </td>
                                             @endif
-                                        @else
-                                            @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <form method="POST"
-                                                                action="{{ route('vendor.kelengkapandok.update', ['id' => $jenisDokumenKelengkapan['id_jenis'], 'id_kontrakkerja' => $id]) }}"
-                                                                enctype="multipart/form-data"
-                                                                id="uploadForm{{ 'Update' . $jenisDokumenKelengkapan['id_jenis'] }}"
-                                                                class="formuntukUpload">
-                                                                @method('PUT')
-                                                                @csrf
-                                                                <div class="mb-3">
-                                                                    <label
-                                                                        for="fileUpload{{ 'Update' . $jenisDokumenKelengkapan['id_jenis'] }}"
-                                                                        onclick="uploadFile('Update{{ $jenisDokumenKelengkapan['id_jenis'] }}')"
-                                                                        class="btn btn-primary">Update</label>
-                                                                    <input type="file" class="form-control"
-                                                                        id="fileUpload{{ 'Update' . $jenisDokumenKelengkapan['id_jenis'] }}"
-                                                                        name="fileUpload" accept=".pdf"
-                                                                        style="display: none;">
 
 
-                                                                </div>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
 
-
-
-
-
-
-                                                            </form>
-                                                        </div>
-                                                        <div class="col">
-
-                                                            <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 1]) }}"
-                                                                class="btn btn-primary">Detail</a>
-                                                        </div>
-                                                        <div class="col">
-                                                            <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 2]) }}"
-                                                                class="btn btn-primary">Download</a>
-                                                        </div>
-                                                        <div class="col">
-                                                            <form action="{{ route('vendor.kelengkapandok.destroy' , ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'],  'id_kontrakkerja' => $id]) }}" method="POST">
-                                                                @method('DELETE')
-                                                                @csrf
-                                                                <button class="btn btn-danger" onclick="confirmation('Apakah anda yakin ingin menghapus ?')">Hapus</button>
-                                                            
-                                                            </form>
-                                                            
-                                                        </div>
-                                                    </div>
-
-                                                </td>
-                                            @else
-                                                <td>
-                                                    <form method="POST"
-                                                        action="{{ route('vendor.kelengkapandok.store', ['id' => $jenisDokumenKelengkapan['id_jenis'], 'id_kontrakkerja' => $id]) }}"
-                                                        enctype="multipart/form-data"
-                                                        id="uploadForm{{ 'Store' . $jenisDokumenKelengkapan['id_jenis'] }}"
-                                                        class="formuntukUpload">
-                                                        @csrf
-                                                        <div class="mb-3">
-                                                            <label
-                                                                for="fileUpload{{ 'Store' . $jenisDokumenKelengkapan['id_jenis'] }}"
-                                                                onclick="uploadFile('Store{{ $jenisDokumenKelengkapan['id_jenis'] }}')"
-                                                                class="btn btn-primary">Upload
-                                                                File
-                                                                PDF</label>
-                                                            <input type="file" class="form-control"
-                                                                id="fileUpload{{ 'Store' . $jenisDokumenKelengkapan['id_jenis'] }}"
-                                                                name="fileUpload" accept=".pdf" style="display: none;">
-
-
-                                                        </div>
-
-
-                                                    </form>
-                                                </td>
-                                            @endif
-                                        @endif
-
-
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-
+                        </div>
                     </div>
-                </div>
+                @endif
+
 
                 <div class="card">
                     <div class="card-header">
@@ -366,13 +374,16 @@
                     <div class="card-body">
 
                         <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
-                            <a href="{{ route('pengajuankontrak.index') }}" class="btn btn-info">Kembali</a>
-                            <form
-                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Dokumen Input Pengadaan Tahap 2', 'routeName' => 'isikontrak']) }}"
-                                method="post">
-                                @csrf
-                                <button type="submit" class="btn btn-primary">Kirim</button>
-                            </form>
+                            <a href="{{ route('isikontrak') }}" class="btn btn-info">Kembali</a>
+                            @if ($statusformpenawaran)
+                                <form
+                                    action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Dokumen Input Pengadaan Tahap 2', 'routeName' => 'isikontrak']) }}"
+                                    method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Kirim</button>
+                                </form>
+                            @endif
+
                         </div>
                     </div>
                 </div>

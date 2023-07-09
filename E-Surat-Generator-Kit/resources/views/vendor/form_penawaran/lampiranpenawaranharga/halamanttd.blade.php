@@ -80,7 +80,13 @@
 
                     <div class="card-body">
                         <div class="card">
-                            <div class="card-header">Form Upload File Tanda Tangan</div>
+                            <div class="card-header">Form Upload File Tanda Tangan
+
+                                <br>
+                                <a class="btn btn-primary"
+                                href="{{ route('vendor.lampiranpenawaranharga.pdf', ['id' => $id, 'jenis' => 2]) }}">Download
+                                PDF</a>
+                            </div>
                             <div class="card-body">
                                 <form action="{{ route('vendor.lampiranpenawaranharga.simpanttd', $id) }}" method="POST"
                                     enctype="multipart/form-data">

@@ -80,13 +80,18 @@
 
                     <div class="card-body">
                         <div class="card">
-                            <div class="card-header">Form Upload File Tanda Tangan</div>
+                            <div class="card-header">Form Upload File Tanda Tangan
+
+                                <a class="btn btn-primary"
+                                    href="{{ route('vendor.formpenawaranharga.pdf', ['id' => $id, 'jenis' => 2]) }}">Download
+                                    PDF</a>
+                            </div>
                             <div class="card-body">
                                 <form action="{{ route('vendor.formpenawaranharga.simpanttd') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $id }}">
-                                 
+
                                     <div class="form-group m-4">
                                         <ol>
                                             <li>Download PDF Form Penawaran dari halaman utama</li>

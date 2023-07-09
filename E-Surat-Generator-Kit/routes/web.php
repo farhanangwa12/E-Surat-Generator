@@ -441,32 +441,32 @@ Route::middleware('auth')->group(function () {
             Route::post('formpenawaranharga/simpan/{id}', [FormPenawaranHargaController::class, 'store'])->name('vendor.formpenawaranharga.store');
             Route::get('formpenawaranharga/{id}/halamanttd', [FormPenawaranHargaController::class, 'halamanttd'])->name('vendor.formpenawaranharga.halamanttd');
             Route::post('formpenawaranharga/simpanttd', [FormPenawaranHargaController::class, 'simpanttd'])->name('vendor.formpenawaranharga.simpanttd');
-            Route::get('formpenawaranharga/{id}/pdf', [FormPenawaranHargaController::class, 'pdf'])->name('vendor.formpenawaranharga.pdf');
+            Route::get('formpenawaranharga/pdf/{id}/{jenis}', [FormPenawaranHargaController::class, 'pdf'])->name('vendor.formpenawaranharga.pdf');
 
 
             // Route::get('lampiranpenawaranharga/create/{id}', [LampiranPenawaranHargaController::class, 'create'])->name('vendor.lampiranpenawaranharga.create');
             Route::put('lampiranpenawaranharga/update/{id}', [LampiranPenawaranHargaController::class, 'update'])->name('vendor.lampiranpenawaranharga.update');
             Route::get('lampiranpenawaranharga/halamanttd/{id}', [LampiranPenawaranHargaController::class, 'halamanttd'])->name('vendor.lampiranpenawaranharga.halamanttd');
             Route::post('lampiranpenawaranharga/simpanttd/{id}', [LampiranPenawaranHargaController::class, 'simpanttd'])->name('vendor.lampiranpenawaranharga.simpanttd');
-            Route::get('lampiranpenawaranharga/pdf/{id}', [LampiranPenawaranHargaController::class, 'pdf'])->name('vendor.lampiranpenawaranharga.pdf');
+            Route::get('lampiranpenawaranharga/pdf/{id}/{jenis}', [LampiranPenawaranHargaController::class, 'pdf'])->name('vendor.lampiranpenawaranharga.pdf');
 
             Route::get('paktavendor/create/{id}', [PaktavendorController::class, 'create'])->name('vendor.paktavendor.create');
             Route::post('paktavendor/update/{id}', [PaktavendorController::class, 'update'])->name('vendor.paktavendor.update');
             Route::get('paktavendor/halamanttd/{id}', [PaktavendorController::class, 'halamanttd'])->name('vendor.paktavendor.halamanttd');
             Route::post('paktavendor/simpanttd/{id}', [PaktavendorController::class, 'simpanttd'])->name('vendor.paktavendor.simpanttd');
-            Route::get('paktavendor/pdf/{id}', [PaktavendorController::class, 'pdf'])->name('vendor.paktavendor.pdf');
+            Route::get('paktavendor/pdf/{id}/{jenis}', [PaktavendorController::class, 'pdf'])->name('vendor.paktavendor.pdf');
 
             Route::get('pernyataan_garansi/create/{id}', [PernyataanGaransiController::class, 'create'])->name('vendor.pernyataan.garansi.create');
             Route::post('pernyataan_garansi/update/{id}', [PernyataanGaransiController::class, 'update'])->name('vendor.pernyataan.garansi.update');
             Route::get('pernyataan_garansi/halamanttd/{id}', [PernyataanGaransiController::class, 'halamanttd'])->name('vendor.pernyataan.garansi.halamanttd');
             Route::post('pernyataan_garansi/simpanttd/{id}', [PernyataanGaransiController::class, 'simpanttd'])->name('vendor.pernyataan.garansi.simpanttd');
-            Route::get('pernyataan_garansi/pdf/{id}', [PernyataanGaransiController::class, 'pdf'])->name('vendor.pernyataan.garansi.pdf');
+            Route::get('pernyataan_garansi/pdf/{id}/{jenis}', [PernyataanGaransiController::class, 'pdf'])->name('vendor.pernyataan.garansi.pdf');
 
             Route::get('pernyataan_sangup/create/{id}', [PernyataanKesanggupanController::class, 'create'])->name('vendor.pernyataan.sangup.create');
             Route::post('pernyataan_sangup/update/{id}', [PernyataanKesanggupanController::class, 'update'])->name('vendor.pernyataan.sangup.update');
             Route::get('pernyataan_sangup/halamanttd/{id}', [PernyataanKesanggupanController::class, 'halamanttd'])->name('vendor.pernyataan.sangup.halamanttd');
             Route::post('pernyataan_sangup/simpanttd/{id}', [PernyataanKesanggupanController::class, 'simpanttd'])->name('vendor.pernyataan.sangup.simpanttd');
-            Route::get('pernyataan_sangup/pdf/{id}', [PernyataanKesanggupanController::class, 'pdf'])->name('vendor.pernyataan.sangup.pdf');
+            Route::get('pernyataan_sangup/pdf/{id}/{jenis}', [PernyataanKesanggupanController::class, 'pdf'])->name('vendor.pernyataan.sangup.pdf');
 
 
             Route::get('datapengalaman/{id}', [DataPengalamanController::class, 'index'])->name('vendor.datapengalaman.index');
@@ -480,13 +480,13 @@ Route::middleware('auth')->group(function () {
             Route::delete('datapengalaman/hapus/{id}/{id_data}', [DataPengalamanController::class, 'destroy'])->name('vendor.datapengalaman.destroy');
             Route::get('datapengalaman/halamanttd/{id}', [DataPengalamanController::class, 'halamanttd'])->name('vendor.datapengalaman.halamanttd');
             Route::post('datapengalaman/simpanttd/{id}', [DataPengalamanController::class, 'simpanttd'])->name('vendor.datapengalaman.simpanttd');
-            Route::get('datapengalaman/pdf/{id}', [DataPengalamanController::class, 'pdf'])->name('vendor.datapengalaman.pdf');
+            Route::get('datapengalaman/pdf/{id}/{jenis}', [DataPengalamanController::class, 'pdf'])->name('vendor.datapengalaman.pdf');
 
             Route::get('neraca/create/{id}', [NeracaController::class, 'create'])->name('vendor.neraca.create');
             Route::post('neraca/update/{id}', [NeracaController::class, 'update'])->name('vendor.neraca.update');
             Route::get('neraca/halamanttd/{id}', [NeracaController::class, 'halamanttd'])->name('vendor.neraca.halamanttd');
             Route::post('neraca/simpanttd/{id}', [NeracaController::class, 'simpanttd'])->name('vendor.neraca.simpanttd');
-            Route::get('neraca/pdf/{id}', [NeracaController::class, 'pdf'])->name('vendor.neraca.pdf');
+            Route::get('neraca/pdf/{id}/{jenis}', [NeracaController::class, 'pdf'])->name('vendor.neraca.pdf');
         });
     });
 });

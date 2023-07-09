@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DokumenVendor\Formpenawaranharga;
 use App\Models\JenisDokumenKelengkapan;
 use App\Models\KontrakKerja;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class VendorKontrakKerjaController extends Controller
     }
     public function detail($id)
     {
+
         $kontrakkerja = KontrakKerja::find($id);
 
         // // Path File
@@ -33,9 +35,21 @@ class VendorKontrakKerjaController extends Controller
         // $worksheet = $spreadsheet->getActiveSheet();
         $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get()->toArray();
         // dd($jenisDokumenKelengkapans[0]['kelengkapan_dokumen_vendors'][0]['id_dokumen']);
-      
-        return view('vendor.detailkontrak', compact('kontrakkerja', 'id', 'jenisDokumenKelengkapans'));
+        $formpenawaran = Formpenawaranharga::with(['dokumen'=> function ($query) use ($id){
+            $query->where('id_kontrakkerja', $id);
+
+        }] )->first();
+
+        $statusformpenawaran = false;
+        if (isset($formpenawaran) && $formpenawaran->kopsurat) {
+           $statusformpenawaran = true;
+          
+        }
+        
+       
+        return view('vendor.detailkontrak', compact('kontrakkerja', 'id', 'jenisDokumenKelengkapans', 'statusformpenawaran'));
     }
+
 
 
     public function detailttd($id)

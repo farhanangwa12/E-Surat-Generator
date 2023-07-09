@@ -233,7 +233,7 @@ class DataPengalamanController extends Controller
         return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
     }
 
-    public function pdf($id)
+    public function pdf($id, $jenis)
     {
 
         // Membaca data dari file JSON
@@ -270,7 +270,19 @@ class DataPengalamanController extends Controller
 
         $pdf = PDF::loadView('vendor.form_penawaran.datapengalaman.pdf', $data);
 
-        // Output the generated PDF to the browser
-        return $pdf->stream('pernyataan_sanggup.pdf');
+        $namefile = 'Data Pengalaman' . time() . '.pdf';
+
+        if ($jenis == 1) {
+      
+            // Menampilkan output di browser
+            return $pdf->stream($namefile);
+        } else if ($jenis == 2) {
+        
+
+            // Download file
+            return $pdf->download($namefile);
+        } else {
+            return "Parameter tidak valid";
+        }
     }
 }

@@ -501,79 +501,80 @@
                                     </tr>
 
 
-
-                                    <tr style="background: #743461;color: #ffffff;">
-                                        <td colspan="3" style="text-align: center;">Pengadaan tahap 2</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">{{ $no++ }}</th>
-                                        <td>BA Nego</td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary">Tanda
-                                                Tangan</a>
-                                            <a href="{{ route('banego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                class="btn btn-primary">Detail</a>
-
-
-                                            <a href="{{ route('banego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                class="btn btn-primary">Download</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">{{ $no++ }}</th>
-                                        <td>Lamp Nego</td>
-                                        <td><a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                class="btn btn-primary">Detail</a>
+                                    @if ($kontrakkerja->status == 'Validasi Dokumen Pengadaan Tahap 2')
+                                        <tr style="background: #743461;color: #ffffff;">
+                                            <td colspan="3" style="text-align: center;">Pengadaan tahap 2</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">{{ $no++ }}</th>
+                                            <td>BA Nego</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary">Tanda
+                                                    Tangan</a>
+                                                <a href="{{ route('banego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                    class="btn btn-primary">Detail</a>
 
 
-                                            <a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                class="btn btn-primary">Download</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">{{ $no++ }}</th>
-                                        <td>Cover</td>
-                                        <td><a href="{{ route('cover.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                class="btn btn-primary">Detail</a>
+                                                <a href="{{ route('banego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                    class="btn btn-primary">Download</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">{{ $no++ }}</th>
+                                            <td>Lamp Nego</td>
+                                            <td><a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                    class="btn btn-primary">Detail</a>
 
 
-                                            <a href="{{ route('cover.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                class="btn btn-primary">Download</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">{{ $no++ }}</th>
-                                        <td>Sampul</td>
-                                        <td><a href="{{ route('sampul.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                class="btn btn-primary">Detail</a>
+                                                <a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                    class="btn btn-primary">Download</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">{{ $no++ }}</th>
+                                            <td>Cover</td>
+                                            <td><a href="{{ route('cover.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                    class="btn btn-primary">Detail</a>
 
 
-                                            <a href="{{ route('sampul.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                class="btn btn-primary">Download</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">{{ $no++ }}</th>
-                                        <td>SPKBJ</td>
-                                        <td><a href="{{ route('spkbj.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                class="btn btn-primary">Detail</a>
+                                                <a href="{{ route('cover.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                    class="btn btn-primary">Download</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">{{ $no++ }}</th>
+                                            <td>Sampul</td>
+                                            <td><a href="{{ route('sampul.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                    class="btn btn-primary">Detail</a>
 
 
-                                            <a href="{{ route('spkbj.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                class="btn btn-primary">Download</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">{{ $no++ }}</th>
-                                        <td>L-SPK</td>
-                                        <td><a href="{{ route('lspk.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
-                                                class="btn btn-primary">Detail</a>
+                                                <a href="{{ route('sampul.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                    class="btn btn-primary">Download</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">{{ $no++ }}</th>
+                                            <td>SPKBJ</td>
+                                            <td><a href="{{ route('spkbj.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                    class="btn btn-primary">Detail</a>
 
 
-                                            <a href="{{ route('lspk.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
-                                                class="btn btn-primary">Download</a>
-                                        </td>
-                                    </tr>
+                                                <a href="{{ route('spkbj.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                    class="btn btn-primary">Download</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">{{ $no++ }}</th>
+                                            <td>L-SPK</td>
+                                            <td><a href="{{ route('lspk.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                                    class="btn btn-primary">Detail</a>
+
+
+                                                <a href="{{ route('lspk.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
+                                                    class="btn btn-primary">Download</a>
+                                            </td>
+                                        </tr>
+                                    @endif
 
 
                                 </tbody>
@@ -613,10 +614,7 @@
                             </div>
                         </div>
                     </div>
-                @endif
-
-
-                @if ($kontrakkerja->status == 'Validasi Dokumen Pengadaan Tahap 2')
+                @elseif ($kontrakkerja->status == 'Validasi Dokumen Pengadaan Tahap 2')
                     <div class="card">
                         <div class="card-header">
                             Meminta Persetujuan vendor
@@ -634,6 +632,15 @@
                                     @csrf
                                     <button type="submit" class="btn btn-primary">Kembalikan</button>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="card">
+                        
+                        <div class="card-body">
+                            <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
+                                <a href="{{ route('tandatangan.pengadaan') }}" class="btn btn-info">Kembali</a>
                             </div>
                         </div>
                     </div>

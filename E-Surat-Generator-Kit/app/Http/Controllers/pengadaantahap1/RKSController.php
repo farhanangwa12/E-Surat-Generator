@@ -57,7 +57,7 @@ class RKSController extends Controller
         $nama_pekerjaanrks =  strtoupper($kontrakkerja->nama_kontrak) . " PT PLN (PERSERO) UNIT INDUK WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR";
 
         $jumlah_harikontrak =  Carbon::parse($kontrakkerja->tanggal_pekerjaan)->diffInDays($kontrakkerja->tanggal_akhir_pekerjaan);
-
+        // dd($vendor);
         // Tanggal batas Penawaran
         $tanggalbataspenawaran = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat', 'batas_akhir_dokumen_penawaran')->first()->tanggal_pembuatan;
         $masterharitanggal = Carbon::createFromFormat('Y-m-d', $tanggalbataspenawaran)->locale('id')->isoFormat('dddd / D MMMM YYYY');
@@ -114,8 +114,8 @@ class RKSController extends Controller
             'website' =>  $vendor->website == null ? '.....................' : $vendor->website,
             'faksimili' =>  $vendor->faksimili == null ? '.....................' : $vendor->faksimili,
             'email' =>  $vendor->email_perusahaan == null ? '.....................' : $vendor->email_perusahaan,
-            'pengawasPekerjaan' =>  "..................." ,
-            'pengawasK3' =>  "..................."
+            'pengawasPekerjaan' =>  $vendor->pengawas_pekerjaan  ? $vendor->pengawas_pekerjaan :'.....................'  ,
+            'pengawasK3' =>  $vendor->pengawas_k3 ? $vendor->pengawas_k3:'.....................' 
 
 
 
@@ -218,9 +218,8 @@ class RKSController extends Controller
             'website' =>  $vendor->website == null ? '.....................' : $vendor->website,
             'faksimili' =>  $vendor->faksimili == null ? '.....................' : $vendor->faksimili,
             'email' =>  $vendor->email_perusahaan == null ? '.....................' : $vendor->email_perusahaan,
-            'pengawasPekerjaan' =>  !isset($penyelenggara['direksi_vendor'])  ? '.....................' : $penyelenggara['direksi_vendor'][0]['nama_pengguna'],
-            'pengawasK3' =>  !isset($penyelenggara['pengawas_k3_vendor']) ? '.....................' : $penyelenggara['pengawas_k3_vendor'][0]['nama_pengguna']
-
+            'pengawasPekerjaan' =>  isset($vendor->pengawas_pekerjaan)  ? $vendor->pengawas_pekerjaan :'.....................'  ,
+            'pengawasK3' =>  isset($vendor->pengawas_k3) ? $vendor->pengawas_k3:'.....................' 
 
 
 

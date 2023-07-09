@@ -52,7 +52,7 @@ class FormPenawaranHargaController extends Controller
 
             $formpenawaranharga->save();
         }
-        $lampiranpenawaran = app(LampiranPenawaranHargaController::class)->refresh($id);
+        // $lampiranpenawaran = app(LampiranPenawaranHargaController::class)->refresh($id);
 
 
         $formpenawaranharga1 = Formpenawaranharga::where('id_dokumen', $kelengkapan->id_dokumen)->first();
@@ -259,7 +259,7 @@ class FormPenawaranHargaController extends Controller
         return redirect()->route('vendor.kontrakkerja.detail', ['id' => $id_kontrakkerja]);
     }
 
-    public function pdf($id)
+    public function pdf($id, $jenis)
     {
         // Mengambil path file JSON dari database berdasarkan ID
         $data =  $this->refresh($id);
@@ -321,18 +321,41 @@ class FormPenawaranHargaController extends Controller
             'hargaPenawaran' => $hargaPenawaran,
             'ppn' => $ppn,
             'jumlahHarga' => $jumlahHarga,
-            'terbilang' =>  ucwords(Terbilang::make(str_replace('.', '', $jumlahHarga)," Rupiah")),
+            'terbilang' =>  ucwords(Terbilang::make(str_replace('.', '', $jumlahHarga), " Rupiah")),
             'waktuPelaksanaan' => $waktuPelaksanaan,
 
             'tanggalPengadaan' => $tanggalPengadaan,
 
         ];
-    
+
         // Generate QR code
         // $barcode = !empty($tandatangan) ? DNS2D::getBarcodeHTML($tandatangan, 'QRCODE', 4, 4) : ' Materai Rp. 10.000,- <br> Tanda Tangan Dan Cap Perusahaan';
         // $data['barcode'] = $barcode;
 
         $pdf = PDF::loadView('vendor.form_penawaran.formpenharga.pdf', $data);
-        return $pdf->stream('form_penawaran.pdf');
+
+        $namefile = 'FORM_PENAWARAN' . time() . '.pdf';
+        // dd($jenis);
+        if ($jenis == 1) {
+            dd("jenis 1");
+            // Menampilkan output di browser
+            return $pdf->stream($namefile);
+        } else if ($jenis == 2) {
+        
+
+            // Download file
+            return $pdf->download($namefile);
+        } else {
+            return "Parameter tidak valid";
+        }
+        // if ($jenis == 1) {
+        //     // Menampilkan output di browser
+        //     return $pdf->stream($namefile);
+        // } else if ($jenis == 2) {
+        //     // Download file
+        //     return $pdf->download($namefile);
+        // } else {
+        //     return "Parameter tidak valid";
+        // }
     }
 }

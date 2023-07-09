@@ -143,7 +143,7 @@ class PernyataanKesanggupanController extends Controller
     }
 
 
-    public function pdf($id)
+    public function pdf($id, $jenis)
     {
         $penawaran = $this->refresh($id);
         $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
@@ -177,8 +177,19 @@ class PernyataanKesanggupanController extends Controller
         // Generate the PDF using laravel-dompdf
 
         $pdf = PDF::loadView('vendor.form_penawaran.pernyataansanggup.pdf', $data);
+        $namefile = 'Pernyataan_kesanggupan' . time() . '.pdf';
 
-        // Output the generated PDF to the browser
-        return $pdf->stream('pernyataan_sanggup.pdf');
+        if ($jenis == 1) {
+      
+            // Menampilkan output di browser
+            return $pdf->stream($namefile);
+        } else if ($jenis == 2) {
+        
+
+            // Download file
+            return $pdf->download($namefile);
+        } else {
+            return "Parameter tidak valid";
+        }
     }
 }
