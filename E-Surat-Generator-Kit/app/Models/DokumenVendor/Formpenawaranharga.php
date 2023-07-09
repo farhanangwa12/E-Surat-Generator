@@ -20,6 +20,7 @@ class Formpenawaranharga extends Model
         'lampiran',
         'nama_kota',
         'tanggal_pembuatan_surat',
+        'data_surat'
         // 'nama_vendor',
         // 'jabatan',
         // 'nama_perusahaan',
@@ -32,7 +33,9 @@ class Formpenawaranharga extends Model
         // 'jumlah_harga',
         // 'tanggal_tandatangan',
     ];
-
+    protected $casts = [
+        'data_surat' => 'json'
+    ];
     public function dokumen()
     {
         return $this->belongsTo(KelengkapanDokumenVendor::class, 'id_dokumen');

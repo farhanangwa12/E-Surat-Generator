@@ -390,7 +390,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/dashboard', [LoginController::class, 'dashboardpln'])->name('dashboard.manager');
 
-        Route::get('/tandatangan', [KontrakKerjaController::class, 'tandatanganmanager'])->name('tandatangan.manager');
+        Route::get('/kontrakkerja', [KontrakKerjaController::class, 'tandatanganmanager'])->name('tandatangan.manager');
         Route::get('{id}/detail', [KontrakKerjaController::class, 'detailkontrakmanager'])->name('tandatangan.manager.detail');
 
 
@@ -422,13 +422,14 @@ Route::middleware('auth')->group(function () {
 
 
             // Route untuk menampilkan form tambah produk
-            Route::get('/kontrakkerja', [VendorKontrakKerjaController::class, 'index'])->name('vendor.kontrakkerja');
+            
+            Route::get('/pengisiankontrakkerja', [VendorKontrakKerjaController::class, 'pengisiankontrakkerja'])->name('isikontrak');
             // Route untuk menampilkan form tambah produk
             Route::get('kontrakkerjadetail/{id}', [VendorKontrakKerjaController::class, 'detail'])->name('vendor.kontrakkerja.detail');
 
 
 
-            Route::get('/pengisiankontrakkerja', [VendorKontrakKerjaController::class, 'pengisiankontrakkerja'])->name('isikontrak');
+            Route::get('/kontrakkerja', [VendorKontrakKerjaController::class, 'index'])->name('vendor.kontrakkerja');
             Route::get('/kontrakkerjadetailtandatangan/{id}', [VendorKontrakKerjaController::class, 'detailttd'])->name('vendor.kontrakkerja.detail.tandatangan');
 
 

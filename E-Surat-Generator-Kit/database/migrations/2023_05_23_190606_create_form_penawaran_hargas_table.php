@@ -20,13 +20,14 @@ return new class extends Migration
             $table->string('lampiran')->nullable();
             $table->string('nama_kota')->nullable();
             $table->date('tanggal_pembuatan_surat')->nullable();
-            $table->string('nama_vendor')->nullable();
-            $table->string('jabatan')->nullable();
-            $table->string('nama_perusahaan')->nullable();
+            $table->json('data_surat')->nullable();
+            // $table->string('nama_vendor')->nullable();
+            // $table->string('jabatan')->nullable();
+            // $table->string('nama_perusahaan')->nullable();
        
-            $table->string('alamat_perusahaan')->nullable();
-            $table->string('telepon_fax')->nullable();
-            $table->string('email_perusahaan')->nullable();
+            // $table->string('alamat_perusahaan')->nullable();
+            // $table->string('telepon_fax')->nullable();
+            // $table->string('email_perusahaan')->nullable();
             $table->string('harga_penawaran')->nullable();
             $table->string('ppn11')->nullable();
             $table->string('jumlah_harga')->nullable();

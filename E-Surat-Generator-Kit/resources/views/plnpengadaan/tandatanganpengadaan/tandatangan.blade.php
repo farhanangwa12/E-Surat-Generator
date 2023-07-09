@@ -24,7 +24,7 @@
                                     <th>Tanggal Pekerjaan</th>
                                     <th>Status</th>
                                     <th>Pengisian Kontrak</th>
-                                    <th>Aksi</th>
+                                    {{-- <th>Aksi</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,9 +43,10 @@
                                         <td>{{ $item->status }}</td>
                                         <td> <a href="{{ route('tandatangan.detail', ['id' => $item->id_kontrakkerja]) }}"
                                                 class="btn btn-warning">Dokumen Lanjutan</a></td>
-                                        <td> <a href="{{ route('pengajuankontrak.edit', ['id' => $item->id_kontrakkerja]) }}"
+                                        {{-- <td> <a href="{{ route('pengajuankontrak.edit', ['id' => $item->id_kontrakkerja]) }}"
                                                 class="btn btn-primary">Edit</a>
-                                        </td>
+                                        </td> --}}
+                                        {{-- <td></td> --}}
                                         </td>
                                     </tr>
                                 @endforeach

@@ -13,9 +13,21 @@ class Vendor extends Model
 
     protected $primaryKey = 'id_vendor';
     protected $fillable = [
-        'penyedia', 'direktur', 'alamat', 'bank', 'nomor_rek', 'alamat_jalan', 'alamat_kota', 'alamat_provinsi', 'telepon', 'webiste', 'faksimili', 'email_perusahaan'
-
+        'penyedia',
+        'direktur',
+        'alamat_jalan',
+        'alamat_kota',
+        'alamat_provinsi',
+        'bank',
+        'nomor_rek',
+        'telepon',
+        'website',
+        'faksimili',
+        'email_perusahaan',
+        'pengawas_pekerjaan',
+        'pengawas_k3'
     ];
+
     public function user()
     {
         return $this->hasOne(User::class);

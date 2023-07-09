@@ -27,6 +27,9 @@ class KelengkapanDokumenVendor extends Model
         'tandatangan',
         'data_dokumen',
     ];
+    protected $casts = [
+        'data_dokumen' => 'json',
+    ];
     public function jenisDokumen()
     {
         return $this->belongsTo(JenisDokumenKelengkapan::class, 'id_jenis_dokumen', 'id_jenis');

@@ -29,7 +29,7 @@ class FormPenawaranHargaController extends Controller
         $jenisDokumen = JenisDokumenKelengkapan::where('no_dokumen', "nomor_tanggal_surat_penawaran_")->with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
             $query->where('id_kontrakkerja', $id);
         }])->first();
-
+        // dd($jenisDokumen);
         if ($jenisDokumen->kelengkapanDokumenVendors->isEmpty()) {
 
 
@@ -45,30 +45,35 @@ class FormPenawaranHargaController extends Controller
         $kelengkapan = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('formPenawaranHarga')->first();
 
 
-
         if ($kelengkapan->formPenawaranHarga === null) {
             $formpenawaranharga = new Formpenawaranharga();
             $formpenawaranharga->id_dokumen = $kelengkapan->id_dokumen;
-
+            $formpenawaranharga->data_surat = [];
             $formpenawaranharga->save();
         }
-        // $lampiranpenawaran = app(LampiranPenawaranHargaController::class)->refresh($id);
 
 
-        $formpenawaranharga1 = Formpenawaranharga::where('id_dokumen', $kelengkapan->id_dokumen)->first();
+        $kelengkapan1 = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('formPenawaranHarga')->first();
+
+        $lampiranpenawaran = app(LampiranPenawaranHargaController::class)->refresh($id);
+
+
+        $formpenawaranharga1 = Formpenawaranharga::where('id_dokumen', $kelengkapan1->id_dokumen)->first();
         $kontrakkerja = KontrakKerja::with('vendor')->find($id)->first();
+
         if (isset($lampiranpenawaran)) {
             $formpenawaranharga = Formpenawaranharga::find($formpenawaranharga1->id);
-            $formpenawaranharga->nama_vendor = $kontrakkerja->vendor->direktur;
-            $formpenawaranharga->nama_perusahaan = $kontrakkerja->vendor->penyedia;
-            $formpenawaranharga->jabatan = "Direktur";
-            $formpenawaranharga->email_perusahaan =  $kontrakkerja->vendor->email_perusahaan;
-            $formpenawaranharga->telepon_fax = $kontrakkerja->vendor->telepon . "/" . $kontrakkerja->vendor->faximile;
+            // $formpenawaranharga->nama_vendor = $kontrakkerja->vendor->direktur;
+            // $formpenawaranharga->nama_perusahaan = $kontrakkerja->vendor->penyedia;
+            // $formpenawaranharga->jabatan = "Direktur";
+            // $formpenawaranharga->email_perusahaan =  $kontrakkerja->vendor->email_perusahaan;
+            // $formpenawaranharga->telepon_fax = $kontrakkerja->vendor->telepon . "/" . $kontrakkerja->vendor->faximile;
             $formpenawaranharga->harga_penawaran = $lampiranpenawaran->dibulatkan;
             $formpenawaranharga->ppn11 = $lampiranpenawaran->ppn11;
             $formpenawaranharga->jumlah_harga = $lampiranpenawaran->total_harga;
             $formpenawaranharga->save();
         }
+     
         return $formpenawaranharga1;
     }
 
@@ -127,15 +132,15 @@ class FormPenawaranHargaController extends Controller
         // $ppn11 = $request->input('ppn11');
         // $jumlah_harga = $request->input('jumlah_harga');
         // $terbilang = $request->input('terbilang');
-        $kontrakkerja = KontrakKerja::where('id_kontrakkerja', $id)->with('vendor')->first();
-        $nama_vendor = $kontrakkerja->vendor->direktur;
-        $jabatan = "Direktur";
-        $nama_perusahaan = $kontrakkerja->vendor->penyedia;
-        // $atas_nama = $request->input('atas_nama');
-        $atas_nama = "Atas Nama";
-        $alamat_perusahaan = $kontrakkerja->vendor->alamat_jalan . ' , ' . $kontrakkerja->vendor->alamat_kota . ' , ' . $kontrakkerja->vendor->alamat_provinsi;
-        $telepon_fax = $kontrakkerja->vendor->telepon_fax;
-        $email_perusahaan = $kontrakkerja->vendor->email_perusahaan;
+        // $kontrakkerja = KontrakKerja::where('id_kontrakkerja', $id)->with('vendor')->first();
+        // $nama_vendor = $kontrakkerja->vendor->direktur;
+        // $jabatan = "Direktur";
+        // $nama_perusahaan = $kontrakkerja->vendor->penyedia;
+        // // $atas_nama = $request->input('atas_nama');
+        // $atas_nama = "Atas Nama";
+        // $alamat_perusahaan = $kontrakkerja->vendor->alamat_jalan . ' , ' . $kontrakkerja->vendor->alamat_kota . ' , ' . $kontrakkerja->vendor->alamat_provinsi;
+        // $telepon_fax = $kontrakkerja->vendor->telepon_fax;
+        // $email_perusahaan = $kontrakkerja->vendor->email_perusahaan;
 
         // $boq = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat','nomor_rks')->with('b_o_q_s.barjas_b_o_q_s')->first();
         // dd($boq);
@@ -147,15 +152,17 @@ class FormPenawaranHargaController extends Controller
         //     $total_jumlah +=  str_replace(".", "", $databarjasBOQ->jumlah);
         // }
 
-        $harga_penawaran = 200000;
-        $ppn11 = "20000";
-        $jumlah_harga = "2000";
-        $terbilang = "Dua Ribu Rupiah";
+        $boq = BOQ::where('id_kontrakkerja', $id)->first();
+
+        $harga_penawaran = $boq->jumlah_harga;
+        $ppn11 = $boq->ppn11;
+        $jumlah_harga = $boq->total_harga;
+        // $terbilang = "Dua Ribu Rupiah";
 
 
 
 
-        $kelengkapandokumen = $this->refresh($id);
+        // $kelengkapandokumen = $this->refresh($id);
 
 
         $data = [];
@@ -164,20 +171,22 @@ class FormPenawaranHargaController extends Controller
         $data['lampiran'] = $lampiran;
         $data['nama_kota'] = $nama_kota;
         $data['tanggal_pembuatan_surat'] = $tanggal_pembuatan_surat;
-        $data['nama_vendor'] = $nama_vendor;
-        $data['jabatan'] = $jabatan;
-        $data['nama_perusahaan'] = $nama_perusahaan;
-        $data['atas_nama'] = $atas_nama;
-        $data['alamat_perusahaan'] = $alamat_perusahaan;
-        $data['telepon_fax'] = $telepon_fax;
+        // $data['nama_vendor'] = $nama_vendor;
+        // $data['jabatan'] = $jabatan;
+        // $data['nama_perusahaan'] = $nama_perusahaan;
+        // $data['atas_nama'] = $atas_nama;
+        // $data['alamat_perusahaan'] = $alamat_perusahaan;
+        // $data['telepon_fax'] = $telepon_fax;
 
-        $data['email_perusahaan'] = $email_perusahaan;
+        // $data['email_perusahaan'] = $email_perusahaan;
         $data['harga_penawaran'] = $harga_penawaran;
         $data['ppn11'] = $ppn11;
         $data['jumlah_harga'] = $jumlah_harga;
         // $data['terbilang'] = $terbilang;
+        
 
-        $formpenawaranharga = Formpenawaranharga::find($kelengkapandokumen->id);
+        $formrefresh = $this->refresh($id);
+        $formpenawaranharga = Formpenawaranharga::find($formrefresh->id);
         // Bagian menyimpan file 
         if ($request->hasFile('kopsurat')) {
             $file = $request->file('kopsurat');
@@ -202,13 +211,13 @@ class FormPenawaranHargaController extends Controller
         $formpenawaranharga->lampiran = $data['lampiran'];
         $formpenawaranharga->nama_kota = $data['nama_kota'];
         $formpenawaranharga->tanggal_pembuatan_surat = $data['tanggal_pembuatan_surat'];
-        $formpenawaranharga->nama_vendor = $data['nama_vendor'];
-        $formpenawaranharga->jabatan = $data['jabatan'];
-        $formpenawaranharga->nama_perusahaan = $data['nama_perusahaan'];
-        $formpenawaranharga->nama_vendor = $data['atas_nama'];
-        $formpenawaranharga->alamat_perusahaan = $data['alamat_perusahaan'];
-        $formpenawaranharga->telepon_fax = $data['telepon_fax'];
-        $formpenawaranharga->email_perusahaan = $data['email_perusahaan'];
+        // $formpenawaranharga->nama_vendor = $data['nama_vendor'];
+        // $formpenawaranharga->jabatan = $data['jabatan'];
+        // $formpenawaranharga->nama_perusahaan = $data['nama_perusahaan'];
+        // $formpenawaranharga->nama_vendor = $data['atas_nama'];
+        // $formpenawaranharga->alamat_perusahaan = $data['alamat_perusahaan'];
+        // $formpenawaranharga->telepon_fax = $data['telepon_fax'];
+        // $formpenawaranharga->email_perusahaan = $data['email_perusahaan'];
         $formpenawaranharga->harga_penawaran = $data['harga_penawaran'];
         $formpenawaranharga->ppn11 = $data['ppn11'];
         $formpenawaranharga->jumlah_harga = $data['jumlah_harga'];
@@ -263,12 +272,12 @@ class FormPenawaranHargaController extends Controller
     {
         // Mengambil path file JSON dari database berdasarkan ID
         $data =  $this->refresh($id);
-
+   
 
         $kopsurat = asset('/storage/' . $data->kopsuratpath . '/' . $data->kopsurat);
 
         // Load data dari kontrakkerja 
-        $kontrakKerja = KontrakKerja::find($id);
+        $kontrakKerja = KontrakKerja::find($id)->with('vendor')->first();
 
 
         $nomor = $data->nomor;
@@ -282,13 +291,13 @@ class FormPenawaranHargaController extends Controller
         $tanggal = $localizedDate;
         $namaPerusahaan = "PT PLN (PERSERO) UPK TIMOR";
         $alamatPerusahaan = "JL. DIPONEGORO KUANINO - KUPANG";
-        $nama = $data->nama_vendor;
-        $jabatan = $data->jabatan;
-        $vendorperusahaan = $data->nama_perusahaan;
-        $atasNama = $data->atas_nama;
-        $alamat = $data->alamat_perusahaan;
-        $telepon = $data->telepon_fax;
-        $email = $data->email_perusahaan;
+        $nama = $kontrakKerja->vendor->direktur;
+        $jabatan = "Direktur";
+        $vendorperusahaan = $kontrakKerja->vendor->penyedia;
+        $atasNama = $kontrakKerja->vendor->penyedia;
+        $alamat = $kontrakKerja->vendor->alamat_jalan . ' , ' . $kontrakKerja->vendor->alamat_kota . ' , ' . $kontrakKerja->vendor->alamat_provinsi;;
+        $telepon = $kontrakKerja->vendor->telepon .'/' . $kontrakKerja->vendor->faksimili;
+        $email = $kontrakKerja->vendor->email_perusahaan;
 
 
         $pekerjaan = $kontrakKerja->nama_kontrak . " PT. PLN (PERSERO) UNIT INDUK WILAYAH NTT UNIT PELAKSANA PEMBANGKITAN TIMOR";
@@ -337,7 +346,7 @@ class FormPenawaranHargaController extends Controller
         $namefile = 'FORM_PENAWARAN' . time() . '.pdf';
         // dd($jenis);
         if ($jenis == 1) {
-            dd("jenis 1");
+         
             // Menampilkan output di browser
             return $pdf->stream($namefile);
         } else if ($jenis == 2) {

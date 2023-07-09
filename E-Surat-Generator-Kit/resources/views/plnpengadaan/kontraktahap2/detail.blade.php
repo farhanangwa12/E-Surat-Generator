@@ -402,9 +402,9 @@
                         </style>
                         <div class="row justify-content-end">
 
-                            <div class="col"> <a
+                            {{-- <div class="col"> <a
                                     href="{{ route('pengajuankontrak.downloadvendor', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                    class="btn btn-primary">Download Semua</a></div>
+                                    class="btn btn-primary">Download Semua</a></div> --}}
                         </div>
 
                         <table class="table table-stripped ">
@@ -425,9 +425,7 @@
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>HPS</td>
                                     <td>
-                                        <a href="{{ route('pengajuankontrak.hps.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                            class="btn btn-primary">Edit</a>
-
+                                      
                                         <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>
 
@@ -442,9 +440,9 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Undangan</td>
-                                    <td><a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 'I']) }}"
+                                    <td><a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Preview</a>
-                                        <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 'D']) }}"
+                                        <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
                                             class="btn btn-primary">Download</a>
                                     </td>
                                 </tr>
@@ -486,7 +484,8 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Lamp Nego</td>
-                                    <td><a href="{{ route('lampnego.create', ['id'=> $kontrakkerja->id_kontrakkerja]) }}"  class="btn btn-primary">Create</a>
+                                    <td>
+                                        <a href="{{ route('lampnego.create', ['id'=> $kontrakkerja->id_kontrakkerja]) }}"  class="btn btn-primary">Create</a>
                                         
                                         <a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>

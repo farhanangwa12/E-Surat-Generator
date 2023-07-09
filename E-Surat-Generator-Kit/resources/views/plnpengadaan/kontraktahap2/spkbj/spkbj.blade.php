@@ -3756,8 +3756,8 @@
             </tr>
 
             <tr>
-                <td style="height: 40px;">Tanda Tangan Direktur Vendor </td>
-                <td>Tanda Tangan Manager</td>
+                <td style="height: 80px;"> </td>
+                <td></td>
             </tr>
 
 

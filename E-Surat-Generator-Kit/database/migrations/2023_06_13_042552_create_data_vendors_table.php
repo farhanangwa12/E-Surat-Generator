@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->string('faksimili')->nullable();
             $table->string('email_perusahaan')->nullable();
+            $table->string('pengawas_pekerjaan')->nullable();
+            $table->string('pengawas_k3')->nullable();
             $table->timestamps();
             $table->foreign('id_kontrakkerja')->references('id_kontrakkerja')->on('kontrak_kerjas');
             $table->foreign('id_vendor')->references('id_vendor')->on('vendors');

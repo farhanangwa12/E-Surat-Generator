@@ -7,6 +7,7 @@ use App\Http\Controllers\SuratVendor\LampiranPenawaranHargaController;
 use App\Models\Dokumen\BarJasBOQ;
 use App\Models\Dokumen\BOQ;
 use App\Models\DokumenVendor\Formpenawaranharga;
+use App\Models\KelengkapanDokumenVendor;
 use App\Models\KontrakKerja;
 use App\Models\PembuatanSuratKontrak;
 use App\Models\Penyelenggara;
@@ -268,10 +269,14 @@ class BOQController extends Controller
         $formpenawaranModel = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
             $query->where('id_kontrakkerja', $id);
         }])->first();
+  
+
+        $kelengkapanDokumen = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->with(['formPenawaranHarga'])->first();
+  
      
    
-        $nama_kota =  isset($formpenawaranModel->nama_kota) ? $formpenawaranModel->nama_kota : '.............';
-        $tanggal_surat = isset($formpenawaranModel->tanggal_pembuatan_surat) ?  Carbon::createFromFormat('Y-m-d', $formpenawaranModel->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY') : '.................';
+        $nama_kota =  isset($kelengkapanDokumen->formPenawaranHarga->nama_kota) ? $kelengkapanDokumen->formPenawaranHarga->nama_kota : '.............';
+        $tanggal_surat = isset($kelengkapanDokumen->formPenawaranHarga->tanggal_pembuatan_surat) ?  Carbon::createFromFormat('Y-m-d', $kelengkapanDokumen->formPenawaranHarga->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY') : '.................';
         
         $data2 = [
             'logokiri' => public_path('undangan/kiri.jpg'),

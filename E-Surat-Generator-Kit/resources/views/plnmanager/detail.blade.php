@@ -263,6 +263,7 @@
                     </div>
                 </div>
                 {{-- Tanggal Pengerjaan Surat Kontrak --}}
+                {{-- Tanggal Pengerjaan Surat Kontrak --}}
                 <div class="card">
                     <div class="card-header">
                         Informasi Pengerjaan Surat Kontrak Pengadaan
@@ -316,18 +317,27 @@
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
-                                    <td>Tanggal Undangan</td>
-                                    <td>{{ $kontrak->tanggal_undangan }}</td>
-                                    <td>{{ $kontrak->nomor_undangan }}</td>
-
-                                </tr>
-                                <tr>
-                                    <th scope="col">{{ $no++ }}</th>
                                     <td>Tanggal Pakta Pengguna</td>
                                     <td>{{ $kontrak->tanggal_pakta_pengguna }}</td>
                                     <td>{{ $kontrak->nomor_pakta_pengguna }}</td>
 
                                 </tr>
+                                <tr>
+                                    <th scope="col">{{ $no++ }}</th>
+                                    <td>Tanggal Undangan</td>
+                                    <td>{{ $kontrak->tanggal_undangan }}</td>
+                                    <td>{{ $kontrak->nomor_undangan }}</td>
+
+                                </tr>
+                                <br>
+                                <tr>
+                                    <th scope="col">{{ $no++ }}</th>
+                                    <td>Batas Akhir Penginputan Dokumen Penawaran</td>
+                                    <td colspan="2">{{ $kontrak->tanggal_undangan }}</td>
+                                    {{-- <td>{{ $kontrak->nomor_undangan }}</td> --}}
+
+                                </tr>
+
                                 <br>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
@@ -373,6 +383,7 @@
                 </div>
 
 
+
                 {{-- BOQ --}}
 
                 <div class="card">
@@ -390,11 +401,11 @@
                             }
                         </style>
                         <div class="row justify-content-end">
-
+{{-- 
                             <div class="col"> <a
                                     href="{{ route('pengajuankontrak.downloadvendor', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
                                     class="btn btn-primary">Download Semua</a></div>
-                        </div>
+                        </div> --}}
 
                         <table class="table table-stripped ">
                             <thead>
@@ -414,9 +425,7 @@
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>HPS</td>
                                     <td>
-                                        {{-- <a href="{{ route('hpstandatanganmanager', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                            class="btn btn-primary">Tanda Tangan HPS</a> --}}
-                                            <a href="#"  class="btn btn-primary">Tanda Tangan HPS</a>
+
                                         <a href="{{ route('pengajuankontrak.hps.detail', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>
 
@@ -431,9 +440,9 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Undangan</td>
-                                    <td><a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 'I']) }}"
+                                    <td><a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Preview</a>
-                                        <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 'D']) }}"
+                                        <a href="{{ route('pengajuankontrak.undangan', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"
                                             class="btn btn-primary">Download</a>
                                     </td>
                                 </tr>
@@ -475,7 +484,11 @@
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
                                     <td>Lamp Nego</td>
-                                    <td><a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
+                                    <td>
+                                        {{-- <a href="{{ route('lampnego.create', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
+                                            class="btn btn-primary">Create</a> --}}
+
+                                        <a href="{{ route('lampnego.show', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                             class="btn btn-primary">Detail</a>
 
 
@@ -537,22 +550,104 @@
                     </div>
                 </div>
 
+                <div class="card">
+                    <div class="card-header">
+                        Dokumen Kelengkapan
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama Dokumen</th>
+                                    <th>keterangan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($jenisDokumenKelengkapans as $jenisDokumenKelengkapan)
+                                    <tr>
+                                        <td>{{ $jenisDokumenKelengkapan['id_jenis'] }}</td>
+                                        <td>{{ $jenisDokumenKelengkapan['nama_dokumen'] }}</td>
+                                        <td>{{ $jenisDokumenKelengkapan['keterangan'] }}</td>
+
+                                        @if ($jenisDokumenKelengkapan['dokumen_sistem'] == 'ya')
+                                            @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
+                                                @if (isset($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['file_upload']))
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col">
+
+                                                                <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 1]) }}"
+                                                                    class="btn btn-primary">Detail</a>
+                                                            </div>
+                                                            <div class="col">
+                                                                <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 2]) }}"
+                                                                    class="btn btn-primary">Download</a>
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        Dokumen belum di tandatangani
+                                                    </td>
+                                                @endif
+                                            @else
+                                                <td>
+
+                                                    Isian Dokumen Belum diisi
+                                                </td>
+                                            @endif
+                                        @else
+                                            @if (count($jenisDokumenKelengkapan['kelengkapan_dokumen_vendors']) > 0)
+                                                <td>
+                                                    <div class="row">
+
+                                                        <div class="col">
+
+                                                            <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 1]) }}"
+                                                                class="btn btn-primary">Detail</a>
+                                                        </div>
+                                                        <div class="col">
+                                                            <a href="{{ route('vendor.kelengkapan-dokumen.pdf', ['id' => $jenisDokumenKelengkapan['kelengkapan_dokumen_vendors'][0]['id_dokumen'], 'jenis' => 2]) }}"
+                                                                class="btn btn-primary">Download</a>
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            @else
+                                                <td>
+                                                    Belum di Upload
+                                                </td>
+                                            @endif
+                                        @endif
+
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
 
                 <div class="card">
                     <div class="card-header">
-                  Dengan ini dokumen dokumen akan disetujui dan kontrak berjalan
+                        Dengan ini, dokumen akan dikirim ke vendor setelah mendapatkan tanda tangan dan verifikasi dari
+                        pengadaan.
                     </div>
                     <div class="card-body">
                         <div class="btn-group me-2" role="group" aria-label="Tombol gabungan">
                             <a href="{{ route('tandatangan.manager') }}" class="btn btn-info">Kembali</a>
-                            <form
-                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Kontrak Kerja Berjalan', 'routeName' => 'tandatangan.manager']) }}"
+                            {{-- <form
+                                action="{{ route('changestatus', ['id' => $kontrakkerja->id_kontrakkerja, 'status' => 'Validasi Dokumen Pengadaan Tahap 2', 'routeName' => 'negoharga']) }}"
                                 method="post">
                                 @csrf
                                 <button type="submit" class="btn btn-primary">Kirim</button>
-                            </form>
+                            </form> --}}
                         </div>
                     </div>
+
                 </div>
 
 

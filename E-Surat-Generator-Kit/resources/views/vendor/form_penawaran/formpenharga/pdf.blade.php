@@ -87,7 +87,7 @@
             <table style="float: left; width: 45%;">
                 <tr>
                     <td>Nomor:</td>
-                    <td>{{ $nomor }}</td>
+                    <td> {{ $nomor }}</td>
                 </tr>
                 <tr>
                     <td>Lampiran:</td>
@@ -122,30 +122,30 @@
                 <tr>
                     <td>Nama</td>
                     <td>:</td>
-                    <td>{{ $nama }}</td>
+                    <td style="border-bottom: 2px dotted black;">{{ $nama }}</td>
                 </tr>
                 <tr>
                     <td>Jabatan</td>
                     <td>:</td>
-                    <td>{{ $jabatan }}</td>
+                    <td style="border-bottom: 2px dotted black;">{{ $jabatan }}</td>
                 </tr>
                 <tr>
                     <td>Bertindak untuk
                         dan atas nama
                     </td>
                     <td>:</td>
-                    <td>{{ $vendorperusahaan }}</td>
+                    <td style="border-bottom: 2px dotted black;">{{ $vendorperusahaan }}</td>
                 </tr>
                
                 <tr>
                     <td>Alamat</td>
                     <td>:</td>
-                    <td>{{ $alamat }}</td>
+                    <td style="border-bottom: 2px dotted black;">{{ $alamat }}</td>
                 </tr>
                 <tr>
                     <td>No. Telepon/Fax</td>
                     <td>:</td>
-                    <td>{{ $telepon }}</td>
+                    <td style="border-bottom: 2px dotted black;">{{ $telepon }}</td>
                 </tr>
                 <tr>
                     <td>Email</td>

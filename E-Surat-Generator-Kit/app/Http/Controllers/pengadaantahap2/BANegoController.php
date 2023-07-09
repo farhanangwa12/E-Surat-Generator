@@ -72,7 +72,7 @@ class BANegoController extends Controller
         }])->first();
         
    
-        $penawaran_negosiasi = $lampirannego->total_harga;
+        $penawaran_negosiasi = isset($lampirannego->total_harga) ? $lampirannego->total_harga : 0;
 
 
         $banegotanggal = PembuatanSuratKontrak::where('id_kontrakkerja', $kontrakkerja->id_kontrakkerja)->where('nama_surat', 'nomor_ba_negosiasi')->first()->tanggal_pembuatan;

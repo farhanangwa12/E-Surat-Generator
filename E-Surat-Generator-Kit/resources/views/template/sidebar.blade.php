@@ -134,10 +134,14 @@
 
 
                  <li class="sidebar-item {{ Request::is('manager/tandatangan') ? 'active' : '' }}">
-                     <a class="sidebar-link" href="{{ route('tandatangan.manager') }}">
+                     {{-- <a class="sidebar-link" href="{{ route('tandatangan.manager') }}">
                          <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">
                              Tanda Tangan Kontrak</span>
-                     </a>
+                     </a> --}}
+                     <a class="sidebar-link" href="{{ route('tandatangan.manager') }}">
+                        <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">
+                             Kontrak Kerja</span>
+                    </a>
                  </li>
 
 
@@ -184,12 +188,12 @@
                      </a>
                  </li>
 
-                 <li class="sidebar-item {{ Request::is('vendor/vendor/tandatangan') ? 'active' : '' }}">
+                 {{-- <li class="sidebar-item {{ Request::is('vendor/vendor/tandatangan') ? 'active' : '' }}">
                      <a class="sidebar-link" href="{{ route('tandatangan') }}">
                          <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">
                              Tanda Tangan</span>
                      </a>
-                 </li>
+                 </li> --}}
                  <li class="sidebar-item {{ Request::is('pengadaan/dashboard') ? 'active' : '' }}">
                      <a class="sidebar-link" href="{{ route('vendor.kontrakkerja') }}">
                          <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">

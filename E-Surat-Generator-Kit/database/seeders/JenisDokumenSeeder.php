@@ -65,11 +65,11 @@ class JenisDokumenSeeder extends Seeder
             '],
             ['nama_dokumen' => 'Surat Pernyataan Penerapan K3L
             '],
-            [
-                'nama_dokumen' => 'Neraca/Laporan keuangan Perusahaan terakhir yang memuat laporan laba rugi
-            ',
-                'dokumen_sistem' => 'ya'
-            ],
+            // [
+            //     'nama_dokumen' => 'Neraca/Laporan keuangan Perusahaan terakhir yang memuat laporan laba rugi
+            // ',
+            //     'dokumen_sistem' => 'ya'
+            // ],
             ['nama_dokumen' => 'Tanda Terima penyampaian Surat Pajak Tahunan (SPT) Pajak Penghasilan (PPh) tahun terkahir, dan Surat Setoran Pajak (SSP) PPh,    Pasal 21 atau Pajak Pertambahan Nilai (PPN) sekurang-kurangnya 3 (tiga) bulan terakhir
             '],
             ['nama_dokumen' => 'Dokumen penunjang lainnya 

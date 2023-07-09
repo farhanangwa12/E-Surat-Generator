@@ -58,41 +58,55 @@ class LampiranPenawaranHargaController extends Controller
             ])->save();
         }
 
-        $this->getBOQData($id);
-        $lampiranDokumen =  Lampiranpenawaranharga::where('id_dokumen', $kelengkapan->id_dokumen)->first();
+
+        $kelengkapan1 = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->where('id_jenis_dokumen', $jenisDokumen->id_jenis)->with('lampiranPenawaranHargas')->first();
+
+        // $this->getBOQData($id);
+  
+        $boq = BOQ::where('id_kontrakkerja', $id)->with('barJasBOQs')->first()->toArray();
+        $barjasboqdata = $boq['bar_jas_b_o_qs'];
+  
+        $lampiranPenawaran2 = Lampiranpenawaranharga::find($kelengkapan1->lampiranPenawaranHargas->id);
+        $lampiranPenawaran2->total_jumlah = $boq['total_jumlah'];
+        $lampiranPenawaran2->dibulatkan = $boq['dibulatkan'];
+        $lampiranPenawaran2->ppn11 = $boq['ppn11'];
+        $lampiranPenawaran2->total_harga = $boq['total_harga'];
+        $lampiranPenawaran2->datalamp = $barjasboqdata;
+        $lampiranPenawaran2->save();
+       
 
 
 
 
-        $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->with('barjas')->get()->toArray();
+        // $jenis_kontrak = JenisKontrak::where('id_kontrak', $id)->with('barjas')->get()->toArray();
 
-        $barjaslamp = $lampiranDokumen->datalamp;
-
-
+        // $barjaslamp = $lampiranDokumen->datalamp;
 
 
 
 
-        $no = 0;
-        foreach ($jenis_kontrak as $jen) {
-            foreach ($jen['barjas'] as $barjas) {
-                $barjaslamp[$no]['id_barjas'] = $barjas['id'];
-                if (!array_key_exists('harga_satuan', $barjaslamp[$no])) {
-                    $barjaslamp[$no]['harga_satuan'] = 0;
-                }
-                if (!array_key_exists('jumlah', $barjaslamp[$no])) {
-                    $barjaslamp[$no]['jumlah'] = 0;
-                }
-                $no++;
-            }
-        }
+
+
+        // $no = 0;
+        // foreach ($jenis_kontrak as $jen) {
+        //     foreach ($jen['barjas'] as $barjas) {
+        //         $barjaslamp[$no]['id_barjas'] = $barjas['id'];
+        //         if (!array_key_exists('harga_satuan', $barjaslamp[$no])) {
+        //             $barjaslamp[$no]['harga_satuan'] = 0;
+        //         }
+        //         if (!array_key_exists('jumlah', $barjaslamp[$no])) {
+        //             $barjaslamp[$no]['jumlah'] = 0;
+        //         }
+        //         $no++;
+        //     }
+        // }
 
 
 
-        $lampiranDokumen->datalamp = $barjaslamp;
-        $lampiranDokumen->save();
-
-        return $lampiranDokumen;
+        // $lampiranDokumen->datalamp = $barjaslamp;
+        // $lampiranDokumen->save();
+        // dd($lampiranDokumen);
+        return $lampiranPenawaran2;
     }
 
     public function getBOQData($id)
@@ -100,7 +114,7 @@ class LampiranPenawaranHargaController extends Controller
         $kelengkapandokumenModel = KelengkapanDokumenVendor::with(['lampiranPenawaranHargas', 'jenisDokumen' => function ($query) {
             $query->where('no_dokumen', 'harga_nilai_penawaran_');
         }])->where('id_kontrakkerja', $id)->first();
-
+        dd($kelengkapandokumenModel);
         $boq = BOQ::where('id_kontrakkerja', $id)->with('barJasBOQs')->first()->toArray();
         $barjasboqdata = $boq['bar_jas_b_o_qs'];
 
@@ -119,7 +133,7 @@ class LampiranPenawaranHargaController extends Controller
         //         'jumlah' => $barjasboq['jumlah']
         //     ];
         // }
-
+        dd($kelengkapandokumenModel);
         $lampiranPenawaran2 = Lampiranpenawaranharga::find($kelengkapandokumenModel->lampiranPenawaranHargas->id);
         $lampiranPenawaran2->total_jumlah = $boq['total_jumlah'];
         $lampiranPenawaran2->dibulatkan = $boq['dibulatkan'];
@@ -413,7 +427,7 @@ class LampiranPenawaranHargaController extends Controller
         $pdf->setOption(['isRemoteEnabled' => true]);
 
         $namefile = 'LampiranPenawaran_' . time() . '.pdf';
-       
+
 
         if ($jenis == 1) {
             // Menampilkan output di browser

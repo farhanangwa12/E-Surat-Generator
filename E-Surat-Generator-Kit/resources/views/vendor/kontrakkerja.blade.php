@@ -38,7 +38,7 @@
                                         <td>{{ date('d/m/Y', strtotime($item->tanggal_pekerjaan)) . ' - ' . date('d/m/Y', strtotime($item->tanggal_akhir_pekerjaan)) }}
                                         </td>
                                         <td>{{ $item->status }}</td>
-                                        <td> <a href="{{ route('vendor.kontrakkerja.detail', ['id' => $item->id_kontrakkerja]) }}"
+                                        <td> <a href="{{ route('vendor.kontrakkerja.detail.tandatangan', ['id' => $item->id_kontrakkerja]) }}"
                                                 class="btn btn-warning">Dokumen Lanjutan</a>
                                         </td>
 

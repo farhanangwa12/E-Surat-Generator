@@ -45,7 +45,9 @@ class VendorSeeder extends Seeder
             'telepon' => '(021) 1234567',
             'website' => 'http://www.ptabc.com',
             'faksimili' => '(021) 1234568',
-            'email_perusahaan' => 'info@ptabc.com'
+            'email_perusahaan' => 'info@ptabc.com',
+            'pengawas_pekerjaan' => 'Direksi Pengecheckan',
+            'pengawas_k3' => 'Nama Pengawas K3'
         ]);
     }
 }

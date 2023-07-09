@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class DataVendor extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id';
+
     protected $fillable = [
-        'id_kontrakkerja',
+
         'id_vendor',
         'penyedia',
         'direktur',
@@ -22,6 +24,8 @@ class DataVendor extends Model
         'website',
         'faksimili',
         'email_perusahaan',
+        'pengawas_pekerjaan',
+        'pengawas_k3'
     ];
 
     public function kontrakKerja()
