@@ -22,34 +22,36 @@ class VendorKontrakKerjaController extends Controller
         ];
         $auth = Auth()->user();
 
-        $kontrak = KontrakKerja::whereIn('status', $status)->where('id_vendor',$auth->vendor_id )->get();
-     
+        $kontrak = KontrakKerja::whereIn('status', $status)->where('id_vendor', $auth->vendor_id)->get();
+
         return view('vendor.kontrakkerja', compact('kontrak'));
     }
     public function detail($id)
     {
 
         $kontrakkerja = KontrakKerja::find($id);
-      
+
         // // Path File
         // $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
 
         // $spreadsheet = IOFactory::load($path);
         // $worksheet = $spreadsheet->getActiveSheet();
-        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get()->toArray();
-        // dd($jenisDokumenKelengkapans[0]['kelengkapan_dokumen_vendors'][0]['id_dokumen']);
-        $formpenawaran = Formpenawaranharga::with(['dokumen'=> function ($query) use ($id){
-            $query->where('id_kontrakkerja', $id);
 
-        }] )->first();
+        $jenisDokumenKelengkapans =   JenisDokumenKelengkapan::with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->get()->toArray();
+
+        // dd($jenisDokumenKelengkapans[0]['kelengkapan_dokumen_vendors'][0]['id_dokumen']);
+        $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->first();
 
         $statusformpenawaran = false;
         if (isset($formpenawaran) && $formpenawaran->kopsurat) {
-           $statusformpenawaran = true;
-          
+            $statusformpenawaran = true;
         }
-        
-       
+
+
         return view('vendor.detailkontrak', compact('kontrakkerja', 'id', 'jenisDokumenKelengkapans', 'statusformpenawaran'));
     }
 
@@ -58,16 +60,17 @@ class VendorKontrakKerjaController extends Controller
     public function detailttd($id)
     {
         $kontrakkerja = KontrakKerja::find($id);
-        
+
         // // Path File
         // $path = storage_path('app/public/dokumenpenawaran/' . $kontrakkerja->filemaster);
 
         // $spreadsheet = IOFactory::load($path);
         // $worksheet = $spreadsheet->getActiveSheet();
-        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get()->toArray();
+        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->get()->toArray();
+
         // dd($jenisDokumenKelengkapans[0]['kelengkapan_dokumen_vendors'][0]['id_dokumen']);
-      
-  
         return view('vendor.detailttd', compact('kontrakkerja', 'id', 'jenisDokumenKelengkapans'));
     }
 

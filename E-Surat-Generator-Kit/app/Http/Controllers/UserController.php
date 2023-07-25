@@ -65,4 +65,13 @@ class UserController extends Controller
         return redirect()->route('users')->with('success', 'User deleted successfully');
       
     }
+
+    public function resetpass($id)
+    {
+        $user = User::find($id);
+        $user->password = bcrypt("password");
+        $user->save();
+        return redirect()->route('users')->with('success', 'Password tereset ke "password"');
+      
+    }
 }

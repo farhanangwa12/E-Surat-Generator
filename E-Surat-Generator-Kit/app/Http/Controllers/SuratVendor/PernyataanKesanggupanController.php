@@ -146,10 +146,10 @@ class PernyataanKesanggupanController extends Controller
     public function pdf($id, $jenis)
     {
         $penawaran = $this->refresh($id);
-        $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
-            $query->where('id_kontrakkerja', $id);
-        }])->first();
-        $kopsurat = asset('/storage/' . $formpenawaran->kopsuratpath . '/' . $formpenawaran->kopsurat);
+        $formPenawaran = app(FormPenawaranHargaController::class);
+        $formpenawaranData = $formPenawaran->refresh($id);
+
+        $kopsurat = asset('/storage/' . $formpenawaranData->kopsuratpath . '/' . $formpenawaranData->kopsurat);
 
 
         // Informasi RKS
@@ -164,14 +164,14 @@ class PernyataanKesanggupanController extends Controller
             'nama_perusahaan' =>  $kontrakkerja->vendor->penyedia,
             // 'atas_nama' =>  $kontrakkerja->vendor->penyedia,
             'alamat_perusahaan' =>  $kontrakkerja->vendor->alamat_jalan . ', ' . $kontrakkerja->vendor->alamat_kota . ', ' . $kontrakkerja->vendor->alamat_provinsi,
-            'telepon_fax' =>  $kontrakkerja->vendor->telepon_fax,
+            'telepon_fax' =>  $kontrakkerja->vendor->telepon . ' / ' . $kontrakkerja->vendor->faksimili,
             'email_perusahaan' =>  $kontrakkerja->vendor->email_perusahaan,
             'nama_pekerjaan' => strtoupper(KontrakKerja::find($id)->nama_kontrak),
             'nomor_rks' => $pembuatansuratkontrak->no_surat,
             'tanggal_rks' => Carbon::parse($pembuatansuratkontrak->tanggal_pembuatan)->locale('id')->isoFormat('D MMMM YYYY'),
             'nama_perusahaan_terang' => isset($kontrakkerja->vendor->penyedia) ? $kontrakkerja->vendor->penyedia  : 'PT./CV ........ ',
-            'kota_surat' => $formpenawaran->nama_kota,
-            'tanggal_surat' => Carbon::parse($formpenawaran->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
+            'kota_surat' => $formpenawaranData->nama_kota,
+            'tanggal_surat' => Carbon::parse($formpenawaranData->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
         ];
 
         // Generate the PDF using laravel-dompdf
@@ -180,11 +180,11 @@ class PernyataanKesanggupanController extends Controller
         $namefile = 'Pernyataan_kesanggupan' . time() . '.pdf';
 
         if ($jenis == 1) {
-      
+
             // Menampilkan output di browser
             return $pdf->stream($namefile);
         } else if ($jenis == 2) {
-        
+
 
             // Download file
             return $pdf->download($namefile);

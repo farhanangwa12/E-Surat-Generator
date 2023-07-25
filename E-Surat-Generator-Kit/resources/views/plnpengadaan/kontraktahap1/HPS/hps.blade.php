@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>HPS</title>
+    <title>HPS </title>
     <style>
         /* CSS untuk header */
         header {

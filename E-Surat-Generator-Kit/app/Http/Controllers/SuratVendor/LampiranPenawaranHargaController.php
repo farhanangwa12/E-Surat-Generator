@@ -114,7 +114,7 @@ class LampiranPenawaranHargaController extends Controller
         $kelengkapandokumenModel = KelengkapanDokumenVendor::with(['lampiranPenawaranHargas', 'jenisDokumen' => function ($query) {
             $query->where('no_dokumen', 'harga_nilai_penawaran_');
         }])->where('id_kontrakkerja', $id)->first();
-        dd($kelengkapandokumenModel);
+        // dd($kelengkapandokumenModel);
         $boq = BOQ::where('id_kontrakkerja', $id)->with('barJasBOQs')->first()->toArray();
         $barjasboqdata = $boq['bar_jas_b_o_qs'];
 
@@ -403,15 +403,22 @@ class LampiranPenawaranHargaController extends Controller
 
 
         // Form Penawaran 
-        $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
-            $query->where('id_kontrakkerja', $id);
-        }])->first();
-        $kopsurat = asset('/storage/' . $formpenawaran->kopsuratpath . '/' . $formpenawaran->kopsurat);
+        // $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
+        //     $query->where('id_kontrakkerja', $id);
+        // }])->first();
+        // $kelengkapanDokumenModel = KelengkapanDokumenVendor::where('id_kontrakkerja', $id)->with(['formPenawaranHarga', 'jenisDokumen' => function ($query) use ($id){
+        //     $query->where('no_dokumen', "nomor_tanggal_surat_penawaran_");
+        // }])->first();
+        $formPenawaran = app(FormPenawaranHargaController::class);
+        $formpenawaranData = $formPenawaran->refresh($id);
+        
+        $kopsurat = asset('/storage/' . $formpenawaranData->kopsuratpath . '/' . $formpenawaranData->kopsurat);
+       
         $data2 = [
             'kopsurat' => $kopsurat,
             'nama_pekerjaan' => $nama_pekerjaan,
-            'kota_surat' => $formpenawaran->nama_kota,
-            'tanggal_surat' =>  Carbon::parse($formpenawaran->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
+            'kota_surat' => $formpenawaranData->nama_kota,
+            'tanggal_surat' =>  Carbon::parse($formpenawaranData->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
             'penyedia' => $vendor->penyedia,
             'nama_direktur' => $vendor->direktur,
             'jumlah_harga' => number_format(str_replace('.', '', $lampiranPenawaran->total_jumlah), 0, ',', '.'),

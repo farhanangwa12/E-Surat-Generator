@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\SuratVendor;
 
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Models\DokumenVendor\Datapengalaman;
 use App\Models\DokumenVendor\Formpenawaranharga as DokumenVendorFormpenawaranharga;
@@ -93,7 +94,8 @@ class DataPengalamanController extends Controller
             'no_tanggal_kontrak' => 'required',
             'nilai' => 'required',
             'kontrak' => 'required',
-            'ba_serah_terima' => 'required',
+            'ba_serah_terima' => 'required:mimes:pdf',
+
         ]);
 
         // Simpan data ke model Datapengalaman
@@ -108,8 +110,18 @@ class DataPengalamanController extends Controller
         $subdatapengalaman->no_tanggal_kontrak = $request->no_tanggal_kontrak;
         $subdatapengalaman->nilai = $request->nilai;
         $subdatapengalaman->kontrak = $request->kontrak;
-        $subdatapengalaman->ba_serah_terima = $request->ba_serah_terima;
-        // Simpan data lainnya yang diperlukan
+
+        if ($request->hasFile('ba_serah_terima')) {
+            $file = $request->file('ba_serah_terima');
+            $extension = $file->getClientOriginalExtension();
+            $fileName = Str::uuid() . '.' . $extension;
+            $path = $file->storeAs('public/datapengalaman', $fileName);
+
+            // Simpan path baru ke database
+            // Misalnya: $pengalaman->ba_serah_terima_path = $path;
+            $subdatapengalaman->ba_serah_terima = $fileName;
+        }
+
 
         // Simpan data ke database
         $subdatapengalaman->save();
@@ -139,7 +151,7 @@ class DataPengalamanController extends Controller
             'no_tanggal_kontrak' => 'required',
             'nilai' => 'required',
             'kontrak' => 'required',
-            'ba_serah_terima' => 'required',
+
         ]);
 
         // Simpan data ke model Datapengalaman
@@ -154,8 +166,20 @@ class DataPengalamanController extends Controller
         $subdatapengalaman->no_tanggal_kontrak = $request->no_tanggal_kontrak;
         $subdatapengalaman->nilai = $request->nilai;
         $subdatapengalaman->kontrak = $request->kontrak;
-        $subdatapengalaman->ba_serah_terima = $request->ba_serah_terima;
-        // Simpan data lainnya yang diperlukan
+        if ($request->hasFile('ba_serah_terima')) {
+            if ($subdatapengalaman->ba_serah_terima) {
+                Storage::delete('public/datapengalaman/' . $subdatapengalaman->ba_serah_terima);
+            }
+            $file = $request->file('ba_serah_terima');
+            $extension = $file->getClientOriginalExtension();
+            $fileName = Str::uuid() . '.' . $extension;
+            $path = $file->storeAs('public/datapengalaman', $fileName);
+
+            // Simpan path baru ke database
+            // Misalnya: $pengalaman->ba_serah_terima_path = $path;
+            $subdatapengalaman->ba_serah_terima = $fileName;
+        }
+
 
         // Simpan data ke database
         $subdatapengalaman->save();
@@ -242,25 +266,25 @@ class DataPengalamanController extends Controller
         $datapengalaman = Subdatapengalaman::where('id_datapengalaman', $kelengkapan->id)->get();
 
 
-        $formpenawaran = DokumenVendorFormpenawaranharga::with(['dokumen' => function ($query) use ($id) {
-            $query->where('id_kontrakkerja', $id);
-        }])->first();
-        $kopsurat = asset('/storage/' . $formpenawaran->kopsuratpath . '/' . $formpenawaran->kopsurat);
+        $formPenawaran = app(FormPenawaranHargaController::class);
+        $formpenawaranData = $formPenawaran->refresh($id);
 
+        $kopsurat = asset('/storage/' . $formpenawaranData->kopsuratpath . '/' . $formpenawaranData->kopsurat);
 
+    
         // Informasi RKS
         $pembuatansuratkontrak = PembuatanSuratKontrak::where('id_kontrakkerja', $id)->where('nama_surat', 'nomor_rks')->first();
-    
+
         // Informasi Kontrakkerja
         $kontrakkerja = KontrakKerja::find($id)->with('vendor')->first();
         $data = [
             'kopsurat' => $kopsurat,
-            'nama' =>$kontrakkerja->vendor->direktur,
+            'nama' => $kontrakkerja->vendor->direktur,
             'jabatan' => 'Direktur',
             'nama_perusahaan' =>  $kontrakkerja->vendor->penyedia,
 
-            'kota_surat' => $formpenawaran->nama_kota,
-            'tanggal_surat' => Carbon::parse($formpenawaran->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
+            'kota_surat' => $formpenawaranData->nama_kota,
+            'tanggal_surat' => Carbon::parse($formpenawaranData->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
 
             'datapengalaman' => $datapengalaman
         ];
@@ -273,11 +297,11 @@ class DataPengalamanController extends Controller
         $namefile = 'Data Pengalaman' . time() . '.pdf';
 
         if ($jenis == 1) {
-      
+
             // Menampilkan output di browser
             return $pdf->stream($namefile);
         } else if ($jenis == 2) {
-        
+
 
             // Download file
             return $pdf->download($namefile);

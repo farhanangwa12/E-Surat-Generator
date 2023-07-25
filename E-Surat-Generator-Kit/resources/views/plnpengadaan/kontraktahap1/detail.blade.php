@@ -300,14 +300,14 @@
                                 @endphp
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
-                                    <td>Tanggal RKS</td>
+                                    <td>Tanggal RKS (Rencana Kerja Syarat)</td>
                                     <td>{{ $kontrak->tanggal_rks }}</td>
                                     <td>{{ $kontrak->nomor_rks }}</td>
 
                                 </tr>
                                 <tr>
                                     <th scope="col">{{ $no++ }}</th>
-                                    <td>Tanggal HPS</td>
+                                    <td>Tanggal HPS (Harga Perkiraan Sendiri)</td>
                                     <td>{{ $kontrak->tanggal_hps }}</td>
                                     <td>{{ $kontrak->nomor_hps }}</td>
 
@@ -432,7 +432,7 @@
                     <div class="card">
                         <div class="card-header">
                             Dokumen Pengadaan
-
+                           
 
                         </div>
                         <div class="card-body">
@@ -463,7 +463,7 @@
                                         @endphp
                                         <tr>
                                             <th scope="col">{{ $no++ }}</th>
-                                            <td>HPS</td>
+                                            <td>HPS (Harga Perkiraan Sendiri)</td>
                                             <td>
                                                 <a href="{{ route('pengajuankontrak.hps.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
                                                     class="btn btn-primary">Isi HPS</a>
@@ -490,7 +490,7 @@
                                         </tr>
                                         <tr>
                                             <th scope="col">{{ $no++ }}</th>
-                                            <td>RKS</td>
+                                            <td>RKS (Rencana Kerja Syarat)</td>
                                             <td><a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 1]) }}"
                                                     class="btn btn-primary">Preview</a>
                                                 <a href="{{ route('pengajuankontrak.rks', ['id' => $kontrakkerja->id_kontrakkerja, 'isDownload' => 2]) }}"

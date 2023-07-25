@@ -324,7 +324,7 @@
                         <div class="card-body">
 
                             <div class="form-group mb-3">
-                                <label for="rks">Speck/RKS</label>
+                                <label for="rks">Speck/RKS (Rencana Kerja Syarat)</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_rks" class="form-control"
                                             id="nomor_rks" placeholder="Nomor RKS" readonly></div>
@@ -337,7 +337,7 @@
 
                             </div>
                             <div class="form-group mb-3">
-                                <label for="hps">HPS</label>
+                                <label for="hps">HPS (Harga Perkiraan Sendiri)</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_hps" class="form-control"
                                             id="nomor_hps" placeholder="Nomor HPS" readonly></div>
@@ -353,7 +353,7 @@
 
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_pakta_pejabat"
-                                            class="form-control" id="nomor_pakta_pejabat" placeholder="Nomor HPS"
+                                            class="form-control" id="nomor_pakta_pejabat" placeholder="Nomor PAkta Pejabat"
                                             readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_pakta_pejabat"
@@ -366,7 +366,7 @@
                                 <label for="pakta_pengguna">PAKTA PENGGUNA</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_pakta_pengguna"
-                                            class="form-control" id="nomor_pakta_pengguna" placeholder="Nomor HPS"
+                                            class="form-control" id="nomor_pakta_pengguna" placeholder="Nomor Pakta Pengguna"
                                             readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_pakta_pengguna"
@@ -402,7 +402,7 @@
                                 <label for="ba_buka">BA Buka</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_ba_buka" class="form-control"
-                                            id="nomor_ba_buka" placeholder="Nomor HPS" readonly>
+                                            id="nomor_ba_buka" placeholder="Nomor BA Buka" readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_ba_buka"
                                             value="{{ $pembuatansurat->nomor_ba_buka->tanggal_surat }}"
@@ -414,7 +414,7 @@
                                 <label for="ba_evaluasi">BA Evaluasi</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_ba_evaluasi"
-                                            class="form-control" id="nomor_ba_evaluasi" placeholder="Nomor HPS" readonly>
+                                            class="form-control" id="nomor_ba_evaluasi" placeholder="Nomor BA Evaluasi" readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_ba_evaluasi"
                                             value="{{ $pembuatansurat->nomor_ba_evaluasi->tanggal_surat }}"
@@ -429,7 +429,7 @@
 
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_ba_negosiasi"
-                                            class="form-control" id="nomor_ba_negosiasi" placeholder="Nomor HPS"
+                                            class="form-control" id="nomor_ba_negosiasi" placeholder="Nomor BA Negosiasi"
                                             readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_ba_negosiasi"
@@ -444,7 +444,7 @@
                                 <div class="row">
 
                                     <div class="col"><input type="text" name="nomor_ba_hasil_pl"
-                                            class="form-control" id="nomor_ba_hasil_pl" placeholder="Nomor HPS" readonly>
+                                            class="form-control" id="nomor_ba_hasil_pl" placeholder="Nomor BA Hasil PL" readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_ba_hasil_pl"
                                             value="{{ $pembuatansurat->nomor_ba_hasil_pl->tanggal_surat }}"
@@ -459,7 +459,7 @@
 
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_spk" class="form-control"
-                                            id="nomor_spk" placeholder="Nomor HPS" readonly>
+                                            id="nomor_spk" placeholder="Nomor SPK" readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_spk" class="form-control"
                                             value="{{ $pembuatansurat->nomor_spk->tanggal_surat }}" id="tanggal_spk">

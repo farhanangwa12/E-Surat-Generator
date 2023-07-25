@@ -22,10 +22,10 @@
 
                     </div>
                 </div>
-                {{-- Surat BOQ --}}
+                {{-- Surat BOQ (Bill Of Quantity) --}}
                 <div class="card">
                     <div class="card-header">
-                        BOQ
+                        BOQ (Bill Of Quantity)
                     </div>
                     <div class="card-body  d-flex justify-content-center align-items-center">
                         <iframe src="{{ route('pengajuankontrak.boq.detail', ['id' => $id, 'isDownload' => 1]) }}"
@@ -33,11 +33,11 @@
 
                     </div>
                 </div>
-                {{-- Surat RKS --}}
+                {{-- Surat RKS (Rencana Kerja Syarat) --}}
                 <div class="card">
 
                     <div class="card-header">
-                        RKS
+                        RKS (Rencana Kerja Syarat)
 
                     </div>
                     <div class="card-body  d-flex justify-content-center align-items-center">
@@ -86,10 +86,10 @@
                                     </tr> --}}
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td>BOQ</td>
+                                        <td>BOQ (Bill Of Quantity)</td>
                                         <td>
                                             {{-- <a href="{{ route('boqtandatanganvendor', ['id' => $kontrakkerja->id_kontrakkerja]) }}"
-                                                class="btn btn-primary">Tanda Tangan BOQ</a> --}}
+                                                class="btn btn-primary">Tanda Tangan BOQ (Bill Of Quantity)</a> --}}
                                             <a class="btn btn-primary"
                                                 href="{{ route('pengajuankontrak.boq.isi', ['id' => $kontrakkerja->id_kontrakkerja]) }}">Isi
                                                 BOQ</a>

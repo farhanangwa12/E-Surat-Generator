@@ -1,6 +1,6 @@
 @extends('template.app')
 
-@section('title', 'HPS')
+@section('title', 'HPS (Harga Perkiraan Sendiri)')
 
 @section('content')
 

@@ -18,10 +18,10 @@
 
             </div>
         </div>
-        {{-- Surat BOQ --}}
+        {{-- Surat BOQ (Bill Of Quantity) --}}
         <div class="card">
             <div class="card-header">
-                BOQ
+                BOQ (Bill Of Quantity)
             </div>
             <div class="card-body  d-flex justify-content-center align-items-center">
                 <iframe src="{{ route('pengajuankontrak.boq.detail', ['id' => $id, 'isDownload' => 1]) }}" width="80%"
@@ -29,11 +29,11 @@
 
             </div>
         </div>
-        {{-- Surat RKS --}}
+        {{-- Surat RKS (Rencana Kerja Syarat) --}}
         <div class="card">
 
             <div class="card-header">
-                RKS
+                RKS (Rencana Kerja Syarat)
 
             </div>
             <div class="card-body  d-flex justify-content-center align-items-center">
@@ -56,7 +56,7 @@
 
             </div>
         </div>
-        {{-- Surat RKS --}}
+        {{-- Surat Lamp Nego --}}
         <div class="card">
 
             <div class="card-header">

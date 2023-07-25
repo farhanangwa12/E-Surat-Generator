@@ -1386,7 +1386,9 @@ class KontrakKerjaController extends Controller
 
         ];
         $kontrak = json_decode(json_encode($kontrak));
-        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get()->toArray();
+        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->get()->toArray();
         // dd($jenisDokumenKelengkapans[0]['kelengkapan_dokumen_vendors'][0]['id_dokumen']);
 
         return  view('plnpengadaan.kontraktahap2.detail', compact('kontrakkerja', 'kontrak', 'jenisDokumenKelengkapans'));
@@ -1568,9 +1570,9 @@ class KontrakKerjaController extends Controller
 
         ];
         $kontrak = json_decode(json_encode($kontrak));
-
-        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get()->toArray();
-
+        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->get()->toArray();
         return  view('plnpengadaan.tandatanganpengadaan.detail', compact('kontrakkerja', 'kontrak', 'jenisDokumenKelengkapans'));
     }
 
@@ -1685,9 +1687,12 @@ class KontrakKerjaController extends Controller
         ];
         $kontrak = json_decode(json_encode($kontrak));
 
-        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with('kelengkapanDokumenVendors')->get()->toArray();
+        $jenisDokumenKelengkapans =  JenisDokumenKelengkapan::with(['kelengkapanDokumenVendors' => function ($query) use ($id) {
+            $query->where('id_kontrakkerja', $id);
+        }])->get()->toArray();
+    
 
-
+    
         return view('plnmanager.detail', compact( 'kontrakkerja', 'kontrak', 'jenisDokumenKelengkapans'));
     }
 }

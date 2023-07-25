@@ -45,7 +45,7 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('vendor.datapengalaman.store', $id) }}" method="POST">
+            <form action="{{ route('vendor.datapengalaman.store', $id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3">
@@ -90,7 +90,8 @@
 
                 <div class="mb-3">
                     <label for="ba_serah_terima" class="form-label">BA Serah Terima:</label>
-                    <input type="text" class="form-control" id="ba_serah_terima" name="ba_serah_terima">
+                    <input type="file" name="ba_serah_terima" id="ba_serah_terima" class="form-control"  accept=".pdf">
+                    {{-- <input type="text" class="form-control" id="ba_serah_terima" name="ba_serah_terima"> --}}
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Simpan</button>

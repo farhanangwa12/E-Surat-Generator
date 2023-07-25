@@ -62,7 +62,7 @@
                                             <input class="form-control form-control-lg" type="password" name="password"
                                                 placeholder="Enter your password" />
                                             <small>
-                                                <a href="index.html">Lupa Password ?</a>
+                                                {{-- <a href="index.html">Lupa Password ?</a> --}}
                                             </small>
                                         </div>
                                         @error('password')

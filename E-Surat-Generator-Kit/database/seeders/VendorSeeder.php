@@ -35,19 +35,19 @@ class VendorSeeder extends Seeder
         //     Vendor::create($vendor);
         // }
         Vendor::create([
-            'penyedia' => 'PT. ABC',
-            'direktur' => 'John Doe',
-            'alamat_jalan' => 'Jl. Sudirman No. 1',
-            'alamat_kota' => 'Jakarta',
-            'alamat_provinsi' => 'DKI Jakarta',
-            'bank' => 'Bank XYZ',
-            'nomor_rek' => '1234567890',
+            'penyedia' => 'PT. MULTI INAR BANGUNAN',
+            'direktur' => 'BUDI SUSANTI',
+            'alamat_jalan' => 'Jalan Simpang kepuh No 199',
+            'alamat_kota' => 'Surabaya',
+            'alamat_provinsi' => 'Jawa Timur',
+            'bank' => 'BANK MANDIRI',
+            'nomor_rek' => '14211111111',
             'telepon' => '(021) 1234567',
             'website' => 'http://www.ptabc.com',
             'faksimili' => '(021) 1234568',
             'email_perusahaan' => 'info@ptabc.com',
-            'pengawas_pekerjaan' => 'Direksi Pengecheckan',
-            'pengawas_k3' => 'Nama Pengawas K3'
+            'pengawas_pekerjaan' => 'Pengawas Pekerjaan',
+            'pengawas_k3' => 'Pengawas K3'
         ]);
     }
 }

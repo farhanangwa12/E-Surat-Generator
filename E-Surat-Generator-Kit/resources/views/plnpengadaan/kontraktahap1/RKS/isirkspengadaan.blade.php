@@ -373,7 +373,7 @@
 
                             </div>
                             <div class="form-group mb-3">
-                                <label for="hps">HPS</label>
+                                <label for="hps">HPS (Harga Perkiraan Sendiri)</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_hps" class="form-control"
                                             id="nomor_hps" placeholder="Nomor HPS" readonly></div>
@@ -388,7 +388,7 @@
 
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_pakta_pejabat"
-                                            class="form-control" id="nomor_pakta_pejabat" placeholder="Nomor HPS"
+                                            class="form-control" id="nomor_pakta_pejabat" placeholder="Nomor Pakta Pejabat"
                                             readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_pakta_pejabat"
@@ -399,7 +399,7 @@
                                 <label for="pakta_pengguna">PAKTA PENGGUNA</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_pakta_pengguna"
-                                            class="form-control" id="nomor_pakta_pengguna" placeholder="Nomor HPS"
+                                            class="form-control" id="nomor_pakta_pengguna" placeholder="Nomor Pakta Pengguna"
                                             readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_pakta_pengguna"
@@ -411,7 +411,7 @@
                                 <label for="undangan">Undangan</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_undangan" class="form-control"
-                                            id="nomor_undangan" placeholder="Nomor HPS" readonly>
+                                            id="nomor_undangan" placeholder="Nomor Undangan" readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_undangan"
                                             class="form-control" id="tanggal_undangan"></div>
@@ -433,7 +433,7 @@
                                 <label for="ba_buka">BA Buka</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_ba_buka" class="form-control"
-                                            id="nomor_ba_buka" placeholder="Nomor HPS" readonly>
+                                            id="nomor_ba_buka" placeholder="Nomor BA Buka" readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_ba_buka"
                                             class="form-control" id="tanggal_ba_buka"></div>
@@ -444,7 +444,7 @@
                                 <label for="ba_evaluasi">BA Evaluasi</label>
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_ba_evaluasi"
-                                            class="form-control" id="nomor_ba_evaluasi" placeholder="Nomor HPS" readonly>
+                                            class="form-control" id="nomor_ba_evaluasi" placeholder="Nomor BA Evaluasi" readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_ba_evaluasi"
                                             class="form-control" id="tanggal_ba_evaluasi"></div>
@@ -458,7 +458,7 @@
 
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_ba_negosiasi"
-                                            class="form-control" id="nomor_ba_negosiasi" placeholder="Nomor HPS"
+                                            class="form-control" id="nomor_ba_negosiasi" placeholder="Nomor BA Negosiasi"
                                             readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_ba_negosiasi"
@@ -472,7 +472,7 @@
                                 <div class="row">
 
                                     <div class="col"><input type="text" name="nomor_ba_hasil_pl"
-                                            class="form-control" id="nomor_ba_hasil_pl" placeholder="Nomor HPS" readonly>
+                                            class="form-control" id="nomor_ba_hasil_pl" placeholder="Nomor BA Hasil PL" readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_ba_hasil_pl"
                                             class="form-control" id="tanggal_ba_hasil_pl"></div>
@@ -486,7 +486,7 @@
 
                                 <div class="row">
                                     <div class="col"><input type="text" name="nomor_spk" class="form-control"
-                                            id="nomor_spk" placeholder="Nomor HPS" readonly>
+                                            id="nomor_spk" placeholder="Nomor SPK" readonly>
                                     </div>
                                     <div class="col"> <input type="date" name="tanggal_spk" class="form-control"
                                             id="tanggal_spk"></div>

@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('r_k_s', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('id_surat');
-            $table->json('datarks')->nullable();
-            // $table->string('tandatangan_pengadaan')->nullable();
-            // $table->dateTime('tanggal_tandatangan_pengadaan')->nullable();
-            // $table->string('tandatangan_manager')->nullable();
-            // $table->dateTime('tanggal_tandatangan_manager')->nullable();
-            $table->timestamps();
-            $table->foreign('id_surat')->references('id')->on('pembuatan_surat_kontraks')->onDelete('cascade');
-        });
+        // Schema::create('r_k_s', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->unsignedBigInteger('id_surat');
+        //     $table->json('datarks')->nullable();
+        //     // $table->string('tandatangan_pengadaan')->nullable();
+        //     // $table->dateTime('tanggal_tandatangan_pengadaan')->nullable();
+        //     // $table->string('tandatangan_manager')->nullable();
+        //     // $table->dateTime('tanggal_tandatangan_manager')->nullable();
+        //     $table->timestamps();
+        //     $table->foreign('id_surat')->references('id')->on('pembuatan_surat_kontraks')->onDelete('cascade');
+        // });
     }
 
     /**

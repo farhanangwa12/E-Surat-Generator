@@ -103,6 +103,9 @@
                     <label for="ba_serah_terima" class="form-label">BA Serah Terima:</label>
                     <input type="text" class="form-control" id="ba_serah_terima" name="ba_serah_terima"
                         value="{{ $datapengalaman->ba_serah_terima }}">
+
+                    <input type="file" name="ba_serah_terima" id="ba_serah_terima" class="form-control">
+                    {{-- <input type="text" class="form-control" id="ba_serah_terima" name="ba_serah_terima"> --}}
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan</button>

@@ -153,15 +153,18 @@ class PaktavendorController extends Controller
     public function pdf($id, $jenis)
     {
         $penawaran = $this->refresh($id);
-        $formpenawaran = Formpenawaranharga::with(['dokumen' => function ($query) use ($id) {
-            $query->where('id_kontrakkerja', $id);
-        }])->first();
-        $kopsurat = asset('/storage/' . $formpenawaran->kopsuratpath . '/' . $formpenawaran->kopsurat);
+        $formPenawaran = app(FormPenawaranHargaController::class);
+        $formpenawaranData = $formPenawaran->refresh($id);
+
+        $kopsurat = asset('/storage/' . $formpenawaranData->kopsuratpath . '/' . $formpenawaranData->kopsurat);
+
+
+
 
         // Informasi Kontrakkerja
         $kontrakkerja = KontrakKerja::find($id)->with('vendor')->first();
 
-    
+
         $data = [
             'kopsurat' => $kopsurat,
             'nama_pekerjaan' =>  $kontrakkerja->nama_kontrak . " PT PLN (PERSERO) UNIT INDUK
@@ -177,11 +180,11 @@ class PaktavendorController extends Controller
             'jabatan' => "Direktur",
             'nama_perusahaan' => $kontrakkerja->vendor->penyedia,
             // 'atas_nama' => $penawaran->atas_nama,
-            'alamat' =>$kontrakkerja->vendor->alamat_jalan. ', ' . $kontrakkerja->vendor->alamat_kota . ', ' . $kontrakkerja->vendor->alamat_provinsi,
-            'telepon_fax' => $kontrakkerja->vendor->telepon_fax,
-            'email_perusahaan' =>$kontrakkerja->vendor->email_perusahaan,
-            'kota' => $formpenawaran->nama_kota,
-            'tanggal_surat' => Carbon::parse($formpenawaran->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
+            'alamat' => $kontrakkerja->vendor->alamat_jalan . ', ' . $kontrakkerja->vendor->alamat_kota . ', ' . $kontrakkerja->vendor->alamat_provinsi,
+            'telepon_fax' => $kontrakkerja->vendor->telepon . ' / ' . $kontrakkerja->vendor->faksimili,
+            'email_perusahaan' => $kontrakkerja->vendor->email_perusahaan,
+            'kota' => $formpenawaranData->nama_kota,
+            'tanggal_surat' => Carbon::parse($formpenawaranData->tanggal_pembuatan_surat)->locale('id')->isoFormat('D MMMM YYYY'),
             'namaterang' => $kontrakkerja->vendor->direktur,
         ];
         // Generate the PDF using laravel-dompdf
@@ -193,17 +196,16 @@ class PaktavendorController extends Controller
         $namefile = 'Pakta_vendor' . time() . '.pdf';
 
         if ($jenis == 1) {
-      
+
             // Menampilkan output di browser
             return $pdf->stream($namefile);
         } else if ($jenis == 2) {
-        
+
 
             // Download file
             return $pdf->download($namefile);
         } else {
             return "Parameter tidak valid";
         }
-       
     }
 }

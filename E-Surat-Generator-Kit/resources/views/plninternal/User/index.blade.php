@@ -17,8 +17,8 @@
                             </div>
                         @endif
 
-                        <h5 class="card-title mb-0"> <a href="{{ route('users.create') }}" class="btn btn-primary">Tambah</a>
-                        </h5>
+                        {{-- <h5 class="card-title mb-0"> <a href="{{ route('users.create') }}" class="btn btn-primary">Tambah</a>
+                        </h5> --}}
 
 
                     </div>
@@ -32,6 +32,7 @@
                                     <th scope="col">Email</th>
                                     <th scope="col">Jenis Akun</th>
                                     <th scope="col">Aksi</th>
+                                    <th scope="col">Reset password</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,6 +71,7 @@
                                                 <button type="submit" class="btn btn-danger">Hapus</button>
                                             </form>
                                         </td>
+                                        <td><a href="{{ route('users.reset', ['id'=> $item->id]) }}" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin mereset password ke default?')">Reset</a></td>
                                     </tr>
                                 @endforeach
 

@@ -212,9 +212,6 @@ Route::middleware('auth')->group(function () {
 
 
 
-
-
-
     // User 
     // Route untuk index page
     Route::prefix('users')->group(function () {
@@ -229,6 +226,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/{id}/update', [UserController::class, 'update'])->name('users.update');
         // Route untuk menghapus data user berdasarkan ID
         Route::delete('/{id}/destroy', [UserController::class, 'destroy'])->name('users.destroy');
+
+        Route::get('/reset/{id}', [UserController::class, 'resetpass'])->name('users.reset');
     });
 
 
@@ -303,7 +302,7 @@ Route::middleware('auth')->group(function () {
 
 
     // Bagian Pengadaan
-    Route::prefix('pengadaan')->middleware( 'role:pengadaan')->group(function () {
+    Route::prefix('pengadaan')->middleware('role:pengadaan')->group(function () {
 
         Route::get('/dashboard', [LoginController::class, 'dashboardpln'])->name('dashboard.pengadaan');
 
@@ -409,7 +408,7 @@ Route::middleware('auth')->group(function () {
 
 
     // Bagian Vendor
-    Route::prefix('vendor')->middleware( 'role:vendor')->group(function () {
+    Route::prefix('vendor')->middleware('role:vendor')->group(function () {
         Route::get('/dashboard', [LoginController::class, 'dashboardvendor'])->name('dashboard.vendor');
 
 
@@ -422,7 +421,7 @@ Route::middleware('auth')->group(function () {
 
 
             // Route untuk menampilkan form tambah produk
-            
+
             Route::get('/pengisiankontrakkerja', [VendorKontrakKerjaController::class, 'pengisiankontrakkerja'])->name('isikontrak');
             // Route untuk menampilkan form tambah produk
             Route::get('kontrakkerjadetail/{id}', [VendorKontrakKerjaController::class, 'detail'])->name('vendor.kontrakkerja.detail');
